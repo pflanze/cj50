@@ -223,13 +223,16 @@ string new_string(size_t len) {
 string* new_strings(size_t len) {
     return new_array_of_type_and_len("string", sizeof(string), len);
 }
-void free_strings(string* ary, size_t len) {
+void free_strings_slice(string* ary, size_t len) {
     for (size_t i = 0; i < len; i++) {
         string s = ary[i];
         if (s) {
             free(s);
         }
     }
+}
+void free_strings(string* ary, size_t len) {
+    free_strings_slice(ary, len);
     free(ary);
 }
 
