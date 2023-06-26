@@ -179,24 +179,24 @@ void* new_array_of_type_and_len(const char* typename,
     }
 }
 
-char* new_array_of_char(size_t len) {
+char* new_chars(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
 string new_string(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
 
-int* new_array_of_int(size_t len) {
+int* new_ints(size_t len) {
     return new_array_of_type_and_len("int", sizeof(int), len);
 }
-nat* new_array_of_nat(size_t len) {
+nat* new_nats(size_t len) {
     return new_array_of_type_and_len("nat", sizeof(nat), len);
 }
-nat0* new_array_of_nat0(size_t len) {
+nat0* new_nat0s(size_t len) {
     return new_array_of_type_and_len("nat0", sizeof(nat0), len);
 }
 
-float* new_array_of_float(size_t len) {
+float* new_floats(size_t len) {
     return new_array_of_type_and_len("float", sizeof(float), len);
 }
 
@@ -215,21 +215,21 @@ float* new_array_of_float(size_t len) {
     }                                           \
     print_string("]");
 
-void print_array_of_char(const char* ary, size_t len) {
+void print_chars(const char* ary, size_t len) {
     PRINT_ARRAY(print_char, ary, len);
 }
 
-void print_array_of_int(const int* ary, size_t len) {
+void print_ints(const int* ary, size_t len) {
     PRINT_ARRAY(print_int, ary, len);
 }
-void print_array_of_nat(const nat* ary, size_t len) {
+void print_nats(const nat* ary, size_t len) {
     PRINT_ARRAY(print_nat, ary, len);
 }
-void print_array_of_nat0(const nat0* ary, size_t len) {
+void print_nat0s(const nat0* ary, size_t len) {
     PRINT_ARRAY(print_nat0, ary, len);
 }
 
-void print_array_of_float(const float* ary, size_t len) {
+void print_floats(const float* ary, size_t len) {
     PRINT_ARRAY(print_float, ary, len);
 }
 

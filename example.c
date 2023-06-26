@@ -37,7 +37,7 @@ int main() {
     if (!getenv("NOARRAY")) {
         print_string("How many tests have you done? ");
         nat0 n = get_nat0();
-        float* grades = new_array_of_float(n);
+        float* grades = new_floats(n);
         for (int i = 0; i < n; i++) {
             print_string("What was your grade for test no. ");
             print_int(i + 1);
@@ -47,7 +47,7 @@ int main() {
         }
         float avg = average(grades, n);
         print_string("average(");
-        print_array_of_float(grades, n);
+        print_floats(grades, n);
         print_string(") = ");
         print_float(avg);
         print_string("\n");
