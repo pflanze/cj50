@@ -87,3 +87,21 @@ void print_nat(nat n) {
     printf("%u", n);
 }
 
+
+typedef unsigned int nat0;
+
+nat get_nat0() {
+    while (true) {
+        int i = get_int();
+        if (i >= 0) {
+            return i;
+        }
+        print_string("Your answer is negative.");
+        print_string(" Please enter a natural number or zero: ");
+    }
+}
+
+void print_nat0(nat0 n) {
+    printf("%u", n);
+}
+
