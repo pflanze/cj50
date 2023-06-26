@@ -70,9 +70,9 @@ void print_int(int n) {
 }
 
 
-typedef unsigned int nat;
+typedef int nat;
 
-nat get_nat() {
+int get_nat() {
     while (true) {
         int i = get_int();
         if (i > 0) {
@@ -83,14 +83,19 @@ nat get_nat() {
     }
 }
 
-void print_nat(nat n) {
-    printf("%u", n);
+void print_nat(int n) {
+    if (n > 0) {
+        printf("%i", n);
+    } else {
+        fprintf(stderr, "error: print_nat(%i): argument out of range\n", n);
+        abort();
+    }
 }
 
 
-typedef unsigned int nat0;
+typedef int nat0;
 
-nat get_nat0() {
+int get_nat0() {
     while (true) {
         int i = get_int();
         if (i >= 0) {
@@ -101,7 +106,12 @@ nat get_nat0() {
     }
 }
 
-void print_nat0(nat0 n) {
-    printf("%u", n);
+void print_nat0(int n) {
+    if (n >= 0) {
+        printf("%i", n);
+    } else {
+        fprintf(stderr, "error: print_nat0(%i): argument out of range\n", n);
+        abort();
+    }
 }
 
