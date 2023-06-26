@@ -33,8 +33,10 @@ void print_string(const char* str) {
 
 string get_string() {
     while (true) {
-        char *line = NULL;
-        size_t len = 0;
+#define SIZ 100
+        char *line = malloc(SIZ);
+        size_t len = SIZ;
+#undef SIZ
         errno = 0;
         ssize_t n = getline(&line, &len, stdin);
         if (n < 0) {
