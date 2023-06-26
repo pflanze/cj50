@@ -44,10 +44,11 @@ int get_int() {
                 print_string("Please enter only an integer number with nothing after it.");
             }
         } else {
-            perror("You answer is not an integer number in range possible for the `long` type.");
+            printf("Your answer is not an integer number in range possible for the `long` type: %s.",
+                   strerror(errno));
         }
         free(s);
-        print_string("Please enter an integer number: ");
+        print_string(" Please enter an integer number: ");
     }
 }
 
