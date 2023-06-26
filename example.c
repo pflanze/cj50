@@ -11,62 +11,62 @@ float average(const float* vs, size_t len) {
 
 int main() {
     if (!getenv("NONAME")) {
-        print_string("What is your name? ");
+        print("What is your name? ");
         string name = get_string();
-        print_string("Hi ");
-        print_string(name);
-        print_string("!\n");
-        print_string("What is your age? ");
+        print("Hi ");
+        print(name);
+        print("!\n");
+        print("What is your age? ");
         nat0 age = get_nat0();
-        print_string("In a year, you will be ");
+        print("In a year, you will be ");
         print_nat0(age + 1);
-        print_string("!\n");
+        print("!\n");
         drop(name);
     }
 
     if (!getenv("NOFLOAT")) {
-        print_string("Width: ");
+        print("Width: ");
         float w = get_float();
-        print_string("Height: ");
+        print("Height: ");
         float h = get_float();
-        print_string("Area = ");
-        print_float(w * h);
-        print_string("\n");
+        print("Area = ");
+        print(w * h);
+        print("\n");
     }
 
     if (!getenv("NOARRAY")) {
-        print_string("How many tests have you done? ");
+        print("How many tests have you done? ");
         nat0 n = get_nat0();
         float* grades = new_floats(n);
         for (int i = 0; i < n; i++) {
-            print_string("What was your grade for test no. ");
-            print_int(i + 1);
-            print_string("? ");
+            print("What was your grade for test no. ");
+            print(i + 1);
+            print("? ");
             float grade = get_float();
             grades[i] = grade;
         }
         float avg = average(grades, n);
-        print_string("average(");
-        print_debug_floats(grades, n);
-        print_string(") = ");
-        print_float(avg);
-        print_string("\n");
+        print("average(");
+        print_debug_array(grades, n);
+        print(") = ");
+        print(avg);
+        print("\n");
         drop(grades);
     }
 
     if (!getenv("NONAMES")) {
-        print_string("How many people do we have? ");
+        print("How many people do we have? ");
         nat0 n = get_nat0();
         string* ss = new_strings(n);
         for (int i = 0; i < n; i++) {
-            print_string("What is the name of person no. ");
-            print_int(i + 1);
-            print_string("? ");
+            print("What is the name of person no. ");
+            print(i + 1);
+            print("? ");
             ss[i] = get_string();
         }
-        print_string("Our people are:\n");
-        print_debug_strings(ss, n);
-        print_string("\n");
+        print("Our people are:\n");
+        print_debug_array(ss, n);
+        print("\n");
         drop_array(ss, n);
     }
 }

@@ -290,6 +290,34 @@ void print_debug_floats(const float* ary, size_t len) {
 #undef PRINT_ARRAY
 
 
+// These bypass runtime checks from restricted number types like nats!
+
+#define print(v)                                \
+    _Generic((v)                                \
+             , char*: print_string              \
+             , char: putchar                    \
+             , int: print_int                   \
+             , float: print_float               \
+        )(v)
+
+#define print_debug(v)                          \
+    _Generic((v)                                \
+             , char*: print_debug_string        \
+             , char: print_debug_char           \
+             , int: print_int                   \
+             , float: print_float               \
+        )(v)
+
+#define print_debug_array(v, len)               \
+    _Generic((v)                                \
+             , char*: print_debug_chars         \
+             , string*: print_debug_strings     \
+             , int*: print_debug_ints           \
+             , float*: print_debug_floats       \
+        )((v), (len))
+
+
+
 #define drop(v)                                 \
     _Generic((v)                                \
              , char*: free                      \
