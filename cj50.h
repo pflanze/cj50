@@ -47,7 +47,7 @@ int get_int() {
         long n = strtol(s, &tail, 10);
         if (errno == 0) {
             if (*tail == '\0') {
-                if (n >= INT_MIN && n < INT_MAX) {
+                if (n >= INT_MIN && n <= INT_MAX) {
                     free(s);
                     return n;
                 } else {
