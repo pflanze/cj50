@@ -21,6 +21,7 @@ int main() {
         print_string("In a year, you will be ");
         print_nat0(age + 1);
         print_string("!\n");
+        free(name);
     }
 
     if (!getenv("NOFLOAT")) {
@@ -50,5 +51,6 @@ int main() {
         print_string(") = ");
         print_float(avg);
         print_string("\n");
+        free(grades);
     }
 }
