@@ -53,4 +53,20 @@ int main() {
         print_string("\n");
         free(grades);
     }
+
+    if (!getenv("NONAMES")) {
+        print_string("How many people do we have? ");
+        nat0 n = get_nat0();
+        string* ss = new_strings(n);
+        for (int i = 0; i < n; i++) {
+            print_string("What is the name of person no. ");
+            print_int(i + 1);
+            print_string("? ");
+            ss[i] = get_string();
+        }
+        print_string("Our people are:\n");
+        print_strings(ss, n);
+        print_string("\n");
+        free_strings(ss, n);
+    }
 }

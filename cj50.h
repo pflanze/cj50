@@ -186,6 +186,19 @@ string new_string(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
 
+string* new_strings(size_t len) {
+    return new_array_of_type_and_len("string", sizeof(string), len);
+}
+void free_strings(string* ary, size_t len) {
+    for (size_t i = 0; i < len; i++) {
+        string s = ary[i];
+        if (s) {
+            free(s);
+        }
+    }
+    free(ary);
+}
+
 int* new_ints(size_t len) {
     return new_array_of_type_and_len("int", sizeof(int), len);
 }
@@ -217,6 +230,10 @@ float* new_floats(size_t len) {
 
 void print_chars(const char* ary, size_t len) {
     PRINT_ARRAY(print_char, ary, len);
+}
+
+void print_strings(const string* ary, size_t len) {
+    PRINT_ARRAY(print_string, ary, len);
 }
 
 void print_ints(const int* ary, size_t len) {
