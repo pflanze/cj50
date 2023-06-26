@@ -8,25 +8,35 @@
 
 typedef char* string;
 
-string get_string() {
-    char *line = NULL;
-    size_t len = 0;
-    errno = 0;
-    ssize_t n = getline(&line, &len, stdin);
-    if (n < 0) {
-        fprintf(stderr,
-                "Could not get a line from stdin: %s.\n",
-                errno == 0 ? "EOF" : strerror(errno));
-        abort();
-    }
-    size_t l = strlen(line);
-    assert(l >= 1);
-    line[l - 1] = '\0';
-    return line;
-}
-
 void print_string(const char* str) {
     printf("%s", str);
+}
+
+string get_string() {
+    while (true) {
+        char *line = NULL;
+        size_t len = 0;
+        errno = 0;
+        ssize_t n = getline(&line, &len, stdin);
+        if (n < 0) {
+            fprintf(stderr,
+                    "Could not get a line from stdin: %s.\n",
+                    errno == 0 ? "EOF" : strerror(errno));
+            abort();
+        }
+        size_t l = strlen(line);
+        // Always must have either a '\n' at the end or some other
+        // text, since the EOF case is handled above.
+        assert(l >= 1);
+        if (line[l - 1] == '\n') {
+            line[l - 1] = '\0';
+            l--;
+        }
+        if (l > 0) {
+            return line;
+        }
+        print_string("Your answer is empty. Please enter a string: ");
+    }
 }
 
 int get_int() {
