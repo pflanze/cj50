@@ -5,6 +5,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <math.h>
 
 typedef char* string;
 
@@ -54,7 +55,7 @@ int get_int() {
                     print_string("Your answer is not within the range of numbers of the `int` type.");
                 }
             } else {
-                print_string("Please enter only an integer number with nothing after it.");
+                print_string("Please enter only a number with nothing after it.");
             }
         } else {
             printf("Your answer is not an integer number in range possible for the `long` type: %s.",
@@ -115,3 +116,30 @@ void print_nat0(int n) {
     }
 }
 
+
+void print_float(float x) {
+    printf("%g", x);
+}
+
+// largely copy-paste of get_int
+float get_float() {
+    while (true) {
+        string s = get_string();
+        char *tail;
+        errno = 0;
+        float x = strtof(s, &tail);
+        if (errno == 0) {
+            if (*tail == '\0') {
+                free(s);
+                return x;
+            } else {
+                print_string("Please enter only a number with nothing after it.");
+            }
+        } else {
+            printf("Your answer is not a floating point number in the possible range for the `float` type: %s.",
+                   strerror(errno));
+        }
+        free(s);
+        print_string(" Please enter a floating point number: ");
+    }
+}
