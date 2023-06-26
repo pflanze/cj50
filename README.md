@@ -19,4 +19,8 @@ For ease of use and updating, the [Makefile](Makefile) can be used to build both
     cp ../cj50/example.c .
     make example
     ./example
+    # then write your own files and compile and use them:
+    $EDITOR myown.c
+    make myown
+    ./myown
 
