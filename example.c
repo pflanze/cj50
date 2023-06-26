@@ -1,5 +1,14 @@
 #include <cj50.h>
 
+float average(const float* vs, size_t len) {
+    float total = 0;
+    for (size_t i = 0; i < len; i++) {
+        total += vs[i];
+    }
+    return total / len;
+}
+
+
 int main() {
     if (!getenv("NONAME")) {
         print_string("What is your name? ");
@@ -21,6 +30,25 @@ int main() {
         float h = get_float();
         print_string("Area = ");
         print_float(w * h);
+        print_string("\n");
+    }
+
+    if (!getenv("NOARRAY")) {
+        print_string("How many tests have you done? ");
+        nat0 n = get_nat0();
+        float* grades = new_array_of_float(n);
+        for (int i = 0; i < n; i++) {
+            print_string("What was your grade for test no. ");
+            print_int(i + 1);
+            print_string("? ");
+            float grade = get_float();
+            grades[i] = grade;
+        }
+        float avg = average(grades, n);
+        print_string("average(");
+        print_array_of_float(grades, n);
+        print_string(") = ");
+        print_float(avg);
         print_string("\n");
     }
 }

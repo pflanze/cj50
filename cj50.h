@@ -6,10 +6,23 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <math.h>
+#include <ctype.h>
+
 
 #define ABORT(...)                              \
     fprintf(stderr, __VA_ARGS__);               \
     abort()
+
+
+void print_char(char c) {
+    if (iscntrl(c)) {
+        printf("'\\%03o'", c);
+    } else {
+        fputc('\'', stdout);
+        fputc(c, stdout);
+        fputc('\'', stdout);
+    }
+}
 
 
 typedef char* string;
@@ -149,3 +162,73 @@ float get_float() {
         print_string(" Please enter a floating point number: ");
     }
 }
+
+
+void* new_array_of_type_and_len(const char* typename,
+                                size_t typesize,
+                                size_t len) {
+    void* p = calloc(len, typesize);
+    if (p) {
+        return p;
+    } else {
+        ABORT("Could not allocate enough memory for an array "
+              "of %ld %s elements",
+              len, typename);
+    }
+}
+
+char* new_array_of_char(size_t len) {
+    return new_array_of_type_and_len("char", sizeof(char), len);
+}
+string new_string(size_t len) {
+    return new_array_of_type_and_len("char", sizeof(char), len);
+}
+
+int* new_array_of_int(size_t len) {
+    return new_array_of_type_and_len("int", sizeof(int), len);
+}
+nat* new_array_of_nat(size_t len) {
+    return new_array_of_type_and_len("nat", sizeof(nat), len);
+}
+nat0* new_array_of_nat0(size_t len) {
+    return new_array_of_type_and_len("nat0", sizeof(nat0), len);
+}
+
+float* new_array_of_float(size_t len) {
+    return new_array_of_type_and_len("float", sizeof(float), len);
+}
+
+/*
+  does this work?
+  #define INITIALIZE_ARRAY(ary, members) *ary = members
+  */
+
+#define PRINT_ARRAY(print_typ, ary, len)        \
+    print_string("[");                          \
+    for (size_t i = 0; i < len; i++) {          \
+        if (i > 0) {                            \
+            print_string(", ");                 \
+        }                                       \
+        print_typ(ary[i]);                      \
+    }                                           \
+    print_string("]");
+
+void print_array_of_char(const char* ary, size_t len) {
+    PRINT_ARRAY(print_char, ary, len);
+}
+
+void print_array_of_int(const int* ary, size_t len) {
+    PRINT_ARRAY(print_int, ary, len);
+}
+void print_array_of_nat(const nat* ary, size_t len) {
+    PRINT_ARRAY(print_nat, ary, len);
+}
+void print_array_of_nat0(const nat0* ary, size_t len) {
+    PRINT_ARRAY(print_nat0, ary, len);
+}
+
+void print_array_of_float(const float* ary, size_t len) {
+    PRINT_ARRAY(print_float, ary, len);
+}
+
+#undef PRINT_ARRAY
