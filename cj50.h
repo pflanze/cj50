@@ -52,13 +52,16 @@ int get_int() {
                     free(s);
                     return n;
                 } else {
-                    print_string("Your answer is not within the range of numbers of the `int` type.");
+                    print_string("Your answer is not within the range of "
+                                 "numbers of the `int` type.");
                 }
             } else {
-                print_string("Please enter only a number with nothing after it.");
+                print_string("Please enter only a number with nothing "
+                             "after it.");
             }
         } else {
-            printf("Your answer is not an integer number in range possible for the `long` type: %s.",
+            printf("Your answer is not an integer number in range possible "
+                   "for the `long` type: %s.",
                    strerror(errno));
         }
         free(s);
@@ -133,10 +136,12 @@ float get_float() {
                 free(s);
                 return x;
             } else {
-                print_string("Please enter only a number with nothing after it.");
+                print_string("Please enter only a number with nothing "
+                             "after it.");
             }
         } else {
-            printf("Your answer is not a floating point number in the possible range for the `float` type: %s.",
+            printf("Your answer is not a floating point number in the "
+                   "possible range for the `float` type: %s.",
                    strerror(errno));
         }
         free(s);
