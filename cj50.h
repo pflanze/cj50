@@ -7,6 +7,11 @@
 #include <errno.h>
 #include <math.h>
 
+#define ABORT(...)                              \
+    fprintf(stderr, __VA_ARGS__);               \
+    abort()
+
+
 typedef char* string;
 
 void print_string(const char* str) {
@@ -20,10 +25,8 @@ string get_string() {
         errno = 0;
         ssize_t n = getline(&line, &len, stdin);
         if (n < 0) {
-            fprintf(stderr,
-                    "Could not get a line from stdin: %s.\n",
-                    errno == 0 ? "EOF" : strerror(errno));
-            abort();
+            ABORT("Could not get a line from stdin: %s.\n",
+                  errno == 0 ? "EOF" : strerror(errno));
         }
         size_t l = strlen(line);
         // Always must have either a '\n' at the end or some other
@@ -91,8 +94,7 @@ void print_nat(int n) {
     if (n > 0) {
         printf("%i", n);
     } else {
-        fprintf(stderr, "error: print_nat(%i): argument out of range\n", n);
-        abort();
+        ABORT("error: print_nat(%i): argument out of range\n", n);
     }
 }
 
@@ -114,8 +116,7 @@ void print_nat0(int n) {
     if (n >= 0) {
         printf("%i", n);
     } else {
-        fprintf(stderr, "error: print_nat0(%i): argument out of range\n", n);
-        abort();
+        ABORT("error: print_nat0(%i): argument out of range\n", n);
     }
 }
 
