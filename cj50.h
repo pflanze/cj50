@@ -87,6 +87,7 @@ string get_string() {
         if (l > 0) {
             return line;
         }
+        free(line);
         print_string("Your answer is empty. Please enter a string: ");
     }
 }
