@@ -14,14 +14,38 @@
     abort()
 
 
-void print_char(char c) {
-    if (iscntrl(c)) {
-        printf("'\\%03o'", c);
+void _print_debug_char(char c) {
+    if (c == '"') {
+        printf("\\\"");
+    } else if (c == '\\') {
+        printf("\\\\");
+    } else if (c == '\0') {
+        printf("\\0");
+    } else if (c == '\n') {
+        printf("\\n");
+    } else if (c == '\r') {
+        printf("\\r");
+    } else if (c == '\t') {
+        printf("\\t");
+    } else if (c == '\v') {
+        printf("\\v");
+    } else if (c == '\f') {
+        printf("\\f");
+    } else if (c == '\b') {
+        printf("\\b");
+    } else if (c == '\a') {
+        printf("\\a");
+    } else if (iscntrl(c)) {
+        printf("\\%03o", c);
     } else {
-        fputc('\'', stdout);
         fputc(c, stdout);
-        fputc('\'', stdout);
     }
+}
+
+void print_debug_char(char c) {
+    fputc('\'', stdout);
+    _print_debug_char(c);
+    fputc('\'', stdout);
 }
 
 
@@ -29,6 +53,15 @@ typedef char* string;
 
 void print_string(const char* str) {
     printf("%s", str);
+}
+
+void print_debug_string(const char* str) {
+    print_string("\"");
+    while (*str) {
+        _print_debug_char(*str);
+        str++;
+    }
+    print_string("\"");
 }
 
 string get_string() {
@@ -229,11 +262,11 @@ float* new_floats(size_t len) {
     print_string("]");
 
 void print_chars(const char* ary, size_t len) {
-    PRINT_ARRAY(print_char, ary, len);
+    PRINT_ARRAY(print_debug_char, ary, len);
 }
 
 void print_strings(const string* ary, size_t len) {
-    PRINT_ARRAY(print_string, ary, len);
+    PRINT_ARRAY(print_debug_string, ary, len);
 }
 
 void print_ints(const int* ary, size_t len) {
