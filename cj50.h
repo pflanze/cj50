@@ -11,14 +11,17 @@ typedef char* string;
 string get_string() {
     char *line = NULL;
     size_t len = 0;
+    errno = 0;
     ssize_t n = getline(&line, &len, stdin);
     if (n < 0) {
-        perror("could not get a string from stdin");
+        fprintf(stderr,
+                "Could not get a line from stdin: %s.\n",
+                errno == 0 ? "EOF" : strerror(errno));
         abort();
     }
     size_t l = strlen(line);
     assert(l >= 1);
-    line[l-1] = '\0';
+    line[l - 1] = '\0';
     return line;
 }
 
