@@ -56,3 +56,21 @@ void print_int(int n) {
     printf("%i", n);
 }
 
+
+typedef unsigned int nat;
+
+nat get_nat() {
+    while (true) {
+        int i = get_int();
+        if (i > 0) {
+            return i;
+        }
+        print_string("Your answer is not above zero.");
+        print_string(" Please enter a natural number: ");
+    }
+}
+
+void print_nat(nat n) {
+    printf("%u", n);
+}
+
