@@ -21,7 +21,7 @@ int main() {
         print_string("In a year, you will be ");
         print_nat0(age + 1);
         print_string("!\n");
-        free(name);
+        drop(name);
     }
 
     if (!getenv("NOFLOAT")) {
@@ -51,7 +51,7 @@ int main() {
         print_string(") = ");
         print_float(avg);
         print_string("\n");
-        free(grades);
+        drop(grades);
     }
 
     if (!getenv("NONAMES")) {
@@ -67,6 +67,6 @@ int main() {
         print_string("Our people are:\n");
         print_debug_strings(ss, n);
         print_string("\n");
-        free_strings(ss, n);
+        drop_array(ss, n);
     }
 }

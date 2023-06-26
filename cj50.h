@@ -288,3 +288,16 @@ void print_debug_floats(const float* ary, size_t len) {
 }
 
 #undef PRINT_ARRAY
+
+
+#define drop(v)                                 \
+    _Generic((v)                                \
+             , char*: free                      \
+             , int*: free                       \
+             , float*: free                     \
+        )(v)
+
+#define drop_array(v, len)                      \
+    _Generic((v)                                \
+             , string*: free_strings            \
+        )((v), (len))
