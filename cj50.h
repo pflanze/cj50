@@ -261,25 +261,25 @@ float* new_floats(size_t len) {
     }                                           \
     print_string("]");
 
-void print_chars(const char* ary, size_t len) {
+void print_debug_chars(const char* ary, size_t len) {
     PRINT_ARRAY(print_debug_char, ary, len);
 }
 
-void print_strings(const string* ary, size_t len) {
+void print_debug_strings(const string* ary, size_t len) {
     PRINT_ARRAY(print_debug_string, ary, len);
 }
 
-void print_ints(const int* ary, size_t len) {
+void print_debug_ints(const int* ary, size_t len) {
     PRINT_ARRAY(print_int, ary, len);
 }
-void print_nats(const nat* ary, size_t len) {
+void print_debug_nats(const nat* ary, size_t len) {
     PRINT_ARRAY(print_nat, ary, len);
 }
-void print_nat0s(const nat0* ary, size_t len) {
+void print_debug_nat0s(const nat0* ary, size_t len) {
     PRINT_ARRAY(print_nat0, ary, len);
 }
 
-void print_floats(const float* ary, size_t len) {
+void print_debug_floats(const float* ary, size_t len) {
     PRINT_ARRAY(print_float, ary, len);
 }
 

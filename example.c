@@ -47,7 +47,7 @@ int main() {
         }
         float avg = average(grades, n);
         print_string("average(");
-        print_floats(grades, n);
+        print_debug_floats(grades, n);
         print_string(") = ");
         print_float(avg);
         print_string("\n");
@@ -65,7 +65,7 @@ int main() {
             ss[i] = get_string();
         }
         print_string("Our people are:\n");
-        print_strings(ss, n);
+        print_debug_strings(ss, n);
         print_string("\n");
         free_strings(ss, n);
     }
