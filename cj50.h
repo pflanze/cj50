@@ -1,3 +1,6 @@
+#ifndef CJ50_H_
+#define CJ50_H_
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -388,3 +391,6 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
     _Generic((v)                                \
              , string*: free_strings            \
         )((v), (len))
+
+
+#endif /* CJ50_H_ */
