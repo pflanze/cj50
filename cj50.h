@@ -364,6 +364,11 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 }
 
 
+#undef RESIZE_ARRAY_test_equal
+#undef RESIZE_ARRAY_free
+#undef RESIZE_ARRAY_realloc_and_fill
+
+
 #define resize(var, oldlen, newlen)             \
     _Generic((var)                              \
              , string*: resize_strings          \
