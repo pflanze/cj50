@@ -6,7 +6,7 @@ Helper library for teaching, inspired by [cs50.h](https://github.com/cs50/libcs5
 
 This expects GCC to be installed and as is will probably only work on Linux or other Unix-like systems.
 
-For ease of use and updating, the [Makefile](Makefile) can be used to build both the included [example.c](example.c) and third party files but assumes that this library is checked out at `~/cdevelopment/cj50`. Meaning, run the following to use this library:
+For ease of use and updating, the [Makefile](Makefile) can be used to build both the included [examples](examples/) and third party files but assumes that this library is checked out at `~/cdevelopment/cj50`. Meaning, run the following to use this library:
 
     cd
     mkdir -p cdevelopment
@@ -16,9 +16,9 @@ For ease of use and updating, the [Makefile](Makefile) can be used to build both
     cd ownproject
     git init
     ln -s ../cj50/Makefile
-    cp ../cj50/example.c .
-    make example
-    ./example
+    cp ../cj50/examples/basic.c .
+    make basic
+    ./basic
     # then write your own files and compile and use them:
     $EDITOR myown.c
     make myown
