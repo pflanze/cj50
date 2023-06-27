@@ -207,8 +207,8 @@ void* new_array_of_type_and_len(const char* typename,
     if (p) {
         return p;
     } else {
-        ABORT("Could not allocate enough memory for an array "
-              "of %ld %s elements",
+        ABORT("Out of memory for an array "
+              "of %ld %s elements\n",
               len, typename);
     }
 }
@@ -316,6 +316,60 @@ void print_debug_floats(const float* ary, size_t len) {
              , float*: print_debug_floats       \
         )((v), (len))
 
+
+#define XSTR(s) STR(s)
+#define STR(s) #s
+
+
+#define RESIZE_ARRAY_test_equal(ary, oldlen, newlen)    \
+    if (newlen == oldlen) {                             \
+        return ary;                                     \
+    }
+#define RESIZE_ARRAY_free(ary, oldlen, newlen)          \
+    if (newlen < oldlen) {                              \
+        for (size_t i = newlen; i < oldlen; i++) {      \
+            if (ary[i]) { free(ary[i]); }               \
+        }                                               \
+    }
+#define RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, T, null)     \
+    T* res = reallocarray(ary, newlen, sizeof(T));                      \
+    if (res) {                                                          \
+        if (newlen > oldlen) {                                          \
+            for (size_t i = oldlen; i < newlen; i++) {                  \
+                res[i] = null;                                          \
+            }                                                           \
+        }                                                               \
+        return res;                                                     \
+    } else {                                                            \
+        ABORT("Out of memory to resize array "                          \
+              "from %ld to %ld %s members\n",                           \
+              oldlen, newlen, STR(T));                                  \
+    }
+
+
+string* resize_strings(string* ary, size_t oldlen, size_t newlen) {
+    RESIZE_ARRAY_test_equal(ary, oldlen, newlen);
+    RESIZE_ARRAY_free(ary, oldlen, newlen);
+    RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, string, NULL);
+}
+
+int* resize_ints(int* ary, size_t oldlen, size_t newlen) {
+    RESIZE_ARRAY_test_equal(ary, oldlen, newlen);
+    RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, int, 0);
+}
+
+float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
+    RESIZE_ARRAY_test_equal(ary, oldlen, newlen);
+    RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, float, 0);
+}
+
+
+#define resize(var, oldlen, newlen)             \
+    var = _Generic((var)                        \
+                   , string*: resize_strings    \
+                   , int*: resize_ints          \
+                   , float*: resize_floats      \
+        )((var), (oldlen), (newlen))
 
 
 #define drop(v)                                 \

@@ -45,12 +45,38 @@ int main() {
             float grade = get_float();
             grades[i] = grade;
         }
-        float avg = average(grades, n);
-        print("average(");
-        print_debug_array(grades, n);
-        print(") = ");
-        print(avg);
-        print("\n");
+
+        bool cont = false;
+        while (!cont) {
+            float avg = average(grades, n);
+            print("average(");
+            print_debug_array(grades, n);
+            print(") = ");
+            print(avg);
+            print("\n");
+
+            print("Do you want to (e)dit, (r)esize, (c)ontinue? ");
+            string ans = get_string();
+            if (ans[0] == 'e') {
+                print("Which index? ");
+                nat0 i = get_nat0();
+                print("What grade? ");
+                float g = get_float();
+                grades[i] = g; // XX security
+                
+            } else if (ans[0] == 'r') {
+                print("To which length? ");
+                nat0 newlen = get_nat0(); // XX 0 ?
+                float* grades2 = resize(grades, n, newlen);
+                grades = grades2;
+                n = newlen;
+
+            } else if (ans[0] == 'c') {
+                cont = true;
+            } else {
+                print("Invalid answer.\n");
+            }
+        }
         drop(grades);
     }
 
