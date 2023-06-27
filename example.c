@@ -58,11 +58,17 @@ int main() {
             print("Do you want to (e)dit, (r)esize, (c)ontinue? ");
             string ans = get_string();
             if (ans[0] == 'e') {
-                print("Which index? ");
-                nat0 i = get_nat0();
-                print("What grade? ");
-                float g = get_float();
-                grades[i] = g; // XX security
+                print("Which test (1-based)? ");
+                nat0 i = get_nat() - 1;
+                if (i < n) {
+                    print("What grade? ");
+                    float g = get_float();
+                    grades[i] = g;
+                } else {
+                    print("Your test number is outside the range [1..");
+                    print(n);
+                    print("]. Try again.\n");
+                }
                 
             } else if (ans[0] == 'r') {
                 print("To which length? ");
@@ -76,6 +82,7 @@ int main() {
             } else {
                 print("Invalid answer.\n");
             }
+            drop(ans);
         }
         drop(grades);
     }
