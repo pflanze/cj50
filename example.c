@@ -73,8 +73,7 @@ int main() {
             } else if (ans[0] == 'r') {
                 print("To which length? ");
                 nat0 newlen = get_nat();
-                float* grades2 = resize(grades, n, newlen);
-                grades = grades2;
+                grades = resize(grades, n, newlen);
                 n = newlen;
 
             } else if (ans[0] == 'c') {

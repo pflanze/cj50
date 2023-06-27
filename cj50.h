@@ -365,10 +365,10 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 
 #define resize(var, oldlen, newlen)             \
-    var = _Generic((var)                        \
-                   , string*: resize_strings    \
-                   , int*: resize_ints          \
-                   , float*: resize_floats      \
+    _Generic((var)                              \
+             , string*: resize_strings          \
+             , int*: resize_ints                \
+             , float*: resize_floats            \
         )((var), (oldlen), (newlen))
 
 
