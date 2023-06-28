@@ -130,6 +130,13 @@ void print_int(int n) {
     printf("%i", n);
 }
 
+// Don't use uint willy-nilly, UBSan will not catch overflows!
+typedef unsigned int uint;
+
+void print_uint(uint n) {
+    printf("%u", n);
+}
+
 
 typedef int nat;
 
@@ -302,6 +309,7 @@ void print_debug_floats(const float* ary, size_t len) {
              , char*: print_string              \
              , char: putchar                    \
              , int: print_int                   \
+             , uint: print_uint                 \
              , float: print_float               \
         )(v)
 
@@ -310,9 +318,10 @@ void print_debug_floats(const float* ary, size_t len) {
              , char*: print_debug_string        \
              , char: print_debug_char           \
              , int: print_int                   \
+             , uint: print_uint                 \
              , float: print_float               \
-             , Vec2: print_debug_Vec2       \
-             , Vec3: print_debug_Vec3       \
+             , Vec2: print_debug_Vec2           \
+             , Vec3: print_debug_Vec3           \
         )(v)
 
 #define print_debug_array(v, len)               \
