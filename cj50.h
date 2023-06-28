@@ -12,13 +12,8 @@
 #include <ctype.h>
 
 #include "cjmath.h"
-
-
-#define ABORT(...)                              \
-    do {                                        \
-        fprintf(stderr, __VA_ARGS__);           \
-        abort();                                \
-    } while(0)
+#include "sdlutil.h"
+#include "util.h"
 
 
 void _print_debug_char(char c) {
