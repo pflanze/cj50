@@ -15,8 +15,10 @@
 
 
 #define ABORT(...)                              \
-    fprintf(stderr, __VA_ARGS__);               \
-    abort()
+    do {                                        \
+        fprintf(stderr, __VA_ARGS__);           \
+        abort();                                \
+    } while(0)
 
 
 void _print_debug_char(char c) {
@@ -409,14 +411,18 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 
 #define D(v)                                    \
-    print("D(" #v ") => ");                     \
-    print_debug(v);                             \
-    print("\n")
+    do {                                        \
+        print("D(" #v ") => ");                 \
+        print_debug(v);                         \
+        print("\n");                            \
+    } while (0)
 
 #define DA(v, len)                              \
-    print("DA(" #v ", " #len ") => ");          \
-    print_debug_array(v, len);                  \
-    print("\n")
+    do {                                        \
+        print("DA(" #v ", " #len ") => ");      \
+        print_debug_array(v, len);              \
+        print("\n");                            \
+    } while (0)
 
 
 #endif /* CJ50_H_ */
