@@ -101,4 +101,15 @@ int main() {
         print("\n");
         drop_array(ss, n);
     }
+
+    if (!getenv("NOMATH")) {
+        Vec2 a = { 30, 44.3 };
+        D(a);
+        Vec2 b = Vec2(-7.1, 10);
+        D(b);
+        Vec2 c = add(a, b);
+        D(c);
+        D(mul(c, 3));
+        D(neg(c));
+    }
 }

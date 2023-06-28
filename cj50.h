@@ -11,6 +11,8 @@
 #include <math.h>
 #include <ctype.h>
 
+#include "cjmath.h"
+
 
 #define ABORT(...)                              \
     fprintf(stderr, __VA_ARGS__);               \
@@ -309,6 +311,8 @@ void print_debug_floats(const float* ary, size_t len) {
              , char: print_debug_char           \
              , int: print_int                   \
              , float: print_float               \
+             , Vec2: print_debug_Vec2       \
+             , Vec3: print_debug_Vec3       \
         )(v)
 
 #define print_debug_array(v, len)               \
@@ -385,12 +389,25 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , char*: free                      \
              , int*: free                       \
              , float*: free                     \
+             , Vec2*: free                    \
+             , Vec3*: free                    \
         )(v)
 
 #define drop_array(v, len)                      \
     _Generic((v)                                \
              , string*: free_strings            \
         )((v), (len))
+
+
+#define D(v)                                    \
+    print("D(" #v ") => ");                     \
+    print_debug(v);                             \
+    print("\n")
+
+#define DA(v, len)                              \
+    print("DA(" #v ", " #len ") => ");          \
+    print_debug_array(v, len);                  \
+    print("\n")
 
 
 #endif /* CJ50_H_ */
