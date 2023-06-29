@@ -15,10 +15,10 @@
 
 #define NORETURN __attribute__((__noreturn__)) void
 
-#define MAX2(a,b)                               \
+#define MAX2(a, b)                              \
     ((a) < (b) ? (b) : (a))
 
-#define MAX3(a,b,c)                             \
+#define MAX3(a, b, c)                           \
     ((a) < (b) ? MAX2(b, c) : MAX2(a, c))
 
 
