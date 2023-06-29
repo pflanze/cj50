@@ -12,12 +12,12 @@ float average(const float* vs, size_t len) {
 int main() {
     if (!getenv("NONAME")) {
         print("What is your name? ");
-        string name = get_string();
+        string name = unwrap(get_string());
         print("Hi ");
         print(name);
         print("!\n");
         print("What is your age? ");
-        nat0 age = get_nat0();
+        nat0 age = unwrap(get_nat0());
         print("In a year, you will be ");
         print_nat0(age + 1);
         print("!\n");
@@ -26,9 +26,9 @@ int main() {
 
     if (!getenv("NOFLOAT")) {
         print("Width: ");
-        float w = get_float();
+        float w = unwrap(get_float());
         print("Height: ");
-        float h = get_float();
+        float h = unwrap(get_float());
         print("Area = ");
         print(w * h);
         print("\n");
@@ -36,13 +36,13 @@ int main() {
 
     if (!getenv("NOARRAY")) {
         print("How many tests have you done? ");
-        nat0 n = get_nat0();
+        nat0 n = unwrap(get_nat0());
         float* grades = new_floats(n);
         for (int i = 0; i < n; i++) {
             print("What was your grade for test no. ");
             print(i + 1);
             print("? ");
-            float grade = get_float();
+            float grade = unwrap(get_float());
             grades[i] = grade;
         }
 
@@ -56,13 +56,13 @@ int main() {
             print("\n");
 
             print("Do you want to (e)dit, (r)esize, (c)ontinue? ");
-            string ans = get_string();
+            string ans = unwrap(get_string());
             if (ans[0] == 'e') {
                 print("Which test (1-based)? ");
-                nat0 i = get_nat() - 1;
+                nat0 i = unwrap(get_nat()) - 1;
                 if (i < n) {
                     print("What grade? ");
-                    float g = get_float();
+                    float g = unwrap(get_float());
                     grades[i] = g;
                 } else {
                     print("Your test number is outside the range [1..");
@@ -72,7 +72,7 @@ int main() {
                 
             } else if (ans[0] == 'r') {
                 print("To which length? ");
-                nat0 newlen = get_nat();
+                nat0 newlen = unwrap(get_nat());
                 grades = resize(grades, n, newlen);
                 n = newlen;
 
@@ -88,13 +88,13 @@ int main() {
 
     if (!getenv("NONAMES")) {
         print("How many people do we have? ");
-        nat0 n = get_nat0();
+        nat0 n = unwrap(get_nat0());
         string* ss = new_strings(n);
         for (int i = 0; i < n; i++) {
             print("What is the name of person no. ");
             print(i + 1);
             print("? ");
-            ss[i] = get_string();
+            ss[i] = unwrap(get_string());
         }
         print("Our people are:\n");
         print_debug_array(ss, n);

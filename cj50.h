@@ -450,6 +450,15 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         )((v), (len))
 
 
+#define unwrap(v)                                       \
+    _Generic((v)                                        \
+             , Option(string): unwrap_Option_string     \
+             , Option(int): unwrap_Option_int           \
+             , Option(float): unwrap_Option_float       \
+        )(v)
+
+
+
 #define D(v)                                    \
     do {                                        \
         print("D(" #v ") => ");                 \

@@ -44,6 +44,15 @@
     static UNUSED                                               \
     Option(T) XCAT(none_, T)() {                                \
         return (Option(T)) { .is_some = false };                \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    T XCAT(unwrap_, Option(T))(const Option(T) s) {             \
+        if (s.is_some) {                                        \
+            return s.value;                                     \
+        } else {                                                \
+            DIE("unwrap: value is a none");                     \
+        }                                                       \
     }
 
 
