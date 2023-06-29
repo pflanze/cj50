@@ -38,6 +38,11 @@
     }                                                           \
                                                                 \
     static UNUSED                                               \
+    bool XCAT(is_none_, T)(const Option(T) *s) {                \
+        return s->is_none;                                      \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
     Option(T) XCAT(some_, T)(T val) {                           \
         return (Option(T)) { .is_none = false, .value = val };  \
     }                                                           \
