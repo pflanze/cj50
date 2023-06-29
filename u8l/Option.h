@@ -19,18 +19,11 @@
         T value;                                                \
     } Option(T);                                                \
                                                                 \
-    static inline UNUSED                                        \
-    T XCAT(move_some_, T)(const Option(T) s) {                  \
-        assert(s.is_some);                                      \
-        s.is_some = false;                                      \
-        return s.value;                                         \
-    }                                                           \
-                                                                \
+    /* CAUTION: only call drop when value has not been moved */ \
     static inline UNUSED                                        \
     void XCAT(drop_, Option(T))(const Option(T) s) {            \
         if (s.is_some) {                                        \
             XCAT(drop_, T)(s.value);                            \
-            s.is_some = false;                                  \
         }                                                       \
     }                                                           \
                                                                 \
