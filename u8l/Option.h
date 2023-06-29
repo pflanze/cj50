@@ -7,7 +7,7 @@
 #define OPTION_H_
 
 #include <stdbool.h>
-#include "util.h"
+#include "basic-util.h"
 #include "macro-util.h"
 
 
