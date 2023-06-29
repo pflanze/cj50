@@ -2,11 +2,11 @@
 #define SDLUTIL_H_
 
 #include <SDL2/SDL.h>
-#include "util.h"
+#include "u8l/basic-util.h"
 
 void assert_sdl_int(int code) {
     if (code < 0) {
-        ABORT("SDL error: %s\n", SDL_GetError());
+        DIE_("SDL error: %s", SDL_GetError());
     }
 }
 

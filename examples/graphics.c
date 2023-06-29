@@ -6,8 +6,8 @@ const int SCREEN_HEIGHT = 480;
 
 int main(/* int argc, char* args[] */) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        ABORT("SDL could not initialize! SDL_Error: %s\n",
-              SDL_GetError());
+        DIE_("SDL could not initialize! SDL_Error: %s",
+             SDL_GetError());
     }
     SDL_Window* window = SDL_CreateWindow(
         "SDL Tutorial",
@@ -17,8 +17,8 @@ int main(/* int argc, char* args[] */) {
         SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN);
     if (!window) {
-        ABORT("Window could not be created! SDL_Error: %s\n",
-              SDL_GetError());
+        DIE_("Window could not be created! SDL_Error: %s",
+             SDL_GetError());
     }
     
     SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
@@ -36,8 +36,8 @@ int main(/* int argc, char* args[] */) {
         -1,
         SDL_RENDERER_ACCELERATED || SDL_RENDERER_PRESENTVSYNC);
     if (!renderer) {
-        ABORT("Accelerated renderer could not be created! SDL_Error: %s\n",
-              SDL_GetError());
+        DIE_("Accelerated renderer could not be created! SDL_Error: %s",
+             SDL_GetError());
     }
     assert_sdl(SDL_SetRenderDrawColor(renderer, 156,0,0,128));
     SDL_Rect r = { 10, 20, 30, 40 };
