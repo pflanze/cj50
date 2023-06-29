@@ -15,7 +15,7 @@
 
 #define DEFTYPE_Option(T)                                       \
     typedef struct Option(T) {                                  \
-        bool is_none;                                           \
+        bool is_some;                                           \
         T value;                                                \
     } Option(T);                                                \
                                                                 \
@@ -27,33 +27,24 @@
     static UNUSED                                               \
     bool XCAT(equal_, Option(T))(const Option(T) *a,            \
                                  const Option(T) *b) {          \
-        return ((a->is_none == b->is_none) &&                   \
-                (a->is_none ? true                              \
-                 : XCAT(equal_, T)(&a->value, &b->value)));     \
-    }                                                           \
-                                                                \
-    static UNUSED                                               \
-    bool XCAT(is_some_, T)(const Option(T) *s) {                \
-        return !(s->is_none);                                   \
-    }                                                           \
-                                                                \
-    static UNUSED                                               \
-    bool XCAT(is_none_, T)(const Option(T) *s) {                \
-        return s->is_none;                                      \
+        return ((a->is_some == b->is_some) &&                   \
+                (a->is_some ?                                   \
+                 XCAT(equal_, T)(&a->value, &b->value) :        \
+                 true));                                        \
     }                                                           \
                                                                 \
     static UNUSED                                               \
     Option(T) XCAT(some_, T)(T val) {                           \
-        return (Option(T)) { .is_none = false, .value = val };  \
+        return (Option(T)) { .is_some = true, .value = val };   \
     }                                                           \
                                                                 \
     static UNUSED                                               \
     Option(T) XCAT(none_, T)() {                                \
-        return (Option(T)) { .is_none = false };                \
+        return (Option(T)) { .is_some = false };                \
     }
 
 
-#define NONE { .is_none = true }
+#define NONE { .is_some = false }
 
 
 #endif /* OPTION_H_ */
