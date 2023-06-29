@@ -30,14 +30,25 @@
         return ((a->is_none == b->is_none) &&                   \
                 (a->is_none ? true                              \
                  : XCAT(equal_, T)(&a->value, &b->value)));     \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    bool XCAT(is_some_, Option_(T))(const Option_(T) *s) {      \
+        return !(s->is_none);                                   \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    Option_(T) XCAT(some_, Option_(T))(T val) {                 \
+        return (Option_(T)) { .is_none = false, .value = val }; \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    Option_(T) XCAT(none_, Option_(T))() {                      \
+        return (Option_(T)) { .is_none = false };               \
     }
 
-#define None(T)                                 \
-    (Option_(T)) { .is_none = true }
-#define Some(T, val)                            \
-    (Option_(T)) { .is_none = false, .value = val }
 
-#define Option_is_some(v) (!(v).is_none)
+#define NONE { .is_none = true }
 
 
 #endif /* OPTION_H_ */
