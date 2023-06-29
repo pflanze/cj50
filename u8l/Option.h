@@ -33,17 +33,17 @@
     }                                                           \
                                                                 \
     static UNUSED                                               \
-    bool XCAT(is_some_, Option_(T))(const Option_(T) *s) {      \
+    bool XCAT(is_some_, T)(const Option_(T) *s) {               \
         return !(s->is_none);                                   \
     }                                                           \
                                                                 \
     static UNUSED                                               \
-    Option_(T) XCAT(some_, Option_(T))(T val) {                 \
+    Option_(T) XCAT(some_, T)(T val) {                          \
         return (Option_(T)) { .is_none = false, .value = val }; \
     }                                                           \
                                                                 \
     static UNUSED                                               \
-    Option_(T) XCAT(none_, Option_(T))() {                      \
+    Option_(T) XCAT(none_, T)() {                               \
         return (Option_(T)) { .is_none = false };               \
     }
 
