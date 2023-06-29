@@ -6,8 +6,8 @@ CFLAGS=-fdiagnostics-color=always -Wall -Wextra -g3 $(ASAN) -fsanitize=undefined
 SDLFLAGS:=`sdl2-config --libs`
 #SDLFLAGS=-lSDL2
 
-
-CC=gcc
+COMPILER ?= clang
+CC=$(COMPILER)
 
 %: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/cjmath.h
 	$(CC) $(CFLAGS) $< $(SDLFLAGS) -o $@
