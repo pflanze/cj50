@@ -12,9 +12,12 @@ float average(const float* vs, size_t len) {
 int main() {
     if (!getenv("NONAME")) {
         print("What is your name? ");
-        string name = unwrap(get_string());
+        Option(string) name = get_string();
+        if (!name.is_some) {
+            DIE("You cancelled.");
+        }
         print("Hi ");
-        print(name);
+        print(name.value);
         print("!\n");
         print("What is your age? ");
         nat0 age = unwrap(get_nat0());
