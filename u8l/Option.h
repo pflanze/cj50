@@ -22,14 +22,14 @@
     /* We don't drop the `value` as it may have */              \
     /* changed ownership in the mean time! */                   \
     static inline UNUSED                                        \
-    void XCAT(Option_(T),_drop)(const Option_(T) s) { }         \
+    void XCAT(drop_, Option_(T))(const Option_(T) s) { }        \
                                                                 \
     static UNUSED                                               \
-    bool XCAT(Option_(T),_equal)(const Option_(T) *a,           \
-                                 const Option_(T) *b) {         \
+    bool XCAT(equal_, Option_(T))(const Option_(T) *a,          \
+                                  const Option_(T) *b) {        \
         return ((a->is_none == b->is_none) &&                   \
                 (a->is_none ? true                              \
-                 : XCAT(T, _equal)(&a->value, &b->value)));     \
+                 : XCAT(equal_, T)(&a->value, &b->value)));     \
     }
 
 #define None(T)                                 \
