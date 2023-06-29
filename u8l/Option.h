@@ -22,7 +22,7 @@
     /* We don't drop the `value` as it may have */              \
     /* changed ownership in the mean time! */                   \
     static inline UNUSED                                        \
-    void XCAT(drop_, Option_(T))(const Option_(T) s) { }        \
+    void XCAT(drop_, Option_(T))(const Option_(T) UNUSED s) { } \
                                                                 \
     static UNUSED                                               \
     bool XCAT(equal_, Option_(T))(const Option_(T) *a,          \
