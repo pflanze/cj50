@@ -13,7 +13,7 @@
 
 #include "cjmath.h"
 #include "sdlutil.h"
-#include "util.h"
+#include "u8l/basic-util.h"
 
 
 void _print_debug_char(char c) {
@@ -328,10 +328,6 @@ void print_debug_floats(const float* ary, size_t len) {
              , int*: print_debug_ints           \
              , float*: print_debug_floats       \
         )((v), (len))
-
-
-#define XSTR(s) STR(s)
-#define STR(s) #s
 
 
 #define RESIZE_ARRAY_test_equal(ary, oldlen, newlen)    \
