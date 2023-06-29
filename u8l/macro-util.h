@@ -11,8 +11,8 @@
 #define MACRO_UTIL_H_
 
 
-#define _STR(s) #s
-#define XSTR(s) _STR(s)
+#define STR(s) #s
+#define XSTR(s) STR(s)
 
 #define _CAT(a, b) a##b
 #define XCAT(a,b) _CAT(a,b)
