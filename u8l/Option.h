@@ -37,7 +37,7 @@
     }                                                           \
                                                                 \
     static UNUSED                                               \
-    Option(T) XCAT(some_, T)(T val) {                           \
+    Option(T) XCAT(some_, T)(const T val) {                     \
         return (Option(T)) { .is_some = true, .value = val };   \
     }                                                           \
                                                                 \
