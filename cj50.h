@@ -18,38 +18,47 @@
 
 
 
-void _print_debug_char(char c) {
+#define RESRET(e)                \
+    res = (e);                   \
+    if (res < 0) { return res; } \
+    ret += res;
+
+
+int _print_debug_char(char c) {
     if (c == '"') {
-        printf("\\\"");
+        return printf("\\\"");
     } else if (c == '\\') {
-        printf("\\\\");
+        return printf("\\\\");
     } else if (c == '\0') {
-        printf("\\0");
+        return printf("\\0");
     } else if (c == '\n') {
-        printf("\\n");
+        return printf("\\n");
     } else if (c == '\r') {
-        printf("\\r");
+        return printf("\\r");
     } else if (c == '\t') {
-        printf("\\t");
+        return printf("\\t");
     } else if (c == '\v') {
-        printf("\\v");
+        return printf("\\v");
     } else if (c == '\f') {
-        printf("\\f");
+        return printf("\\f");
     } else if (c == '\b') {
-        printf("\\b");
+        return printf("\\b");
     } else if (c == '\a') {
-        printf("\\a");
+        return printf("\\a");
     } else if (iscntrl(c)) {
-        printf("\\%03o", c);
+        return printf("\\%03o", c);
     } else {
-        fputc(c, stdout);
+        return fputc(c, stdout);
     }
 }
 
-void print_debug_char(char c) {
-    fputc('\'', stdout);
-    _print_debug_char(c);
-    fputc('\'', stdout);
+int print_debug_char(char c) {
+    int ret = 0;
+    int res;
+    RESRET(fputc('\'', stdout));
+    RESRET(_print_debug_char(c));
+    RESRET(fputc('\'', stdout));
+    return ret;
 }
 
 
@@ -64,21 +73,24 @@ bool equal_string(const string *a, const string *b) {
     return strcmp(*a, *b) == 0;
 }
 
-
-DEFTYPE_Option(string);
-
-void print_string(const char* str) {
-    printf("%s", str);
+int print_string(const char* str) {
+    return printf("%s", str);
 }
 
-void print_debug_string(const char* str) {
-    print_string("\"");
+int print_debug_string(const char* str) {
+    int ret = 0;
+    int res;
+    RESRET(print_string("\""));
+    
     while (*str) {
-        _print_debug_char(*str);
+        RESRET(_print_debug_char(*str));
         str++;
     }
-    print_string("\"");
+    RESRET(print_string("\""));
+    return ret;
 }
+
+DEFTYPE_Option(string);
 
 Option(string) get_string() {
     while (true) {
@@ -121,6 +133,11 @@ bool equal_int(const int *a, const int *b) {
 static UNUSED
 void drop_int(const int UNUSED a) {}
 
+static UNUSED
+int print_debug_int(int n) {
+    return printf("%i", n);
+}
+
 DEFTYPE_Option(int);
 
 Option(int) get_int() {
@@ -155,15 +172,15 @@ Option(int) get_int() {
     }
 }
 
-void print_int(int n) {
-    printf("%i", n);
+int print_int(int n) {
+    return printf("%i", n);
 }
 
 // Don't use uint willy-nilly, UBSan will not catch overflows!
 typedef unsigned int uint;
 
-void print_uint(uint n) {
-    printf("%u", n);
+int print_uint(uint n) {
+    return printf("%u", n);
 }
 
 
@@ -183,9 +200,9 @@ Option(int) get_nat() {
     }
 }
 
-void print_nat(int n) {
+int print_nat(int n) {
     if (n > 0) {
-        printf("%i", n);
+        return printf("%i", n);
     } else {
         DIE_("error: print_nat(%i): argument out of range", n);
     }
@@ -208,9 +225,9 @@ Option(int) get_nat0() {
     }
 }
 
-void print_nat0(int n) {
+int print_nat0(int n) {
     if (n >= 0) {
-        printf("%i", n);
+        return printf("%i", n);
     } else {
         DIE_("error: print_nat0(%i): argument out of range", n);
     }
@@ -225,10 +242,15 @@ bool equal_float(const float *a, const float *b) {
     return *a == *b;
 }
 
+static UNUSED
+int print_debug_float(float x) {
+    return printf("%g", x);
+}
+
 DEFTYPE_Option(float);
 
-void print_float(float x) {
-    printf("%g", x);
+int print_float(float x) {
+    return printf("%g", x);
 }
 
 // largely copy-paste of get_int
@@ -315,34 +337,37 @@ float* new_floats(size_t len) {
   */
 
 #define PRINT_ARRAY(print_typ, ary, len)        \
-    print_string("[");                          \
+    int ret = 0;                                \
+    int res;                                    \
+    RESRET(print_string("["));                  \
     for (size_t i = 0; i < len; i++) {          \
         if (i > 0) {                            \
-            print_string(", ");                 \
+            RESRET(print_string(", "));         \
         }                                       \
-        print_typ(ary[i]);                      \
+        RESRET(print_typ(ary[i]));              \
     }                                           \
-    print_string("]");
+    RESRET(print_string("]"));                  \
+    return ret;
 
-void print_debug_chars(const char* ary, size_t len) {
+int print_debug_chars(const char* ary, size_t len) {
     PRINT_ARRAY(print_debug_char, ary, len);
 }
 
-void print_debug_strings(const string* ary, size_t len) {
+int print_debug_strings(const string* ary, size_t len) {
     PRINT_ARRAY(print_debug_string, ary, len);
 }
 
-void print_debug_ints(const int* ary, size_t len) {
+int print_debug_ints(const int* ary, size_t len) {
     PRINT_ARRAY(print_int, ary, len);
 }
-void print_debug_nats(const nat* ary, size_t len) {
+int print_debug_nats(const nat* ary, size_t len) {
     PRINT_ARRAY(print_nat, ary, len);
 }
-void print_debug_nat0s(const nat0* ary, size_t len) {
+int print_debug_nat0s(const nat0* ary, size_t len) {
     PRINT_ARRAY(print_nat0, ary, len);
 }
 
-void print_debug_floats(const float* ary, size_t len) {
+int print_debug_floats(const float* ary, size_t len) {
     PRINT_ARRAY(print_float, ary, len);
 }
 
@@ -360,15 +385,21 @@ void print_debug_floats(const float* ary, size_t len) {
              , float: print_float               \
         )(v)
 
-#define print_debug(v)                          \
-    _Generic((v)                                \
-             , char*: print_debug_string        \
-             , char: print_debug_char           \
-             , int: print_int                   \
-             , uint: print_uint                 \
-             , float: print_float               \
-             , Vec2: print_debug_Vec2           \
-             , Vec3: print_debug_Vec3           \
+#define print_debug(v)                                        \
+    _Generic((v)                                              \
+             , char*: print_debug_string                      \
+             , char: print_debug_char                         \
+             , int: print_int                                 \
+             , uint: print_uint                               \
+             , float: print_float                             \
+             , Vec2: print_debug_Vec2                         \
+             , Vec3: print_debug_Vec3                         \
+             , Option(string): move_print_debug_Option_string \
+             , Option(int): move_print_debug_Option_int       \
+             , Option(float): move_print_debug_Option_float   \
+             , Option(string)*: print_debug_Option_string     \
+             , Option(int)*: print_debug_Option_int           \
+             , Option(float)*: print_debug_Option_float       \
         )(v)
 
 #define print_debug_array(v, len)               \
@@ -497,5 +528,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         print("\n");                            \
     } while (0)
 
+
+#undef RESRET
 
 #endif /* CJ50_H_ */

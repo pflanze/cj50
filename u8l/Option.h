@@ -53,7 +53,35 @@
         } else {                                                \
             DIE("unwrap: value is a none");                     \
         }                                                       \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    int XCAT(print_debug_, Option(T))(const Option(T) *s) {     \
+        if (! s->is_some) {                                     \
+            return printf("none()");                            \
+        } else {                                                \
+            int ret = 0;                                        \
+            int res;                                            \
+            res = printf("some(");                              \
+            if (res < 0) { return res; }                        \
+            ret += res;                                         \
+            res = XCAT(print_debug_, T)(/* XX & */s->value);    \
+            if (res < 0) { return res; }                        \
+            ret += res;                                         \
+            res = printf(")");                                  \
+            if (res < 0) { return res; }                        \
+            ret += res;                                         \
+            return ret;                                         \
+        }                                                       \
+    }                                                           \
+                                                                \
+    /* This is a HACK to allow print_debug */                   \
+    /* to accept arguments without & */                         \
+    static UNUSED                                               \
+    int XCAT(move_print_debug_, Option(T))(const Option(T) s) { \
+        return XCAT(print_debug_, Option(T))(&s);               \
     }
+
 
 
 #define NONE { .is_some = false }

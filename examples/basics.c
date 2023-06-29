@@ -13,6 +13,7 @@ int main() {
     if (!getenv("NONAME")) {
         print("What is your name? ");
         Option(string) name = get_string();
+        D(name);
         if (!name.is_some) {
             DIE("You cancelled.");
         }
