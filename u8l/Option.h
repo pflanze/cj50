@@ -19,10 +19,20 @@
         T value;                                                \
     } Option(T);                                                \
                                                                 \
-    /* We don't drop the `value` as it may have */              \
-    /* changed ownership in the mean time! */                   \
     static inline UNUSED                                        \
-    void XCAT(drop_, Option(T))(const Option(T) UNUSED s) { }   \
+    T XCAT(move_some_, T)(const Option(T) s) {                  \
+        assert(s.is_some);                                      \
+        s.is_some = false;                                      \
+        return s.value;                                         \
+    }                                                           \
+                                                                \
+    static inline UNUSED                                        \
+    void XCAT(drop_, Option(T))(const Option(T) s) {            \
+        if (s.is_some) {                                        \
+            XCAT(drop_, T)(s.value);                            \
+            s.is_some = false;                                  \
+        }                                                       \
+    }                                                           \
                                                                 \
     static UNUSED                                               \
     bool XCAT(equal_, Option(T))(const Option(T) *a,            \
