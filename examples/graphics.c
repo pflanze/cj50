@@ -34,7 +34,7 @@ int main(/* int argc, char* args[] */) {
     SDL_Renderer * renderer = SDL_CreateRenderer(
         window,
         -1,
-        SDL_RENDERER_ACCELERATED || SDL_RENDERER_PRESENTVSYNC);
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer) {
         DIE_("Accelerated renderer could not be created! SDL_Error: %s",
              SDL_GetError());
