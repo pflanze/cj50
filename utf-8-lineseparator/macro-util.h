@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2021 Christian Jaeger, <ch@christianjaeger.ch>
+  Copyright (C) 2021-2023 Christian Jaeger, <ch@christianjaeger.ch>
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
