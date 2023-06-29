@@ -435,13 +435,16 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         )((var), (oldlen), (newlen))
 
 
-#define drop(v)                                 \
-    _Generic((v)                                \
-             , char*: drop_string               \
-             , int*: free                       \
-             , float*: free                     \
-             , Vec2*: free                    \
-             , Vec3*: free                    \
+#define drop(v)                                        \
+    _Generic((v)                                       \
+             , char*: drop_string                      \
+             , int*: free                              \
+             , float*: free                            \
+             , Vec2*: free                             \
+             , Vec3*: free                             \
+             , Option(string): drop_Option_string      \
+             , Option(int): drop_Option_int            \
+             , Option(float): drop_Option_float        \
         )(v)
 
 #define drop_array(v, len)                      \
@@ -449,6 +452,27 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , string*: free_strings            \
         )((v), (len))
 
+
+#define equal(a, b)                                     \
+    _Generic((v)                                        \
+             , Option(string): equal_Option_string      \
+             , Option(int): equal_Option_int            \
+             , Option(float): equal_Option_float        \
+        )((a), (b))
+
+#define some(v)                                         \
+    _Generic((v)                                        \
+             , Option(string): some_Option_string       \
+             , Option(int): some_Option_int             \
+             , Option(float): some_Option_float         \
+        )(v)
+
+#define none(T)                                         \
+    _Generic((T)                                        \
+             , Option(string): none_Option_string       \
+             , Option(int): none_Option_int             \
+             , Option(float): none_Option_float         \
+        )()
 
 #define unwrap(v)                                       \
     _Generic((v)                                        \
