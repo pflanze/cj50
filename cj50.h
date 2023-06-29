@@ -75,8 +75,8 @@ string get_string() {
         errno = 0;
         ssize_t n = getline(&line, &len, stdin);
         if (n < 0) {
-            ABORT("Could not get a line from stdin: %s.\n",
-                  errno == 0 ? "EOF" : strerror(errno));
+            DIE_("Could not get a line from stdin: %s",
+                 errno == 0 ? "EOF" : strerror(errno));
         }
         size_t l = strlen(line);
         // Always must have either a '\n' at the end or some other
@@ -152,7 +152,7 @@ void print_nat(int n) {
     if (n > 0) {
         printf("%i", n);
     } else {
-        ABORT("error: print_nat(%i): argument out of range\n", n);
+        DIE_("error: print_nat(%i): argument out of range", n);
     }
 }
 
@@ -174,7 +174,7 @@ void print_nat0(int n) {
     if (n >= 0) {
         printf("%i", n);
     } else {
-        ABORT("error: print_nat0(%i): argument out of range\n", n);
+        DIE_("error: print_nat0(%i): argument out of range", n);
     }
 }
 
@@ -216,9 +216,8 @@ void* new_array_of_type_and_len(const char* typename,
     if (p) {
         return p;
     } else {
-        ABORT("Out of memory for an array "
-              "of %ld %s elements\n",
-              len, typename);
+        DIE_("Out of memory for an array of %ld %s elements",
+             len, typename);
     }
 }
 
@@ -350,9 +349,8 @@ void print_debug_floats(const float* ary, size_t len) {
         }                                                               \
         return res;                                                     \
     } else {                                                            \
-        ABORT("Out of memory to resize array "                          \
-              "from %ld to %ld %s members\n",                           \
-              oldlen, newlen, STR(T));                                  \
+        DIE_("Out of memory to resize array from %ld to %ld %s members",\
+             oldlen, newlen, STR(T));                                   \
     }
 
 
