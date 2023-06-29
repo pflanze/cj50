@@ -14,7 +14,7 @@
 #define Option_(T) XCAT(Option_,T)
 
 #define DEFTYPE_Option_(T)                                      \
-    typedef struct {                                            \
+    typedef struct Option_(T) {                                 \
         bool is_none;                                           \
         T value;                                                \
     } Option_(T);                                               \
