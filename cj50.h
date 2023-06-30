@@ -62,6 +62,7 @@ int print_debug_char(char c) {
 }
 
 
+/// `string` is an array of `char`s, ended by the special '\0' char.
 typedef char* string;
 
 void drop_string(const string s) {
@@ -92,6 +93,8 @@ int print_debug_string(const char* str) {
 
 DEFTYPE_Option(string);
 
+/// Read a string from standard input, terminated by a
+/// newline. Returns none() on EOF (when ctl-d is pressed).
 Option(string) get_string() {
     while (true) {
 #define SIZ 100
@@ -140,6 +143,8 @@ int print_debug_int(int n) {
 
 DEFTYPE_Option(int);
 
+/// Read an integer number from standard input, terminated by a
+/// newline. Returns none() on EOF (when ctl-d is pressed).
 Option(int) get_int() {
     while (true) {
         Option(string) s = get_string();
@@ -186,8 +191,21 @@ int print_uint(uint n) {
 }
 
 
+/// `nat` is an int (integer number) that *should* only ever be 1 or
+/// larger (up to `INT_MAX`, the largest integer that can be
+/// represented with the `int` type).
+
+/// Note that we say "should": being a type alias, `nat` can present
+/// all numbers representable in `int`, thus also those outsite the
+/// natural numbers range. So this is just a convenience to express
+/// the intent for humans. The functions containing `nat` in their
+/// name *do* generally check that the numbers is a natural number,
+/// though (but they have to check for that while the program runs,
+/// not when the program is being compiled).
 typedef int nat;
 
+/// Read a natural number from standard input, terminated by a
+/// newline. Returns none() on EOF (when ctl-d is pressed).
 Option(int) get_nat() {
     while (true) {
         Option(int) i = get_int();
@@ -211,8 +229,15 @@ int print_nat(int n) {
 }
 
 
+/// `nat` is an int (integer number) that *should* only ever be 1 or
+/// larger (up to `INT_MAX`, the largest integer that can be
+/// represented with the `int` type).
+
+/// The same caveats apply as for `nat`.
 typedef int nat0;
 
+/// Read a natural number or zero from standard input, terminated by a
+/// newline. Returns none() on EOF (when ctl-d is pressed).
 Option(int) get_nat0() {
     while (true) {
         Option(int) i = get_int();
@@ -255,8 +280,11 @@ int print_float(float x) {
     return printf("%g", x);
 }
 
-// largely copy-paste of get_int
+/// Read a floating point number or zero from standard input,
+/// terminated by a newline. Returns none() on EOF (when ctl-d is
+/// pressed).
 Option(float) get_float() {
+    // largely copy-paste of get_int
     while (true) {
         Option(string) s = get_string();
         if (!s.is_some) {
@@ -299,16 +327,30 @@ void* new_array_of_type_and_len(const char* typename,
     }
 }
 
+/// Allocate and return a new array of `len` char values. Aborts
+/// when there is not enough memory (never returns the NULL
+/// pointer). The slots in the returned array are all initialized to
+/// the '\0' char. This is the same as `new_string`.
 char* new_chars(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
+
+/// Allocate and return a new string of capacity `len`. Aborts when
+/// there is not enough memory (never returns the NULL pointer). The
+/// string is set to the empty string. This is the same as
+/// `new_chars`.
 string new_string(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
 
+/// Allocate and return a new array of `len` string values. Aborts
+/// when there is not enough memory (never returns the NULL
+/// pointer). The slots in the returned array are all initialized to
+/// the NULL pointer.
 string* new_strings(size_t len) {
     return new_array_of_type_and_len("string", sizeof(string), len);
 }
+
 void free_strings_slice(string* ary, size_t len) {
     for (size_t i = 0; i < len; i++) {
         string s = ary[i];
@@ -317,21 +359,39 @@ void free_strings_slice(string* ary, size_t len) {
         }
     }
 }
+
 void free_strings(string* ary, size_t len) {
     free_strings_slice(ary, len);
     free(ary);
 }
 
+
+/// Allocate and return a new array of `len` int values. Aborts when
+/// there is not enough memory (never returns the NULL pointer). The
+/// slots in the returned array are all initialized to the value 0.
 int* new_ints(size_t len) {
     return new_array_of_type_and_len("int", sizeof(int), len);
 }
+
+/// Allocate and return a new array of `len` nat values (same as
+/// int). Aborts when there is not enough memory (never returns the
+/// NULL pointer). The slots in the returned array are all initialized
+/// to the value 0.
 nat* new_nats(size_t len) {
     return new_array_of_type_and_len("nat", sizeof(nat), len);
 }
+
+/// Allocate and return a new array of `len` nat0 values (same as
+/// int). Aborts when there is not enough memory (never returns the
+/// NULL pointer). The slots in the returned array are all initialized
+/// to the value 0.
 nat0* new_nat0s(size_t len) {
     return new_array_of_type_and_len("nat0", sizeof(nat0), len);
 }
 
+/// Allocate and return a new array of `len` float values. Aborts when
+/// there is not enough memory (never returns the NULL pointer). The
+/// slots in the returned array are all initialized to the value 0.
 float* new_floats(size_t len) {
     return new_array_of_type_and_len("float", sizeof(float), len);
 }
@@ -381,6 +441,16 @@ int print_debug_floats(const float* ary, size_t len) {
 
 // These bypass runtime checks from restricted number types like nats!
 
+
+/// Prints the given value for normal text use.
+
+/// Returns an `int` that when negative signifies an error (check
+/// `errno` for the error in this case), and when positive signifies
+/// the number of bytes written.
+
+/// Also see `print_debug` and `print_debug_array`, which support more
+/// types, but are not meant for printing output for normal humans.
+
 #define print(v)                                \
     _Generic((v)                                \
              , char*: print_string              \
@@ -389,6 +459,17 @@ int print_debug_floats(const float* ary, size_t len) {
              , uint: print_uint                 \
              , float: print_float               \
         )(v)
+
+
+/// Prints the given value in a programmer's view, for debugging
+/// purposes.
+
+/// Returns an `int` that when negative signifies an error (check
+/// `errno` for the error in this case), and when positive signifies
+/// the number of bytes written.
+
+/// See `print` for printing as normal text, not for debugging, and
+/// `print_debug_array` for printing arrays.
 
 #define print_debug(v)                                        \
     _Generic((v)                                              \
@@ -408,6 +489,16 @@ int print_debug_floats(const float* ary, size_t len) {
              , Line2: print_debug_Line2                       \
              , Rect2: print_debug_Rect2                       \
         )(v)
+
+
+/// Prints the given array in a programmer's view, for debugging
+/// purposes.
+
+/// Returns an `int` that when negative signifies an error (check
+/// `errno` for the error in this case), and when positive signifies
+/// the number of bytes written.
+
+/// See `print_debug` for printing non-array values.
 
 #define print_debug_array(v, len)               \
     _Generic((v)                                \
@@ -464,15 +555,22 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 #undef RESIZE_ARRAY_free
 #undef RESIZE_ARRAY_realloc_and_fill
 
-
-#define resize(var, oldlen, newlen)             \
-    _Generic((var)                              \
+/// Expects an array as the first argument, and the current length of
+/// the array and the desired new length. Returns a new array of the
+/// desired new length. If the new length is shorter than the old
+/// length, the slots that are freed are `drop`ped, if the new length
+/// is larger, then the new slots are filled in with blanks (zero
+/// values, NULL pointers, or similar).
+#define resize(v, oldlen, newlen)               \
+    _Generic((v)                                \
              , string*: resize_strings          \
              , int*: resize_ints                \
              , float*: resize_floats            \
-        )((var), (oldlen), (newlen))
+        )((v), (oldlen), (newlen))
 
 
+/// Frees the resources held by the given value (including resources
+/// held by contained values, recursively).
 #define drop(v)                                        \
     _Generic((v)                                       \
              , char*: drop_string                      \
@@ -485,12 +583,19 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(float): drop_Option_float        \
         )(v)
 
+/// Frees the resources held by the given array,
+/// including all the values contained in the array (including
+/// resources held by contained values, recursively). For arrays
+/// holding pointers, array slots containing the NULL pointer are
+/// skipped.
 #define drop_array(v, len)                      \
     _Generic((v)                                \
              , string*: free_strings            \
         )((v), (len))
 
 
+/// Takes two values of the same type and returns a `bool`. Returns
+/// `true` if `a` and `b` are structurally equivalent.
 #define equal(a, b)                                     \
     _Generic((v)                                        \
              , Option(string): equal_Option_string      \
@@ -498,6 +603,8 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(float): equal_Option_float        \
         )((a), (b))
 
+/// Takes a value of some type `T` and returns a `some` variant of
+/// `Option(T)`, containing the value.
 #define some(v)                                         \
     _Generic((v)                                        \
              , Option(string): some_Option_string       \
@@ -505,12 +612,27 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(float): some_Option_float         \
         )(v)
 
+/// Returns the none variant of `Option(T)` for the given type `T`.
 #define none(T)                                         \
     _Generic((T)                                        \
              , Option(string): none_Option_string       \
              , Option(int): none_Option_int             \
              , Option(float): none_Option_float         \
         )()
+
+/// Takes an `Option(T)` for some type `T` and returns the contained
+/// value of type `T` if it is a `some`, but aborts if it is a `none`.
+
+/// Example:
+///
+/// ```C
+/// Option(string) maybe_name = get_string();
+/// // maybe_name can be a `none()` or e.g. `some("Alex")`.
+/// string name = unwrap(maybe_name);
+/// // Now we're guaranteed to have a string, "Alex" in
+/// // the second case above. But if `maybe_name` was a
+/// // `none()` then the program has terminated now.
+/// ```
 
 #define unwrap(v)                                       \
     _Generic((v)                                        \
@@ -520,18 +642,22 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         )(v)
 
 
-
-#define D(v)                                    \
+/// `D`ebug: print the expression `expr` and the value it evaluated
+/// to, for debugging purposes (calls `print_debug` on the value).
+#define D(expr)                                 \
     do {                                        \
-        print("D(" #v "): ");                   \
-        print_debug(v);                         \
+        print("D(" #expr "): ");                \
+        print_debug(expr);                      \
         print("\n");                            \
     } while (0)
 
-#define DA(v, len)                              \
+/// `D`ebug `A`rray: print the expression `expr` and the array value
+/// it evaluated to, for debugging purposes (calls
+/// `print_debug_array`). `len` must give the length of the array.
+#define DA(expr, len)                           \
     do {                                        \
-        print("DA(" #v ", " #len "): ");        \
-        print_debug_array(v, len);              \
+        print("DA(" #expr ", " #len "): ");     \
+        print_debug_array(expr, len);           \
         print("\n");                            \
     } while (0)
 
