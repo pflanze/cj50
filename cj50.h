@@ -400,6 +400,8 @@ int print_debug_floats(const float* ary, size_t len) {
              , Option(string)*: print_debug_Option_string     \
              , Option(int)*: print_debug_Option_int           \
              , Option(float)*: print_debug_Option_float       \
+             , Line2: print_debug_Line2                       \
+             , Rect2: print_debug_Rect2                       \
         )(v)
 
 #define print_debug_array(v, len)               \
