@@ -150,6 +150,9 @@ Option(int) get_int() {
         errno = 0;
         long n = strtol(s.value, &tail, 10);
         if (errno == 0) {
+            while (*tail == ' ') {
+                tail++;
+            }
             if (*tail == '\0') {
                 if (n >= INT_MIN && n <= INT_MAX) {
                     drop_Option_string(s);
@@ -263,6 +266,9 @@ Option(float) get_float() {
         errno = 0;
         float x = strtof(s.value, &tail);
         if (errno == 0) {
+            while (*tail == ' ') {
+                tail++;
+            }
             if (*tail == '\0') {
                 drop_Option_string(s);
                 return some_float(x);
