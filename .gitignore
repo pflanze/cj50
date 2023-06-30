@@ -1,3 +1,4 @@
 examples/basics
 examples/graphics
+examples/*_opt
 *.html
