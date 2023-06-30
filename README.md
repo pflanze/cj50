@@ -1,10 +1,15 @@
 # CJ50 utility library
 
-Helper library for teaching, inspired by [cs50.h](https://github.com/cs50/libcs50).
+Helper library for teaching programming using C.
+
+The name is derived from [cs50.h](https://github.com/cs50/libcs50)
+which this library was originally inspired by.
 
 ## Usage
 
-This expects GCC to be installed and as is will probably only work on Linux or other Unix-like systems.
+This expects make, Clang and SDL2 to be installed and as is will probably only work on Linux or other Unix-like systems.
+
+    sudo apt-get install make clang libsdl2-dev
 
 For ease of use and updating, the [Makefile](Makefile) can be used to build both the included [examples](examples/) and third party files but assumes that this library is checked out at `~/cdevelopment/cj50`. Meaning, run the following to use this library:
 
