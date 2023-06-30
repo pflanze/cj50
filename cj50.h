@@ -204,6 +204,8 @@ int print_uint(uint n) {
 /// not when the program is being compiled).
 typedef int nat;
 
+typedef Option_int Option_nat;
+
 /// Read a natural number from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
 Option(nat) get_nat() {
@@ -235,6 +237,8 @@ int print_nat(int n) {
 
 /// The same caveats apply as for `nat`.
 typedef int nat0;
+
+typedef Option_int Option_nat0;
 
 /// Read a natural number or zero from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
