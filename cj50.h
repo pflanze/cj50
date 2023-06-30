@@ -159,8 +159,7 @@ Option(int) get_int() {
                                  "numbers of the `int` type.");
                 }
             } else {
-                print_string("Please enter only a number with nothing "
-                             "after it.");
+                print_string("Your answer has invalid text after the number.");
             }
         } else {
             printf("Your answer is not an integer number in range possible "
