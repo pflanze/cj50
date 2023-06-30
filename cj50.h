@@ -94,7 +94,7 @@ int print_debug_string(const char* str) {
 DEFTYPE_Option(string);
 
 /// Read a string from standard input, terminated by a
-/// newline. Returns none() on EOF (when ctl-d is pressed).
+/// newline. Returns none() on end of file (when ctl-d is pressed).
 Option(string) get_string() {
     while (true) {
 #define SIZ 100
@@ -113,7 +113,7 @@ Option(string) get_string() {
         }
         size_t l = strlen(line);
         // Always must have either a '\n' at the end or some other
-        // text, since the EOF case is handled above.
+        // text, since the end of file case is handled above.
         assert(l >= 1);
         if (line[l - 1] == '\n') {
             line[l - 1] = '\0';
@@ -144,7 +144,7 @@ int print_debug_int(int n) {
 DEFTYPE_Option(int);
 
 /// Read an integer number from standard input, terminated by a
-/// newline. Returns none() on EOF (when ctl-d is pressed).
+/// newline. Returns none() on end of file (when ctl-d is pressed).
 Option(int) get_int() {
     while (true) {
         Option(string) s = get_string();
@@ -205,7 +205,7 @@ int print_uint(uint n) {
 typedef int nat;
 
 /// Read a natural number from standard input, terminated by a
-/// newline. Returns none() on EOF (when ctl-d is pressed).
+/// newline. Returns none() on end of file (when ctl-d is pressed).
 Option(int) get_nat() {
     while (true) {
         Option(int) i = get_int();
@@ -237,7 +237,7 @@ int print_nat(int n) {
 typedef int nat0;
 
 /// Read a natural number or zero from standard input, terminated by a
-/// newline. Returns none() on EOF (when ctl-d is pressed).
+/// newline. Returns none() on end of file (when ctl-d is pressed).
 Option(int) get_nat0() {
     while (true) {
         Option(int) i = get_int();
@@ -281,7 +281,7 @@ int print_float(float x) {
 }
 
 /// Read a floating point number or zero from standard input,
-/// terminated by a newline. Returns none() on EOF (when ctl-d is
+/// terminated by a newline. Returns none() on end of file (when ctl-d is
 /// pressed).
 Option(float) get_float() {
     // largely copy-paste of get_int
