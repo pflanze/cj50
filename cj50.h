@@ -206,7 +206,7 @@ typedef int nat;
 
 /// Read a natural number from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
-Option(int) get_nat() {
+Option(nat) get_nat() {
     while (true) {
         Option(int) i = get_int();
         if (!i.is_some) {
@@ -238,7 +238,7 @@ typedef int nat0;
 
 /// Read a natural number or zero from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
-Option(int) get_nat0() {
+Option(nat0) get_nat0() {
     while (true) {
         Option(int) i = get_int();
         if (!i.is_some) {
