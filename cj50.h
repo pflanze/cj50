@@ -191,24 +191,9 @@ int print_uint(uint n) {
 }
 
 
-/// `nat` is an int (integer number) that *should* only ever be 1 or
-/// larger (up to `INT_MAX`, the largest integer that can be
-/// represented with the `int` type).
-
-/// Note that we say "should": being a type alias, `nat` can present
-/// all numbers representable in `int`, thus also those outsite the
-/// natural numbers range. So this is just a convenience to express
-/// the intent for humans. The functions containing `nat` in their
-/// name *do* generally check that the numbers is a natural number,
-/// though (but they have to check for that while the program runs,
-/// not when the program is being compiled).
-typedef int nat;
-
-typedef Option_int Option_nat;
-
 /// Read a natural number from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
-Option(nat) get_nat() {
+Option(int) get_nat() {
     while (true) {
         Option(int) i = get_int();
         if (!i.is_some) {
@@ -231,18 +216,9 @@ int print_nat(int n) {
 }
 
 
-/// `nat` is an int (integer number) that *should* only ever be 1 or
-/// larger (up to `INT_MAX`, the largest integer that can be
-/// represented with the `int` type).
-
-/// The same caveats apply as for `nat`.
-typedef int nat0;
-
-typedef Option_int Option_nat0;
-
 /// Read a natural number or zero from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
-Option(nat0) get_nat0() {
+Option(int) get_nat0() {
     while (true) {
         Option(int) i = get_int();
         if (!i.is_some) {
@@ -377,22 +353,6 @@ int* new_ints(size_t len) {
     return new_array_of_type_and_len("int", sizeof(int), len);
 }
 
-/// Allocate and return a new array of `len` nat values (same as
-/// int). Aborts when there is not enough memory (never returns the
-/// NULL pointer). The slots in the returned array are all initialized
-/// to the value 0.
-nat* new_nats(size_t len) {
-    return new_array_of_type_and_len("nat", sizeof(nat), len);
-}
-
-/// Allocate and return a new array of `len` nat0 values (same as
-/// int). Aborts when there is not enough memory (never returns the
-/// NULL pointer). The slots in the returned array are all initialized
-/// to the value 0.
-nat0* new_nat0s(size_t len) {
-    return new_array_of_type_and_len("nat0", sizeof(nat0), len);
-}
-
 /// Allocate and return a new array of `len` float values. Aborts when
 /// there is not enough memory (never returns the NULL pointer). The
 /// slots in the returned array are all initialized to the value 0.
@@ -429,21 +389,12 @@ int print_debug_strings(const string* ary, size_t len) {
 int print_debug_ints(const int* ary, size_t len) {
     PRINT_ARRAY(print_int, ary, len);
 }
-int print_debug_nats(const nat* ary, size_t len) {
-    PRINT_ARRAY(print_nat, ary, len);
-}
-int print_debug_nat0s(const nat0* ary, size_t len) {
-    PRINT_ARRAY(print_nat0, ary, len);
-}
 
 int print_debug_floats(const float* ary, size_t len) {
     PRINT_ARRAY(print_float, ary, len);
 }
 
 #undef PRINT_ARRAY
-
-
-// These bypass runtime checks from restricted number types like nats!
 
 
 /// Prints the given value for normal text use.
