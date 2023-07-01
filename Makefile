@@ -15,3 +15,8 @@ CC=$(COMPILER)
 %_opt: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/cjmath.h
 	$(CC) -O2 $(CFLAGS) $< $(SDLFLAGS) -o $@
 
+
+doc:
+	bin/gendoc
+	bin/doc2html
+
