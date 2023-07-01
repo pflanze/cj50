@@ -60,7 +60,7 @@ int main(/* int argc, char* args[] */) {
             Vec2 topleft = { 300 + i * factor * 4, i * 6 };
             Rect2 r = { topleft, diagonal };
             /* D(r); */
-            SDL_Rect sr = sdl(r);
+            SDL_Rect sr = to_sdl(r);
             assert_sdl(SDL_RenderDrawRect(renderer, &sr) < 0);
         }
         SDL_RenderPresent(renderer);

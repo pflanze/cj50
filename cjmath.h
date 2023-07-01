@@ -117,15 +117,15 @@ int print_debug_Rect2(Rect2 s) {
 
 
 static UNUSED
-SDL_Rect sdl_Rect2(Rect2 r) {
+SDL_Rect to_sdl_Rect2(Rect2 r) {
     return (SDL_Rect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
 }
 
 
-/// Convert a value of a type from SDL into a type from cjmath.h
-#define sdl(v)                                  \
+/// Convert a value of a type from cjmath.h into a type from SDL.h
+#define to_sdl(v)                               \
     _Generic((v)                                \
-             , Rect2: sdl_Rect2                 \
+             , Rect2: to_sdl_Rect2              \
         )(v)
 
 
