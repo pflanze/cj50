@@ -18,8 +18,9 @@ typedef struct Vec2 {
 } Vec2;
 
 /// Construct a Vec2.
-#define Vec2(x, y) \
-    ((Vec2) { (x), (y) })
+Vec2 vec2(float x, float y) {
+    return (Vec2) { x, y };
+}
 
 /// A 3-dimentional vector.
 typedef struct Vec3 {
@@ -29,36 +30,36 @@ typedef struct Vec3 {
 } Vec3;
 
 /// Construct a Vec3.
-#define Vec3(x, y, z) \
-    ((Vec3) { (x), (y), (z) })
-
+Vec3 vec3(float x, float y, float z) {
+    return (Vec3) { x, y, z };
+}
 
 Vec2 add_Vec2(Vec2 a, Vec2 b) {
-    return Vec2(a.x + b.x, a.y + b.y);
+    return vec2(a.x + b.x, a.y + b.y);
 }
 Vec2 sub_Vec2(Vec2 a, Vec2 b) {
-    return Vec2(a.x - b.x, a.y - b.y);
+    return vec2(a.x - b.x, a.y - b.y);
 }
 Vec2 neg_Vec2(Vec2 a) {
-    return Vec2(-a.x, -a.y);
+    return vec2(-a.x, -a.y);
 }
 
 Vec3 add_Vec3(Vec3 a, Vec3 b) {
-    return Vec3(a.x + b.x, a.y + b.y, a.z + b.z);
+    return vec3(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 Vec3 sub_Vec3(Vec3 a, Vec3 b) {
-    return Vec3(a.x - b.x, a.y - b.y, a.z - b.z);
+    return vec3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 Vec3 neg_Vec3(Vec3 a) {
-    return Vec3(-a.x, -a.y, -a.z);
+    return vec3(-a.x, -a.y, -a.z);
 }
 
 
 Vec2 mul_Vec2_float(Vec2 a, float b) {
-    return Vec2(a.x * b, a.y * b);
+    return vec2(a.x * b, a.y * b);
 }
 Vec3 mul_Vec3_float(Vec3 a, float b) {
-    return Vec3(a.x * b, a.y * b, a.z * b);
+    return vec3(a.x * b, a.y * b, a.z * b);
 }
 
 int print_debug_Vec2(Vec2 a) {

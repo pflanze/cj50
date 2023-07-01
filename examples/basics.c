@@ -109,7 +109,7 @@ int main() {
     if (!getenv("NOMATH")) {
         Vec2 a = { 30, 44.3 };
         D(a);
-        Vec2 b = Vec2(-7.1, 10);
+        Vec2 b = vec2(-7.1, 10);
         D(b);
         Vec2 c = add(a, b);
         D(c);
