@@ -11,21 +11,26 @@
     ret += res;
 
 
+/// A 2-dimentional vector.
 typedef struct Vec2 {
     float x;
     float y;
 } Vec2;
 
-#define Vec2(x, y) ((Vec2) { (x), (y) })
+/// Construct a Vec2.
+#define Vec2(x, y) \
+    ((Vec2) { (x), (y) })
 
-
+/// A 3-dimentional vector.
 typedef struct Vec3 {
     float x;
     float y;
     float z;
 } Vec3;
 
-#define Vec3(x, y, z) ((Vec3) { (x), (y), (z) })
+/// Construct a Vec3.
+#define Vec3(x, y, z) \
+    ((Vec3) { (x), (y), (z) })
 
 
 Vec2 add_Vec2(Vec2 a, Vec2 b) {
@@ -64,6 +69,7 @@ int print_debug_Vec3(Vec3 a) {
 }
 
 
+/// A line. The end point is at add(start, extent).
 typedef struct Line2 {
     Vec2 start;
     Vec2 extent;
@@ -84,6 +90,7 @@ int print_debug_Line2(Line2 s) {
 
 // Really a copy-paste of Line2, huh!
 
+/// A rectangle. The opposite corner is at add(start, extent).
 typedef struct Rect2 {
     Vec2 start;
     Vec2 extent;
@@ -110,32 +117,38 @@ SDL_Rect sdl_Rect2(Rect2 r) {
 }
 
 
-
+/// Convert a value of a type from SDL into a type from cjmath.h
 #define sdl(v)                                  \
     _Generic((v)                                \
              , Rect2: sdl_Rect2                 \
         )(v)
 
 
-
+/// Add two values, for which `+` is not defined, together, e.g. Vec2
+/// or Vec3. Both values need to be of the same type.
 #define add(a, b)                               \
     _Generic((a)                                \
              , Vec2: add_Vec2                   \
              , Vec3: add_Vec3                   \
         )((a), (b))
 
+/// Subtraction of two values for which `-` is not defined, e.g. Vec2
+/// or Vec3. Both values need to be of the same type.
 #define sub(a, b)                               \
     _Generic((a)                                \
              , Vec2: sub_Vec2                   \
              , Vec3: sub_Vec3                   \
         )((a), (b))
 
+/// Negate a value for which `-` is not defined, e.g. Vec2 or Vec3.
 #define neg(a)                                  \
     _Generic((a)                                \
              , Vec2: neg_Vec2                   \
              , Vec3: neg_Vec3                   \
         )(a)
 
+/// Multiply two values for which `*` is not defined, e.g. Vec2 or
+/// Vec3. Both values need to be of the same type.
 #define mul(a, b)                                               \
     _Generic((a)                                                \
              , Vec2: _Generic((b)                               \
