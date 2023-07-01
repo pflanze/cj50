@@ -3,6 +3,50 @@
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
+//! An Option is a type that may sometimes represent some value, and
+//! sometimes no value. Each Option type is specialized for the type of
+//! the value that it may contain. For this reason, the type of that
+//! contained value has to be specified as parameter to `Option`.
+//! 
+//! An Option has a field `is_some` which specifies whether the Option
+//! value contains a value, in which case the field is `true`, or not (the
+//! `none` case), and a field `value` which contains the actual value if
+//! present (reading the `value` field while `is_some` is `false` is
+//! undefined behaviour, don't do that!). It is the following struct, with
+//! `T` replaced with the type passed to `Option(T)`:
+//! 
+//! ```C
+//! typedef struct Option(T) {
+//!     bool is_some;
+//!     T value;
+//! } Option(T);
+//! ```
+//! 
+//! Member functions for the following generic functions are also defined:
+//! 
+//! `some(val)`
+//! : Returns an Option where the `is_some` field is set to `true` and the `value` field is set to `val`
+//! 
+//! `none(T)`
+//! : Returns an Option where the `is_some` field is set to `false`. The `value` field is not valid.
+//! 
+//! `drop(opt)`
+//! : Calls `drop` on the value in the `value` field if `is_some` is `true`.
+//! 
+//! `equal(opt1, opt2)`
+//! : Returns `true` if both arguments are structurally equivalent.
+//! 
+//! `unwrap(opt)`
+//! : Returns the contents of the `value` field if `is_some` is `true`, otherwise aborts the program.
+//! 
+//! `print_debug(&opt)`
+//! : Print a programmer's view of the Option value, given by reference.
+//! 
+//! `move_print_debug(opt)`
+//! : Print a programmer's view of the Option value, given by copy.
+//! 
+
+
 #ifndef OPTION_H_
 #define OPTION_H_
 
@@ -11,13 +55,33 @@
 #include "macro-util.h"
 
 
+/// This macro creates a type name for an `Option` specific for the
+/// given type name `T`.
+
+/// Implementation wise, it simply concatenates `Option_` and the
+/// given type name. For this reason, the type name `T` must not
+/// contain spaces, e.g. `unsigned int` would not work and a typedef
+/// like `uint` has to be used instead.
 #define Option(T) XCAT(Option_,T)
 
+/// This macro defines the struct and functions to implement the type
+/// `Option(T)`. It has to be used once for a given type
+/// `T`. Afterwards `Option(T)` can be used any number of times.
 #define DEFTYPE_Option(T)                                       \
     typedef struct Option(T) {                                  \
         bool is_some;                                           \
         T value;                                                \
     } Option(T);                                                \
+                                                                \
+    static UNUSED                                               \
+    Option(T) XCAT(some_, T)(const T val) {                     \
+        return (Option(T)) { .is_some = true, .value = val };   \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    Option(T) XCAT(none_, T)() {                                \
+        return (Option(T)) { .is_some = false };                \
+    }                                                           \
                                                                 \
     /* CAUTION: only call drop when value has not been moved */ \
     static inline UNUSED                                        \
@@ -34,16 +98,6 @@
                 (a->is_some ?                                   \
                  XCAT(equal_, T)(&a->value, &b->value) :        \
                  true));                                        \
-    }                                                           \
-                                                                \
-    static UNUSED                                               \
-    Option(T) XCAT(some_, T)(const T val) {                     \
-        return (Option(T)) { .is_some = true, .value = val };   \
-    }                                                           \
-                                                                \
-    static UNUSED                                               \
-    Option(T) XCAT(none_, T)() {                                \
-        return (Option(T)) { .is_some = false };                \
     }                                                           \
                                                                 \
     static UNUSED                                               \
@@ -83,6 +137,15 @@
     }
 
 
+/// This macro is a short cut for `none(T)` but can only be used in
+/// variable assignment, e.g.:
+
+/// ```C
+/// Option(float) x = NONE;
+/// ```
+
+/// It cannot be used in a function call like `f(NONE)`, instead
+/// `f(none(float))` has to be used.
 
 #define NONE { .is_some = false }
 

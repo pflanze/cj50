@@ -22,14 +22,25 @@
     ((a) < (b) ? MAX2(b, c) : MAX2(a, c))
 
 
-#define WARN_(msg, ...)                                         \
-    fprintf(stderr, msg "\n", __VA_ARGS__)
-#define DIE_(msg, ...)                                          \
-    do { fprintf(stderr, msg "\n", __VA_ARGS__); abort(); } while(0)
+/// Print a warning to standard error. Does not take values to embed
+/// in `msg`.
 #define WARN(msg)                                               \
     fprintf(stderr, "%s\n", msg)
+
+/// Print a warning to standard error. `msg` is a format string, the
+/// values to embed are expected afterwards.
+#define WARN_(msg, ...)                                         \
+    fprintf(stderr, msg "\n", __VA_ARGS__)
+
+/// Print a message to standard error, then abort. Does not take
+/// values to embed in `msg`.
 #define DIE(msg)                                                \
     do { fprintf(stderr, "%s\n", msg); abort(); } while(0)
+
+/// Print a message to standard error, then abort. `msg` is a format
+/// string, the values to embed are expected afterwards.
+#define DIE_(msg, ...)                                                  \
+    do { fprintf(stderr, msg "\n", __VA_ARGS__); abort(); } while(0)
 
 
 #define FOR_RANGE(T, var, from, to)                     \

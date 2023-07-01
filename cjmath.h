@@ -1,6 +1,10 @@
 #ifndef CJMATH_H_
 #define CJMATH_H_
 
+
+//! This provides mathematical types: vectors and shapes.
+
+
 #include <u8l/basic-util.h>
 #include <SDL2/SDL.h>
 
