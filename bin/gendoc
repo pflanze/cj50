@@ -118,7 +118,7 @@ package DocEntry {
             "$_\n"
         } split /\n/, $self->docs;
         join("",
-             "### " . $self->symbol . "\n",
+             "## " . $self->symbol . "\n",
              "\n",
              "```C\n",
              @code,
@@ -178,7 +178,7 @@ sub filedocs ($path) {
     my ($maybe_topblock) = $s=~ m{ ($topblock) }xs;
 
     my $doc = $DOCWARNING;
-    $doc .= "# Documentation for $path\n\n";
+    # $doc .= "# Documentation for $path\n\n";
 
     if (defined $maybe_topblock) {
         my @lines = map {
@@ -193,7 +193,7 @@ sub filedocs ($path) {
         my $items = $items{$key};
         my $subsection = $key;
         $subsection =~ s/^\d+ +//;
-        $doc .= "## $subsection\n\n";
+        $doc .= "# $subsection\n\n";
         for my $item (@$items) {
             $doc .= $item->markdown."\n";
         }
@@ -236,7 +236,7 @@ my @itemss = map { filedocs($_) } @headerfiles;
             my $items = $items{$key};
             my $subsection = $key;
             $subsection =~ s/^\d+ +//;
-            $doc .= "### $subsection\n\n";
+            $doc .= "## $subsection\n\n";
             # ah and here we sort the symbol instead of go straight:
             for my $sym (sort { lc($a) cmp lc($b) } keys %$items) {
                 # only change from copy paste is here:
@@ -255,14 +255,14 @@ my @itemss = map { filedocs($_) } @headerfiles;
     xmkdir_p dirname($outpath);
 
     my $doc = $DOCWARNING;
-    $doc .= "# Documentation index\n\n";
+    # $doc .= "# Documentation index\n\n";
 
-    $doc .= "## Files\n\n";
+    $doc .= "# Files\n\n";
     for my $path (sort keys %documented_headerfiles) {
         $doc .= "* [$path]($path.html)\n\n";
     }
 
-    $doc .= "## Names\n\n";
+    $doc .= "# Names\n\n";
     $doc .= $doc_Names;
     
     xputfile_utf8 $outpath, $doc;
