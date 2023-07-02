@@ -606,7 +606,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// to, for debugging purposes (calls `print_debug` on the value).
 #define D(expr)                                 \
     do {                                        \
-        print("D(" #expr "): ");                \
+        print("DEBUG: " #expr " == ");          \
         print_debug(expr);                      \
         print("\n");                            \
     } while (0)
@@ -614,11 +614,11 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// `D`ebug `A`rray: print the expression `expr` and the array value
 /// it evaluated to, for debugging purposes (calls
 /// `print_debug_array`). `len` must give the length of the array.
-#define DA(expr, len)                           \
-    do {                                        \
-        print("DA(" #expr ", " #len "): ");     \
-        print_debug_array(expr, len);           \
-        print("\n");                            \
+#define DA(expr, len)                                   \
+    do {                                                \
+        print("DEBUG: " #expr ", " #len " == ");        \
+        print_debug_array(expr, len);                   \
+        print("\n");                                    \
     } while (0)
 
 
