@@ -19,8 +19,8 @@ BEGIN {
     ($mydir, $myname)=($1,$2);
 }
 
-use Chj::ruse; #
-use FP::Show; use FP::Repl; use FP::Repl::Trap;#
+#use Chj::ruse;
+#use FP::Show; use FP::Repl; use FP::Repl::Trap;#
 use Getopt::Long;
 use Chj::IO::Command;
 use Chj::xperlfunc ":all";

@@ -14,9 +14,9 @@ fully named function specializations everywhere.
 
 ## Usage
 
-This needs make, Clang and SDL2. In the current form it will probably only work on Linux or other Unix-like systems. On Debian-derived systems, install the dependencies with:
+This needs make, Clang and SDL2, as well as pandoc for generating the html files. In the current form it will probably only work on Linux or other Unix-like systems. On Debian-derived systems, install the dependencies with:
 
-    sudo apt-get install make clang libsdl2-dev
+    sudo apt-get install make clang libsdl2-dev pandoc
 
 For ease of use and updating, the [Makefile](Makefile) can be used to build both the included [examples](examples/) and third party files but assumes that this library is checked out at `~/cdevelopment/cj50`. Meaning, run the following to use this library:
 
@@ -47,3 +47,8 @@ converted to Markdown and then html format via:
 You can then open the file
 [doc-output/index.html](doc-output/index.md) in your browser.
 
+The above simply uses the generated markdown files contained in the
+repository. If you edit the library files, you need to run `make
+gendoc` instead to update the markdown files, but that also requires
+the [FunctionalPerl](https://metacpan.org/pod/FunctionalPerl) Perl
+package to be installed.
