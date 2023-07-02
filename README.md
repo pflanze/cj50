@@ -5,9 +5,16 @@ Helper library for teaching programming using C.
 The name is derived from [cs50.h](https://github.com/cs50/libcs50)
 which this library was originally inspired by.
 
+The library provides easy ways to get input from and write output to
+the terminal, and (not yet finished) 2D graphics output. It follows a
+Rust-inspired programming style: `Option`, `unwrap`, `drop`, using
+type names with an upper-case initial for complex types. It provides
+generic functions (via C11 `_Generic`) to avoid having to type out the
+fully named function specializations everywhere.
+
 ## Usage
 
-This expects make, Clang and SDL2 to be installed and as is will probably only work on Linux or other Unix-like systems.
+This needs make, Clang and SDL2. In the current form it will probably only work on Linux or other Unix-like systems. On Debian-derived systems, install the dependencies with:
 
     sudo apt-get install make clang libsdl2-dev
 
@@ -28,4 +35,14 @@ For ease of use and updating, the [Makefile](Makefile) can be used to build both
     $EDITOR myown.c
     make myown
     ./myown
+
+## Documentation
+
+The library files contain embedded documentation, which can be
+converted to Markdown and then html format via:
+
+    make doc
+
+You can then open the file
+[doc-output/index.html](doc-output/index.md) in your browser.
 
