@@ -4,7 +4,7 @@ set -euo pipefail
 set -m
 IFS=
 
-gls-of-suffix md | while read mdfile; do
+git ls-files doc-output/ | while read mdfile; do
     hfile="$(basename "$mdfile" .md)"
     htmlfile="$(dirname "$mdfile")/$hfile.html"
     pandoc -s --toc --number-sections --include-in-header=config/custom.html \

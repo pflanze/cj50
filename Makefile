@@ -17,6 +17,10 @@ CC=$(COMPILER)
 
 
 doc:
-	bin/gendoc
 	bin/doc2html
+
+_gendoc:
+	bin/gendoc
+
+gendoc: _gendoc doc
 
