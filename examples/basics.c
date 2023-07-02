@@ -31,11 +31,15 @@ int main() {
 
     if (!getenv("NOFLOAT")) {
         print("Width: ");
-        float w = unwrap(get_float());
+        Option(float) w = get_float();
+        if (!w.is_some) {
+            print("You cancelled.\n");
+            return 0;
+        }
         print("Height: ");
         float h = unwrap(get_float());
         print("Area = ");
-        print(w * h);
+        print(w.value * h);
         print("\n");
     }
 
