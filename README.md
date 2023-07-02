@@ -28,9 +28,9 @@ For ease of use and updating, the [Makefile](Makefile) can be used to build both
     cd ownproject
     git init
     ln -s ../cj50/Makefile
-    cp ../cj50/examples/basic.c .
-    make basic
-    ./basic
+    cp ../cj50/examples/basics.c .
+    make basics
+    ./basics
     # then write your own files and compile and use them:
     $EDITOR myown.c
     make myown
@@ -41,6 +41,7 @@ For ease of use and updating, the [Makefile](Makefile) can be used to build both
 The library files contain embedded documentation, which can be
 converted to Markdown and then html format via:
 
+    cd ~/cdevelopment/cj50
     make doc
 
 You can then open the file
