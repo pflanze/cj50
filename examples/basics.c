@@ -15,7 +15,8 @@ int main() {
         Option(string) name = get_string();
         D(name);
         if (!name.is_some) {
-            DIE("You cancelled.");
+            print("You cancelled.\n");
+            return 0;
         }
         print("Hi ");
         print(name.value);
