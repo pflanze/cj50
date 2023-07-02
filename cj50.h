@@ -109,6 +109,7 @@ Option(string) get_string() {
         ssize_t n = getline(&line, &len, stdin);
         if (n < 0) {
             if (errno == 0) {
+                free(line);
                 return none_string();
             } else {
                 DIE_("Could not get a line from stdin: %s",
