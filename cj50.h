@@ -465,7 +465,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         )((a), (b))
 
 /// Takes a value of some type `T` and returns a `some` variant of
-/// `Option(T)`, containing the value.
+/// `Option(T)` containing the value.
 #define some(v)                                         \
     _Generic((v)                                        \
              , string: some_string                      \
@@ -493,9 +493,9 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// Option(string) maybe_name = get_string();
 /// // maybe_name can be a `none()` or e.g. `some("Alex")`.
 /// string name = unwrap(maybe_name);
-/// // Now we're guaranteed to have a string, "Alex" in
-/// // the second case above. But if `maybe_name` was a
-/// // `none()` then the program has terminated now.
+/// // Now we're guaranteed to have a string in `name`, "Alex" if we
+/// // had the second case above. But if `maybe_name` was a `none()`
+/// // then the program has terminated instead.
 /// ```
 
 #define unwrap(v)                                       \
