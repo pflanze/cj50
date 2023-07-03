@@ -65,10 +65,10 @@ Vec3 mul_Vec3_float(Vec3 a, float b) {
 }
 
 int print_debug_Vec2(Vec2 a) {
-    return printf("Vec2(%g, %g)", a.x, a.y);
+    return printf("vec2(%g, %g)", a.x, a.y);
 }
 int print_debug_Vec3(Vec3 a) {
-    return printf("Vec3(%g, %g, %g)", a.x, a.y, a.z);
+    return printf("vec3(%g, %g, %g)", a.x, a.y, a.z);
 }
 
 
