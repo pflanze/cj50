@@ -1,9 +1,7 @@
-#ifndef CJMATH_H_
-#define CJMATH_H_
-
 
 //! This provides mathematical types: vectors and shapes.
 
+#pragma once
 
 #include <cj50/basic-util.h>
 #include <SDL2/SDL.h>
@@ -170,5 +168,3 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
 
 
 #undef RESRET
-
-#endif /* CJMATH_H_ */

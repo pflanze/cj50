@@ -3,8 +3,7 @@
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
-#ifndef UTIL_H_
-#define UTIL_H_
+#pragma once
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -48,4 +47,3 @@
     for (T var = (from); var < __for_range_to; var++)
 
 
-#endif /* UTIL_H_ */

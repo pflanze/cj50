@@ -1,5 +1,4 @@
-#ifndef CJ50_FLOAT_H_
-#define CJ50_FLOAT_H_
+#pragma once
 
 #include <cj50/gen/Option.h>
 
@@ -18,5 +17,3 @@ int print_debug_float(float x) {
 
 GENERATE_Option(float);
 
-
-#endif /* CJ50_FLOAT_H_ */

@@ -1,5 +1,4 @@
-#ifndef SDLUTIL_H_
-#define SDLUTIL_H_
+#pragma once
 
 //! Utilities for working with the SDL2 library.
 
@@ -109,4 +108,3 @@ void graphics_render(int screen_width,
 }
 
 
-#endif /* SDLUTIL_H_ */

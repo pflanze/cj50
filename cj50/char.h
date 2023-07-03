@@ -1,5 +1,4 @@
-#ifndef CJ50_CHAR_H_
-#define CJ50_CHAR_H_
+#pragma once
 
 
 #define RESRET(e)                \
@@ -59,4 +58,3 @@ int print_debug_char(char c) {
 
 GENERATE_Option(char);
 
-#endif /* CJ50_CHAR_H_ */

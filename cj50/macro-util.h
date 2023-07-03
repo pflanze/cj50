@@ -7,8 +7,7 @@
   Utilities for writing macros
 */
 
-#ifndef MACRO_UTIL_H_
-#define MACRO_UTIL_H_
+#pragma once
 
 
 #define STR(s) #s
@@ -23,4 +22,3 @@
 // good to have a larger distance, anyway.)
 #define HYGIENIC(var) XCAT3(var, _hygienic,  __LINE__)
 
-#endif /* MACRO_UTIL_H_ */

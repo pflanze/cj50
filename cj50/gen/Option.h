@@ -47,8 +47,7 @@
 //! 
 
 
-#ifndef OPTION_H_
-#define OPTION_H_
+#pragma once
 
 #include <stdbool.h>
 #include <cj50/basic-util.h>
@@ -150,4 +149,3 @@
 #define NONE { .is_some = false }
 
 
-#endif /* OPTION_H_ */

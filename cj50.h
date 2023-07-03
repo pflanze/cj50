@@ -1,9 +1,7 @@
-#ifndef CJ50_H_
-#define CJ50_H_
-
 //! This provides a collection of various useful utilities. It
 //! includes cjmath.h, sdlutil.h, and Option.h
 
+#pragma once
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -525,5 +523,3 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 
 #undef RESRET
-
-#endif /* CJ50_H_ */

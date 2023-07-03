@@ -1,5 +1,4 @@
-#ifndef CJ50_INT_H_
-#define CJ50_INT_H_
+#pragma once
 
 #include <cj50/gen/Option.h>
 
@@ -18,5 +17,3 @@ int print_debug_int(int n) {
 
 GENERATE_Option(int);
 
-
-#endif /* CJ50_INT_H_ */

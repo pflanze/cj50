@@ -3,8 +3,7 @@
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
-#ifndef AFLUTIL_H_
-#define AFLUTIL_H_
+#pragma once
 
 
 // An alternative to assert from assert.h that works better with
@@ -97,4 +96,3 @@
     }
 
 
-#endif /* AFLUTIL_H_ */

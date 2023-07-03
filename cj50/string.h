@@ -1,5 +1,4 @@
-#ifndef CJ50_STRING_H_
-#define CJ50_STRING_H_
+#pragma once
 
 #include <cj50/gen/Option.h>
 #include <cj50/char.h>
@@ -50,4 +49,3 @@ int print_debug_string(const char* str) {
 
 GENERATE_Option(string);
 
-#endif /* CJ50_STRING_H_ */
