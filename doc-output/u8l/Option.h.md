@@ -60,10 +60,10 @@ given type name. For this reason, the type name `T` must not
 contain spaces, e.g. `unsigned int` would not work and a typedef
 like `uint` has to be used instead.
 
-## DEFTYPE_Option
+## GENERATE_Option
 
 ```C
-DEFTYPE_Option(T)
+GENERATE_Option(T)
 ```
 
 This macro defines the struct and functions to implement the type

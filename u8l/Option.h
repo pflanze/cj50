@@ -67,7 +67,7 @@
 /// This macro defines the struct and functions to implement the type
 /// `Option(T)`. It has to be used once for a given type
 /// `T`. Afterwards `Option(T)` can be used any number of times.
-#define DEFTYPE_Option(T)                                       \
+#define GENERATE_Option(T)                                      \
     typedef struct Option(T) {                                  \
         bool is_some;                                           \
         T value;                                                \

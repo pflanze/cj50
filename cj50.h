@@ -97,7 +97,7 @@ int print_debug_string(const char* str) {
     return ret;
 }
 
-DEFTYPE_Option(string);
+GENERATE_Option(string);
 
 /// Read a string from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
@@ -148,7 +148,7 @@ int print_debug_int(int n) {
     return printf("%i", n);
 }
 
-DEFTYPE_Option(int);
+GENERATE_Option(int);
 
 /// Read an integer number from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
@@ -261,7 +261,7 @@ int print_debug_float(float x) {
     return printf("%g", x);
 }
 
-DEFTYPE_Option(float);
+GENERATE_Option(float);
 
 int print_float(float x) {
     return printf("%g", x);

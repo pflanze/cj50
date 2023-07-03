@@ -63,9 +63,9 @@
 
 * [D](cj50.h.md#d)
 * [DA](cj50.h.md#da)
-* [DEFTYPE_Option](u8l/Option.h.md#deftype_option)
 * [DIE](u8l/basic-util.h.md#die)
 * [DIE_](u8l/basic-util.h.md#die_)
+* [GENERATE_Option](u8l/Option.h.md#generate_option)
 * [NONE](u8l/Option.h.md#none)
 * [Option](u8l/Option.h.md#option)
 * [WARN](u8l/basic-util.h.md#warn)
