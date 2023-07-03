@@ -78,7 +78,10 @@ typedef struct Line2 {
     Vec2 extent;
 } Line2;
 
-#define Line2(start, extent) ((Line2) { (start), (extent) })
+/// Construct a Rect2
+Line2 line2(Vec2 start, Vec2 extent) {
+    return (Line2) { start, extent };
+}
 
 int print_debug_Line2(Line2 s) {
     int ret = 0;
@@ -99,7 +102,11 @@ typedef struct Rect2 {
     Vec2 extent;
 } Rect2;
 
-#define Rect2(start, extent) ((Rect2) { (start), (extent) })
+
+/// Construct a Rect2
+Rect2 rect2(Vec2 start, Vec2 extent) {
+    return (Rect2) { start, extent };
+}
 
 int print_debug_Rect2(Rect2 s) {
     int ret = 0;
