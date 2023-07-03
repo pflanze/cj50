@@ -16,11 +16,13 @@
 /// stored in the string, to signal the end of the text.
 typedef char* string;
 
+static UNUSED
 void drop_string(const string s) {
     free(s);
 }
 
 // receive pointers to pointers just for standard in Option
+static UNUSED
 bool equal_string(const string *a, const string *b) {
     return strcmp(*a, *b) == 0;
 }
@@ -29,6 +31,7 @@ int print_string(const char* str) {
     return printf("%s", str);
 }
 
+static UNUSED
 int print_debug_string(const char* str) {
     int ret = 0;
     int res;
