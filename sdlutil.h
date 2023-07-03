@@ -25,6 +25,88 @@ int assert_sdl_int(int code) {
         )(v)
 
 
+void graphics_render(int screen_width,
+                     int screen_height,
+                     bool (*renderframe)(SDL_Renderer*, void*),
+                     void* context)
+{
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        DIE_("SDL could not initialize! SDL_Error: %s",
+             SDL_GetError());
+    }
+    SDL_Window* window = SDL_CreateWindow(
+        "SDL Tutorial",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        screen_width,
+        screen_height,
+        SDL_WINDOW_SHOWN);
+    if (!window) {
+        DIE_("Window could not be created! SDL_Error: %s",
+             SDL_GetError());
+    }
+
+    /*
+    SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
+
+    //Fill the surface white
+    SDL_FillRect(screenSurface,
+                 NULL,
+                 SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+    
+    //Update the surface
+    SDL_UpdateWindowSurface(window);
+    */
+    SDL_Renderer * renderer = SDL_CreateRenderer(
+        window,
+        -1,
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!renderer) {
+        DIE_("Accelerated renderer could not be created! SDL_Error: %s",
+             SDL_GetError());
+    }
+
+    
+    SDL_Event e;
+    bool quit = false;
+    while (!quit) {
+        if (renderframe(renderer, context)) {
+            SDL_RenderPresent(renderer);
+        } else {
+            quit = true;
+        }
+
+        while (SDL_PollEvent(&e)) {
+            /* D(e.type); */
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            } else if (e.type == SDL_TEXTINPUT) {
+                /* D(e.text.text); */
+                // ah, string because unicode
+                /*
+                char c0 = e.text.text[0];
+                if (c0 == 'q') {
+                    quit = true;
+                }
+                */
+            } else if (e.type == SDL_KEYDOWN) {
+                SDL_Keycode c = e.key.keysym.sym;
+                if ((c == SDLK_ESCAPE) || (c == SDLK_q)) {
+                    quit = true;
+                }
+            }
+        }
+
+        
+        /* print("Outer loop.\n"); */
+        /* sleep(1); */
+    }
+
+    SDL_DestroyRenderer(renderer); //XX drop
+
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
 
 
 #endif /* SDLUTIL_H_ */
