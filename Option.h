@@ -51,8 +51,8 @@
 #define OPTION_H_
 
 #include <stdbool.h>
-#include "basic-util.h"
-#include "macro-util.h"
+#include "u8l/basic-util.h"
+#include "u8l/macro-util.h"
 
 
 /// This macro creates a type name for an `Option` specific for the
