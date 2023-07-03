@@ -46,7 +46,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 /// Show a window with a 2-dimensional plot of the function
 /// `f`. `viewport` is the (initial) range of coordinates that is
 /// shown on the screen.
-int plot_float(Option(float)(*f)(float), Rect2 viewport) {
+int plot_floatfunction(Option(float)(*f)(float), Rect2 viewport) {
     const int width = 800;
     const int height = 600;
 

@@ -5,5 +5,5 @@ Option(float) inverse(float x) {
 }
 
 int main() {
-    plot_float(inverse, rect2(vec2(-2, -2), vec2(4, 4)));
+    plot_floatfunction(inverse, rect2(vec2(-2, -2), vec2(4, 4)));
 }
