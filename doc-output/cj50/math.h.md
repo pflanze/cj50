@@ -68,6 +68,22 @@ Vec3 vec3(float x, float y, float z)
 
 Construct a Vec3.
 
+## line2
+
+```C
+Line2 line2(Vec2 start, Vec2 extent)
+```
+
+Construct a Rect2
+
+## rect2
+
+```C
+Rect2 rect2(Vec2 start, Vec2 extent)
+```
+
+Construct a Rect2
+
 # Generic functions
 
 ## to_sdl

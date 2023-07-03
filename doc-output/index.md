@@ -4,26 +4,30 @@
 
 * [cj50.h](cj50.h.md)
 
-* [cjmath.h](cjmath.h.md)
+* [cj50/basic-util.h](cj50/basic-util.h.md)
 
-* [sdlutil.h](sdlutil.h.md)
+* [cj50/gen/Option.h](cj50/gen/Option.h.md)
 
-* [u8l/Option.h](u8l/Option.h.md)
+* [cj50/math.h](cj50/math.h.md)
 
-* [u8l/basic-util.h](u8l/basic-util.h.md)
+* [cj50/plot.h](cj50/plot.h.md)
+
+* [cj50/sdlutil.h](cj50/sdlutil.h.md)
+
+* [cj50/string.h](cj50/string.h.md)
 
 # Names
 
 ## Types
 
-* [Line2](cjmath.h.md#line2)
-* [Rect2](cjmath.h.md#rect2)
-* [Vec2](cjmath.h.md#vec2)
-* [Vec3](cjmath.h.md#vec3)
+* [Line2](cj50/math.h.md#line2)
+* [Rect2](cj50/math.h.md#rect2)
+* [Vec2](cj50/math.h.md#vec2)
+* [Vec3](cj50/math.h.md#vec3)
 
 ## Type aliases
 
-* [string](cj50.h.md#string)
+* [string](cj50/string.h.md#string)
 
 ## Normal functions
 
@@ -32,44 +36,47 @@
 * [get_nat](cj50.h.md#get_nat)
 * [get_nat0](cj50.h.md#get_nat0)
 * [get_string](cj50.h.md#get_string)
+* [line2](cj50/math.h.md#line2)
 * [new_chars](cj50.h.md#new_chars)
 * [new_floats](cj50.h.md#new_floats)
 * [new_ints](cj50.h.md#new_ints)
 * [new_string](cj50.h.md#new_string)
 * [new_strings](cj50.h.md#new_strings)
-* [vec2](cjmath.h.md#vec2)
-* [vec3](cjmath.h.md#vec3)
+* [plot_float](cj50/plot.h.md#plot_float)
+* [rect2](cj50/math.h.md#rect2)
+* [vec2](cj50/math.h.md#vec2)
+* [vec3](cj50/math.h.md#vec3)
 
 ## Generic functions
 
-* [add](cjmath.h.md#add)
-* [assert_sdl](sdlutil.h.md#assert_sdl)
+* [add](cj50/math.h.md#add)
+* [assert_sdl](cj50/sdlutil.h.md#assert_sdl)
 * [drop](cj50.h.md#drop)
 * [drop_array](cj50.h.md#drop_array)
 * [equal](cj50.h.md#equal)
-* [mul](cjmath.h.md#mul)
-* [neg](cjmath.h.md#neg)
+* [mul](cj50/math.h.md#mul)
+* [neg](cj50/math.h.md#neg)
 * [none](cj50.h.md#none)
 * [print](cj50.h.md#print)
 * [print_debug](cj50.h.md#print_debug)
 * [print_debug_array](cj50.h.md#print_debug_array)
 * [resize](cj50.h.md#resize)
 * [some](cj50.h.md#some)
-* [sub](cjmath.h.md#sub)
-* [to_sdl](cjmath.h.md#to_sdl)
+* [sub](cj50/math.h.md#sub)
+* [to_sdl](cj50/math.h.md#to_sdl)
 * [unwrap](cj50.h.md#unwrap)
 
 ## Macros
 
 * [D](cj50.h.md#d)
 * [DA](cj50.h.md#da)
-* [DIE](u8l/basic-util.h.md#die)
-* [DIE_](u8l/basic-util.h.md#die_)
-* [GENERATE_Option](u8l/Option.h.md#generate_option)
-* [NONE](u8l/Option.h.md#none)
-* [Option](u8l/Option.h.md#option)
-* [WARN](u8l/basic-util.h.md#warn)
-* [WARN_](u8l/basic-util.h.md#warn_)
+* [DIE](cj50/basic-util.h.md#die)
+* [DIE_](cj50/basic-util.h.md#die_)
+* [GENERATE_Option](cj50/gen/Option.h.md#generate_option)
+* [NONE](cj50/gen/Option.h.md#none)
+* [Option](cj50/gen/Option.h.md#option)
+* [WARN](cj50/basic-util.h.md#warn)
+* [WARN_](cj50/basic-util.h.md#warn_)
 
 <hr>
 <p>&nbsp;</p>
