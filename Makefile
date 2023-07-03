@@ -4,7 +4,6 @@ ASAN ?= -fsanitize=address
 CFLAGS=-fdiagnostics-color=always -Wall -Wextra -g3 $(ASAN) -fsanitize=undefined,float-divide-by-zero -fno-sanitize-recover -I$(HOME)/cdevelopment/cj50
 
 SDLFLAGS:=`sdl2-config --libs`
-#SDLFLAGS=-lSDL2
 
 COMPILER ?= clang
 CC=you_have_a_non_existing_dependency
