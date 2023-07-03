@@ -7,13 +7,13 @@ SDLFLAGS:=`sdl2-config --libs`
 #SDLFLAGS=-lSDL2
 
 COMPILER ?= clang
-CC=$(COMPILER)
+CC=you_have_a_non_existing_dependency
 
 %: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
-	$(CC) $(CFLAGS) $< $(SDLFLAGS) -o $@
+	$(COMPILER) $(CFLAGS) $< $(SDLFLAGS) -o $@
 
 %_opt: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
-	$(CC) -O2 $(CFLAGS) $< $(SDLFLAGS) -o $@
+	$(COMPILER) -O2 $(CFLAGS) $< $(SDLFLAGS) -o $@
 
 
 doc:
