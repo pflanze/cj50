@@ -472,9 +472,12 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , float: some_float                        \
         )(v)
 
-/// Returns the none variant of `Option(T)` for the given type `T`.
-#define none(T)                                         \
-    _Generic((T)                                        \
+/// Returns the none variant of `Option(T)` for the type of the given
+/// expression `e`, which is not used at runtime. It might be more
+/// intuitive to just use `none_T()` for the respective type name T,
+/// if possible.
+#define none(e)                                         \
+    _Generic((e)                                        \
              , string: none_string                      \
              , int: none_int                            \
              , float: none_float                        \
