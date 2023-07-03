@@ -530,7 +530,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 
 /// Frees the resources held by the given value (including resources
-/// held by contained values, recursively).
+/// held by contained values, recursively, unlike the `free` function).
 #define drop(v)                                        \
     _Generic((v)                                       \
              , char*: drop_string                      \
