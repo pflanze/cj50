@@ -16,7 +16,8 @@ finished) 2D graphics output. It follows a Rust-inspired programming
 style: `Option`, `unwrap`, `drop`, using type names with an upper-case
 initial for complex types. It provides generic functions (via C11
 `_Generic`) to avoid having to type out the fully named function
-specializations everywhere.
+specializations everywhere. The makefile compiles with sanitizers to
+catch undefined behaviour.
 
 The name is derived from [cs50.h](https://github.com/cs50/libcs50)
 which this library was originally inspired by.
