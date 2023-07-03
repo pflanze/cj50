@@ -43,8 +43,9 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 }
 
 
-/// Show a window with a 2-dimensional plot of the function
-/// `f`. `viewport` is the (initial) range of coordinates that is
+/// Show a window with a 2-dimensional plot of the function `f`, which
+/// expects a float and returns an optional float when
+/// possible. `viewport` is the (initial) range of coordinates that is
 /// shown on the screen.
 int plot_function_float(Option(float)(*f)(float), Rect2 viewport) {
     const int width = 800;
