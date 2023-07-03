@@ -16,6 +16,7 @@
 #include "cj50/math.h"
 #include "cj50/sdlutil.h"
 #include "cj50/basic-util.h"
+// #include "cj50/plot.h"  include it at the end to pass D
 #include "cj50/string.h"
 #include "cj50/int.h"
 #include "cj50/float.h"
@@ -526,3 +527,5 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 
 #undef RESRET
+
+#include "cj50/plot.h"
