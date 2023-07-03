@@ -9,5 +9,6 @@ git ls-files doc-output/ | while read mdfile; do
     htmlfile="$(dirname "$mdfile")/$hfile.html"
     pandoc -s --toc --number-sections --include-in-header=config/custom.html \
            --metadata title="cj50 documentation: $hfile" \
+           --lua-filter=config/links-to-html.lua \
            "$mdfile" -o "$htmlfile"
 done

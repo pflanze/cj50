@@ -2,72 +2,72 @@
 
 # Files
 
-* [cj50.h](cj50.h.html)
+* [cj50.h](cj50.h.md)
 
-* [cjmath.h](cjmath.h.html)
+* [cjmath.h](cjmath.h.md)
 
-* [sdlutil.h](sdlutil.h.html)
+* [sdlutil.h](sdlutil.h.md)
 
-* [u8l/Option.h](u8l/Option.h.html)
+* [u8l/Option.h](u8l/Option.h.md)
 
-* [u8l/basic-util.h](u8l/basic-util.h.html)
+* [u8l/basic-util.h](u8l/basic-util.h.md)
 
 # Names
 
 ## Types
 
-* [Line2](cjmath.h.html#line2)
-* [Rect2](cjmath.h.html#rect2)
-* [Vec2](cjmath.h.html#vec2)
-* [Vec3](cjmath.h.html#vec3)
+* [Line2](cjmath.h.md#line2)
+* [Rect2](cjmath.h.md#rect2)
+* [Vec2](cjmath.h.md#vec2)
+* [Vec3](cjmath.h.md#vec3)
 
 ## Type aliases
 
-* [string](cj50.h.html#string)
+* [string](cj50.h.md#string)
 
 ## Normal functions
 
-* [get_float](cj50.h.html#get_float)
-* [get_int](cj50.h.html#get_int)
-* [get_nat](cj50.h.html#get_nat)
-* [get_nat0](cj50.h.html#get_nat0)
-* [get_string](cj50.h.html#get_string)
-* [new_chars](cj50.h.html#new_chars)
-* [new_floats](cj50.h.html#new_floats)
-* [new_ints](cj50.h.html#new_ints)
-* [new_string](cj50.h.html#new_string)
-* [new_strings](cj50.h.html#new_strings)
-* [vec2](cjmath.h.html#vec2)
-* [vec3](cjmath.h.html#vec3)
+* [get_float](cj50.h.md#get_float)
+* [get_int](cj50.h.md#get_int)
+* [get_nat](cj50.h.md#get_nat)
+* [get_nat0](cj50.h.md#get_nat0)
+* [get_string](cj50.h.md#get_string)
+* [new_chars](cj50.h.md#new_chars)
+* [new_floats](cj50.h.md#new_floats)
+* [new_ints](cj50.h.md#new_ints)
+* [new_string](cj50.h.md#new_string)
+* [new_strings](cj50.h.md#new_strings)
+* [vec2](cjmath.h.md#vec2)
+* [vec3](cjmath.h.md#vec3)
 
 ## Generic functions
 
-* [add](cjmath.h.html#add)
-* [assert_sdl](sdlutil.h.html#assert_sdl)
-* [drop](cj50.h.html#drop)
-* [drop_array](cj50.h.html#drop_array)
-* [equal](cj50.h.html#equal)
-* [mul](cjmath.h.html#mul)
-* [neg](cjmath.h.html#neg)
-* [none](cj50.h.html#none)
-* [print](cj50.h.html#print)
-* [print_debug](cj50.h.html#print_debug)
-* [print_debug_array](cj50.h.html#print_debug_array)
-* [resize](cj50.h.html#resize)
-* [some](cj50.h.html#some)
-* [sub](cjmath.h.html#sub)
-* [to_sdl](cjmath.h.html#to_sdl)
-* [unwrap](cj50.h.html#unwrap)
+* [add](cjmath.h.md#add)
+* [assert_sdl](sdlutil.h.md#assert_sdl)
+* [drop](cj50.h.md#drop)
+* [drop_array](cj50.h.md#drop_array)
+* [equal](cj50.h.md#equal)
+* [mul](cjmath.h.md#mul)
+* [neg](cjmath.h.md#neg)
+* [none](cj50.h.md#none)
+* [print](cj50.h.md#print)
+* [print_debug](cj50.h.md#print_debug)
+* [print_debug_array](cj50.h.md#print_debug_array)
+* [resize](cj50.h.md#resize)
+* [some](cj50.h.md#some)
+* [sub](cjmath.h.md#sub)
+* [to_sdl](cjmath.h.md#to_sdl)
+* [unwrap](cj50.h.md#unwrap)
 
 ## Macros
 
-* [D](cj50.h.html#d)
-* [DA](cj50.h.html#da)
-* [DEFTYPE_Option](u8l/Option.h.html#deftype_option)
-* [DIE](u8l/basic-util.h.html#die)
-* [DIE_](u8l/basic-util.h.html#die_)
-* [NONE](u8l/Option.h.html#none)
-* [Option](u8l/Option.h.html#option)
-* [WARN](u8l/basic-util.h.html#warn)
-* [WARN_](u8l/basic-util.h.html#warn_)
+* [D](cj50.h.md#d)
+* [DA](cj50.h.md#da)
+* [DEFTYPE_Option](u8l/Option.h.md#deftype_option)
+* [DIE](u8l/basic-util.h.md#die)
+* [DIE_](u8l/basic-util.h.md#die_)
+* [NONE](u8l/Option.h.md#none)
+* [Option](u8l/Option.h.md#option)
+* [WARN](u8l/basic-util.h.md#warn)
+* [WARN_](u8l/basic-util.h.md#warn_)
 

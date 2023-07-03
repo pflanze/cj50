@@ -244,7 +244,7 @@ my @itemss = map { filedocs($_) } @headerfiles;
                 my $path = $item->headerpath;
                 $documented_headerfiles{$path}++;
                 my $id = lc($sym);
-                $doc .= "* [$sym]($path.html#$id)\n";
+                $doc .= "* [$sym]($path.md#$id)\n";
             }
             $doc .= "\n";
         }
@@ -259,7 +259,7 @@ my @itemss = map { filedocs($_) } @headerfiles;
 
     $doc .= "# Files\n\n";
     for my $path (sort keys %documented_headerfiles) {
-        $doc .= "* [$path]($path.html)\n\n";
+        $doc .= "* [$path]($path.md)\n\n";
     }
 
     $doc .= "# Names\n\n";
