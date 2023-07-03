@@ -18,8 +18,9 @@
 #include "cjmath.h"
 #include "sdlutil.h"
 #include "u8l/basic-util.h"
-#include "u8l/Option.h"
-
+#include "cj50/string.h"
+#include "cj50/int.h"
+#include "cj50/float.h"
 
 
 #define RESRET(e)                \
@@ -27,77 +28,6 @@
     if (res < 0) { return res; } \
     ret += res;
 
-
-int _print_debug_char(char c) {
-    if (c == '"') {
-        return printf("\\\"");
-    } else if (c == '\\') {
-        return printf("\\\\");
-    } else if (c == '\0') {
-        return printf("\\0");
-    } else if (c == '\n') {
-        return printf("\\n");
-    } else if (c == '\r') {
-        return printf("\\r");
-    } else if (c == '\t') {
-        return printf("\\t");
-    } else if (c == '\v') {
-        return printf("\\v");
-    } else if (c == '\f') {
-        return printf("\\f");
-    } else if (c == '\b') {
-        return printf("\\b");
-    } else if (c == '\a') {
-        return printf("\\a");
-    } else if (iscntrl(c)) {
-        return printf("\\%03o", c);
-    } else {
-        return fputc(c, stdout);
-    }
-}
-
-int print_debug_char(char c) {
-    int ret = 0;
-    int res;
-    RESRET(fputc('\'', stdout));
-    RESRET(_print_debug_char(c));
-    RESRET(fputc('\'', stdout));
-    return ret;
-}
-
-
-/// `string` is an array of `char`s. It always must have the special
-/// '\0' char in it somewhere, after the end of the text that is
-/// stored in the string, to signal the end of the text.
-typedef char* string;
-
-void drop_string(const string s) {
-    free(s);
-}
-
-// receive pointers to pointers just for standard in Option
-bool equal_string(const string *a, const string *b) {
-    return strcmp(*a, *b) == 0;
-}
-
-int print_string(const char* str) {
-    return printf("%s", str);
-}
-
-int print_debug_string(const char* str) {
-    int ret = 0;
-    int res;
-    RESRET(print_string("\""));
-    
-    while (*str) {
-        RESRET(_print_debug_char(*str));
-        str++;
-    }
-    RESRET(print_string("\""));
-    return ret;
-}
-
-GENERATE_Option(string);
 
 /// Read a string from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
@@ -134,21 +64,6 @@ Option(string) get_string() {
     }
 }
 
-
-static UNUSED
-bool equal_int(const int *a, const int *b) {
-    return *a == *b;
-}
-
-static UNUSED
-void drop_int(const int UNUSED a) {}
-
-static UNUSED
-int print_debug_int(int n) {
-    return printf("%i", n);
-}
-
-GENERATE_Option(int);
 
 /// Read an integer number from standard input, terminated by a
 /// newline. Returns none() on end of file (when ctl-d is pressed).
@@ -247,21 +162,6 @@ int print_nat0(int n) {
     }
 }
 
-
-static UNUSED
-void drop_float(float UNUSED x) { }
-
-static UNUSED
-bool equal_float(const float *a, const float *b) {
-    return *a == *b;
-}
-
-static UNUSED
-int print_debug_float(float x) {
-    return printf("%g", x);
-}
-
-GENERATE_Option(float);
 
 int print_float(float x) {
     return printf("%g", x);
