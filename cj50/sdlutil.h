@@ -4,7 +4,7 @@
 //! Utilities for working with the SDL2 library.
 
 #include <SDL2/SDL.h>
-#include "u8l/basic-util.h"
+#include <cj50/basic-util.h>
 
 int assert_sdl_int(int code) {
     if (code < 0) {

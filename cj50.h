@@ -15,9 +15,9 @@
 #include <math.h>
 #include <ctype.h>
 
-#include "cjmath.h"
-#include "sdlutil.h"
-#include "u8l/basic-util.h"
+#include "cj50/math.h"
+#include "cj50/sdlutil.h"
+#include "cj50/basic-util.h"
 #include "cj50/string.h"
 #include "cj50/int.h"
 #include "cj50/float.h"

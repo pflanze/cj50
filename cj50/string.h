@@ -1,8 +1,8 @@
 #ifndef CJ50_STRING_H_
 #define CJ50_STRING_H_
 
-#include "u8l/Option.h"
-#include "cj50/char.h"
+#include <cj50/gen/Option.h>
+#include <cj50/char.h>
 
 
 #define RESRET(e)                \
