@@ -20,7 +20,10 @@ doc:
 	bin/doc2html
 
 _gendoc:
+	rm -rf doc-output
+	mkdir doc-output
 	bin/gendoc
+	git add doc-output
 
 gendoc: _gendoc doc
 
