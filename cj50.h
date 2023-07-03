@@ -66,7 +66,9 @@ int print_debug_char(char c) {
 }
 
 
-/// `string` is an array of `char`s, ended by the special '\0' char.
+/// `string` is an array of `char`s. It always must have the special
+/// '\0' char in it somewhere, after the end of the text that is
+/// stored in the string, to signal the end of the text.
 typedef char* string;
 
 void drop_string(const string s) {
