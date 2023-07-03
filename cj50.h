@@ -467,17 +467,17 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// `Option(T)`, containing the value.
 #define some(v)                                         \
     _Generic((v)                                        \
-             , Option(string): some_Option_string       \
-             , Option(int): some_Option_int             \
-             , Option(float): some_Option_float         \
+             , string: some_string                      \
+             , int: some_int                            \
+             , float: some_float                        \
         )(v)
 
 /// Returns the none variant of `Option(T)` for the given type `T`.
 #define none(T)                                         \
     _Generic((T)                                        \
-             , Option(string): none_Option_string       \
-             , Option(int): none_Option_int             \
-             , Option(float): none_Option_float         \
+             , string: none_string                      \
+             , int: none_int                            \
+             , float: none_float                        \
         )()
 
 /// Takes an `Option(T)` for some type `T` and returns the contained
