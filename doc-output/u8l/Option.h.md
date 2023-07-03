@@ -29,7 +29,7 @@ Member functions for the following generic functions are also defined:
 : Returns an Option where the `is_some` field is set to `false`. The `value` field is not valid.
 
 `drop(opt)`
-: Calls `drop` on the value in the `value` field if `is_some` is `true`.
+: Calls `drop` on the value in the `value` field if `is_some` is `true`. CAUTION: only call drop when value has not been moved!
 
 `equal(opt1, opt2)`
 : Returns `true` if both arguments are structurally equivalent.
