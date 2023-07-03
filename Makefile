@@ -9,10 +9,10 @@ SDLFLAGS:=`sdl2-config --libs`
 COMPILER ?= clang
 CC=$(COMPILER)
 
-%: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/cjmath.h
+%: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
 	$(CC) $(CFLAGS) $< $(SDLFLAGS) -o $@
 
-%_opt: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/cjmath.h
+%_opt: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
 	$(CC) -O2 $(CFLAGS) $< $(SDLFLAGS) -o $@
 
 
