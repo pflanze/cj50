@@ -19,7 +19,7 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
         Rect2 r = { topleft, diagonal };
         /* D(r); */
         SDL_Rect sr = to_sdl(r);
-        assert_sdl(SDL_RenderDrawRect(renderer, &sr) < 0);
+        assert_sdl(SDL_RenderDrawRect(renderer, &sr));
     }
 
     return true;
