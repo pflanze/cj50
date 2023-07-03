@@ -1,16 +1,25 @@
 # CJ50 utility library
 
-Helper library for teaching programming using C.
+This is a helper library for teaching programming using C.
+
+The emphasis here is on teaching programming, not teaching C: C is
+being used because it is a relatively simple language that also allows
+talking about memory and bits, has an important place in history, and
+is practical for making simple video games (which young starting
+programmer doesn't fancy doing that?) that can also run in the browser
+via WASM.
+
+The aim of the library is hence to provide for an as nice
+introductionary programming experience as possible. It offers easy
+ways to get input from and write output to the terminal, and (not yet
+finished) 2D graphics output. It follows a Rust-inspired programming
+style: `Option`, `unwrap`, `drop`, using type names with an upper-case
+initial for complex types. It provides generic functions (via C11
+`_Generic`) to avoid having to type out the fully named function
+specializations everywhere.
 
 The name is derived from [cs50.h](https://github.com/cs50/libcs50)
 which this library was originally inspired by.
-
-The library provides easy ways to get input from and write output to
-the terminal, and (not yet finished) 2D graphics output. It follows a
-Rust-inspired programming style: `Option`, `unwrap`, `drop`, using
-type names with an upper-case initial for complex types. It provides
-generic functions (via C11 `_Generic`) to avoid having to type out the
-fully named function specializations everywhere.
 
 ## Usage
 
