@@ -474,11 +474,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 /// Returns the none variant of `Option(T)` for the given type `T`.
 #define none(T)                                         \
-    _Generic((T)                                        \
-             , string: none_string                      \
-             , int: none_int                            \
-             , float: none_float                        \
-        )()
+    XCAT(none_, T)()
 
 /// Takes an `Option(T)` for some type `T` and returns the contained
 /// value of type `T` if it is a `some`, but aborts if it is a `none`.
