@@ -2,10 +2,10 @@
 
 # Normal functions
 
-## plot_floatfunction
+## plot_function_float
 
 ```C
-int plot_floatfunction(Option(float)(*f)(float), Rect2 viewport)
+int plot_function_float(Option(float)(*f)(float), Rect2 viewport)
 ```
 
 Show a window with a 2-dimensional plot of the function

@@ -42,7 +42,7 @@
 * [new_ints](cj50.h.md#new_ints)
 * [new_string](cj50.h.md#new_string)
 * [new_strings](cj50.h.md#new_strings)
-* [plot_floatfunction](cj50/plot.h.md#plot_floatfunction)
+* [plot_function_float](cj50/plot.h.md#plot_function_float)
 * [rect2](cj50/math.h.md#rect2)
 * [vec2](cj50/math.h.md#vec2)
 * [vec3](cj50/math.h.md#vec3)
