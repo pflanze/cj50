@@ -128,9 +128,7 @@ typedef struct Color {
 } Color;
 
 /// Constructing a color
-Color color(unsigned char r,
-            unsigned char g,
-            unsigned char b) {
+Color color(unsigned char r, unsigned char g, unsigned char b) {
     return (Color) { r, g, b };
 }
 
