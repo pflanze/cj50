@@ -120,6 +120,20 @@ int print_debug_Rect2(Rect2 s) {
 }
 
 
+/// A standard 8-bit RGB color representation.
+typedef struct Color {
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+} Color;
+
+/// Constructing a color
+Color color(unsigned char r,
+            unsigned char g,
+            unsigned char b) {
+    return (Color) { r, g, b };
+}
+
 
 static UNUSED
 SDL_Rect to_sdl_Rect2(Rect2 r) {
