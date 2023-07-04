@@ -1,7 +1,7 @@
 #include <cj50.h>
 
 Option(float) inverse(float x) {
-    return (x == 0) ? none_float() : some(.01f / x);
+    return (x == 0) ? none(typeof(x)) : some(.01f / x);
 }
 
 int main() {
