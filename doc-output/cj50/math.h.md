@@ -50,6 +50,18 @@ typedef struct Rect2 {
 
 A rectangle. The opposite corner is at add(start, extent).
 
+## Color
+
+```C
+typedef struct Color {
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+} Color;
+```
+
+A standard 8-bit RGB color representation.
+
 # Normal functions
 
 ## vec2
@@ -83,6 +95,14 @@ Rect2 rect2(Vec2 start, Vec2 extent)
 ```
 
 Construct a Rect2
+
+## color
+
+```C
+Color color(unsigned char r, unsigned char g, unsigned char b)
+```
+
+Constructing a color
 
 # Generic functions
 

@@ -23,10 +23,10 @@ typedef struct Option(T) {
 Member functions for the following generic functions are also defined:
 
 `some(val)`
-: Returns an Option where the `is_some` field is set to `true` and the `value` field is set to `val`
+: Returns an Option where the `is_some` field is set to `true` and the `value` field is set to `val`.
 
 `none(T)`
-: Returns an Option where the `is_some` field is set to `false`. The `value` field is not valid.
+: Returns an Option where the `is_some` field is set to `false`. The `value` field is not valid. Also see `NONE` macro.
 
 `drop(opt)`
 : Calls `drop` on the value in the `value` field if `is_some` is `true`. CAUTION: only call drop when value has not been moved!

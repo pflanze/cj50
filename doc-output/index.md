@@ -20,6 +20,8 @@
 
 ## Types
 
+* [Color](cj50/math.h.md#color)
+* [ColorFunction_float](cj50/plot.h.md#colorfunction_float)
 * [Line2](cj50/math.h.md#line2)
 * [Rect2](cj50/math.h.md#rect2)
 * [Vec2](cj50/math.h.md#vec2)
@@ -31,6 +33,7 @@
 
 ## Normal functions
 
+* [color](cj50/math.h.md#color)
 * [get_float](cj50.h.md#get_float)
 * [get_int](cj50.h.md#get_int)
 * [get_nat](cj50.h.md#get_nat)
@@ -43,6 +46,7 @@
 * [new_string](cj50.h.md#new_string)
 * [new_strings](cj50.h.md#new_strings)
 * [plot_function_float](cj50/plot.h.md#plot_function_float)
+* [plot_functions_float](cj50/plot.h.md#plot_functions_float)
 * [rect2](cj50/math.h.md#rect2)
 * [vec2](cj50/math.h.md#vec2)
 * [vec3](cj50/math.h.md#vec3)
@@ -64,6 +68,7 @@
 * [some](cj50.h.md#some)
 * [sub](cj50/math.h.md#sub)
 * [to_sdl](cj50/math.h.md#to_sdl)
+* [type_name](cj50.h.md#type_name)
 * [unwrap](cj50.h.md#unwrap)
 
 ## Macros
