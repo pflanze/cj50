@@ -156,7 +156,7 @@ my $tripleslashline = qr{(?: /// [^\n]* \n )}xs;
 my $topslashline = qr{(?: //\! [^\n]* \n )}xs;
 my $emptyline = qr{(?: [ \t]* \n )}xs;
 my $docblock = qr{ (?: $emptyline $tripleslashline+  )+ }xs;
-my $topblock = qr{ (?: $emptyline $topslashline+ )+ }xs;
+my $topblock = qr{ (?: (?: ^ | $emptyline) $topslashline+ )+ }xs;
 
 sub filedocs ($path) {
     my $s = xgetfile_utf8 $path;
