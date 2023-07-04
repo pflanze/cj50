@@ -1,5 +1,10 @@
-//! This provides a collection of various useful utilities. It
-//! includes cjmath.h, sdlutil.h, and Option.h
+//! This is the main header file of the cj50 library collection.
+
+//! It includes the various other files (see the [documentation
+//! index](index.md)), and additionally provides the utilities
+//! described below. Besides additional functions and macros, it
+//! defines a number of generic functions that dispatch to functions
+//! from various other files.
 
 #pragma once
 
