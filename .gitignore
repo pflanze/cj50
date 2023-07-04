@@ -1,6 +1,7 @@
 examples/basics
 examples/graphics
 examples/plot
+examples/equal
 
 examples/*_opt
 *.html
