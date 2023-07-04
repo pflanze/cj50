@@ -274,14 +274,14 @@ float* new_floats(size_t len) {
 #define PRINT_ARRAY(print_typ, ary, len)        \
     int ret = 0;                                \
     int res;                                    \
-    RESRET(print_string("["));                  \
+    RESRET(print_string("{"));                  \
     for (size_t i = 0; i < len; i++) {          \
         if (i > 0) {                            \
             RESRET(print_string(", "));         \
         }                                       \
         RESRET(print_typ(ary[i]));              \
     }                                           \
-    RESRET(print_string("]"));                  \
+    RESRET(print_string("}"));                  \
     return ret;
 
 int print_debug_chars(const char* ary, size_t len) {
@@ -504,6 +504,22 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(float): unwrap_Option_float       \
         )(v)
 
+/// Returns the name of the type of `e` as a string constant.
+#define type_name(e)                                    \
+    _Generic((e)                                        \
+             , string: "string"                         \
+             , int: "int"                               \
+             , unsigned int: "uint"                     \
+             , float: "float"                           \
+             , double: "double"                         \
+             , Option(string): "Option(string)"         \
+             , Option(int): "Option(int)"               \
+             , Option(float): "Option(float)"           \
+             , Vec2: "Vec2"                             \
+             , Vec3: "Vec3"                             \
+             , Rect2: "Rect2"                           \
+             , Line2: "Line2"                           \
+        )
 
 /// `D`ebug: print the expression `expr` and the value it evaluated
 /// to, for debugging purposes (calls `print_debug` on the value).
@@ -514,12 +530,49 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         print("\n");                            \
     } while (0)
 
+
+bool is_alpha_underscore(char c) {
+    return isalpha(c) || c == '_';
+}
+
+bool is_symbol(const char* s) {
+    size_t len = strlen(s);
+    if ((len > 0) && is_alpha_underscore(s[0])) {
+        for (size_t i = 1; i < len; i++) {
+            char c = s[i];
+            if (! (is_alpha_underscore(c) || isdigit(c))) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        return false;
+    }
+}
+
+int print_var_or_expr(const char* s) {
+    int ret = 0;
+    int res;
+    if (is_symbol(s)) {
+        RESRET(print_string(s));
+    } else {
+        RESRET(print_string("("));
+        RESRET(print_string(s));
+        RESRET(print_string(")"));
+    }
+    return ret;
+}
+
 /// `D`ebug `A`rray: print the expression `expr` and the array value
 /// it evaluated to, for debugging purposes (calls
 /// `print_debug_array`). `len` must give the length of the array.
 #define DA(expr, len)                                   \
     do {                                                \
-        print("DEBUG: " #expr ", " #len " == ");        \
+        print("DEBUG: ");                               \
+        print(type_name((expr)[0]));                    \
+        print(" ");                                     \
+        print_var_or_expr(#expr);                       \
+        print("[" #len "] == ");                        \
         print_debug_array(expr, len);                   \
         print("\n");                                    \
     } while (0)
