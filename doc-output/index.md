@@ -8,6 +8,8 @@
 
 * [cj50/gen/Option.h](cj50/gen/Option.h.md)
 
+* [cj50/gen/equal_array.h](cj50/gen/equal_array.h.md)
+
 * [cj50/math.h](cj50/math.h.md)
 
 * [cj50/plot.h](cj50/plot.h.md)
@@ -58,6 +60,7 @@
 * [drop](cj50.h.md#drop)
 * [drop_array](cj50.h.md#drop_array)
 * [equal](cj50.h.md#equal)
+* [equal_array](cj50.h.md#equal_array)
 * [mul](cj50/math.h.md#mul)
 * [neg](cj50/math.h.md#neg)
 * [none](cj50.h.md#none)
@@ -77,6 +80,7 @@
 * [DA](cj50.h.md#da)
 * [DIE](cj50/basic-util.h.md#die)
 * [DIE_](cj50/basic-util.h.md#die_)
+* [GENERATE_equal_array](cj50/gen/equal_array.h.md#generate_equal_array)
 * [GENERATE_Option](cj50/gen/Option.h.md#generate_option)
 * [NONE](cj50/gen/Option.h.md#none)
 * [Option](cj50/gen/Option.h.md#option)
