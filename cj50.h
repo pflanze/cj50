@@ -19,6 +19,7 @@
 // #include "cj50/plot.h"  include it at the end to pass D
 #include "cj50/string.h"
 #include "cj50/int.h"
+#include "cj50/gen/equal_array.h"
 #include "cj50/float.h"
 
 
@@ -520,6 +521,23 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Rect2: "Rect2"                           \
              , Line2: "Line2"                           \
         )
+
+
+GENERATE_equal_array(char);
+GENERATE_equal_array(string);
+GENERATE_equal_array(int);
+GENERATE_equal_array(float);
+
+/// Returns true iff len1 == len2 and for every index,
+/// `equal(array1[i], array2[i])` is true.
+#define equal_array(array1, len1, array2, len2)         \
+    _Generic((array1)[0]                                \
+             , char: equal_array_char                   \
+             , string: equal_array_string               \
+             , int: equal_array_int                     \
+             , float: equal_array_float                 \
+        )((array1), (len1), (array2), (len2))
+
 
 /// `D`ebug: print the expression `expr` and the value it evaluated
 /// to, for debugging purposes (calls `print_debug` on the value).
