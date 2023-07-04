@@ -111,7 +111,7 @@
     static UNUSED                                               \
     int XCAT(print_debug_, Option(T))(const Option(T) *s) {     \
         if (! s->is_some) {                                     \
-            return printf("none()");                            \
+            return printf("none(" STR(T) ")");                  \
         } else {                                                \
             int ret = 0;                                        \
             int res;                                            \

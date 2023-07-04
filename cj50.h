@@ -29,7 +29,7 @@
 
 
 /// Read a string from standard input, terminated by a
-/// newline. Returns none() on end of file (when ctl-d is pressed).
+/// newline. Returns none on end of file (when ctl-d is pressed).
 Option(string) get_string() {
     while (true) {
 #define SIZ 100
@@ -65,7 +65,7 @@ Option(string) get_string() {
 
 
 /// Read an integer number from standard input, terminated by a
-/// newline. Returns none() on end of file (when ctl-d is pressed).
+/// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_int() {
     while (true) {
         Option(string) s = get_string();
@@ -113,7 +113,7 @@ int print_uint(uint n) {
 
 
 /// Read a natural number from standard input, terminated by a
-/// newline. Returns none() on end of file (when ctl-d is pressed).
+/// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_nat() {
     while (true) {
         Option(int) i = get_int();
@@ -138,7 +138,7 @@ int print_nat(int n) {
 
 
 /// Read a natural number or zero from standard input, terminated by a
-/// newline. Returns none() on end of file (when ctl-d is pressed).
+/// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_nat0() {
     while (true) {
         Option(int) i = get_int();
@@ -167,7 +167,7 @@ int print_float(float x) {
 }
 
 /// Read a floating point number or zero from standard input,
-/// terminated by a newline. Returns none() on end of file (when ctl-d is
+/// terminated by a newline. Returns none on end of file (when ctl-d is
 /// pressed).
 Option(float) get_float() {
     // largely copy-paste of get_int
@@ -474,8 +474,8 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         )(v)
 
 /// Returns the none variant of `Option(T)` for the given
-/// T. Equivalent to `none_T()` for the type name of T, but `none(T)`
-/// allows T to also be a `typeof` expression.
+/// T. Equivalent to `none_T()` using the type name of T, but
+/// `none(T)` allows T to also be a `typeof` expression.
 #define none(T)                                         \
     _Generic(*((T*)(NULL))                              \
              , string: none_string                      \
@@ -490,11 +490,11 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 ///
 /// ```C
 /// Option(string) maybe_name = get_string();
-/// // maybe_name can be a `none()` or e.g. `some("Alex")`.
+/// // maybe_name can be a `none(string)` or e.g. `some("Alex")`.
 /// string name = unwrap(maybe_name);
 /// // Now we're guaranteed to have a string in `name`, "Alex" if we
-/// // had the second case above. But if `maybe_name` was a `none()`
-/// // then the program has terminated instead.
+/// // had the second case above. But if `maybe_name` was a none
+/// // then the program has terminated by now instead.
 /// ```
 
 #define unwrap(v)                                       \
