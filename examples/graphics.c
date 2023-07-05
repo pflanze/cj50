@@ -1,7 +1,7 @@
 #include <cj50.h>
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int screen_width = 640;
+const int screen_height = 480;
 
 bool render_squares(SDL_Renderer* renderer, void* context) {
     float* t = context;
@@ -26,5 +26,5 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
 
 int main() {
     float t = 0;
-    graphics_render(SCREEN_WIDTH, SCREEN_HEIGHT, render_squares, &t);
+    graphics_render(screen_width, screen_height, render_squares, &t);
 }
