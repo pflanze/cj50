@@ -32,7 +32,8 @@ sub usage {
     print "$myname
 
   Extract API documentation, for all the items following a block of
-  lines starting with '///'.
+  lines starting with '///', as well as a single optional '//!' block
+  per file (usually near the top).
 
   ($email_full)
 ";
