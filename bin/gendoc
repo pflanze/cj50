@@ -72,7 +72,7 @@ my $std_prototypes = +{
 
 
 package GenericsMember {
-    use FP::Struct []=> qw(FP::Struct::Show);
+    use FP::Struct ["key"]=> qw(FP::Struct::Show);
     _END_
 }
 package GenericsOther {
@@ -92,6 +92,8 @@ package GenericsFunction {
 
 package DocEntry {
     use Chj::chompspace;
+    use FP::PureArray;
+    use FP::Div qw(min max);
     
     use FP::Struct [
         "headerpath",
@@ -161,13 +163,17 @@ package DocEntry {
             my @m = $term =~ m{,\s*([^:]+:.*?)\\\n}g;
             my @e = map {
                 my $s = $_;
-                $s=~ s/^.*?://s;
-                $s=~ s/^\s+//s;
-                $s=~ s/\s+\z//s;
-                $s=~ /_Generic/ ? () : do {
-                    my $class = $s=~ m{^[a-zA-Z_]\w*\z}s ?
-                        "GenericsFunction" : "GenericsOther";
-                    $class->new($s)
+                if ($s=~ s/^(.*?)://s) {
+                    my $key = chompspace($1);
+                    $s=~ s/^\s+//s;
+                    $s=~ s/\s+\z//s;
+                    $s=~ /_Generic/ ? () : do {
+                        my $class = $s=~ m{^[a-zA-Z_]\w*\z}s ?
+                            "GenericsFunction" : "GenericsOther";
+                        $class->new($key, $s)
+                    }
+                } else {
+                    ()
                 }
             } @m;
         } else {
@@ -182,17 +188,25 @@ package DocEntry {
         my @docs = map {
             "$_\n"
         } split /\n/, $self->docs;
-        my @generic_members = map {
-            $_->code($symbol_lookup)
-        } $self->generic_members;
+        my @generic_members = $self->generic_members;
         my $generic_members = @generic_members ? do {
+            my $m = purearray(@generic_members);
+            my $maxlen = $m->map(sub($o){length $o->key})->max;
+            my $lines = $m->map(
+                sub($o) {
+                    my $k = $o->key;
+                    my $sp = $maxlen - min($maxlen, length $k);
+                    $k.(" "x$sp)." : "
+                        .chompspace($o->code($symbol_lookup)).";\n"
+                });
+            #use FP::Repl; repl;
             join("",
                  (
                   "\n",
                   "Members:\n",
                   "\n",
                   "```C\n",
-                  (map { chompspace($_).";\n" } @generic_members),
+                  $lines->sort->values,
                   "```\n",
                  )
                 )
