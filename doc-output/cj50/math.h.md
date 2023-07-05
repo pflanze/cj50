@@ -114,6 +114,12 @@ to_sdl(v)
 
 Convert a value of a type from cjmath.h into a type from SDL.h
 
+Members:
+
+```C
+SDL_Rect to_sdl_Rect2(Rect2 r);
+```
+
 ## add
 
 ```C
@@ -122,6 +128,13 @@ add(a, b)
 
 Add two values, for which `+` is not defined, together, e.g. Vec2
 or Vec3. Both values need to be of the same type.
+
+Members:
+
+```C
+Vec2 add_Vec2(Vec2 a, Vec2 b);
+Vec3 add_Vec3(Vec3 a, Vec3 b);
+```
 
 ## sub
 
@@ -132,6 +145,13 @@ sub(a, b)
 Subtraction of two values for which `-` is not defined, e.g. Vec2
 or Vec3. Both values need to be of the same type.
 
+Members:
+
+```C
+Vec2 sub_Vec2(Vec2 a, Vec2 b);
+Vec3 sub_Vec3(Vec3 a, Vec3 b);
+```
+
 ## neg
 
 ```C
@@ -139,6 +159,13 @@ neg(a)
 ```
 
 Negate a value for which `-` is not defined, e.g. Vec2 or Vec3.
+
+Members:
+
+```C
+Vec2 neg_Vec2(Vec2 a);
+Vec3 neg_Vec3(Vec3 a);
+```
 
 ## mul
 
@@ -148,6 +175,17 @@ mul(a, b)
 
 Multiply two values for which `*` is not defined, e.g. Vec2 or
 Vec3. Both values need to be of the same type.
+
+Members:
+
+```C
+Vec2 mul_Vec2_float(Vec2 a, float b);
+Vec2 mul_Vec2_float(Vec2 a, float b);
+Vec2 mul_Vec2_float(Vec2 a, float b);
+Vec3 mul_Vec3_float(Vec3 a, float b);
+Vec3 mul_Vec3_float(Vec3 a, float b);
+Vec3 mul_Vec3_float(Vec3 a, float b);
+```
 
 <hr>
 <p>&nbsp;</p>

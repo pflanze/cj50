@@ -15,6 +15,12 @@ Assert that the return value of a function from the SDL2 libray
 does not represent an error. If it is an error, print the SDL
 error message and abort. Otherwise, return the value.
 
+Members:
+
+```C
+int assert_sdl_int(int code);
+```
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
