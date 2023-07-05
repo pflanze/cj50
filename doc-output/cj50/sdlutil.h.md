@@ -18,7 +18,7 @@ error message and abort. Otherwise, return the value.
 Members:
 
 ```C
-int assert_sdl_int(int code);
+int : int assert_sdl_int(int code);
 ```
 
 <hr>
