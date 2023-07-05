@@ -1,0 +1,14 @@
+What is your name? DEBUG: name == some("Alex")
+Hi Alex!
+What is your age? Your answer is negative. Please enter a natural number or zero: In a year, you will be 4!
+Width: Height: Area = -128.4
+How many tests have you done? What was your grade for test no. 1? What was your grade for test no. 2? What was your grade for test no. 3? average({44.3, 200, -32}) = 70.7667
+Do you want to (e)dit, (r)esize, (c)ontinue? To which length? average({44.3, 200, -32, 0}) = 53.075
+Do you want to (e)dit, (r)esize, (c)ontinue? Which test (1-based)? What grade? average({44.3, 200, -32, 70.7667}) = 70.7667
+Do you want to (e)dit, (r)esize, (c)ontinue? How many people do we have? What is the name of person no. 1? What is the name of person no. 2? Our people are:
+{"Motörhead garçon", " foo bar \" '\\n "}
+DEBUG: a == vec2(30, 44.3)
+DEBUG: b == vec2(-7.1, 10)
+DEBUG: c == vec2(22.9, 54.3)
+DEBUG: mul(c, 3) == vec2(68.7, 162.9)
+DEBUG: neg(c) == vec2(-22.9, -54.3)

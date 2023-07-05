@@ -26,3 +26,6 @@ _gendoc:
 
 gendoc: _gendoc doc
 
+test:
+	tests/run
+

@@ -1,0 +1,32 @@
+#!/usr/bin/env perl
+
+use strict;
+use utf8;
+use warnings;
+use warnings FATAL => 'uninitialized';
+
+sub DIE {
+    open my $out, ">", "/dev/tty" or die "/dev/tty: $!";
+    print $out @_, "\n" or die $!;
+    exit 1;
+}
+
+my $expected_exit_code_file = shift @ARGV;
+
+open my $in, "<", $expected_exit_code_file
+    or DIE "$expected_exit_code_file: $!";
+
+my $code = <$in>;
+chomp $code;
+
+close $in or die $!;
+
+system $ARGV[0], @ARGV;
+
+my $got = $?;
+
+if ($got == $code) {
+    exit 0;
+} else {
+    DIE "expected exit code $code, got $got"
+}

@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+# enable job control consistently, not just when there is a tty:
+set -m
+IFS=" "
+
+binaries=$(perl -we 'print map { s/\.c$//; "$_ " } @ARGV' examples/*.c)
+
+make $binaries
+
+out=$(mktemp)
+err=$(mktemp)
+
+for binary in $binaries; do
+    echo "Testing $binary:"
+    name=$(basename $binary)
+    for test in tests/$name/*; do
+        echo -n "  Test $test: "
+        bin/expect-exit $test/exit $binary < $test/in > "$out" 2> "$err"
+        diff -u $test/err "$err"
+        diff -u $test/out "$out"
+        echo "OK."
+    done
+done
