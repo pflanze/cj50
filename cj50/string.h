@@ -26,12 +26,12 @@ bool equal_string(const string *a, const string *b) {
     return strcmp(*a, *b) == 0;
 }
 
-int print_string(const char* str) {
+int print_string(const string str) {
     return printf("%s", str);
 }
 
 static UNUSED
-int print_debug_string(const char* str) {
+int print_debug_string(const string str) {
     int ret = 0;
     int res;
     RESRET(print_string("\""));
