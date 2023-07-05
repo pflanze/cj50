@@ -93,7 +93,6 @@ package GenericsFunction {
 package DocEntry {
     use Chj::chompspace;
     use FP::PureArray;
-    use FP::Div qw(min max);
     
     use FP::Struct [
         "headerpath",
@@ -195,7 +194,7 @@ package DocEntry {
             my $lines = $m->map(
                 sub($o) {
                     my $k = $o->key;
-                    my $sp = $maxlen - min($maxlen, length $k);
+                    my $sp = $maxlen - length $k;
                     $k.(" "x$sp)." : "
                         .chompspace($o->code($symbol_lookup)).";\n"
                 });
