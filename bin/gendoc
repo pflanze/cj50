@@ -276,7 +276,7 @@ sub filedocs ($path) {
                     \{                       # function
                   | \\ (?: \s* _Generic .*?[^\\]\n)?    # generic
                   | ;                        # ?
-                  | \n                       # struct definition, ?
+                  | (?= \n (?: /// | \# | [ \t]*\n ))
                )
            }xsg) {
         my $e = DocEntry->new( $path, $1, $2, $3 );

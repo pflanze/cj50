@@ -20,6 +20,7 @@ functions in the same plot via `plot_functions_float`.
 
 ```C
 int plot_functions_float(size_t num_fs, ColorFunction_float* fs,
+                         Rect2 viewport)
 ```
 
 Show a window with a 2-dimensional plot of the `num_fs` given

@@ -9,6 +9,9 @@ Utilities for working with the SDL2 library.
 
 ```C
 void graphics_render(int screen_width,
+                     int screen_height,
+                     bool (*renderframe)(SDL_Renderer*, void*),
+                     void* context)
 ```
 
 Open a window with the given window size, and call `renderframe`
