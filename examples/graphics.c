@@ -4,9 +4,9 @@ const int screen_width = 640;
 const int screen_height = 480;
 
 bool render_squares(SDL_Renderer* renderer, void* context) {
-    float* t = context;
+    float* t = context; // The time in seconds
 
-    *t += 0.01;
+    *t += 1./60.;
     float factor = sin(*t);
 
     assert_sdl(SDL_SetRenderDrawColor(renderer, 156,0,0, 128));
