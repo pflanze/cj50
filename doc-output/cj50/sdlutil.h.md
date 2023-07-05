@@ -8,8 +8,8 @@ Utilities for working with the SDL2 library.
 ## graphics_render
 
 ```C
-void graphics_render(int screen_width,
-                     int screen_height,
+void graphics_render(int window_width,
+                     int window_height,
                      bool (*renderframe)(SDL_Renderer*, void*),
                      void* context)
 ```

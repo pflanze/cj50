@@ -34,8 +34,8 @@ int assert_sdl_int(int code) {
 /// `renderframe` is called again 1/60 seconds later. If it returns
 /// `false`, the drawing stops and `graphics_render` returns.
 
-void graphics_render(int screen_width,
-                     int screen_height,
+void graphics_render(int window_width,
+                     int window_height,
                      bool (*renderframe)(SDL_Renderer*, void*),
                      void* context)
 {
@@ -47,8 +47,8 @@ void graphics_render(int screen_width,
         "SDL Tutorial",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        screen_width,
-        screen_height,
+        window_width,
+        window_height,
         SDL_WINDOW_SHOWN);
     if (!window) {
         DIE_("Window could not be created! SDL_Error: %s",
