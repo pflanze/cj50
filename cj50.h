@@ -97,8 +97,8 @@ Option(int) get_int() {
                 print_string("Your answer has invalid text after the number.");
             }
         } else {
-            printf("Your answer is not an integer number in range possible "
-                   "for the `long` type: %s.",
+            printf("Your answer is not an integer number in the range "
+                   "possible for the `long` type: %s.",
                    strerror(errno));
         }
         drop_Option_string(s);
