@@ -16,7 +16,7 @@
 typedef char* string;
 
 static UNUSED
-void drop_string(const string s) {
+void drop_string(string s) {
     free(s);
 }
 
@@ -26,12 +26,12 @@ bool equal_string(const string *a, const string *b) {
     return strcmp(*a, *b) == 0;
 }
 
-int print_string(const string str) {
+int print_string(string str) {
     return printf("%s", str);
 }
 
 static UNUSED
-int print_debug_string(const string str) {
+int print_debug_string(string str) {
     int ret = 0;
     int res;
     RESRET(print_string("\""));
