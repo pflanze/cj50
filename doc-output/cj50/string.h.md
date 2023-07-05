@@ -12,6 +12,15 @@ typedef char* string
 '\0' char in it somewhere, after the end of the text that is
 stored in the string, to signal the end of the text.
 
+## const_string
+
+```C
+typedef const char* const_string
+```
+
+`const_string` is exactly like `string`, but read only (this
+includes string literals like "Hello World").
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

@@ -31,6 +31,7 @@
 
 ## Type aliases
 
+* [const_string](cj50/string.h.md#const_string)
 * [string](cj50/string.h.md#string)
 
 ## Normal functions

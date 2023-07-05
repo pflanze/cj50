@@ -40,7 +40,7 @@ Member functions for the following generic functions are also defined:
 `print_debug(&opt)`
 : Print a programmer's view of the Option value, given by reference.
 
-`move_print_debug(opt)`
+`print_debug_move(opt)`
 : Print a programmer's view of the Option value, given by copy.
 
 
