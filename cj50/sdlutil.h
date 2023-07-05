@@ -24,6 +24,16 @@ int assert_sdl_int(int code) {
         )(v)
 
 
+/// Open a window with the given window size, and call `renderframe`
+/// about 60 times per second to draw a new image each
+/// time. `renderframe` is called with a `SDL_Renderer` that needs to
+/// be passed to the drawing functions like `set_draw_color`, and the
+/// `context` that is given to `graphics_render`; if you need to store
+/// variables between subsequent frames, this is where you can put
+/// them. If `renderframe` returns `true`, the image is drawn and
+/// `renderframe` is called again 1/60 seconds later. If it returns
+/// `false`, the drawing stops and `graphics_render` returns.
+
 void graphics_render(int screen_width,
                      int screen_height,
                      bool (*renderframe)(SDL_Renderer*, void*),
@@ -107,7 +117,7 @@ void graphics_render(int screen_width,
     SDL_Quit();
 }
 
-/// Set the drawing color that the SDL_Renderer should use for future
+/// Set the drawing color that the `SDL_Renderer` should use for future
 /// drawing.
 void set_draw_color(SDL_Renderer* renderer, Color color) {
     assert_sdl(SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b,
