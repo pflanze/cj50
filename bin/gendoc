@@ -20,11 +20,12 @@ BEGIN {
 }
 
 #use Chj::ruse;
-#use FP::Show; use FP::Repl; use FP::Repl::Trap;#
+use FP::Show; use FP::Repl; use FP::Repl::Trap;#
 use Getopt::Long;
 use Chj::IO::Command;
 use Chj::xperlfunc ":all";
 use Chj::xIOUtil "xputfile_utf8";
+use Chj::chompspace;
 
 sub usage {
     print STDERR map{"$_\n"} @_ if @_;
@@ -47,7 +48,51 @@ GetOptions("verbose"=> \$verbose,
 usage if @ARGV;
 
 
+sub source_prototypes($source, $symbol) {
+    $source=~ /
+        (?: ^ | ; | \} ) # last item
+        \s*
+        # \n  can't require that, it's not in generated code in -E output
+        (\w+ [^;{}]* \b \Q$symbol\E \s*\( [^;{}]* ) \{
+    /sgx
+}
+
+sub prototype_from_E_cleanup($s) {
+    $s=~ s/\bstatic\b(?:\s*UNUSED\b)?//s;
+    $s=~ s/\b__attribute__\s*\(\(.*?\)\)//s;
+    $s=~ s/ +/ /g;
+    $s=~ s/\b_Bool\b/bool/sg;
+    chompspace $s
+}
+
+my $std_prototypes = +{
+    putchar=> "int putchar(int c)",
+    free=> "void free(void *ptr)",
+};
+
+
+package GenericsMember {
+    use FP::Struct []=> qw(FP::Struct::Show);
+    _END_
+}
+package GenericsOther {
+    use FP::Struct ["expr"]=> qw(GenericsMember);
+    sub code($self, $symbol_lookup) { $self->expr }
+    _END_
+}
+package GenericsFunction {
+    use FP::Struct ["symbol"]=> qw(GenericsMember);
+    sub code($self, $symbol_lookup) {
+        my $symbol = $self->symbol;
+        $symbol_lookup->($symbol)
+    }
+    _END_
+}
+
+
 package DocEntry {
+    use Chj::chompspace;
+    
     use FP::Struct [
         "headerpath",
         "bare_docs",
@@ -109,22 +154,61 @@ package DocEntry {
             "1 Normal functions"
         }
     }
+
+    sub generic_members($self) {
+        my $term = $self->terminator;
+        if ($term=~ s/.*?_Generic//s) {
+            my @m = $term =~ m{,\s*([^:]+:.*?)\\\n}g;
+            my @e = map {
+                my $s = $_;
+                $s=~ s/^.*?://s;
+                $s=~ s/^\s+//s;
+                $s=~ s/\s+\z//s;
+                $s=~ /_Generic/ ? () : do {
+                    my $class = $s=~ m{^[a-zA-Z_]\w*\z}s ?
+                        "GenericsFunction" : "GenericsOther";
+                    $class->new($s)
+                }
+            } @m;
+        } else {
+            ()
+        }
+    }
     
-    sub markdown($self) {
+    sub markdown($self, $symbol_lookup) {
         my @code = map {
             "$_\n"
         } split /\n/, $self->prototype;
         my @docs = map {
             "$_\n"
         } split /\n/, $self->docs;
+        my @generic_members = map {
+            $_->code($symbol_lookup)
+        } $self->generic_members;
+        my $generic_members = @generic_members ? do {
+            join("",
+                 (
+                  "\n",
+                  "Members:\n",
+                  "\n",
+                  "```C\n",
+                  (map { chompspace($_).";\n" } @generic_members),
+                  "```\n",
+                 )
+                )
+        } : "";
+        
         join("",
-             "## " . $self->symbol . "\n",
-             "\n",
-             "```C\n",
-             @code,
-             "```\n",
-             "",
-             @docs)
+             (
+              "## " . $self->symbol . "\n",
+              "\n",
+              "```C\n",
+              @code,
+              "```\n",
+              "",
+              @docs,
+              $generic_members
+             ))
     }
     _END_
 }
@@ -176,7 +260,7 @@ sub filedocs ($path) {
                # terminator:
                (
                     \{                       # function
-                  | \\ (?: \s* _Generic)?    # generic
+                  | \\ (?: \s* _Generic .*?[^\\]\n)?    # generic
                   | ;                        # ?
                   | \n                       # struct definition, ?
                )
@@ -186,45 +270,52 @@ sub filedocs ($path) {
     }
     my ($maybe_topblock) = $s=~ m{ ($topblock) }xs;
 
-    my $doc = $DOCWARNING;
-    # $doc .= "# Documentation for $path\n\n";
+    my $genfile = sub($symbol_lookup) {
+        my $doc = $DOCWARNING;
+        # $doc .= "# Documentation for $path\n\n";
 
-    if (defined $maybe_topblock) {
-        my @lines = map {
-            s{^//\! ?}{};
-            s{\s+\z}{};
-            "$_\n"
-        } split /\n/, $maybe_topblock;
-        $doc .= join("", @lines)."\n";
-    }
-
-    for my $key (sort keys %items) {
-        my $items = $items{$key};
-        my $subsection = $key;
-        $subsection =~ s/^\d+ +//;
-        $doc .= "# $subsection\n\n";
-        for my $item (@$items) {
-            $doc .= $item->markdown."\n";
+        if (defined $maybe_topblock) {
+            my @lines = map {
+                s{^//\! ?}{};
+                s{\s+\z}{};
+                "$_\n"
+            } split /\n/, $maybe_topblock;
+            $doc .= join("", @lines)."\n";
         }
-    }
 
-    do_append_whitespace_footer(\$doc);
-    
-    my $outpath = output_path($path);
-    xmkdir_p dirname($outpath);
-    xputfile_utf8 $outpath, $doc;
+        for my $key (sort keys %items) {
+            my $items = $items{$key};
+            my $subsection = $key;
+            $subsection =~ s/^\d+ +//;
+            $doc .= "# $subsection\n\n";
+            for my $item (@$items) {
+                $doc .= $item->markdown($symbol_lookup)."\n";
+            }
+        }
 
-    \%items
+        do_append_whitespace_footer(\$doc);
+
+        my $outpath = output_path($path);
+        xmkdir_p dirname($outpath);
+        xputfile_utf8 $outpath, $doc;
+    };
+    (\%items, $genfile, $s)
 }
 
-my @itemss = map { filedocs($_) } @headerfiles;
+my @itemss = map { [ filedocs($_) ] } @headerfiles;
 
 {
     my %documented_headerfiles;
+    my @genfiles; # generators for a .h.md file each
+    my @s; # contents of a .h file each
     my $doc_Names = do {
         my $doc = ""; # part only
-        my %items; # across all pages
-        for my $items (@itemss) {
+        my %items; # across all pages, by kind
+        my %flatitems; # across all pages, directly
+        for my $items_genfile (@itemss) {
+            my ($items, $genfile, $s) = @$items_genfile;
+            push @genfiles, $genfile;
+            push @s, $s;
             # partial copy paste of this loop:
             for my $key (sort keys %$items) {
                 my $items = $items->{$key};
@@ -232,9 +323,48 @@ my @itemss = map { filedocs($_) } @headerfiles;
                     my $symbol = $item->symbol;
                     die "duplicate symbol" if exists $items{$key}{$symbol};
                     $items{$key}{$symbol} = $item;
+                    $flatitems{$symbol} = $item;
                 }
             }
         }
+        # Now %flatitems is filled and we can call the genfiles.  For
+        # general symbol->prototype resolution, we need the -E output,
+        # though (@s is not necessarily enough: `GENERATE_*`ed code
+        # would not be found via my regexes in it).
+        my $E = `clang -E -I. cj50.h`; $? == 0 or die "error";
+        $E =~ s/^#.*$//mg;
+        #use FP::Repl; repl;
+        my $symbol_lookup = sub ($symbol) {
+            if (defined (my $obj= $flatitems{$symbol})) {
+                $obj->prototype
+            } else {
+                $std_prototypes->{$symbol} // do {
+                    # need to go find it in the source code
+                    my @prototypes;
+                    for my $s (@s) {
+                        push @prototypes, source_prototypes($s, $symbol);
+                    }
+                    if (@prototypes == 1) {
+                        prototype_from_E_cleanup($prototypes[0])
+                    } elsif (@prototypes) {
+                        die "more than 1 match for symbol '$symbol'";
+                    } else {
+                        @prototypes = source_prototypes($E, $symbol);
+                        if (@prototypes == 1) {
+                            prototype_from_E_cleanup($prototypes[0])
+                        } elsif (@prototypes) {
+                            die "more than 1 match for symbol '$symbol'";
+                        } else {
+                            die "could not find symbol '$symbol'";
+                        }
+                    }
+                }
+            }
+        };
+        for my $genfile (@genfiles) {
+            $genfile->($symbol_lookup);
+        }
+        
         # even more copy paste:
         for my $key (sort keys %items) {
             my $items = $items{$key};
