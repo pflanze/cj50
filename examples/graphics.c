@@ -17,7 +17,6 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
     for (int i = 0; i < 70; i++) {
         Vec2 topleft = { 300 + i * factor * 4, i * 6 };
         Rect2 r = { topleft, diagonal };
-        /* D(r); */
         SDL_Rect sr = to_sdl(r);
         assert_sdl(SDL_RenderDrawRect(renderer, &sr));
     }
@@ -25,9 +24,7 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
     return true;
 }
 
-
-int main(/* int argc, char* args[] */) {
-    // XX vec2(SCREEN_WIDTH, SCREEN_HEIGHT)
+int main() {
     float t = 0;
     graphics_render(SCREEN_WIDTH, SCREEN_HEIGHT, render_squares, &t);
 }
