@@ -109,19 +109,19 @@ void graphics_render(int screen_width,
 
 /// Set the drawing color that the SDL_Renderer should use for future
 /// drawing.
-void renderer_set_draw_color(SDL_Renderer* renderer, Color color) {
+void set_draw_color(SDL_Renderer* renderer, Color color) {
     assert_sdl(SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b,
                                       128 /* what is this? */));
 }
 
 /// Clear the rendering area, i.e. fill it with the current drawing
 /// color.
-void renderer_clear(SDL_Renderer* renderer) {
+void clear(SDL_Renderer* renderer) {
     assert_sdl(SDL_RenderClear(renderer));
 }
 
 /// Draw the given rectangle with the current colors.
-void renderer_draw_rect(SDL_Renderer* renderer, Rect2 r) {
+void draw_rect(SDL_Renderer* renderer, Rect2 r) {
     SDL_Rect sr = to_sdl(r);
     assert_sdl(SDL_RenderDrawRect(renderer, &sr));
 }

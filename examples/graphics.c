@@ -9,15 +9,15 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
     *t += 1./60.;
     float factor = sin(*t);
 
-    renderer_set_draw_color(renderer, color(156, 0, 0));
-    renderer_clear(renderer);
-    renderer_set_draw_color(renderer, color(0, 156, 0));
+    set_draw_color(renderer, color(156, 0, 0));
+    clear(renderer);
+    set_draw_color(renderer, color(0, 156, 0));
 
     Vec2 diagonal = { 5, 5 };
     for (int i = 0; i < 70; i++) {
         Vec2 topleft = { 300 + i * factor * 4, i * 6 };
         Rect2 r = { topleft, diagonal };
-        renderer_draw_rect(renderer, r);
+        draw_rect(renderer, r);
     }
 
     return true;
