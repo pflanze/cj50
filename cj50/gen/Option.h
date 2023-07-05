@@ -42,7 +42,7 @@
 //! `print_debug(&opt)`
 //! : Print a programmer's view of the Option value, given by reference.
 //! 
-//! `move_print_debug(opt)`
+//! `print_debug_move(opt)`
 //! : Print a programmer's view of the Option value, given by copy.
 //! 
 
@@ -131,7 +131,7 @@
     /* This is a HACK to allow print_debug */                   \
     /* to accept arguments without & */                         \
     static UNUSED                                               \
-    int XCAT(move_print_debug_, Option(T))(const Option(T) s) { \
+    int XCAT(print_debug_move_, Option(T))(const Option(T) s) { \
         return XCAT(print_debug_, Option(T))(&s);               \
     }
 

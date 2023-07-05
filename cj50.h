@@ -347,9 +347,9 @@ int print_debug_floats(const float* ary, size_t len) {
              , float: print_float                             \
              , Vec2: print_debug_Vec2                         \
              , Vec3: print_debug_Vec3                         \
-             , Option(string): move_print_debug_Option_string \
-             , Option(int): move_print_debug_Option_int       \
-             , Option(float): move_print_debug_Option_float   \
+             , Option(string): print_debug_move_Option_string \
+             , Option(int): print_debug_move_Option_int       \
+             , Option(float): print_debug_move_Option_float   \
              , Option(string)*: print_debug_Option_string     \
              , Option(int)*: print_debug_Option_int           \
              , Option(float)*: print_debug_Option_float       \
