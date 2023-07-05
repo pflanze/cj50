@@ -3,14 +3,13 @@
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
-#ifndef RESULT_H_
-#define RESULT_H_
+#pragma once
 
 #include "String.h"
 #include "macro-util.h"
 
 
-#define Result_(T) XCAT(Result_,T)
+#define Result(T) XCAT(Result_,T)
 
 #define DEFTYPE_Result_(T)                                      \
     typedef struct {                                            \
@@ -19,10 +18,10 @@
             String err;                                         \
             T ok;                                               \
         };                                                      \
-    } Result_(T);                                               \
+    } Result(T);                                                \
                                                                 \
     static inline UNUSED                                        \
-    void XCAT(Result_(T),_drop)(const Result_(T) s) {           \
+    void XCAT(drop_, Result(T))(const Result(T) s) {            \
         if (s.is_err) {                                         \
             String_drop(s.err);                                 \
         }                                                       \
@@ -31,8 +30,8 @@
     }                                                           \
                                                                 \
     static UNUSED                                               \
-    bool XCAT(Result_(T),_equal)(const Result_(T) *a,           \
-                                 const Result_(T) *b) {         \
+    bool XCAT(equal_, Result(T))(const Result(T) *a,            \
+                                 const Result(T) *b) {          \
         return ((a->is_err == b->is_err) &&                     \
                 (a->is_err                                      \
                  ? String_equal(&a->err, &b->err)               \
@@ -170,4 +169,3 @@ So...:
 // XX Bummer.
 
 
-#endif /* RESULT_H_ */
