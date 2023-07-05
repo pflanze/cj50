@@ -36,12 +36,15 @@
 
 ## Normal functions
 
+* [clear](cj50/sdlutil.h.md#clear)
 * [color](cj50/math.h.md#color)
+* [draw_rect](cj50/sdlutil.h.md#draw_rect)
 * [get_float](cj50.h.md#get_float)
 * [get_int](cj50.h.md#get_int)
 * [get_nat](cj50.h.md#get_nat)
 * [get_nat0](cj50.h.md#get_nat0)
 * [get_string](cj50.h.md#get_string)
+* [graphics_render](cj50/sdlutil.h.md#graphics_render)
 * [line2](cj50/math.h.md#line2)
 * [new_chars](cj50.h.md#new_chars)
 * [new_floats](cj50.h.md#new_floats)
@@ -51,6 +54,7 @@
 * [plot_function_float](cj50/plot.h.md#plot_function_float)
 * [plot_functions_float](cj50/plot.h.md#plot_functions_float)
 * [rect2](cj50/math.h.md#rect2)
+* [set_draw_color](cj50/sdlutil.h.md#set_draw_color)
 * [vec2](cj50/math.h.md#vec2)
 * [vec3](cj50/math.h.md#vec3)
 

@@ -3,6 +3,50 @@
 
 Utilities for working with the SDL2 library.
 
+# Normal functions
+
+## graphics_render
+
+```C
+void graphics_render(int screen_width,
+```
+
+Open a window with the given window size, and call `renderframe`
+about 60 times per second to draw a new image each
+time. `renderframe` is called with a `SDL_Renderer` that needs to
+be passed to the drawing functions like `set_draw_color`, and the
+`context` that is given to `graphics_render`; if you need to store
+variables between subsequent frames, this is where you can put
+them. If `renderframe` returns `true`, the image is drawn and
+`renderframe` is called again 1/60 seconds later. If it returns
+`false`, the drawing stops and `graphics_render` returns.
+
+## set_draw_color
+
+```C
+void set_draw_color(SDL_Renderer* renderer, Color color)
+```
+
+Set the drawing color that the `SDL_Renderer` should use for future
+drawing.
+
+## clear
+
+```C
+void clear(SDL_Renderer* renderer)
+```
+
+Clear the rendering area, i.e. fill it with the current drawing
+color.
+
+## draw_rect
+
+```C
+void draw_rect(SDL_Renderer* renderer, Rect2 r)
+```
+
+Draw the given rectangle with the current colors.
+
 # Generic functions
 
 ## assert_sdl
