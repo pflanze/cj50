@@ -15,7 +15,7 @@ out=$(mktemp)
 err=$(mktemp)
 
 for binary in $binaries; do
-    echo "Testing $binary:"
+    echo "Testing $binary :"
     name=$(basename $binary _opt)
     for test in tests/$name/*; do
         echo -n "  Test $test: "
