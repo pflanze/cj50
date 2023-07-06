@@ -5,4 +5,5 @@ examples/equal
 examples/random
 
 examples/*_opt
+examples/*_max
 *.html
