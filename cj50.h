@@ -85,13 +85,13 @@ bool equal_ParseError(const ParseError* a, const ParseError* b) {
     return *a == *b;
 }
 
-const ParseError E_is_not_in_int_range = 500;
-const ParseError E_has_invalid_text_after_number = 501;
+const ParseError E_not_in_int_range = 500;
+const ParseError E_invalid_text_after_number = 501;
 
 const char* string_from_ParseError(ParseError e) {
-    if (e == E_is_not_in_int_range) {
+    if (e == E_not_in_int_range) {
         return "is not within the range of numbers of the `int` type";
-    } else if (e == E_has_invalid_text_after_number) {
+    } else if (e == E_invalid_text_after_number) {
         return "has invalid text after the number";
     } else if (e < 256) {
         return strerror(e); // XX combine with explanation (context) ?
@@ -110,11 +110,7 @@ int print_ParseError(ParseError e) {
 
 GENERATE_Result(int, ParseError);
 
-#define ParseResult(T) Result(T, ParseError)
-#define ok_ParseResult(v) ok_Result_int__ParseError(v)
-#define err_ParseResult(v) err_Result_int__ParseError(v)
-
-ParseResult(int) parse_int(string s) {
+Result(int, ParseError) parse_int(string s) {
     char *tail;
     errno = 0;
     long n = strtol(s, &tail, 10);
@@ -124,16 +120,16 @@ ParseResult(int) parse_int(string s) {
         }
         if (*tail == '\0') {
             if (n >= INT_MIN && n <= INT_MAX) {
-                return ok_ParseResult(n);
+                return Ok(int, ParseError)(n);
             } else {
-                return err_ParseResult(E_is_not_in_int_range);
+                return Err(int, ParseError)(E_not_in_int_range);
             }
         } else {
-            return err_ParseResult(E_has_invalid_text_after_number);
+            return Err(int, ParseError)(E_invalid_text_after_number);
         }
     } else {
-        // return err_ParseResult(E_is_not_in_int_range);
-        return err_ParseResult(errno);
+        // return err_ParseResult(E_not_in_int_range);
+        return Err(int, ParseError)(errno);
     }
 }
 
@@ -145,7 +141,7 @@ Option(int) get_int() {
         if (!s.is_some) {
             return none_int();
         }
-        ParseResult(int) r = parse_int(s.value);
+        Result(int, ParseError) r = parse_int(s.value);
         drop_Option_string(s);
         if (r.is_ok) {
             return some_int(r.ok);

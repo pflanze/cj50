@@ -85,3 +85,20 @@
         }                                                       \
     }                                                           \
 
+
+/// Returns the ok constructor for the given `T` and `E` types. Use like:
+
+/// ```C
+/// Ok(int, ParseError)(n)
+/// ```
+#define Ok(T, E)                                \
+    XCAT(ok_, Result(T, E))
+
+/// Returns the err constructor for the given `T` and `E` types. Use like:
+
+/// ```C
+/// Err(int, ParseError)(E_not_in_int_range)
+/// ```
+#define Err(T, E)                               \
+    XCAT(err_, Result(T, E))
+
