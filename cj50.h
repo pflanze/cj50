@@ -25,8 +25,13 @@
 #include "cj50/string.h"
 #include "cj50/int.h"
 #include "cj50/gen/equal_array.h"
+#include "cj50/gen/Result.h"
 #include "cj50/float.h"
 
+
+#define INIT_RESRET                             \
+    int ret = 0;                                \
+    int res;
 
 #define RESRET(e)                \
     res = (e);                   \
@@ -70,6 +75,67 @@ Option(string) get_string() {
 }
 
 
+
+// 1..255 is errno; 256..29999 is custom ones
+typedef uint16_t ParseError;
+
+static
+bool equal_ParseError(const ParseError* a, const ParseError* b) {
+    return *a == *b;
+}
+
+const ParseError E_is_not_in_int_range = 500;
+const ParseError E_has_invalid_text_after_number = 501;
+
+const char* string_from_ParseError(ParseError e) {
+    if (e == E_is_not_in_int_range) {
+        return "is not within the range of numbers of the `int` type";
+    } else if (e == E_has_invalid_text_after_number) {
+        return "has invalid text after the number";
+    } else if (e < 256) {
+        return strerror(e); // XX combine with explanation (context) ?
+    } else {
+        DIE("BUG: invalid ParseError value");
+    }
+}
+
+static UNUSED
+int print_ParseError(ParseError e) {
+    INIT_RESRET;
+    RESRET(print_string("parse error: "));
+    RESRET(print_string(string_from_ParseError(e)));
+    return ret;
+}
+
+GENERATE_Result(int, ParseError);
+
+#define ParseResult(T) Result(T, ParseError)
+#define ok_ParseResult(v) ok_Result_int__ParseError(v)
+#define err_ParseResult(v) err_Result_int__ParseError(v)
+
+ParseResult(int) parse_int(string s) {
+    char *tail;
+    errno = 0;
+    long n = strtol(s, &tail, 10);
+    if (errno == 0) {
+        while (*tail == ' ') {
+            tail++;
+        }
+        if (*tail == '\0') {
+            if (n >= INT_MIN && n <= INT_MAX) {
+                return ok_ParseResult(n);
+            } else {
+                return err_ParseResult(E_is_not_in_int_range);
+            }
+        } else {
+            return err_ParseResult(E_has_invalid_text_after_number);
+        }
+    } else {
+        // return err_ParseResult(E_is_not_in_int_range);
+        return err_ParseResult(errno);
+    }
+}
+
 /// Read an integer number from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_int() {
@@ -78,31 +144,14 @@ Option(int) get_int() {
         if (!s.is_some) {
             return none_int();
         }
-        char *tail;
-        errno = 0;
-        long n = strtol(s.value, &tail, 10);
-        if (errno == 0) {
-            while (*tail == ' ') {
-                tail++;
-            }
-            if (*tail == '\0') {
-                if (n >= INT_MIN && n <= INT_MAX) {
-                    drop_Option_string(s);
-                    return some_int(n);
-                } else {
-                    print_string("Your answer is not within the range of "
-                                 "numbers of the `int` type.");
-                }
-            } else {
-                print_string("Your answer has invalid text after the number.");
-            }
-        } else {
-            printf("Your answer is not an integer number in the range "
-                   "possible for the `long` type: %s.",
-                   strerror(errno));
-        }
+        ParseResult(int) r = parse_int(s.value);
         drop_Option_string(s);
-        print_string(" Please enter an integer number: ");
+        if (r.is_ok) {
+            return some_int(r.ok);
+        }
+        print_string("Your answer ");
+        print_string(string_from_ParseError(r.err)); // XX yes strerror won't match
+        print_string(". Please enter an integer number: ");
     }
 }
 
