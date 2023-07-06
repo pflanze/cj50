@@ -14,6 +14,9 @@ CC=you_have_a_non_existing_dependency
 %_opt: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
 	$(COMPILER) -O2 $(CFLAGS) $< $(SDLFLAGS) -o $@
 
+default:
+	@echo "Please specify the make target"
+	@false
 
 doc:
 	bin/doc2html
