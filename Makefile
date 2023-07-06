@@ -15,8 +15,11 @@ CC=you_have_a_non_existing_dependency
 	$(COMPILER) -O2 $(CFLAGS) $< $(SDLFLAGS) -o $@
 
 default:
-	@echo "Please specify the make target"
+	@echo "Please specify the make target, or 'make auto' to watch."
 	@false
+
+auto:
+	$(HOME)/cdevelopment/cj50/bin/auto-make
 
 doc:
 	bin/doc2html
