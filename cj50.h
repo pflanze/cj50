@@ -410,6 +410,8 @@ int print_debug_floats(const float* ary, size_t len) {
              , Option(float)*: print_debug_Option_float       \
              , Line2: print_debug_Line2                       \
              , Rect2: print_debug_Rect2                       \
+             , Result(int, ParseError)*: print_debug_Result_int__ParseError \
+             , Result(int, ParseError): print_debug_move_Result_int__ParseError \
         )(v)
 
 
@@ -518,11 +520,12 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 /// Takes two values of the same type and returns a `bool`. Returns
 /// `true` if `a` and `b` are structurally equivalent.
-#define equal(a, b)                                     \
-    _Generic((v)                                        \
-             , Option(string): equal_Option_string      \
-             , Option(int): equal_Option_int            \
-             , Option(float): equal_Option_float        \
+#define equal(a, b)                                                     \
+    _Generic((v)                                                        \
+             , Option(string)*: equal_Option_string                     \
+             , Option(int)*: equal_Option_int                           \
+             , Option(float)*: equal_Option_float                       \
+             , Result(int, ParseError)*: equal_Result_int__ParseError   \
         )((a), (b))
 
 /// Takes a value of some type `T` and returns a `some` variant of
@@ -544,8 +547,9 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , float: none_float                        \
         )()
 
-/// Takes an `Option(T)` for some type `T` and returns the contained
-/// value of type `T` if it is a `some`, but aborts if it is a `none`.
+/// Takes a wrapper for some type `T` (like `Option(T)`, or `Result(T,
+/// E)`) and returns the contained value of type `T` if possible, or
+/// aborts if not possible.
 
 /// Example:
 ///
@@ -563,6 +567,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(string): unwrap_Option_string     \
              , Option(int): unwrap_Option_int           \
              , Option(float): unwrap_Option_float       \
+             , Result(int, ParseError): unwrap_Result_int__ParseError   \
         )(v)
 
 /// Returns the name of the type of `e` as a string constant.
@@ -580,6 +585,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Vec3: "Vec3"                             \
              , Rect2: "Rect2"                           \
              , Line2: "Line2"                           \
+             , Result(int, ParseError): "Result(int, ParseError)"       \
         )
 
 
@@ -597,6 +603,11 @@ GENERATE_equal_array(float);
              , int: equal_array_int                     \
              , float: equal_array_float                 \
         )((array1), (len1), (array2), (len2))
+
+
+// These are documented in Result.h -- removed now
+// #define ok(val, E) ...
+// #define err(val, E) ...
 
 
 /// `D`ebug: print the expression `expr` and the value it evaluated

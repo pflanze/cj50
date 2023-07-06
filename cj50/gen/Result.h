@@ -21,12 +21,6 @@
 
  //! Member functions for the following generic functions are also defined:
 
-//! `ok(val, E)`
-//! : Returns a Result where the `is_ok` field is set to `true` and the `ok` field is set to `val`.
-
-//! `err(T, e)`
-//! : Returns a Result where the `is_ok` field is set to `false` and the `err` field is set to `e`.
-
 //! `equal(res1, res2)`
 //! : Returns `true` if both arguments are structurally equivalent.
 
@@ -38,6 +32,16 @@
 
 //! `print_debug_move(opt)`
 //! : Print a programmer's view of the Option value, given by copy.
+
+/* future?:
+
+! `ok(val, E)`
+! : Returns a Result where the `is_ok` field is set to `true` and the `ok` field is set to `val`.
+
+! `err(T, e)`
+! : Returns a Result where the `is_ok` field is set to `false` and the `err` field is set to `e`.
+
+*/
 
 
 #pragma once
