@@ -76,6 +76,11 @@ Option(string) get_string() {
 }
 
 
+static
+int print_int(int n) {
+    return printf("%i", n);
+}
+
 
 // 1..255 is errno; 256..29999 is custom ones
 typedef uint16_t ParseError;
@@ -83,6 +88,11 @@ typedef uint16_t ParseError;
 static
 bool equal_ParseError(const ParseError* a, const ParseError* b) {
     return *a == *b;
+}
+
+static
+int print_debug_ParseError(const ParseError v) {
+    return print_int(v);
 }
 
 const ParseError E_not_in_int_range = 500;
@@ -153,10 +163,6 @@ Option(int) get_int() {
         print_string(string_from_ParseError(r.err)); // XX yes strerror won't match
         print_string(". Please enter an integer number: ");
     }
-}
-
-int print_int(int n) {
-    return printf("%i", n);
 }
 
 // Don't use uint willy-nilly, UBSan will not catch overflows!
