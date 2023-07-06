@@ -1,0 +1,102 @@
+#!/usr/bin/env perl
+
+my $copyright= <<'COPYRIGHT';
+# Copyright 2023 by Christian Jaeger <ch@christianjaeger.ch>
+# Published under the same terms as perl itself
+COPYRIGHT
+
+use strict;
+use utf8;
+use warnings;
+use warnings FATAL => 'uninitialized';
+use experimental 'signatures';
+
+my ($email_full)= $copyright=~ / by ([^\n]*)/s;
+
+my ($mydir, $myname);
+BEGIN {
+    $0=~ /(.*?)([^\/]+)\z/s or die "?";
+    ($mydir, $myname)=($1,$2);
+}
+
+use Cwd 'abs_path';
+use Digest::MD5 'md5_hex';
+use Fcntl qw( LOCK_EX );
+use POSIX qw(setsid dup2);
+use Time::HiRes qw(time sleep);
+
+#use FP::Show; use FP::Repl; use FP::Repl::Trap; #
+
+my $c_file_dir = $ENV{BASEDIR} // die "missing BASEDIR env setting";
+
+my $c_file_dir_abs = abs_path $c_file_dir;
+
+my $state_dir = "$ENV{HOME}/.auto-make";
+mkdir $state_dir, 0700;
+
+my $state_file = $state_dir . "/" . md5_hex($c_file_dir_abs);
+
+open my $stateout, ">>", $state_file or die $!;
+open my $statein, "<", $state_file or die $!;
+
+sub close_state_fh() {
+    close $statein or die $!;
+    close $stateout or die $!;
+}
+
+flock $stateout, LOCK_EX or die "cannot flock: $!";
+
+my $oldpid = <$statein>;
+my $oldt = <$statein>;
+
+if (defined $oldt) {
+    chomp $oldt;
+    chomp $oldpid;
+    my $d = time - $oldt;
+    if ($d < 0.5) {
+        # ignore followup event(s)
+        exit 0;
+    }
+    kill '-INT', $oldpid;
+    kill '-HUP', $oldpid;
+    sleep 0.1;
+    kill '-KILL', $oldpid;
+}
+
+setsid() or die "setsid: $!";
+
+truncate $stateout, 0 or die "truncate: $!";
+
+my ($less_r, $less_w);
+pipe($less_r, $less_w) or die "pipe: $!";
+
+my $lesspid = fork // die "fork: $!";
+if (! $lesspid) {
+    close_state_fh();
+    close $less_w or die $!;
+    dup2 fileno($less_r), 0 or die "dup2 0: $!";
+    close $less_r or die $!;
+    exec "less";
+    exit 127;
+}
+close $less_r or die $!;
+
+my $makepid = fork // die "fork: $!";
+if (! $makepid) {
+    close_state_fh();
+    dup2 fileno($less_w), 1 or die "dup2 1: $!";
+    dup2 fileno($less_w), 2 or die "dup2 2: $!";
+    close $less_w or die $!;
+    exec "make", map { s/\.c$//; $_ } @ARGV;
+    exit 127;
+}
+close $less_w or die $!;
+
+sleep 0.5;
+
+{
+    my $t = time;
+    print $stateout "$$\n$t\n" or die "print: $!";
+}
+close $stateout or die "close: $!";
+

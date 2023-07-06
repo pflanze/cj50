@@ -1,0 +1,72 @@
+#!/usr/bin/env perl
+
+my $copyright= <<'COPYRIGHT';
+# Copyright 2023 by Christian Jaeger <ch@christianjaeger.ch>
+# Published under the same terms as perl itself
+COPYRIGHT
+
+use strict;
+use utf8;
+use warnings;
+use warnings FATAL => 'uninitialized';
+use experimental 'signatures';
+
+my ($email_full)= $copyright=~ / by ([^\n]*)/s;
+
+my ($mydir, $myname);
+BEGIN {
+    $0=~ /(.*?)([^\/]+)\z/s or die "?";
+    ($mydir, $myname)=($1,$2);
+}
+
+use Getopt::Long;
+#use Chj::ruse;
+#use Chj::Backtrace; 
+#use FP::Show; use FP::Repl; use FP::Repl::Trap; #
+
+my @watchdirs = (
+    ".",
+    grep {
+        ! /^PATCHES/
+    }
+    (
+     glob("*/"),
+     glob("*/*/"),
+    )
+    );
+
+sub usage {
+    print STDERR map{"$_\n"} @_ if @_;
+    my $dirs = join("\n    ", @watchdirs);
+    print "$myname [additional dirs to watch]
+
+  Watch the following directories (subdirectories in current directory
+  that don't start with a dot, do not start with PATCHES, up to 2
+  levels deep) plus the additional ones you provide for .c files,
+  whenever these change, run make with the path of the file that
+  changed minus the suffix, piping the output to less. Continues to
+  watch while less is open, and if a file changes again, kills the old
+  less instance and compilation and reopens with the new make output.
+
+    $dirs
+
+  ($email_full)
+";
+exit (@_ ? 1 : 0);
+}
+
+our $verbose=0;
+#our $opt_dry;
+GetOptions("verbose"=> \$verbose,
+	   "help"=> sub{usage},
+	   #"dry-run"=> \$opt_dry,
+	   ) or exit 1;
+
+
+$ENV{BASEDIR} = "."; # communicate to _auto-make-handler
+
+exec "watchfile-run",
+    "$mydir/_auto-make-handler",
+    '\.c$',
+    @watchdirs;
+exit 127;
