@@ -27,6 +27,7 @@
 #include "cj50/gen/equal_array.h"
 #include "cj50/gen/Result.h"
 #include "cj50/float.h"
+#include "cj50/random.h"
 
 
 #define INIT_RESRET                             \
