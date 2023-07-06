@@ -3,11 +3,11 @@
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
-//! A Result is a value that can represent success with a value of one
-//! type, `T`, or an error with an error value of another type,
-//! `E`. It has a field `is_ok` that is `true` if the Result
-//! represents success, in which case the field `ok` is valid,
-//! otherwise the field `err` is valid.
+//! A Result is a value that has two variants and can represent either
+//! success with a value of one type, `T`, or an error with an error
+//! value of another type, `E`. It has a field `is_ok` that is `true`
+//! if the Result represents success, in which case the field `ok` is
+//! valid, otherwise the field `err` is valid.
 
 //! ```C
 //! typedef struct Result(T, E) {
@@ -126,18 +126,18 @@
 
 
 
-/// Returns the ok constructor for the given `T` and `E` types. Use like:
+/// Returns the constructor function for the `ok` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
 
 /// ```C
-/// Ok(int, ParseError)(n)
+/// Ok(int, string)(42)
 /// ```
 #define Ok(T, E)                                \
     XCAT(ok_, Result(T, E))
 
-/// Returns the err constructor for the given `T` and `E` types. Use like:
+/// Returns the constructor function for the `err` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
 
 /// ```C
-/// Err(int, ParseError)(E_not_in_int_range)
+/// Err(int, string)("the input does not contain a number")
 /// ```
 #define Err(T, E)                               \
     XCAT(err_, Result(T, E))
