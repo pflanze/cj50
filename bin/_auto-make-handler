@@ -90,8 +90,14 @@ if (! $makepid) {
     dup2 fileno($less_w), 1 or die "dup2 1: $!";
     dup2 fileno($less_w), 2 or die "dup2 2: $!";
     close $less_w or die $!;
-    exec "make", map { s/\.c$//; $_ } @ARGV;
-    exit 127;
+    system {"make"} "make", map { s/\.c$//; $_ } @ARGV;
+    my $code = $?;
+    if ($code == 0) {
+        print "\033[01;42mOK\033[00m"
+    } else {
+        print "\033[01;41mError\033[00m";
+    }
+    exit 0;
 }
 close $less_w or die $!;
 
