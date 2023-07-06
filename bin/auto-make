@@ -34,10 +34,10 @@ my @watchdirs = (
      glob("*/*/"),
     )
     );
+my $dirs = join("\n    ", @watchdirs);
 
 sub usage {
     print STDERR map{"$_\n"} @_ if @_;
-    my $dirs = join("\n    ", @watchdirs);
     print "$myname [additional dirs to watch]
 
   Watch the following directories (subdirectories in current directory
@@ -64,6 +64,9 @@ GetOptions("verbose"=> \$verbose,
 
 
 $ENV{BASEDIR} = "."; # communicate to _auto-make-handler
+
+print "Watching for changing *.c files in any of the following directories:\n\n";
+print "    $dirs\n\n";
 
 exec "watchfile-run",
     "$mydir/_auto-make-handler",
