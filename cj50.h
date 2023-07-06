@@ -82,7 +82,17 @@ int print_int(int n) {
 }
 
 
-// 1..255 is errno; 256..29999 is custom ones
+/// Values of this type (a number) describe the reason why a string
+/// does not contain text that properly represents a value that the
+/// used parse function should return.
+
+/// Currently, numbers in the range 1..255 represent errors defined by
+/// the operating system (errno), numbers in the range 500..29999 are
+/// specific to cj50.h. But do *not* rely on any details of this type,
+/// they may change, values of this type should just be passed to one
+/// of the functions that accept it (`string_from_ParseError` and
+/// `print_ParseError`).
+
 typedef uint16_t ParseError;
 
 static
@@ -170,7 +180,20 @@ Option(int) get_int() {
     }
 }
 
-// Don't use uint willy-nilly, UBSan will not catch overflows!
+
+/// An integer number type that cannot represent negative numbers, but
+/// instead has a little more room in the positive number range than
+/// `int` (0 .. `UINT_MAX`).
+
+/// CAUTION: arithmetic with numbers of this type does wrap around if
+/// the result of the arithmetic operation is larger than the largest
+/// number that can be represented with this type, or smaller than
+/// 0. This is unlike arithmetic with `int`, where such overflows are
+/// an error and (with the compiler options that we use) abort the
+/// program. So it is best to avoid `uint` and always use `int`
+/// instead, except when using functions from libraries or the
+/// operating system that use this type.
+
 typedef unsigned int uint;
 
 int print_uint(uint n) {
