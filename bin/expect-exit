@@ -11,7 +11,8 @@ sub DIE {
     exit 1;
 }
 
-my $expected_exit_code_file = shift @ARGV;
+@ARGV == 3 or DIE "need 3 arguments, got ".@ARGV;
+my ($expected_exit_code_file, $args_file, $binary_file) = @ARGV;
 
 open my $in, "<", $expected_exit_code_file
     or DIE "$expected_exit_code_file: $!";
@@ -19,9 +20,15 @@ open my $in, "<", $expected_exit_code_file
 my $code = <$in>;
 chomp $code;
 
-close $in or die $!;
+close $in or DIE $!;
 
-system $ARGV[0], @ARGV;
+
+open my $args, "<", $args_file
+    or DIE "$args_file: $!";
+my @args = <$args>; chomp @args;
+close $args or DIE $!;
+
+system $binary_file ($binary_file, @args);
 
 my $got = $?;
 
