@@ -5,6 +5,7 @@ int main(int argc, string* argv) {
         DIE("usage: random range");
     }
     Result(int, ParseError) range = parse_int(argv[1]);
+    D(range);
     if (! range.is_ok) {
         DIE_("argument 1 %s", string_from_ParseError(range.err));
     }
