@@ -79,7 +79,7 @@ if (! $lesspid) {
     close $less_w or die $!;
     dup2 fileno($less_r), 0 or die "dup2 0: $!";
     close $less_r or die $!;
-    exec "less";
+    exec "less", "-R";
     exit 127;
 }
 close $less_r or die $!;
