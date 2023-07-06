@@ -63,6 +63,9 @@ if (defined $oldt) {
     kill '-KILL', $oldpid;
 }
 
+# Clear the screen to have stable output
+system "clear";
+
 setsid() or die "setsid: $!";
 
 truncate $stateout, 0 or die "truncate: $!";
