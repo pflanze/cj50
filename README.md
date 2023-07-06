@@ -46,6 +46,8 @@ For ease of use and updating, the [Makefile](Makefile) can be used to build both
     make myown
     ./myown
 
+If you want to use `make auto` (which runs `bin/auto-make`), you need to install [chj-scripts](https://github.com/pflanze/chj-bin.git).
+
 ## Documentation
 
 The library files contain embedded documentation, which can be
