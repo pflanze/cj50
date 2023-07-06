@@ -34,13 +34,20 @@
 /// Print a message to standard error, then abort. Does not take
 /// values to embed in `msg`.
 #define DIE(msg)                                                \
-    do { fprintf(stderr, "%s\n", msg); abort(); } while(0)
+    do {                                                        \
+        fprintf(stderr, "%s\n", msg);                           \
+        fflush(stderr);                                         \
+        abort();                                                \
+    } while(0)
 
 /// Print a message to standard error, then abort. `msg` is a format
 /// string, the values to embed are expected afterwards.
-#define DIE_(msg, ...)                                                  \
-    do { fprintf(stderr, msg "\n", __VA_ARGS__); abort(); } while(0)
-
+#define DIE_(msg, ...)                                          \
+    do {                                                        \
+        fprintf(stderr, msg "\n", __VA_ARGS__);                 \
+        fflush(stderr);                                         \
+        abort();                                                \
+    } while(0)
 
 #define FOR_RANGE(T, var, from, to)                     \
     __typeof__ (to) __for_range_to = (to);              \
