@@ -8,11 +8,15 @@
 
 * [cj50/gen/Option.h](cj50/gen/Option.h.md)
 
+* [cj50/gen/Result.h](cj50/gen/Result.h.md)
+
 * [cj50/gen/equal_array.h](cj50/gen/equal_array.h.md)
 
 * [cj50/math.h](cj50/math.h.md)
 
 * [cj50/plot.h](cj50/plot.h.md)
+
+* [cj50/random.h](cj50/random.h.md)
 
 * [cj50/sdlutil.h](cj50/sdlutil.h.md)
 
@@ -43,6 +47,7 @@
 * [get_int](cj50.h.md#get_int)
 * [get_nat](cj50.h.md#get_nat)
 * [get_nat0](cj50.h.md#get_nat0)
+* [get_random_int](cj50/random.h.md#get_random_int)
 * [get_string](cj50.h.md#get_string)
 * [graphics_render](cj50/sdlutil.h.md#graphics_render)
 * [line2](cj50/math.h.md#line2)
@@ -51,10 +56,12 @@
 * [new_ints](cj50.h.md#new_ints)
 * [new_string](cj50.h.md#new_string)
 * [new_strings](cj50.h.md#new_strings)
+* [parse_int](cj50.h.md#parse_int)
 * [plot_function_float](cj50/plot.h.md#plot_function_float)
 * [plot_functions_float](cj50/plot.h.md#plot_functions_float)
 * [rect2](cj50/math.h.md#rect2)
 * [set_draw_color](cj50/sdlutil.h.md#set_draw_color)
+* [string_from_ParseError](cj50.h.md#string_from_parseerror)
 * [vec2](cj50/math.h.md#vec2)
 * [vec3](cj50/math.h.md#vec3)
 
@@ -85,10 +92,13 @@
 * [DA](cj50.h.md#da)
 * [DIE](cj50/basic-util.h.md#die)
 * [DIE_](cj50/basic-util.h.md#die_)
+* [Err](cj50/gen/Result.h.md#err)
 * [GENERATE_equal_array](cj50/gen/equal_array.h.md#generate_equal_array)
 * [GENERATE_Option](cj50/gen/Option.h.md#generate_option)
 * [NONE](cj50/gen/Option.h.md#none)
+* [Ok](cj50/gen/Result.h.md#ok)
 * [Option](cj50/gen/Option.h.md#option)
+* [Result](cj50/gen/Result.h.md#result)
 * [WARN](cj50/basic-util.h.md#warn)
 * [WARN_](cj50/basic-util.h.md#warn_)
 
