@@ -1,55 +1,87 @@
 /*
-  Copyright (C) 2021 Christian Jaeger, <ch@christianjaeger.ch>
+  Copyright (C) 2021-2023 Christian Jaeger, <ch@christianjaeger.ch>
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
+//! A Result is a value that can represent success with a value of one
+//! type, `T`, or an error with an error value of another type,
+//! `E`. It has a field `is_ok` that is `true` if the Result
+//! represents success, in which case the field `ok` is valid,
+//! otherwise the field `err` is valid.
+
+//! ```C
+//! typedef struct Result(T, E) {
+//!     bool is_ok;
+//!     union {
+//!         T ok;
+//!         E err;
+//!     };
+//! } Result(T, E);
+//! ```
+
+ //! Member functions for the following generic functions are also defined:
+
+//! `ok(val, E)`
+//! : Returns a Result where the `is_ok` field is set to `true` and the `ok` field is set to `val`.
+
+//! `err(T, e)`
+//! : Returns a Result where the `is_ok` field is set to `false` and the `err` field is set to `e`.
+
+//! `equal(res1, res2)`
+//! : Returns `true` if both arguments are structurally equivalent.
+
+//! `unwrap(opt)`
+//! : Returns the contents of the `ok` field if `is_ok` is `true`, otherwise aborts the program.
+
+
 #pragma once
 
-#include "String.h"
-#include "macro-util.h"
+#include <cj50/macro-util.h>
 
 
-#define Result(T) XCAT(Result_,T)
+/// This macro creates a type name for a `Result` specific for the
+/// given type names `T` and `E`.
 
-#define DEFTYPE_Result_(T)                                      \
-    typedef struct {                                            \
-        bool is_err;                                            \
+/// Implementation wise, it simply concatenates `Result_`, `T`, `__`,
+/// `E`. For this reason, the type names `T` and `E` must not contain
+/// spaces, e.g. `unsigned int` would not work and a typedef like
+/// `uint` has to be used instead.
+#define Result(T, E) XCAT(Result_, XCAT(T, XCAT(__, E)))
+
+#define GENERATE_Result(T, E)                                   \
+    typedef struct Result(T, E) {                               \
+        bool is_ok;                                             \
         union {                                                 \
-            String err;                                         \
             T ok;                                               \
+            E err;                                              \
         };                                                      \
-    } Result(T);                                                \
+    } Result(T, E);                                             \
                                                                 \
-    static inline UNUSED                                        \
-    void XCAT(drop_, Result(T))(const Result(T) s) {            \
-        if (s.is_err) {                                         \
-            String_drop(s.err);                                 \
-        }                                                       \
-        /* We don't drop the .ok part here as that one */       \
-        /* may have changed ownership in the mean time! */      \
+    static UNUSED                                               \
+    Result(T, E) XCAT(ok_, Result(T, E))(T v) {                 \
+        return (Result(T, E)) { .is_ok = true, .ok = v };       \
     }                                                           \
                                                                 \
     static UNUSED                                               \
-    bool XCAT(equal_, Result(T))(const Result(T) *a,            \
-                                 const Result(T) *b) {          \
-        return ((a->is_err == b->is_err) &&                     \
-                (a->is_err                                      \
-                 ? String_equal(&a->err, &b->err)               \
-                 : XCAT(T, _equal)(&a->ok, &b->ok)));           \
-    }
-
-
-#define Err(T, string)                          \
-    (Result_(T)) { .is_err = true, .err = string }
-#define Ok(T, val)                              \
-    (Result_(T)) { .is_err = false, .ok = val }
-
-#define Result_is_Ok(v) (!((v).is_err))
-#define Result_is_Err(v) ((v).is_err)
-
-// We don't release the .ok part here as that one may have changed
-// ownership in the mean time!
-// XX obsolete, use drop instead
-#define result_drop(v)                          \
-    if (Result_is_Err(v)) String_drop((v).err)
+    Result(T, E) XCAT(err_, Result(T, E))(E e) {                \
+        return (Result(T, E)) { .is_ok = false, .err = e };     \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    bool XCAT(equal_, Result(T, E))(const Result(T, E) *a,      \
+                                    const Result(T, E) *b) {    \
+        return ((a->is_ok == b->is_ok) &&                       \
+                (a->is_ok                                       \
+                 ? XCAT(equal_, T)(&a->ok, &b->ok)              \
+                 : XCAT(equal_, E)(&a->err, &b->err)));         \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
+    T XCAT(unwrap_, Result(T, E))(const Result(T, E) s) {       \
+        if (s.is_ok) {                                          \
+            return s.ok;                                        \
+        } else {                                                \
+            DIE("unwrap: value is an err");                     \
+        }                                                       \
+    }                                                           \
 
