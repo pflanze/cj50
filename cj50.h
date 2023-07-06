@@ -88,6 +88,8 @@ bool equal_ParseError(const ParseError* a, const ParseError* b) {
 const ParseError E_not_in_int_range = 500;
 const ParseError E_invalid_text_after_number = 501;
 
+/// Convert a `ParseError` value into a `string` for display. The
+/// returned string has static life time (do not try to free or drop it).
 const char* string_from_ParseError(ParseError e) {
     if (e == E_not_in_int_range) {
         return "is not within the range of numbers of the `int` type";
@@ -110,6 +112,7 @@ int print_ParseError(ParseError e) {
 
 GENERATE_Result(int, ParseError);
 
+/// Translate a string into an `int` if possible.
 Result(int, ParseError) parse_int(string s) {
     char *tail;
     errno = 0;
