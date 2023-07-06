@@ -91,7 +91,9 @@
         if (s.is_ok) {                                          \
             return s.ok;                                        \
         } else {                                                \
-            DIE("unwrap: value is an err");                     \
+            XCAT(fprintln_, E)(stderr, s.err);                  \
+            fflush(stderr);                                     \
+            abort();                                            \
         }                                                       \
     }                                                           \
                                                                 \

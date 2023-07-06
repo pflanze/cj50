@@ -120,6 +120,11 @@ int print_ParseError(ParseError e) {
     return ret;
 }
 
+static UNUSED
+int fprintln_ParseError(FILE* out, ParseError e) {
+    return fprintf(out, "parse error: input %s\n", string_from_ParseError(e));
+}
+
 GENERATE_Result(int, ParseError);
 
 /// Translate a string into an `int` if possible.
