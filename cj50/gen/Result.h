@@ -33,6 +33,12 @@
 //! `unwrap(opt)`
 //! : Returns the contents of the `ok` field if `is_ok` is `true`, otherwise aborts the program.
 
+//! `print_debug(&opt)`
+//! : Print a programmer's view of the Option value, given by reference.
+
+//! `print_debug_move(opt)`
+//! : Print a programmer's view of the Option value, given by copy.
+
 
 #pragma once
 
@@ -84,6 +90,34 @@
             DIE("unwrap: value is an err");                     \
         }                                                       \
     }                                                           \
+                                                                \
+    static UNUSED                                               \
+    int XCAT(print_debug_, Result(T, E))(                       \
+        const Result(T, E) *s) {                                \
+        int ret = 0;                                            \
+        int res;                                                \
+        const char* constr = s->is_ok ? "Ok" : "Err";           \
+        res = printf("%s(%s, %s)(", constr, #T, #E);            \
+        if (res < 0) { return res; } ret += res;                \
+        if (s->is_ok) {                                         \
+            res = XCAT(print_debug_, T)(/* XX & */s->ok);       \
+        } else {                                                \
+            res = XCAT(print_debug_, E)(/* XX & */s->err);      \
+        }                                                       \
+        if (res < 0) { return res; } ret += res;                \
+        res = printf(")");                                      \
+        if (res < 0) { return res; } ret += res;                \
+        return ret;                                             \
+    }                                                           \
+                                                                \
+    /* This is a HACK to allow print_debug */                   \
+    /* to accept arguments without & */                         \
+    static UNUSED                                               \
+    int XCAT(print_debug_move_, Result(T, E))(                  \
+        const Result(T, E) s) {                                 \
+        return XCAT(print_debug_, Result(T, E))(&s);            \
+    }                                                           \
+
 
 
 /// Returns the ok constructor for the given `T` and `E` types. Use like:
