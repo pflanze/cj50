@@ -335,7 +335,7 @@ void free_strings_slice(string* ary, size_t len) {
     }
 }
 
-void free_strings(string* ary, size_t len) {
+void drop_strings(string* ary, size_t len) {
     free_strings_slice(ary, len);
     free(ary);
 }
@@ -542,7 +542,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// skipped.
 #define drop_array(v, len)                      \
     _Generic((v)                                \
-             , string*: free_strings            \
+             , string*: drop_strings            \
         )((v), (len))
 
 
