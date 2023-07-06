@@ -146,8 +146,14 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
         )(v)
 
 
-/// Add two values, for which `+` is not defined, together, e.g. Vec2
+/// Add together two values, for which `+` is not defined, e.g. Vec2
 /// or Vec3. Both values need to be of the same type.
+
+/// Example:
+
+/// ```C
+/// D(add(vec2(10, -3), vec2(3, 5)))  /* prints vec2(13, 2) */
+/// ```
 #define add(a, b)                               \
     _Generic((a)                                \
              , Vec2: add_Vec2                   \
@@ -156,6 +162,12 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
 
 /// Subtraction of two values for which `-` is not defined, e.g. Vec2
 /// or Vec3. Both values need to be of the same type.
+
+/// Example:
+
+/// ```C
+/// D(sub(vec2(10, -3), vec2(3, 5)))  /* prints vec2(7, -8) */
+/// ```
 #define sub(a, b)                               \
     _Generic((a)                                \
              , Vec2: sub_Vec2                   \
@@ -163,6 +175,12 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
         )((a), (b))
 
 /// Negate a value for which `-` is not defined, e.g. Vec2 or Vec3.
+
+/// Example:
+
+/// ```C
+/// D(neg(vec2(10, -3)))  /* prints vec2(-10, 3) */
+/// ```
 #define neg(a)                                  \
     _Generic((a)                                \
              , Vec2: neg_Vec2                   \
@@ -170,7 +188,14 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
         )(a)
 
 /// Multiply two values for which `*` is not defined, e.g. Vec2 or
-/// Vec3. Both values need to be of the same type.
+/// Vec3. NOTE: the name of this operation might change! Currently
+/// only `float` is supported for the second argument.
+
+/// Example:
+
+/// ```C
+/// D(mul(vec2(10, -3), 2))  /* prints vec2(20, -6) */
+/// ```
 #define mul(a, b)                                               \
     _Generic((a)                                                \
              , Vec2: _Generic((b)                               \
