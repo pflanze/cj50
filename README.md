@@ -59,7 +59,7 @@ converted to Markdown and then html format via:
 You can then open the file
 [doc-output/index.html](doc-output/index.md) in your browser.
 
-The above simply uses the generated markdown files contained in the
+`make doc` simply uses the generated markdown files contained in the
 repository. If you edit the documentation in the library files, you
 need to run `make gendoc` instead to update the markdown files, but
 that also requires the
