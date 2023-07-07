@@ -14,6 +14,11 @@ bool equal_bool(const bool *a, const bool *b) {
 }
 
 static UNUSED
+bool equal_move_bool(const bool a, const bool b) {
+    return (!!a) == (!!b);
+}
+
+static UNUSED
 int print_debug_bool(bool v) {
     return printf("%s", v ? "true" : "false");
 }

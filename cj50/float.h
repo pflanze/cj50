@@ -11,6 +11,11 @@ bool equal_float(const float *a, const float *b) {
 }
 
 static UNUSED
+bool equal_move_float(const float a, const float b) {
+    return a == b;
+}
+
+static UNUSED
 int print_debug_float(float x) {
     return printf("%g", x);
 }

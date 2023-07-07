@@ -15,6 +15,11 @@ bool equal_char(const char *a, const char *b) {
     return *a == *b;
 }
 
+static UNUSED
+bool equal_move_char(const char a, const char b) {
+    return a == b;
+}
+
 
 int _print_debug_char(char c) {
     if (c == '"') {

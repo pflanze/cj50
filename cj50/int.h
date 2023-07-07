@@ -8,6 +8,11 @@ bool equal_int(const int *a, const int *b) {
 }
 
 static UNUSED
+bool equal_move_int(const int a, const int b) {
+    return a == b;
+}
+
+static UNUSED
 void drop_int(const int UNUSED a) {}
 
 static UNUSED
