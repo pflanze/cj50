@@ -124,7 +124,12 @@ const char* string_from_ParseError(ParseError e) {
     } else if (e == E_negative) {
         return "is negative";
     } else if (e < 256) {
-        return strerror(e); // XX combine with explanation (context) ?
+        return strerror(e);
+        /* XX combine with explanation (context)? Had e.g.:
+           printf("Your answer is not a floating point number in the "
+           "possible range for the `float` type: %s.",
+           strerror(errno));
+        */
     } else {
         DIE("BUG: invalid ParseError value");
     }
@@ -178,7 +183,7 @@ Result(int, ParseError) parse_int(string s) {
         Result(T, ParseError) r = parse(s.value);       \
         drop_Option_string(s);                          \
         if (r.is_ok) {                                  \
-            return some_int(r.ok);                      \
+            return XCAT(some_, T)(r.ok);                \
         }                                               \
         print_string("Your answer ");                   \
         print_string(string_from_ParseError(r.err));    \
@@ -278,38 +283,32 @@ int print_float(float x) {
     return printf("%g", x);
 }
 
+GENERATE_Result(float, ParseError);
+
+/// Translate a string into an `float` if possible.
+Result(float, ParseError) parse_float(string s) {
+    char *tail;
+    errno = 0;
+    float x = strtof(s, &tail);
+    if (errno == 0) {
+        while (*tail == ' ') {
+            tail++;
+        }
+        if (*tail == '\0') {
+            return Ok(float, ParseError)(x);
+        } else {
+            return Err(float, ParseError)(E_invalid_text_after_number);
+        }
+    } else {
+        return Err(float, ParseError)(errno);
+    }
+}
+
 /// Read a floating point number or zero from standard input,
 /// terminated by a newline. Returns none on end of file (when ctl-d is
 /// pressed).
 Option(float) get_float() {
-    // largely copy-paste of get_int
-    while (true) {
-        Option(string) s = get_string();
-        if (!s.is_some) {
-            return none_float();
-        }
-        char *tail;
-        errno = 0;
-        float x = strtof(s.value, &tail);
-        if (errno == 0) {
-            while (*tail == ' ') {
-                tail++;
-            }
-            if (*tail == '\0') {
-                drop_Option_string(s);
-                return some_float(x);
-            } else {
-                print_string("Please enter only a number with nothing "
-                             "after it.");
-            }
-        } else {
-            printf("Your answer is not a floating point number in the "
-                   "possible range for the `float` type: %s.",
-                   strerror(errno));
-        }
-        drop_Option_string(s);
-        print_string(" Please enter a floating point number: ");
-    }
+    GET_THING(float, "a floating point number", parse_float);
 }
 
 
