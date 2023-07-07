@@ -54,4 +54,4 @@
     for (T var = (from); var < __for_range_to; var++)
 
 
-#define VAR(v) __auto_type v
+#define LET(v) __auto_type v
