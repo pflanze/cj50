@@ -405,6 +405,9 @@ my @itemss = map { [ filedocs($_) ] } @headerfiles;
     my $doc = $DOCWARNING;
     # $doc .= "# Documentation index\n\n";
 
+    # Meta
+    $doc .= "\n" . xgetfile_utf8("config/index-meta.md") . "\n\n";
+
     $doc .= "# Files\n\n";
     for my $path (sort keys %documented_headerfiles) {
         $doc .= "* [$path]($path.md)\n\n";
