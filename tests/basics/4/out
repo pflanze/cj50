@@ -1,0 +1,3 @@
+How many tests have you done? What was your grade for test no. 1? What was your grade for test no. 2? average({33.2, 2.3}) = 17.75
+Do you want to (e)dit, (r)esize, (c)ontinue? Which test (1-based)? Your answer is not greater than zero. Please enter a natural number: What grade? average({33, 2.3}) = 17.65
+Do you want to (e)dit, (r)esize, (c)ontinue? 
