@@ -109,6 +109,8 @@ int print_debug_ParseError(const ParseError v) {
 
 const ParseError E_not_in_int_range = 500;
 const ParseError E_invalid_text_after_number = 501;
+const ParseError E_not_greater_than_zero = 502;
+const ParseError E_not_greater_or_equal_zero = 503;
 
 /// Convert a `ParseError` value into a `string` for display. The
 /// returned string has static life time (do not try to free or drop it).
@@ -117,6 +119,10 @@ const char* string_from_ParseError(ParseError e) {
         return "is not within the range of numbers of the `int` type";
     } else if (e == E_invalid_text_after_number) {
         return "has invalid text after the number";
+    } else if (e == E_not_greater_than_zero) {
+        return "is not greater than zero";
+    } else if (e == E_not_greater_or_equal_zero) {
+        return "is not greater than or equal to zero";
     } else if (e < 256) {
         return strerror(e); // XX combine with explanation (context) ?
     } else {
@@ -163,23 +169,26 @@ Result(int, ParseError) parse_int(string s) {
     }
 }
 
+#define GET_THING(T, type_desc, parse)                  \
+    while (true) {                                      \
+        Option(string) s = get_string();                \
+        if (!s.is_some) {                               \
+            return XCAT(none_, T)();                    \
+        }                                               \
+        Result(T, ParseError) r = parse(s.value);       \
+        drop_Option_string(s);                          \
+        if (r.is_ok) {                                  \
+            return some_int(r.ok);                      \
+        }                                               \
+        print_string("Your answer ");                   \
+        print_string(string_from_ParseError(r.err));    \
+        print_string(". Please enter " type_desc ": "); \
+    }
+
 /// Read an integer number from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_int() {
-    while (true) {
-        Option(string) s = get_string();
-        if (!s.is_some) {
-            return none_int();
-        }
-        Result(int, ParseError) r = parse_int(s.value);
-        drop_Option_string(s);
-        if (r.is_ok) {
-            return some_int(r.ok);
-        }
-        print_string("Your answer ");
-        print_string(string_from_ParseError(r.err)); // XX yes strerror won't match
-        print_string(". Please enter an integer number: ");
-    }
+    GET_THING(int, "an integer number", parse_int);
 }
 
 
@@ -203,20 +212,26 @@ int print_uint(uint n) {
 }
 
 
+/// Translate a string into an `int` in the natural number range (1 or
+/// higher) if possible.
+Result(int, ParseError) parse_nat(string s) {
+    AUTO rn = parse_int(s);
+    if (rn.is_ok) {
+        if (rn.ok > 0) {
+            return rn; // ok
+        } else {
+            return Err(int, ParseError)(E_not_greater_than_zero);
+        }
+    } else {
+        return rn; // err
+    }
+}
+
+
 /// Read a natural number from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_nat() {
-    while (true) {
-        Option(int) i = get_int();
-        if (!i.is_some) {
-            return none_int();
-        }
-        if (i.value > 0) {
-            return i;
-        }
-        print_string("Your answer is not above zero.");
-        print_string(" Please enter a natural number: ");
-    }
+    GET_THING(int, "a natural number", parse_int);
 }
 
 int print_nat(int n) {
@@ -708,6 +723,7 @@ int print_var_or_expr(const char* s) {
     } while (0)
 
 
+#undef GET_THING
 #undef RESRET
 
 #include "cj50/plot.h"
