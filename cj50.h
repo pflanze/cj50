@@ -231,7 +231,7 @@ Result(int, ParseError) parse_nat(string s) {
 /// Read a natural number from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_nat() {
-    GET_THING(int, "a natural number", parse_int);
+    GET_THING(int, "a natural number", parse_nat);
 }
 
 int print_nat(int n) {
