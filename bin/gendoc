@@ -266,16 +266,16 @@ sub filedocs ($path) {
                # captured code:
                (
                   # struct definition
-                  typedef\s+struct\s+ \w+ \s+\{.*?\}\s* \w+;
+                  typedef\s+struct\s+ \w+ \s+\{.*?\}\s* \w+(?=;)
                     # ^ the first and second \w+ block should be identical, todo?
                   |
                   .*? # simply whatever up to the terminator
                )
                # terminator:
                (
-                    \{                       # function
+                   \{                       # function
+                  | ;                        # e.g. typedef
                   | \\ (?: \s* _Generic .*?[^\\]\n)?    # generic
-                  | ;                        # ?
                   | (?= \n (?: /// | \# | [ \t]*\n ))
                )
            }xsg) {
