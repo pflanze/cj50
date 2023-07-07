@@ -558,6 +558,8 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(float)*: equal_Option_float                       \
              , Result(int, ParseError)*: equal_Result_int__ParseError   \
              , bool*: equal_bool                                        \
+             , string*: equal_string                                    \
+             , string: equal_move_string                                \
         )((a), (b))
 
 /// Takes a value of some type `T` and returns a `some` variant of

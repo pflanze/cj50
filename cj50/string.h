@@ -30,6 +30,11 @@ bool equal_string(const string *a, const string *b) {
     return strcmp(*a, *b) == 0;
 }
 
+static UNUSED
+bool equal_move_string(const char *a, const char *b) {
+    return strcmp(a, b) == 0;
+}
+
 int print_string(const_string str) {
     return printf("%s", str);
 }
