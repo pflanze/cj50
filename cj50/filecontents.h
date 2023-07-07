@@ -151,3 +151,4 @@ Result(string, SystemError) filecontents_string(string path) {
 
 
 #undef RESRET
+#undef INIT_RESRET

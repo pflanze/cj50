@@ -756,5 +756,6 @@ cleanup:
 
 #undef GET_THING
 #undef RESRET
+#undef INIT_RESRET
 
 #include "cj50/plot.h"
