@@ -47,8 +47,7 @@ cleanup:
     return ret;
 }
 
-#define NUM_SYSCALLINFOS 4
-const SyscallInfo syscallinfos[NUM_SYSCALLINFOS] = {
+const SyscallInfo syscallinfos[] = {
     { 0, "open" },
     { 1, "fstat" },
     { 2, "read" },
