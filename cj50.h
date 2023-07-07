@@ -110,7 +110,7 @@ int print_debug_ParseError(const ParseError v) {
 const ParseError E_not_in_int_range = 500;
 const ParseError E_invalid_text_after_number = 501;
 const ParseError E_not_greater_than_zero = 502;
-const ParseError E_not_greater_or_equal_zero = 503;
+const ParseError E_negative = 503;
 
 /// Convert a `ParseError` value into a `string` for display. The
 /// returned string has static life time (do not try to free or drop it).
@@ -121,8 +121,8 @@ const char* string_from_ParseError(ParseError e) {
         return "has invalid text after the number";
     } else if (e == E_not_greater_than_zero) {
         return "is not greater than zero";
-    } else if (e == E_not_greater_or_equal_zero) {
-        return "is not greater than or equal to zero";
+    } else if (e == E_negative) {
+        return "is negative";
     } else if (e < 256) {
         return strerror(e); // XX combine with explanation (context) ?
     } else {
@@ -243,20 +243,26 @@ int print_nat(int n) {
 }
 
 
+/// Translate a string into an `int` in the natural number range
+/// including 0 (0 or higher) if possible.
+Result(int, ParseError) parse_nat0(string s) {
+    AUTO rn = parse_int(s);
+    if (rn.is_ok) {
+        if (rn.ok >= 0) {
+            return rn; // ok
+        } else {
+            return Err(int, ParseError)(E_negative);
+        }
+    } else {
+        return rn; // err
+    }
+}
+
+
 /// Read a natural number or zero from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_nat0() {
-    while (true) {
-        Option(int) i = get_int();
-        if (!i.is_some) {
-            return none_int();
-        }
-        if (i.value >= 0) {
-            return i;
-        }
-        print_string("Your answer is negative.");
-        print_string(" Please enter a natural number or zero: ");
-    }
+    GET_THING(int, "a natural number or zero", parse_nat0);
 }
 
 int print_nat0(int n) {
