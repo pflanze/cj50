@@ -19,7 +19,8 @@ Get a random integer value between 0 (inclusive) and `range` (exclusive).
 double random_double()
 ```
 
-Get a random `double` value between 0. (inclusive) and 1. (exclusive).
+Get a random real value (as double precision floating point type)
+between 0. (inclusive) and 1. (exclusive).
 
 ## random_float
 
@@ -27,7 +28,8 @@ Get a random `double` value between 0. (inclusive) and 1. (exclusive).
 float random_float()
 ```
 
-Get a random `float` value between 0. (inclusive) and 1. (exclusive).
+Get a random real value (as single precision floating point type)
+between 0. (inclusive) and 1. (exclusive).
 
 <hr>
 <p>&nbsp;</p>

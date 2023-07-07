@@ -40,7 +40,8 @@ int random_int(int range) {
 // CAUTION: These are probably suboptimal (distribution of bits)!
 // Consider them a HACK.
 
-/// Get a random `double` value between 0. (inclusive) and 1. (exclusive).
+/// Get a random real value (as double precision floating point type)
+/// between 0. (inclusive) and 1. (exclusive).
 double random_double() {
     uint64_t randnum;
     ssize_t res = getrandom(&randnum, sizeof(randnum), 0);
@@ -54,7 +55,8 @@ double random_double() {
     return randnum / 18446744073709551616.;
 }
 
-/// Get a random `float` value between 0. (inclusive) and 1. (exclusive).
+/// Get a random real value (as single precision floating point type)
+/// between 0. (inclusive) and 1. (exclusive).
 float random_float() {
     return random_double();
 }
