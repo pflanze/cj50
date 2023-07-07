@@ -21,13 +21,13 @@ int random_int(int range) {
 
     unsigned int randnum;
     while (true) {
-        ssize_t res = getrandom(&randnum, sizeof(unsigned int), 0);
+        ssize_t res = getrandom(&randnum, sizeof(randnum), 0);
         if (res < 0) {
             DIE_("getrandom: %s", strerror(errno));
         }
-        if (sizeof(unsigned int) != res) {
+        if (sizeof(randnum) != res) {
             DIE_("getrandom: expected %lu bytes, got %li",
-                 sizeof(unsigned int), res);
+                 sizeof(randnum), res);
         }
         int ret = randnum & mask;
         // printf("randnum=%u, mask=%u, ret=%i\n", randnum, mask, ret);
@@ -36,3 +36,26 @@ int random_int(int range) {
         }
     }
 }
+
+// CAUTION: These are probably suboptimal (distribution of bits)!
+// Consider them a HACK.
+
+/// Get a random `double` value between 0. (inclusive) and 1. (exclusive).
+double random_double() {
+    uint64_t randnum;
+    ssize_t res = getrandom(&randnum, sizeof(randnum), 0);
+    if (res < 0) {
+        DIE_("getrandom: %s", strerror(errno));
+    }
+    if (sizeof(randnum) != res) {
+        DIE_("getrandom: expected %lu bytes, got %li",
+             sizeof(randnum), res);
+    }
+    return randnum / 18446744073709551616.;
+}
+
+/// Get a random `float` value between 0. (inclusive) and 1. (exclusive).
+float random_float() {
+    return random_double();
+}
+

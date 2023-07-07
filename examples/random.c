@@ -23,4 +23,23 @@ int main(int argc, string* argv) {
         assert(r >= 0);
         assert(r < range);
     }
+
+    print("And some floats:\n");
+    for (int i = 0; i < 10; i++) {
+        __auto_type r = random_float();
+        print(r);
+        print("\n");
+        assert(r >= 0.f);
+        assert(r < 1.f);
+    }
+
+    print("And doubles:\n");
+    for (int i = 0; i < 10; i++) {
+        __auto_type r = random_double();
+        print(r);
+        print("\n");
+        assert(r >= 0.);
+        assert(r < 1.);
+    }
+
 }
