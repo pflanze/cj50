@@ -19,7 +19,7 @@ for binary in $binaries; do
     name=$(basename $binary _opt)
     for test in tests/$name/*; do
         echo -n "  Test $test: "
-        bin/expect-exit $test/exit $test/args $binary < $test/in > "$out" 2> "$err"
+        bin/expect-exit $test/exit $test/args $test/env $binary < $test/in > "$out" 2> "$err"
         diff -u $test/err "$err"
         diff -u $test/out "$out"
         echo "OK."
