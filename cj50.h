@@ -28,6 +28,7 @@
 #include "cj50/gen/Result.h"
 #include "cj50/float.h"
 #include "cj50/random.h"
+#include "cj50/bool.h"
 
 
 #define INIT_RESRET                             \
@@ -424,6 +425,7 @@ int print_debug_floats(const float* ary, size_t len) {
 #define print_debug(v)                                        \
     _Generic((v)                                              \
              , char*: print_debug_string                      \
+             , bool: print_debug_bool                         \
              , char: print_debug_char                         \
              , int: print_int                                 \
              , uint: print_uint                               \
@@ -554,6 +556,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(int)*: equal_Option_int                           \
              , Option(float)*: equal_Option_float                       \
              , Result(int, ParseError)*: equal_Result_int__ParseError   \
+             , bool*: equal_bool                                        \
         )((a), (b))
 
 /// Takes a value of some type `T` and returns a `some` variant of
