@@ -646,6 +646,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(float): unwrap_Option_float                       \
              , Option(double): unwrap_Option_double                     \
              , Result(int, ParseError): unwrap_Result_int__ParseError   \
+             , Result(float, ParseError): unwrap_Result_float__ParseError   \
         )(v)
 
 /// Returns the name of the type of `e` as a string constant.
