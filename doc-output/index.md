@@ -63,6 +63,8 @@
 * [parse_nat0](cj50.h.md#parse_nat0)
 * [plot_function_float](cj50/plot.h.md#plot_function_float)
 * [plot_functions_float](cj50/plot.h.md#plot_functions_float)
+* [random_double](cj50/random.h.md#random_double)
+* [random_float](cj50/random.h.md#random_float)
 * [random_int](cj50/random.h.md#random_int)
 * [rect2](cj50/math.h.md#rect2)
 * [set_draw_color](cj50/sdlutil.h.md#set_draw_color)
