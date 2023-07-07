@@ -597,11 +597,10 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , int: equal_move_int                                      \
              , float*: equal_float                                      \
              , float: equal_move_float                                  \
-             , double*: equal_double                                      \
-             , double: equal_move_double                                  \
+             , double*: equal_double                                    \
+             , double: equal_move_double                                \
              , bool*: equal_bool                                        \
              , bool: equal_move_bool                                    \
-             , char*: equal_char                                        \
              , char: equal_move_char                                    \
         )((a), (b))
 
