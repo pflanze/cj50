@@ -49,7 +49,7 @@
 * [get_int](cj50.h.md#get_int)
 * [get_nat](cj50.h.md#get_nat)
 * [get_nat0](cj50.h.md#get_nat0)
-* [get_random_int](cj50/random.h.md#get_random_int)
+* [random_int](cj50/random.h.md#random_int)
 * [get_string](cj50.h.md#get_string)
 * [graphics_render](cj50/sdlutil.h.md#graphics_render)
 * [line2](cj50/math.h.md#line2)

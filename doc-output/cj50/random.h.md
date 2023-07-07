@@ -5,10 +5,10 @@ Functions for getting good random numbers.
 
 # Normal functions
 
-## get_random_int
+## random_int
 
 ```C
-int get_random_int(int range)
+int random_int(int range)
 ```
 
 Get a random integer value between 0 (inclusive) and `range` (exclusive).

@@ -17,7 +17,7 @@ int main(int argc, string* argv) {
     }
 
     for (int i = 0; i < 10; i++) {
-        int r = get_random_int(range);
+        int r = random_int(range);
         print(r);
         print("\n");
         assert(r >= 0);

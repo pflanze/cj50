@@ -1,1 +1,1 @@
-get_random_int: argument not in nat range: 0
+random_int: argument not in nat range: 0

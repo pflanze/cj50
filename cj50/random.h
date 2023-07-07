@@ -6,13 +6,13 @@
 #include <cj50/basic-util.h>
 
 /// Get a random integer value between 0 (inclusive) and `range` (exclusive).
-int get_random_int(int range) {
+int random_int(int range) {
     // Note: this prohibits ever returning the MAXINT value.  Note:
     // this may block when run before the random number source has
     // entropy or is initialized.
 
     if (range < 1) {
-        DIE_("get_random_int: argument not in nat range: %i", range);
+        DIE_("random_int: argument not in nat range: %i", range);
     }
     unsigned int urange = range;
     assert(sizeof(urange) == 32/8); // necessary for __builtin_clz ?
