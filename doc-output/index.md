@@ -19,6 +19,8 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50/basic-util.h](cj50/basic-util.h.md)
 
+* [cj50/filecontents.h](cj50/filecontents.h.md)
+
 * [cj50/gen/Option.h](cj50/gen/Option.h.md)
 
 * [cj50/gen/Result.h](cj50/gen/Result.h.md)
@@ -43,6 +45,7 @@ If you want to read a book about the C programming language, here are some:
 * [ColorFunction_float](cj50/plot.h.md#colorfunction_float)
 * [Line2](cj50/math.h.md#line2)
 * [Rect2](cj50/math.h.md#rect2)
+* [SystemError](cj50/filecontents.h.md#systemerror)
 * [Vec2](cj50/math.h.md#vec2)
 * [Vec3](cj50/math.h.md#vec3)
 
@@ -58,6 +61,7 @@ If you want to read a book about the C programming language, here are some:
 * [clear](cj50/sdlutil.h.md#clear)
 * [color](cj50/math.h.md#color)
 * [draw_rect](cj50/sdlutil.h.md#draw_rect)
+* [filecontents_string](cj50/filecontents.h.md#filecontents_string)
 * [get_float](cj50.h.md#get_float)
 * [get_int](cj50.h.md#get_int)
 * [get_nat](cj50.h.md#get_nat)

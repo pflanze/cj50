@@ -8,7 +8,7 @@
 typedef struct ColorFunction_float {
     Color color;
     Option(float)(*f)(float);
-} ColorFunction_float;
+} ColorFunction_float
 ```
 
 Combination of color and a function, for drawing multiple

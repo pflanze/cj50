@@ -11,7 +11,7 @@ This provides mathematical types: vectors and shapes.
 typedef struct Vec2 {
     float x;
     float y;
-} Vec2;
+} Vec2
 ```
 
 A 2-dimentional vector.
@@ -23,7 +23,7 @@ typedef struct Vec3 {
     float x;
     float y;
     float z;
-} Vec3;
+} Vec3
 ```
 
 A 3-dimentional vector.
@@ -34,7 +34,7 @@ A 3-dimentional vector.
 typedef struct Line2 {
     Vec2 start;
     Vec2 extent;
-} Line2;
+} Line2
 ```
 
 A line. The end point is at add(start, extent).
@@ -45,7 +45,7 @@ A line. The end point is at add(start, extent).
 typedef struct Rect2 {
     Vec2 start;
     Vec2 extent;
-} Rect2;
+} Rect2
 ```
 
 A rectangle. The opposite corner is at add(start, extent).
@@ -57,7 +57,7 @@ typedef struct Color {
     unsigned char r;
     unsigned char g;
     unsigned char b;
-} Color;
+} Color
 ```
 
 A standard 8-bit RGB color representation.
