@@ -104,7 +104,7 @@
         if (s.is_some) {                                        \
             return s.value;                                     \
         } else {                                                \
-            DIE("unwrap: value is a none");                     \
+            DIE("unwrap option: got none");                     \
         }                                                       \
     }                                                           \
                                                                 \
