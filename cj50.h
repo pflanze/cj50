@@ -23,6 +23,7 @@
 #include "cj50/basic-util.h"
 // #include "cj50/plot.h"  include it at the end to pass D
 #include "cj50/string.h"
+#include "cj50/char.h" /* already included via string.h though */
 #include "cj50/int.h"
 #include "cj50/gen/equal_array.h"
 #include "cj50/gen/Result.h"
