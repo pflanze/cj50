@@ -552,7 +552,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// Takes two values of the same type and returns a `bool`. Returns
 /// `true` if `a` and `b` are structurally equivalent.
 #define equal(a, b)                                                     \
-    _Generic((v)                                                        \
+    _Generic((a)                                                        \
              , Option(string)*: equal_Option_string                     \
              , Option(int)*: equal_Option_int                           \
              , Option(float)*: equal_Option_float                       \
