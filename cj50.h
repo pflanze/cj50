@@ -30,15 +30,17 @@
 #include "cj50/float.h"
 #include "cj50/random.h"
 #include "cj50/bool.h"
+#include "cj50/xmem.h"
 
 
 #define INIT_RESRET                             \
+    __label__ cleanup; /* GCC extension */      \
     int ret = 0;                                \
     int res;
 
-#define RESRET(e)                \
-    res = (e);                   \
-    if (res < 0) { return res; } \
+#define RESRET(e)                               \
+    res = (e);                                  \
+    if (res < 0) { ret = res; goto cleanup; }   \
     ret += res;
 
 
@@ -112,24 +114,25 @@ const ParseError E_invalid_text_after_number = 501;
 const ParseError E_not_greater_than_zero = 502;
 const ParseError E_negative = 503;
 
+string new_string(size_t len);
+
 /// Convert a `ParseError` value into a `string` for display. The
-/// returned string has static life time (do not try to free or drop it).
-const char* string_from_ParseError(ParseError e) {
+/// receiver owns the returned string.
+char* string_from_ParseError(ParseError e) {
     if (e == E_not_in_int_range) {
-        return "is not within the range of numbers of the `int` type";
+        return xstrdup("is not within the range of numbers of the `int` type");
     } else if (e == E_invalid_text_after_number) {
-        return "has invalid text after the number";
+        return xstrdup("has invalid text after the number");
     } else if (e == E_not_greater_than_zero) {
-        return "is not greater than zero";
+        return xstrdup("is not greater than zero");
     } else if (e == E_negative) {
-        return "is negative";
+        return xstrdup("is negative");
     } else if (e < 256) {
-        return strerror(e);
-        /* XX combine with explanation (context)? Had e.g.:
-           printf("Your answer is not a floating point number in the "
-           "possible range for the `float` type: %s.",
-           strerror(errno));
-        */
+#define SIZ_ 200
+        string s = new_string(SIZ_);
+        assert(snprintf(s, SIZ_, "is not valid: %s", strerror(errno)) < SIZ_);
+        return s;
+#undef SIZ_
     } else {
         DIE("BUG: invalid ParseError value");
     }
@@ -138,14 +141,23 @@ const char* string_from_ParseError(ParseError e) {
 static UNUSED
 int print_ParseError(ParseError e) {
     INIT_RESRET;
+    string s = NULL;
     RESRET(print_string("parse error: "));
-    RESRET(print_string(string_from_ParseError(e)));
+    s = string_from_ParseError(e);
+    RESRET(print_string(s));
+cleanup:
+    if (s) free(s);
     return ret;
 }
 
 static UNUSED
 int fprintln_ParseError(FILE* out, ParseError e) {
-    return fprintf(out, "parse error: input %s\n", string_from_ParseError(e));
+    INIT_RESRET;
+    string s = string_from_ParseError(e);
+    RESRET(fprintf(out, "parse error: input %s\n", s));
+cleanup:
+    if (s) free(s);
+    return ret;
 }
 
 GENERATE_Result(int, ParseError);
@@ -186,7 +198,9 @@ Result(int, ParseError) parse_int(string s) {
             return XCAT(some_, T)(r.ok);                \
         }                                               \
         print_string("Your answer ");                   \
-        print_string(string_from_ParseError(r.err));    \
+        string errstr = string_from_ParseError(r.err);  \
+        print_string(errstr);                           \
+        free(errstr);                                   \
         print_string(". Please enter " type_desc ": "); \
     }
 
@@ -383,8 +397,7 @@ float* new_floats(size_t len) {
   */
 
 #define PRINT_ARRAY(print_typ, ary, len)        \
-    int ret = 0;                                \
-    int res;                                    \
+    INIT_RESRET;                                \
     RESRET(print_string("{"));                  \
     for (size_t i = 0; i < len; i++) {          \
         if (i > 0) {                            \
@@ -393,6 +406,7 @@ float* new_floats(size_t len) {
         RESRET(print_typ(ary[i]));              \
     }                                           \
     RESRET(print_string("}"));                  \
+cleanup:                                        \
     return ret;
 
 int print_debug_chars(const char* ary, size_t len) {
@@ -701,8 +715,7 @@ bool is_symbol(const char* s) {
 }
 
 int print_var_or_expr(const char* s) {
-    int ret = 0;
-    int res;
+    INIT_RESRET;
     if (is_symbol(s)) {
         RESRET(print_string(s));
     } else {
@@ -710,6 +723,7 @@ int print_var_or_expr(const char* s) {
         RESRET(print_string(s));
         RESRET(print_string(")"));
     }
+cleanup:
     return ret;
 }
 
