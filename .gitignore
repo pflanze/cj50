@@ -1,9 +1,10 @@
+examples/*_opt
+examples/*_max
+*.html
+
 examples/basics
 examples/graphics
 examples/plot
 examples/equal
 examples/random
-
-examples/*_opt
-examples/*_max
-*.html
+examples/filecontents

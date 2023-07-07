@@ -31,6 +31,7 @@
 #include "cj50/double.h"
 #include "cj50/random.h"
 #include "cj50/bool.h"
+#include "cj50/filecontents.h"
 #include "cj50/xmem.h"
 
 
@@ -115,6 +116,7 @@ const ParseError E_invalid_text_after_number = 501;
 const ParseError E_not_greater_than_zero = 502;
 const ParseError E_negative = 503;
 
+static UNUSED
 string new_string(size_t len);
 
 /// Convert a `ParseError` value into a `string` for display. The
@@ -347,6 +349,7 @@ char* new_chars(size_t len) {
 /// there is not enough memory (never returns the NULL pointer). The
 /// string is set to the empty string. This is the same as
 /// `new_chars`.
+static UNUSED
 string new_string(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
@@ -476,6 +479,8 @@ int print_debug_floats(const float* ary, size_t len) {
              , Rect2: print_debug_Rect2                       \
              , Result(int, ParseError)*: print_debug_Result_int__ParseError \
              , Result(int, ParseError): print_debug_move_Result_int__ParseError \
+             , Result(string, SystemError): print_debug_move_Result_string__SystemError \
+             , SystemError: print_debug_SystemError                     \
         )(v)
 
 
@@ -591,6 +596,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(int)*: equal_Option_int                           \
              , Option(float)*: equal_Option_float                       \
              , Result(int, ParseError)*: equal_Result_int__ParseError   \
+             , Result(string, SystemError)*: equal_Result_string__SystemError \
              , string*: equal_string                                    \
              , string: equal_move_string                                \
              , int*: equal_int                                          \
@@ -647,6 +653,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(double): unwrap_Option_double                     \
              , Result(int, ParseError): unwrap_Result_int__ParseError   \
              , Result(float, ParseError): unwrap_Result_float__ParseError   \
+             , Result(string, SystemError): unwrap_Result_string__SystemError \
         )(v)
 
 /// Returns the name of the type of `e` as a string constant.
@@ -665,6 +672,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Rect2: "Rect2"                           \
              , Line2: "Line2"                           \
              , Result(int, ParseError): "Result(int, ParseError)"       \
+             , Result(string, SystemError): "Result(string, SystemError)" \
         )
 
 
