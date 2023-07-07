@@ -28,6 +28,7 @@
 #include "cj50/gen/equal_array.h"
 #include "cj50/gen/Result.h"
 #include "cj50/float.h"
+#include "cj50/double.h"
 #include "cj50/random.h"
 #include "cj50/bool.h"
 #include "cj50/xmem.h"
@@ -293,10 +294,6 @@ int print_nat0(int n) {
 }
 
 
-int print_float(float x) {
-    return printf("%g", x);
-}
-
 GENERATE_Result(float, ParseError);
 
 /// Translate a string into an `float` if possible.
@@ -444,6 +441,7 @@ int print_debug_floats(const float* ary, size_t len) {
              , int: print_int                   \
              , uint: print_uint                 \
              , float: print_float               \
+             , double: print_double             \
         )(v)
 
 
@@ -465,6 +463,7 @@ int print_debug_floats(const float* ary, size_t len) {
              , int: print_int                                 \
              , uint: print_uint                               \
              , float: print_float                             \
+             , double: print_double                           \
              , Vec2: print_debug_Vec2                         \
              , Vec3: print_debug_Vec3                         \
              , Option(string): print_debug_move_Option_string \
@@ -570,6 +569,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(string): drop_Option_string      \
              , Option(int): drop_Option_int            \
              , Option(float): drop_Option_float        \
+             , Option(double): drop_Option_double      \
         )(v)
 
 /// Frees the resources held by the given array,
@@ -597,6 +597,8 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , int: equal_move_int                                      \
              , float*: equal_float                                      \
              , float: equal_move_float                                  \
+             , double*: equal_double                                      \
+             , double: equal_move_double                                  \
              , bool*: equal_bool                                        \
              , bool: equal_move_bool                                    \
              , char*: equal_char                                        \
@@ -610,6 +612,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , string: some_string                      \
              , int: some_int                            \
              , float: some_float                        \
+             , double: some_double                      \
         )(v)
 
 /// Returns the none variant of `Option(T)` for the given
@@ -637,11 +640,12 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// // then the program has terminated by now instead.
 /// ```
 
-#define unwrap(v)                                       \
-    _Generic((v)                                        \
-             , Option(string): unwrap_Option_string     \
-             , Option(int): unwrap_Option_int           \
-             , Option(float): unwrap_Option_float       \
+#define unwrap(v)                                                       \
+    _Generic((v)                                                        \
+             , Option(string): unwrap_Option_string                     \
+             , Option(int): unwrap_Option_int                           \
+             , Option(float): unwrap_Option_float                       \
+             , Option(double): unwrap_Option_double                     \
              , Result(int, ParseError): unwrap_Result_int__ParseError   \
         )(v)
 
