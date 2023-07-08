@@ -212,6 +212,8 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
 
 
 /// The math constant pi.
+
+/// (This may also be available as `M_PI` from <math.h>.)
 const double math_pi = 3.14159265358979323846264338;
 
 // The pi constant as a float value, faster.
