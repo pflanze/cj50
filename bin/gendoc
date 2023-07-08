@@ -131,6 +131,10 @@ package DocEntry {
             # Now it gets hard! ucfirst really disambiguates here? !
             if ($s=~ m{ ([a-z]\w*)\s*\(}) {
                 $1
+            } elsif ($s=~ m{^ \s* const \s+ \S+ \s+ ([a-zA-Z_]\w*) \s*
+                              =[^=] }sx) {
+                # global constants
+                $1
             } else {
                 die "no match"
             }
@@ -152,6 +156,9 @@ package DocEntry {
             }
         } elsif ($p=~ m{^typedef\b(\s+struct\b)?}) {
             $1 ? "0 Types" : "01 Type aliases"
+        } elsif ($p=~ m{^ \s* const \s+ \S+ \s+ ([a-zA-Z_]\w*) \s*
+                          =[^=] }sx) {
+            "2.5 Constants"
         } else {
             "1 Normal functions"
         }
@@ -300,7 +307,7 @@ sub filedocs ($path) {
         for my $key (sort keys %items) {
             my $items = $items{$key};
             my $subsection = $key;
-            $subsection =~ s/^\d+ +//;
+            $subsection =~ s/^\d+(?:\.\d+)? +//;
             $doc .= "# $subsection\n\n";
             for my $item (@$items) {
                 $doc .= $item->markdown($symbol_lookup)."\n";
@@ -383,7 +390,7 @@ my @itemss = map { [ filedocs($_) ] } @headerfiles;
         for my $key (sort keys %items) {
             my $items = $items{$key};
             my $subsection = $key;
-            $subsection =~ s/^\d+ +//;
+            $subsection =~ s/^\d+(?:\.\d+)? +//;
             $doc .= "## $subsection\n\n";
             # ah and here we sort the symbol instead of go straight:
             for my $sym (sort { lc($a) cmp lc($b) } keys %$items) {
