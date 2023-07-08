@@ -54,10 +54,10 @@ const SyscallInfo syscallinfos[] = {
     { 3, "close" },
 };
 
-#define SYSCALL_open (syscallinfos[0])
-#define SYSCALL_fstat (syscallinfos[1])
-#define SYSCALL_read (syscallinfos[2])
-#define SYSCALL_close (syscallinfos[3])
+#define SYSCALLINFO_open (syscallinfos[0])
+#define SYSCALLINFO_fstat (syscallinfos[1])
+#define SYSCALLINFO_read (syscallinfos[2])
+#define SYSCALLINFO_close (syscallinfos[3])
 
 
 /// A SystemError contains the name of the system call that failed,
@@ -122,13 +122,13 @@ Result(string, SystemError) filecontents_string(string path) {
     int fd = open(path, O_RDONLY);
     if (fd < 0) {
         int e = errno;
-        return Err(string, SystemError)(systemError(SYSCALL_open, e));
+        return Err(string, SystemError)(systemError(SYSCALLINFO_open, e));
     }
     struct stat st;
     if (fstat(fd, &st) < 0) {
         int e = errno;
         close(fd);
-        return Err(string, SystemError)(systemError(SYSCALL_fstat, e));
+        return Err(string, SystemError)(systemError(SYSCALLINFO_fstat, e));
     }
     off_t len = st.st_size;
     string s = new_string(len + 1); // + 1 for the \0 byte
@@ -137,14 +137,14 @@ Result(string, SystemError) filecontents_string(string path) {
         int e = errno;
         close(fd);
         free(s);
-        return Err(string, SystemError)(systemError(SYSCALL_read, e));
+        return Err(string, SystemError)(systemError(SYSCALLINFO_read, e));
     }
     // do we have to retry? probably. But, should also avoid stat.
     assert(did == len);
     if (close(fd) < 0) {
         int e = errno;
         free(s);
-        return Err(string, SystemError)(systemError(SYSCALL_close, e));
+        return Err(string, SystemError)(systemError(SYSCALLINFO_close, e));
     }
     return Ok(string, SystemError)(s);
 }
