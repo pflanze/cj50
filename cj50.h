@@ -447,6 +447,36 @@ int print_debug_floats(const float* ary, size_t len) {
              , double: print_double             \
         )(v)
 
+#define GENERATE_PRINTLN(T)                     \
+    static UNUSED                               \
+    int XCAT(println_, T)(T v) {                \
+        INIT_RESRET;                            \
+        RESRET(print(v));                       \
+        RESRET(print("\n"));                    \
+    cleanup:                                    \
+        return ret;                             \
+    }
+
+
+GENERATE_PRINTLN(string);
+GENERATE_PRINTLN(char);
+GENERATE_PRINTLN(int);
+GENERATE_PRINTLN(uint);
+GENERATE_PRINTLN(float);
+GENERATE_PRINTLN(double);
+
+/// Prints the given value for normal text use, followed by a newline
+/// ("\n") for convenience.
+
+#define println(v)                              \
+    _Generic((v)                                \
+             , char*: println_string            \
+             , char: println_char               \
+             , int: println_int                 \
+             , uint: println_uint               \
+             , float: println_float             \
+             , double: println_double           \
+        )(v)
 
 /// Prints the given value in a programmer's view, for debugging
 /// purposes.
