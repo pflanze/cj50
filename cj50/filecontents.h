@@ -31,7 +31,7 @@ int print_int(int n);
 
 
 typedef struct SyscallInfo {
-    char id;
+    uint8_t id;
     const char* name;
 } SyscallInfo;
 
