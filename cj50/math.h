@@ -211,4 +211,17 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
         )((a), (b))
 
 
+/// The math constant pi.
+const double math_pi = 3.14159265358979323846264338;
+
+// The pi constant as a float value, faster.
+const float math_pi_float = 3.14159265358979323846264338f;
+
+
+/// The math constant e (Euler's number).
+const double math_e = 2.71828182845904523536028747;
+const double math_e_float = 2.71828182845904523536028747f;
+// verified algorithmically: 2.71828182845905
+
+
 #undef RESRET
