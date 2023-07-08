@@ -155,10 +155,10 @@ package DocEntry {
                 #}
             }
         } elsif ($p=~ m{^typedef\b(\s+struct\b)?}) {
-            $1 ? "0 Types" : "01 Type aliases"
+            $1 ? "0 Types" : "0.1 Type aliases"
         } elsif ($p=~ m{^ \s* const \s+ \S+ \s+ ([a-zA-Z_]\w*) \s*
                           =[^=] }sx) {
-            "2.5 Constants"
+            "0.5 Constants"
         } else {
             "1 Normal functions"
         }
