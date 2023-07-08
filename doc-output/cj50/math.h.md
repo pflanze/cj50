@@ -54,9 +54,9 @@ A rectangle. The opposite corner is at add(start, extent).
 
 ```C
 typedef struct Color {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
 } Color
 ```
 
@@ -119,7 +119,7 @@ Construct a Rect2
 ## color
 
 ```C
-Color color(unsigned char r, unsigned char g, unsigned char b)
+Color color(uint8_t r, uint8_t g, uint8_t b)
 ```
 
 Constructing a color

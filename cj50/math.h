@@ -122,13 +122,13 @@ int print_debug_Rect2(Rect2 s) {
 
 /// A standard 8-bit RGB color representation.
 typedef struct Color {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
 } Color;
 
 /// Constructing a color
-Color color(unsigned char r, unsigned char g, unsigned char b) {
+Color color(uint8_t r, uint8_t g, uint8_t b) {
     return (Color) { r, g, b };
 }
 
