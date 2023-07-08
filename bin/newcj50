@@ -1,0 +1,46 @@
+#!/bin/bash
+set -euo pipefail
+# enable job control consistently, not just when there is a tty:
+set -m
+IFS=
+
+usage() {
+    echo "usage: $0 file.c"
+    echo "  Creates the given file and fills it with a template"
+    echo "  that includes cj50.h."
+    exit 0
+}
+
+die() {
+    echo "$@"
+    exit 1
+}
+
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+if [ "$1" = -h -o "$1" = --help ]; then
+    usage
+fi
+
+file="$1"
+
+# todo: check suffix? oh bash.
+
+if [ -e "$file" ]; then
+    die "File '$file' already exists."
+fi
+
+cat >> "$file" <<END
+#include <cj50.h>
+
+
+
+int main(int argc, char** argv) {
+    
+}
+END
+
+IFS=' '
+$EDITOR "$file"
