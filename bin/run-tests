@@ -9,7 +9,7 @@ binaries=$(perl -we '
     print map { s/\.c$//; "$_$opt " } @ARGV
 ' examples/*.c)
 
-make $binaries
+make -j4 $binaries
 
 out=$(mktemp)
 err=$(mktemp)
