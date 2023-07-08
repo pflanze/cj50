@@ -56,6 +56,11 @@ If you want to read a book about the C programming language, here are some:
 * [string](cj50/string.h.md#string)
 * [uint](cj50.h.md#uint)
 
+## Constants
+
+* [math_e](cj50/math.h.md#math_e)
+* [math_pi](cj50/math.h.md#math_pi)
+
 ## Normal functions
 
 * [clear](cj50/sdlutil.h.md#clear)
@@ -103,6 +108,7 @@ If you want to read a book about the C programming language, here are some:
 * [print](cj50.h.md#print)
 * [print_debug](cj50.h.md#print_debug)
 * [print_debug_array](cj50.h.md#print_debug_array)
+* [println](cj50.h.md#println)
 * [resize](cj50.h.md#resize)
 * [some](cj50.h.md#some)
 * [sub](cj50/math.h.md#sub)

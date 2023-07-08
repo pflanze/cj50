@@ -62,6 +62,26 @@ typedef struct Color {
 
 A standard 8-bit RGB color representation.
 
+# Constants
+
+## math_pi
+
+```C
+const double math_pi = 3.14159265358979323846264338
+```
+
+The math constant pi.
+
+(This may also be available as `M_PI` from <math.h>.)
+
+## math_e
+
+```C
+const double math_e = 2.71828182845904523536028747
+```
+
+The math constant e (Euler's number).
+
 # Normal functions
 
 ## vec2
