@@ -25,6 +25,7 @@
 #include "cj50/string.h"
 #include "cj50/char.h" /* already included via string.h though */
 #include "cj50/int.h"
+#include "cj50/u64.h"
 #include "cj50/gen/equal_array.h"
 #include "cj50/gen/Result.h"
 #include "cj50/float.h"
@@ -443,6 +444,7 @@ int print_debug_floats(const float* ary, size_t len) {
              , char: putchar                    \
              , int: print_int                   \
              , uint: print_uint                 \
+             , u64: print_u64                   \
              , float: print_float               \
              , double: print_double             \
         )(v)
@@ -462,6 +464,7 @@ GENERATE_PRINTLN(string);
 GENERATE_PRINTLN(char);
 GENERATE_PRINTLN(int);
 GENERATE_PRINTLN(uint);
+GENERATE_PRINTLN(u64);
 GENERATE_PRINTLN(float);
 GENERATE_PRINTLN(double);
 
@@ -474,6 +477,7 @@ GENERATE_PRINTLN(double);
              , char: println_char               \
              , int: println_int                 \
              , uint: println_uint               \
+             , u64: println_u64                 \
              , float: println_float             \
              , double: println_double           \
         )(v)
@@ -495,6 +499,7 @@ GENERATE_PRINTLN(double);
              , char: print_debug_char                         \
              , int: print_int                                 \
              , uint: print_uint                               \
+             , u64: print_u64                                 \
              , float: print_float                             \
              , double: print_double                           \
              , Vec2: print_debug_Vec2                         \
@@ -679,6 +684,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
     _Generic((v)                                                        \
              , Option(string): unwrap_Option_string                     \
              , Option(int): unwrap_Option_int                           \
+             , Option(u64): unwrap_Option_u64                           \
              , Option(float): unwrap_Option_float                       \
              , Option(double): unwrap_Option_double                     \
              , Result(int, ParseError): unwrap_Result_int__ParseError   \
@@ -696,6 +702,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , double: "double"                         \
              , Option(string): "Option(string)"         \
              , Option(int): "Option(int)"               \
+             , Option(u64): "Option(u64)"               \
              , Option(float): "Option(float)"           \
              , Vec2: "Vec2"                             \
              , Vec3: "Vec3"                             \
