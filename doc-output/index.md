@@ -37,6 +37,8 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50/string.h](cj50/string.h.md)
 
+* [cj50/u64.h](cj50/u64.h.md)
+
 # Names
 
 ## Types
@@ -54,6 +56,7 @@ If you want to read a book about the C programming language, here are some:
 * [const_string](cj50/string.h.md#const_string)
 * [ParseError](cj50.h.md#parseerror)
 * [string](cj50/string.h.md#string)
+* [u64](cj50/u64.h.md#u64)
 * [uint](cj50.h.md#uint)
 
 ## Constants
