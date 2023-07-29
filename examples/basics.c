@@ -13,7 +13,7 @@ int main() {
     if (!getenv("NONAME")) {
         print("What is your name? ");
         Option(string) name = get_string();
-        D(name);
+        DBG(name);
         if (!name.is_some) {
             print("You cancelled.\n");
             return 0;
@@ -113,12 +113,12 @@ int main() {
 
     if (!getenv("NOMATH")) {
         Vec2 a = { 30, 44.3 };
-        D(a);
+        DBG(a);
         Vec2 b = vec2(-7.1, 10);
-        D(b);
+        DBG(b);
         Vec2 c = add(a, b);
-        D(c);
-        D(mul(c, 3));
-        D(neg(c));
+        DBG(c);
+        DBG(mul(c, 3));
+        DBG(neg(c));
     }
 }

@@ -121,7 +121,7 @@ If you want to read a book about the C programming language, here are some:
 
 ## Macros
 
-* [D](cj50.h.md#d)
+* [DBG](cj50.h.md#d)
 * [DA](cj50.h.md#da)
 * [DIE](cj50/basic-util.h.md#die)
 * [DIE_](cj50/basic-util.h.md#die_)

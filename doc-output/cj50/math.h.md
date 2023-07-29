@@ -152,7 +152,7 @@ or Vec3. Both values need to be of the same type.
 Example:
 
 ```C
-D(add(vec2(10, -3), vec2(3, 5)))  /* prints vec2(13, 2) */
+DBG(add(vec2(10, -3), vec2(3, 5)))  /* prints vec2(13, 2) */
 ```
 
 Members:
@@ -174,7 +174,7 @@ or Vec3. Both values need to be of the same type.
 Example:
 
 ```C
-D(sub(vec2(10, -3), vec2(3, 5)))  /* prints vec2(7, -8) */
+DBG(sub(vec2(10, -3), vec2(3, 5)))  /* prints vec2(7, -8) */
 ```
 
 Members:
@@ -195,7 +195,7 @@ Negate a value for which `-` is not defined, e.g. Vec2 or Vec3.
 Example:
 
 ```C
-D(neg(vec2(10, -3)))  /* prints vec2(-10, 3) */
+DBG(neg(vec2(10, -3)))  /* prints vec2(-10, 3) */
 ```
 
 Members:
@@ -218,7 +218,7 @@ only `float` is supported for the second argument.
 Example:
 
 ```C
-D(mul(vec2(10, -3), 2))  /* prints vec2(20, -6) */
+DBG(mul(vec2(10, -3), 2))  /* prints vec2(20, -6) */
 ```
 
 Members:

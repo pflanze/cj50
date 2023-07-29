@@ -86,11 +86,11 @@ void graphics_render(int window_width,
         }
 
         while (SDL_PollEvent(&e)) {
-            /* D(e.type); */
+            /* DBG(e.type); */
             if (e.type == SDL_QUIT) {
                 quit = true;
             } else if (e.type == SDL_TEXTINPUT) {
-                /* D(e.text.text); */
+                /* DBG(e.text.text); */
                 // ah, string because unicode
                 /*
                 char c0 = e.text.text[0];

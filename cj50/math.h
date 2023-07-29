@@ -152,7 +152,7 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
 /// Example:
 
 /// ```C
-/// D(add(vec2(10, -3), vec2(3, 5)))  /* prints vec2(13, 2) */
+/// DBG(add(vec2(10, -3), vec2(3, 5)))  /* prints vec2(13, 2) */
 /// ```
 #define add(a, b)                               \
     _Generic((a)                                \
@@ -166,7 +166,7 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
 /// Example:
 
 /// ```C
-/// D(sub(vec2(10, -3), vec2(3, 5)))  /* prints vec2(7, -8) */
+/// DBG(sub(vec2(10, -3), vec2(3, 5)))  /* prints vec2(7, -8) */
 /// ```
 #define sub(a, b)                               \
     _Generic((a)                                \
@@ -179,7 +179,7 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
 /// Example:
 
 /// ```C
-/// D(neg(vec2(10, -3)))  /* prints vec2(-10, 3) */
+/// DBG(neg(vec2(10, -3)))  /* prints vec2(-10, 3) */
 /// ```
 #define neg(a)                                  \
     _Generic((a)                                \
@@ -194,7 +194,7 @@ SDL_Rect to_sdl_Rect2(Rect2 r) {
 /// Example:
 
 /// ```C
-/// D(mul(vec2(10, -3), 2))  /* prints vec2(20, -6) */
+/// DBG(mul(vec2(10, -3), 2))  /* prints vec2(20, -6) */
 /// ```
 #define mul(a, b)                                               \
     _Generic((a)                                                \

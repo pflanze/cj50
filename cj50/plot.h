@@ -47,10 +47,10 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
             float x = start.x + extent.x / w * i;
             Option(float) y = f(x);
             if (y.is_some) {
-                /* D(vec2(x, y.value)); */
+                /* DBG(vec2(x, y.value)); */
                 int yint = (y.value - start.y) / extent.y * h;
                 Vec2 pos = { i, ctx->height - yint };
-                /* D(pos); */
+                /* DBG(pos); */
                 Rect2 r = { pos, diagonal };
                 SDL_Rect sr = to_sdl(r);
                 assert_sdl(SDL_RenderDrawRect(renderer, &sr));

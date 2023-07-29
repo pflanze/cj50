@@ -7,7 +7,7 @@ int main(int argc, string* argv) {
     int range;
     if (getenv("EXPLICIT")) {
         Result(int, ParseError) _range = parse_int(argv[1]);
-        D(_range);
+        DBG(_range);
         if (! _range.is_ok) {
             DIE_("argument 1 %s", string_from_ParseError(_range.err));
         }

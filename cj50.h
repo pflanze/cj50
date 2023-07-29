@@ -21,7 +21,7 @@
 #include "cj50/math.h"
 #include "cj50/sdlutil.h"
 #include "cj50/basic-util.h"
-// #include "cj50/plot.h"  include it at the end to pass D
+// #include "cj50/plot.h"  include it at the end to pass DBG
 #include "cj50/string.h"
 #include "cj50/char.h" /* already included via string.h though */
 #include "cj50/int.h"
@@ -734,9 +734,9 @@ GENERATE_equal_array(float);
 // #define err(val, E) ...
 
 
-/// `D`ebug: print the expression `expr` and the value it evaluated
+/// "DeBuG": print the expression `expr` and the value it evaluated
 /// to, for debugging purposes (calls `print_debug` on the value).
-#define D(expr)                                 \
+#define DBG(expr)                               \
     do {                                        \
         print("DEBUG: " #expr " == ");          \
         print_debug(expr);                      \
@@ -776,7 +776,7 @@ cleanup:
     return ret;
 }
 
-/// `D`ebug `A`rray: print the expression `expr` and the array value
+/// `DBG` `A`rray: print the expression `expr` and the array value
 /// it evaluated to, for debugging purposes (calls
 /// `print_debug_array`). `len` must give the length of the array.
 #define DA(expr, len)                                   \
