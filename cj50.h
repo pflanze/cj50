@@ -25,6 +25,7 @@
 #include "cj50/string.h"
 #include "cj50/char.h" /* already included via string.h though */
 #include "cj50/int.h"
+#include "cj50/uint.h"
 #include "cj50/u64.h"
 #include "cj50/gen/equal_array.h"
 #include "cj50/gen/Result.h"
@@ -212,26 +213,6 @@ Result(int, ParseError) parse_int(string s) {
 /// newline. Returns none on end of file (when ctl-d is pressed).
 Option(int) get_int() {
     GET_THING(int, "an integer number", parse_int);
-}
-
-
-/// An integer number type that cannot represent negative numbers, but
-/// instead has a little more room in the positive number range than
-/// `int` (0 .. `UINT_MAX`).
-
-/// CAUTION: arithmetic with numbers of this type does wrap around if
-/// the result of the arithmetic operation is larger than the largest
-/// number that can be represented with this type, or smaller than
-/// 0. This is unlike arithmetic with `int`, where such overflows are
-/// an error and (with the compiler options that we use) abort the
-/// program. So it is best to avoid `uint` and always use `int`
-/// instead, except when using functions from libraries or the
-/// operating system that use this type.
-
-typedef unsigned int uint;
-
-int print_uint(uint n) {
-    return printf("%u", n);
 }
 
 
@@ -651,6 +632,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
     _Generic((v)                                        \
              , string: some_string                      \
              , int: some_int                            \
+             , u64: some_u64                            \
              , float: some_float                        \
              , double: some_double                      \
         )(v)
@@ -662,7 +644,9 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
     _Generic(*((T*)(NULL))                              \
              , string: none_string                      \
              , int: none_int                            \
+             , u64: none_u64                            \
              , float: none_float                        \
+             , double: none_double                      \
         )()
 
 /// Takes a wrapper for some type `T` (like `Option(T)`, or `Result(T,
@@ -698,12 +682,14 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , string: "string"                         \
              , int: "int"                               \
              , unsigned int: "uint"                     \
+             , u64: "u64"                               \
              , float: "float"                           \
              , double: "double"                         \
              , Option(string): "Option(string)"         \
              , Option(int): "Option(int)"               \
              , Option(u64): "Option(u64)"               \
              , Option(float): "Option(float)"           \
+             , Option(double): "Option(double)"         \
              , Vec2: "Vec2"                             \
              , Vec3: "Vec3"                             \
              , Rect2: "Rect2"                           \
@@ -716,7 +702,10 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 GENERATE_equal_array(char);
 GENERATE_equal_array(string);
 GENERATE_equal_array(int);
+GENERATE_equal_array(uint);
+GENERATE_equal_array(u64);
 GENERATE_equal_array(float);
+GENERATE_equal_array(double);
 
 /// Returns true iff len1 == len2 and for every index,
 /// `equal(array1[i], array2[i])` is true.
@@ -725,7 +714,10 @@ GENERATE_equal_array(float);
              , char: equal_array_char                   \
              , string: equal_array_string               \
              , int: equal_array_int                     \
+             , uint: equal_array_uint                   \
+             , u64: equal_array_u64                     \
              , float: equal_array_float                 \
+             , double: equal_array_double               \
         )((array1), (len1), (array2), (len2))
 
 
