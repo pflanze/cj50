@@ -779,7 +779,7 @@ cleanup:
 /// `DBG` `A`rray: print the expression `expr` and the array value
 /// it evaluated to, for debugging purposes (calls
 /// `print_debug_array`). `len` must give the length of the array.
-#define DA(expr, len)                                   \
+#define DBGA(expr, len)                                 \
     do {                                                \
         print("DEBUG: ");                               \
         print(type_name((expr)[0]));                    \

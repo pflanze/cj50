@@ -122,7 +122,7 @@ If you want to read a book about the C programming language, here are some:
 ## Macros
 
 * [DBG](cj50.h.md#d)
-* [DA](cj50.h.md#da)
+* [DBGA](cj50.h.md#da)
 * [DIE](cj50/basic-util.h.md#die)
 * [DIE_](cj50/basic-util.h.md#die_)
 * [Err](cj50/gen/Result.h.md#err)

@@ -3,7 +3,7 @@
 int main () {
 #define SIZ_VALS 4
     int vals[SIZ_VALS] = { -3, 5, 8, 133 };
-    DA(vals, SIZ_VALS);
+    DBGA(vals, SIZ_VALS);
 
     int vals2[SIZ_VALS] = { -3, 5, 8, 133 };
     int vals3[SIZ_VALS - 1] = { -3, 5, 8 };
