@@ -51,6 +51,7 @@
 
 /// Read a string from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
+static
 Option(string) get_string() {
     while (true) {
 #define SIZ 100
@@ -120,11 +121,12 @@ const ParseError E_not_greater_than_zero = 502;
 const ParseError E_negative = 503;
 
 // TODO: remove, should use new_Array_char instead, or just xmallocarray
-static UNUSED
+static
 char* new_string(size_t len);
 
 /// Convert a `ParseError` value into a `string` for display. The
 /// receiver owns the returned string.
+static
 char* string_from_ParseError(ParseError e) {
     if (e == E_not_in_int_range) {
         return xstrdup("is not within the range of numbers of the `int` type");
@@ -157,7 +159,7 @@ cleanup:
     return ret;
 }
 
-static UNUSED
+static
 int fprintln_ParseError(FILE* out, ParseError e) {
     INIT_RESRET;
     string s = string_from_ParseError(e);
@@ -170,6 +172,7 @@ cleanup:
 GENERATE_Result(int, ParseError);
 
 /// Translate a string into an `int` if possible.
+static
 Result(int, ParseError) parse_int(string s) {
     char *tail;
     errno = 0;
@@ -213,6 +216,7 @@ Result(int, ParseError) parse_int(string s) {
 
 /// Read an integer number from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
+static UNUSED
 Option(int) get_int() {
     GET_THING(int, "an integer number", parse_int);
 }
@@ -220,6 +224,7 @@ Option(int) get_int() {
 
 /// Translate a string into an `int` in the natural number range (1 or
 /// higher) if possible.
+static
 Result(int, ParseError) parse_nat(string s) {
     AUTO rn = parse_int(s);
     if (rn.is_ok) {
@@ -236,10 +241,12 @@ Result(int, ParseError) parse_nat(string s) {
 
 /// Read a natural number from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
+static UNUSED
 Option(int) get_nat() {
     GET_THING(int, "a natural number", parse_nat);
 }
 
+static UNUSED
 int print_nat(int n) {
     if (n > 0) {
         return printf("%i", n);
@@ -251,6 +258,7 @@ int print_nat(int n) {
 
 /// Translate a string into an `int` in the natural number range
 /// including 0 (0 or higher) if possible.
+static
 Result(int, ParseError) parse_nat0(string s) {
     AUTO rn = parse_int(s);
     if (rn.is_ok) {
@@ -267,10 +275,12 @@ Result(int, ParseError) parse_nat0(string s) {
 
 /// Read a natural number or zero from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
+static UNUSED
 Option(int) get_nat0() {
     GET_THING(int, "a natural number or zero", parse_nat0);
 }
 
+static UNUSED
 int print_nat0(int n) {
     if (n >= 0) {
         return printf("%i", n);
@@ -283,6 +293,7 @@ int print_nat0(int n) {
 GENERATE_Result(float, ParseError);
 
 /// Translate a string into an `float` if possible.
+static
 Result(float, ParseError) parse_float(string s) {
     char *tail;
     errno = 0;
@@ -304,11 +315,13 @@ Result(float, ParseError) parse_float(string s) {
 /// Read a floating point number or zero from standard input,
 /// terminated by a newline. Returns none on end of file (when ctl-d is
 /// pressed).
+static UNUSED
 Option(float) get_float() {
     GET_THING(float, "a floating point number", parse_float);
 }
 
 
+static
 void* new_array_of_type_and_len(const char* typename,
                                 size_t typesize,
                                 size_t len) {
@@ -327,6 +340,7 @@ void* new_array_of_type_and_len(const char* typename,
 /// when there is not enough memory (never returns the NULL
 /// pointer). The slots in the returned array are all initialized to
 /// the '\0' char. This is the same as `new_string`.
+static UNUSED
 char* new_chars(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
@@ -337,7 +351,7 @@ char* new_chars(size_t len) {
 /// there is not enough memory (never returns the NULL pointer). The
 /// string is set to the empty string. This is the same as
 /// `new_chars`.
-static UNUSED
+static
 char* new_string(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
 }
@@ -346,6 +360,7 @@ char* new_string(size_t len) {
 /// when there is not enough memory (never returns the NULL
 /// pointer). The slots in the returned array are all initialized to
 /// the NULL pointer.
+static UNUSED
 string* new_strings(size_t len) {
     return new_array_of_type_and_len("string", sizeof(string), len);
 }
@@ -361,6 +376,7 @@ Option(String)* new_Option_Strings(size_t len) {
 }
 
 
+static
 void drop_strings_slice(string* ary, size_t len) {
     for (size_t i = 0; i < len; i++) {
         string s = ary[i];
@@ -370,17 +386,20 @@ void drop_strings_slice(string* ary, size_t len) {
     }
 }
 
+static UNUSED
 void drop_strings(string* ary, size_t len) {
     drop_strings_slice(ary, len); /* todo: stop doing that, borrowed */
     free(ary);
 }
 
+static
 void drop_Option_Strings_slice(Option(String)* ary, size_t len) {
     for (size_t i = 0; i < len; i++) {
         drop_Option_String(ary[i]);
     }
 }
 
+static UNUSED
 void drop_Option_Strings(Option(String)* ary, size_t len) {
     drop_Option_Strings_slice(ary, len);
     free(ary);
@@ -390,6 +409,7 @@ void drop_Option_Strings(Option(String)* ary, size_t len) {
 /// Allocate and return a new array of `len` int values. Aborts when
 /// there is not enough memory (never returns the NULL pointer). The
 /// slots in the returned array are all initialized to the value 0.
+static UNUSED
 int* new_ints(size_t len) {
     return new_array_of_type_and_len("int", sizeof(int), len);
 }
@@ -397,6 +417,7 @@ int* new_ints(size_t len) {
 /// Allocate and return a new array of `len` float values. Aborts when
 /// there is not enough memory (never returns the NULL pointer). The
 /// slots in the returned array are all initialized to the value 0.
+static UNUSED
 float* new_floats(size_t len) {
     return new_array_of_type_and_len("float", sizeof(float), len);
 }
@@ -419,22 +440,27 @@ float* new_floats(size_t len) {
 cleanup:                                        \
     return ret;
 
+static UNUSED
 int print_debug_chars(const char* ary, size_t len) {
     PRINT_ARRAY(print_debug_char, ary, len);
 }
 
+static UNUSED
 int print_debug_strings(const string* ary, size_t len) {
     PRINT_ARRAY(print_debug_string, ary, len);
 }
 
+static UNUSED
 int print_debug_Option_Strings(const Option(String)* ary, size_t len) {
     PRINT_ARRAY(print_debug_Option_String, ary, len);
 }
 
+static UNUSED
 int print_debug_ints(const int* ary, size_t len) {
     PRINT_ARRAY(print_debug_int, ary, len);
 }
 
+static UNUSED
 int print_debug_floats(const float* ary, size_t len) {
     PRINT_ARRAY(print_debug_float, ary, len);
 }
@@ -611,12 +637,14 @@ GENERATE_PRINTLN(double);
     }
 
 
+static UNUSED
 string* resize_strings(string* ary, size_t oldlen, size_t newlen) {
     RESIZE_ARRAY_test_equal(ary, oldlen, newlen);
     RESIZE_ARRAY_free(ary, oldlen, newlen);
     RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, string, NULL);
 }
 
+static UNUSED
 Option(String)* resize_Option_Strings(
     Option(String)* ary, size_t oldlen, size_t newlen
     ) {
@@ -626,11 +654,13 @@ Option(String)* resize_Option_Strings(
         ary, oldlen, newlen, Option(String), none_String());
 }
 
+static UNUSED
 int* resize_ints(int* ary, size_t oldlen, size_t newlen) {
     RESIZE_ARRAY_test_equal(ary, oldlen, newlen);
     RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, int, 0);
 }
 
+static UNUSED
 float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
     RESIZE_ARRAY_test_equal(ary, oldlen, newlen);
     RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, float, 0);
@@ -808,10 +838,12 @@ GENERATE_equal_array(double);
     } while (0)
 
 
+static
 bool is_alpha_underscore(char c) {
     return isalpha(c) || c == '_';
 }
 
+static
 bool is_symbol(const char* s) {
     size_t len = strlen(s);
     if ((len > 0) && is_alpha_underscore(s[0])) {
@@ -827,6 +859,7 @@ bool is_symbol(const char* s) {
     }
 }
 
+static UNUSED
 int print_var_or_expr(const char* s) {
     INIT_RESRET;
     if (is_symbol(s)) {
