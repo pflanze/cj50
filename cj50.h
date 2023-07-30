@@ -174,6 +174,9 @@ GENERATE_Result(int, ParseError);
 /// Translate a string into an `int` if possible.
 static
 Result(int, ParseError) parse_int(string s) {
+    // UBSan leads to strtol call causing exit(1), which prevents debugging
+    assert(s);
+
     char *tail;
     errno = 0;
     long n = strtol(s, &tail, 10);
