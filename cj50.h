@@ -119,6 +119,7 @@ const ParseError E_not_in_int_range = 500;
 const ParseError E_invalid_text_after_number = 501;
 const ParseError E_not_greater_than_zero = 502;
 const ParseError E_negative = 503;
+const ParseError E_not_a_number = 504;
 
 // TODO: remove, should use new_Array_char instead, or just xmallocarray
 static
@@ -136,6 +137,8 @@ char* string_from_ParseError(ParseError e) {
         return xstrdup("is not greater than zero");
     } else if (e == E_negative) {
         return xstrdup("is negative");
+    } else if (e == E_not_a_number) {
+        return xstrdup("is not a number");
     } else if (e < 256) {
 #define SIZ_ 200
         char* s = new_string(SIZ_);
@@ -191,7 +194,9 @@ Result(int, ParseError) parse_int(string s) {
                 return Err(int, ParseError)(E_not_in_int_range);
             }
         } else {
-            return Err(int, ParseError)(E_invalid_text_after_number);
+            return Err(int, ParseError)(
+                tail == s ? E_not_a_number :
+                E_invalid_text_after_number);
         }
     } else {
         // return err_ParseResult(E_not_in_int_range);
@@ -308,7 +313,9 @@ Result(float, ParseError) parse_float(string s) {
         if (*tail == '\0') {
             return Ok(float, ParseError)(x);
         } else {
-            return Err(float, ParseError)(E_invalid_text_after_number);
+            return Err(float, ParseError)(
+                tail == s ? E_not_a_number :
+                E_invalid_text_after_number);
         }
     } else {
         return Err(float, ParseError)(errno);
