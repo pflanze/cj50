@@ -167,6 +167,9 @@
 
 #define if_let_Some(decl, expr)                 \
     AUTO HYGIENIC(res) = (expr);                \
-    decl = HYGIENIC(res).value;                 \
-    if (HYGIENIC(res).is_some)
+    if (HYGIENIC(res).is_some) {                \
+    decl = HYGIENIC(res).value;
+
+#define else_None                               \
+    } else
 

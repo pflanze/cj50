@@ -36,10 +36,10 @@ int main() {
             if_let_Some(float h, get_float()) {
                 print("Area = ");
                 println(w * h);
-            } else {
+            } else_None {
                 goto cancelled;
             }
-        } else {
+        } else_None {
         cancelled:
             println("You cancelled.");
             return 0;
