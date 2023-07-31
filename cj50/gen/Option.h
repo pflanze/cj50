@@ -149,3 +149,24 @@
 #define NONE { .is_some = false }
 
 
+/// This macro allows for convenient matching and conditional
+/// execution depending on what case of the Option was
+/// received. CAREFUL: it must always be paired with `else_None`, or
+/// weird syntax errors will be reported because curly braces will not
+/// be balanced! (The `else_None` always has to be there, but the `{
+/// }` after it are optional.)
+
+/// ```C
+/// if_let_Some(float w, get_float()) {
+///     float h = unwrap(get_float());
+///     println(w * h);
+/// } else_None {
+///     print("You cancelled.\n");
+/// }
+/// ```
+
+#define if_let_Some(decl, expr)                 \
+    AUTO HYGIENIC(res) = (expr);                \
+    decl = HYGIENIC(res).value;                 \
+    if (HYGIENIC(res).is_some)
+

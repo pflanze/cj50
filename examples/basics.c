@@ -31,16 +31,19 @@ int main() {
 
     if (!getenv("NOFLOAT")) {
         print("Width: ");
-        Option(float) w = get_float();
-        if (!w.is_some) {
-            print("You cancelled.\n");
+        if_let_Some(float w, get_float()) {
+            print("Height: ");
+            if_let_Some(float h, get_float()) {
+                print("Area = ");
+                println(w * h);
+            } else {
+                goto cancelled;
+            }
+        } else {
+        cancelled:
+            println("You cancelled.");
             return 0;
         }
-        print("Height: ");
-        float h = unwrap(get_float());
-        print("Area = ");
-        print(w.value * h);
-        print("\n");
     }
 
     if (!getenv("NOARRAY")) {
