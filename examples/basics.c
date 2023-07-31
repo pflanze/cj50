@@ -106,7 +106,7 @@ int main() {
             print("What is the name of person no. ");
             print(i + 1);
             print("? ");
-            ss[i] = some_String(unwrap(get_String()));
+            ss[i] = some(unwrap(get_String()));
         }
         print("Our people are:\n");
         print_debug_array(ss, n);
