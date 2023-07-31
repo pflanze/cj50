@@ -16,6 +16,7 @@ typedef struct String {
     char* str;
 } String;
 
+#define String(x) ((String) { .str = (x) })
 
 static UNUSED
 void drop_String(String s) {
