@@ -49,10 +49,8 @@
     ret += res;
 
 
-/// Read a string from standard input, terminated by a
-/// newline. Returns none on end of file (when ctl-d is pressed).
 static
-Option(string) get_string() {
+Option(string) _get_string() {
     while (true) {
 #define SIZ 100
         char *line = malloc(SIZ);
@@ -82,6 +80,20 @@ Option(string) get_string() {
         }
         free(line);
         print_string("Your answer is empty. Please enter a string: ");
+    }
+}
+
+/// Read a String from standard input, terminated by a
+/// newline. Returns none on end of file (when ctl-d is pressed).
+
+static UNUSED
+Option(String) get_String() {
+    Option(string) s = _get_string();
+    if (s.is_some) {
+        // need to discard const qualifier
+        return some_String((String) { .str = (char*) s.value });
+    } else {
+        return none_String();
     }
 }
 
@@ -206,12 +218,12 @@ Result(int, ParseError) parse_int(string s) {
 
 #define GET_THING(T, type_desc, parse)                  \
     while (true) {                                      \
-        Option(string) s = get_string();                \
+        Option(String) s = get_String();                \
         if (!s.is_some) {                               \
             return XCAT(none_, T)();                    \
         }                                               \
-        Result(T, ParseError) r = parse(s.value);       \
-        drop_Option_string(s);                          \
+        Result(T, ParseError) r = parse(s.value.str);   \
+        drop_Option_String(s);                          \
         if (r.is_ok) {                                  \
             return XCAT(some_, T)(r.ok);                \
         }                                               \
@@ -571,7 +583,7 @@ GENERATE_PRINTLN(double);
              , Rect2: print_debug_Rect2                       \
              , Result(int, ParseError)*: print_debug_Result_int__ParseError \
              , Result(int, ParseError): print_debug_move_Result_int__ParseError \
-             , Result(string, SystemError): print_debug_move_Result_string__SystemError \
+             , Result(String, SystemError): print_debug_move_Result_String__SystemError \
              , SystemError: print_debug_SystemError                     \
         )(v)
 
@@ -716,7 +728,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(int)*: equal_Option_int                           \
              , Option(float)*: equal_Option_float                       \
              , Result(int, ParseError)*: equal_Result_int__ParseError   \
-             , Result(string, SystemError)*: equal_Result_string__SystemError \
+             , Result(String, SystemError)*: equal_Result_String__SystemError \
              , string*: equal_string                                    \
              , String*: equal_String                                    \
              , string: equal_move_string                                \
@@ -781,7 +793,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(double): unwrap_Option_double                     \
              , Result(int, ParseError): unwrap_Result_int__ParseError   \
              , Result(float, ParseError): unwrap_Result_float__ParseError   \
-             , Result(string, SystemError): unwrap_Result_string__SystemError \
+             , Result(String, SystemError): unwrap_Result_String__SystemError \
         )(v)
 
 /// Returns the name of the type of `e` as a string constant.
@@ -805,7 +817,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Rect2: "Rect2"                           \
              , Line2: "Line2"                           \
              , Result(int, ParseError): "Result(int, ParseError)"       \
-             , Result(string, SystemError): "Result(string, SystemError)" \
+             , Result(String, SystemError): "Result(String, SystemError)" \
         )
 
 

@@ -12,7 +12,7 @@ float average(const float* vs, size_t len) {
 int main() {
     if (!getenv("NONAME")) {
         print("What is your name? ");
-        Option(string) name = get_string();
+        Option(String) name = get_String();
         DBG(name);
         if (!name.is_some) {
             print("You cancelled.\n");
@@ -65,8 +65,8 @@ int main() {
             print("\n");
 
             print("Do you want to (e)dit, (r)esize, (c)ontinue? ");
-            string ans = unwrap(get_string());
-            if (ans[0] == 'e') {
+            String ans = unwrap(get_String());
+            if (ans.str[0] == 'e') {
                 print("Which test (1-based)? ");
                 int i = unwrap(get_nat()) - 1;
                 if (i < n) {
@@ -79,13 +79,13 @@ int main() {
                     print("]. Try again.\n");
                 }
                 
-            } else if (ans[0] == 'r') {
+            } else if (ans.str[0] == 'r') {
                 print("To which length? ");
                 int newlen = unwrap(get_nat());
                 grades = resize(grades, n, newlen);
                 n = newlen;
 
-            } else if (ans[0] == 'c') {
+            } else if (ans.str[0] == 'c') {
                 cont = true;
             } else {
                 print("Invalid answer.\n");
@@ -98,12 +98,12 @@ int main() {
     if (!getenv("NONAMES")) {
         print("How many people do we have? ");
         int n = unwrap(get_nat0());
-        string* ss = new_strings(n);
+        Option_String* ss = new_Option_Strings(n);
         for (int i = 0; i < n; i++) {
             print("What is the name of person no. ");
             print(i + 1);
             print("? ");
-            ss[i] = unwrap(get_string());
+            ss[i] = some_String(unwrap(get_String()));
         }
         print("Our people are:\n");
         print_debug_array(ss, n);

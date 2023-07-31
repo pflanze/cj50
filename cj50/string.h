@@ -19,9 +19,7 @@ typedef const char* string;
 
 // even though not owned, we need this because Option refers to it
 static UNUSED
-void drop_string(UNUSED string s) {
-    free((void*)s); // XXX todo remove as soon as move to get_String is done
-}
+void drop_string(UNUSED string s) {}
 
 // receive pointers to pointers just for standard in Option
 static UNUSED

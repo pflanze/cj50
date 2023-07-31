@@ -109,26 +109,28 @@ cleanup:
 
 
 
-GENERATE_Result(string, SystemError);
+GENERATE_Result(String, SystemError);
+
+// todo: use a string with len so that \0 will not be lost?
 
 /// Returns a copy of the contents of the file at the given `path` as
 /// a string, if possible (no system errors occurred).
 
-/// Note: the string has a '\0' terminator character added. Any '\0'
+/// Note: the String has a '\0' terminator character added. Any '\0'
 /// characters contained in the file will be part of the returned
-/// string and lead to it being interpreted as terminating there.
+/// String and lead to it being interpreted as terminating there.
 
-Result(string, SystemError) filecontents_string(string path) {
+Result(String, SystemError) filecontents_String(string path) {
     int fd = open(path, O_RDONLY);
     if (fd < 0) {
         int e = errno;
-        return Err(string, SystemError)(systemError(SYSCALLINFO_open, e));
+        return Err(String, SystemError)(systemError(SYSCALLINFO_open, e));
     }
     struct stat st;
     if (fstat(fd, &st) < 0) {
         int e = errno;
         close(fd);
-        return Err(string, SystemError)(systemError(SYSCALLINFO_fstat, e));
+        return Err(String, SystemError)(systemError(SYSCALLINFO_fstat, e));
     }
     off_t len = st.st_size;
     char* s = new_string(len + 1); // + 1 for the \0 byte
@@ -137,16 +139,16 @@ Result(string, SystemError) filecontents_string(string path) {
         int e = errno;
         close(fd);
         free(s);
-        return Err(string, SystemError)(systemError(SYSCALLINFO_read, e));
+        return Err(String, SystemError)(systemError(SYSCALLINFO_read, e));
     }
     // do we have to retry? probably. But, should also avoid stat.
     assert(did == len);
     if (close(fd) < 0) {
         int e = errno;
         free(s);
-        return Err(string, SystemError)(systemError(SYSCALLINFO_close, e));
+        return Err(String, SystemError)(systemError(SYSCALLINFO_close, e));
     }
-    return Ok(string, SystemError)(s);
+    return Ok(String, SystemError)(String(s));
 }
 
 

@@ -16,4 +16,5 @@ Result(int, ParseError)	8
 Result(float, ParseError)	8
 Result(double, ParseError)	16
 Result(string, ParseError)	16
-Result(string, SystemError)	16
+Result(String, ParseError)	16
+Result(String, SystemError)	16

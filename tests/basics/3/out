@@ -6,7 +6,7 @@ How many tests have you done? What was your grade for test no. 1? What was your 
 Do you want to (e)dit, (r)esize, (c)ontinue? To which length? average({44.3, 200, -32, 0}) = 53.075
 Do you want to (e)dit, (r)esize, (c)ontinue? Which test (1-based)? What grade? average({44.3, 200, -32, 70.7667}) = 70.7667
 Do you want to (e)dit, (r)esize, (c)ontinue? How many people do we have? What is the name of person no. 1? What is the name of person no. 2? Our people are:
-{"Motörhead garçon", " foo bar \" '\\n "}
+{some("Motörhead garçon"), some(" foo bar \" '\\n ")}
 DEBUG: a == vec2(30, 44.3)
 DEBUG: b == vec2(-7.1, 10)
 DEBUG: c == vec2(22.9, 54.3)

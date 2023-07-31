@@ -7,6 +7,7 @@
 GENERATE_Result(char, ParseError);
 GENERATE_Result(double, ParseError);
 GENERATE_Result(string, ParseError);
+GENERATE_Result(String, ParseError);
 
 
 #define S(T) do {                               \
@@ -38,6 +39,7 @@ int main() {
     S(Result(float, ParseError));
     S(Result(double, ParseError));
     S(Result(string, ParseError));
+    S(Result(String, ParseError));
 
-    S(Result(string, SystemError));
+    S(Result(String, SystemError));
 }

@@ -3,9 +3,9 @@
 int main(int argc, char** argv) {
     assert(argc == 2);
     string path = argv[1];
-    Result(string, SystemError) rcnt = filecontents_string(path);
+    Result(String, SystemError) rcnt = filecontents_String(path);
     // DBG(rcnt);
-    string cnt = unwrap(rcnt);
+    String cnt = unwrap(rcnt);
     print(cnt);
     drop(cnt);
 }
