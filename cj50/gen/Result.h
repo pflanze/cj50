@@ -106,9 +106,9 @@
         res = printf("%s(%s, %s)(", constr, #T, #E);            \
         if (res < 0) { return res; } ret += res;                \
         if (s->is_ok) {                                         \
-            res = XCAT(print_debug_, T)(/* XX & */s->ok);       \
+            res = XCAT(print_debug_, T)(&s->ok);                \
         } else {                                                \
-            res = XCAT(print_debug_, E)(/* XX & */s->err);      \
+            res = XCAT(print_debug_, E)(&s->err);               \
         }                                                       \
         if (res < 0) { return res; } ret += res;                \
         res = printf(")");                                      \

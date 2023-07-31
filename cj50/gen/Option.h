@@ -118,7 +118,7 @@
             res = printf("some(");                              \
             if (res < 0) { return res; }                        \
             ret += res;                                         \
-            res = XCAT(print_debug_, T)(/* XX & */s->value);    \
+            res = XCAT(print_debug_, T)(&s->value);             \
             if (res < 0) { return res; }                        \
             ret += res;                                         \
             res = printf(")");                                  \

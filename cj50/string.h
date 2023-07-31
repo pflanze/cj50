@@ -10,18 +10,17 @@
     ret += res;
 
 
-/// `string` is an array of `char`s. It always must have the special
-/// '\0' char in it somewhere, after the end of the text that is
-/// stored in the string, to signal the end of the text.
-typedef char* string;
+/// `string` is a non-mutable borrowed type that represents a "C
+/// string". It is an array of `char`, that represents the text, and a
+/// '\0' character after it to signal the end. There is no length
+/// information, the length has to be determined by walking the array
+/// until encountering the '\0' character (`strlen` will do that).
+typedef const char* string;
 
-/// `const_string` is exactly like `string`, but read only (this
-/// includes string literals like "Hello World").
-typedef const char* const_string;
-
+// even though not owned, we need this because Option refers to it
 static UNUSED
-void drop_string(string s) {
-    free(s);
+void drop_string(UNUSED string s) {
+    free((void*)s); // XXX todo remove as soon as move to get_String is done
 }
 
 // receive pointers to pointers just for standard in Option
@@ -30,21 +29,17 @@ bool equal_string(const string *a, const string *b) {
     return strcmp(*a, *b) == 0;
 }
 
-static UNUSED
-bool equal_move_string(const char *a, const char *b) {
-    return strcmp(a, b) == 0;
-}
-
-int print_string(const_string str) {
+int print_string(string str) {
     return printf("%s", str);
 }
 
-static UNUSED
-int print_debug_string(const_string str) {
+static
+int print_debug_string(const string *s) {
     int ret = 0;
     int res;
     RESRET(print_string("\""));
-    
+
+    string str = *s;
     while (*str) {
         RESRET(_print_debug_char(*str));
         str++;

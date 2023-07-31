@@ -36,8 +36,8 @@ static UNUSED
 void drop_uint(const uint UNUSED a) {}
 
 static UNUSED
-uint print_debug_uint(uint n) {
-    return printf("%i", n);
+uint print_debug_uint(const uint *n) {
+    return printf("%i", *n);
 }
 
 GENERATE_Option(uint);

@@ -9,7 +9,7 @@
 #include <cj50/gen/Result.h>
 
 static UNUSED
-string new_string(size_t len);
+char* new_string(size_t len);
 
 static
 int print_int(int n);
@@ -41,7 +41,7 @@ int print_debug_SyscallInfo(const SyscallInfo v) {
     RESRET(print_string("(SyscallInfo){ .id = "));
     RESRET(print_int(v.id));
     RESRET(print_string(", .name = "));
-    RESRET(print_debug_string(v.name));
+    RESRET(print_debug_string(&v.name));
     RESRET(print_string(" }"));
 cleanup:
     return ret;
@@ -83,12 +83,12 @@ bool equal_SystemError(const SystemError* a, const SystemError* b) {
 }
 
 static
-int print_debug_SystemError(const SystemError v) {
+int print_debug_SystemError(const SystemError *v) {
     INIT_RESRET;
     RESRET(print_string("systemError("));
-    RESRET(print_debug_SyscallInfo(syscallinfos[v.syscallinfo_id]));
+    RESRET(print_debug_SyscallInfo(syscallinfos[v->syscallinfo_id]));
     RESRET(print_string(", "));
-    RESRET(print_int(v._errno)); // todo: look up constant names like ENOPERM etc.?
+    RESRET(print_int(v->_errno)); // todo: look up constant names like ENOPERM etc.?
     RESRET(print_string(")"));
 cleanup:
     return ret;
@@ -131,7 +131,7 @@ Result(string, SystemError) filecontents_string(string path) {
         return Err(string, SystemError)(systemError(SYSCALLINFO_fstat, e));
     }
     off_t len = st.st_size;
-    string s = new_string(len + 1); // + 1 for the \0 byte
+    char* s = new_string(len + 1); // + 1 for the \0 byte
     ssize_t did = read(fd, s, len);
     if (did < 0) {
         int e = errno;

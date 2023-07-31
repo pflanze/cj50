@@ -21,8 +21,8 @@ int print_double(double x) {
 }
 
 static UNUSED
-int print_debug_double(double x) {
-    return printf("%g", x);
+int print_debug_double(const double *x) {
+    return printf("%g", *x);
 }
 
 GENERATE_Option(double);

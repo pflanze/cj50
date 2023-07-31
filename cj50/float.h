@@ -21,8 +21,8 @@ int print_float(float x) {
 }
 
 static UNUSED
-int print_debug_float(float x) {
-    return printf("%g", x);
+int print_debug_float(const float *x) {
+    return printf("%g", *x);
 }
 
 GENERATE_Option(float);

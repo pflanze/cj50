@@ -49,11 +49,11 @@ int _print_debug_char(char c) {
     }
 }
 
-int print_debug_char(char c) {
+int print_debug_char(const char *c) {
     int ret = 0;
     int res;
     RESRET(fputc('\'', stdout));
-    RESRET(_print_debug_char(c));
+    RESRET(_print_debug_char(*c));
     RESRET(fputc('\'', stdout));
     return ret;
 }
