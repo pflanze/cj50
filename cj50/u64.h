@@ -25,12 +25,12 @@ static UNUSED
 void drop_u64(const u64 UNUSED a) {}
 
 static UNUSED
-u64 print_u64(u64 n) {
+int print_u64(u64 n) {
     return printf("%lu", n);
 }
 
 static UNUSED
-u64 print_debug_u64(const u64 *n) {
+int print_debug_u64(const u64 *n) {
     return printf("%lu", *n);
 }
 
