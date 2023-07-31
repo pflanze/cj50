@@ -142,3 +142,32 @@
 #define Err(T, E)                               \
     XCAT(err_, Result(T, E))
 
+
+/// This macro allows for convenient matching and conditional
+/// execution depending on what case of the Result was
+/// received. CAREFUL: it must always be paired with `else_Err` and
+/// `end_let_Ok`, or weird syntax errors will be reported because
+/// curly braces will not be balanced!
+
+/// ```C
+/// if_let_Ok(String cnt, filecontents_String(path)) {
+///     print(cnt);
+///     drop(cnt);
+/// } else_Err(SystemError e) {
+///     fprintln_SystemError(stderr, e);
+/// } end_let_Ok;
+/// ```
+
+#define if_let_Ok(decl, expr)                   \
+    {                                           \
+    AUTO ___if_let_res = (expr);                \
+    if (___if_let_res.is_ok) {                  \
+    decl = ___if_let_res.ok;
+
+#define else_Err(decl)                          \
+    } else {                                    \
+    decl = ___if_let_res.err;
+
+#define end_let_Ok                              \
+    }}
+

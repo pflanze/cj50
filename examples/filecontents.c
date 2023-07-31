@@ -3,9 +3,11 @@
 int main(int argc, char** argv) {
     assert(argc == 2);
     string path = argv[1];
-    Result(String, SystemError) rcnt = filecontents_String(path);
-    // DBG(rcnt);
-    String cnt = unwrap(rcnt);
-    print(cnt);
-    drop(cnt);
+    if_let_Ok(String cnt, filecontents_String(path)) {
+        print(cnt);
+        drop(cnt);
+    } else_Err(SystemError e) {
+        fprintln_SystemError(stderr, e);
+        exit(1);
+    } end_let_Ok;
 }
