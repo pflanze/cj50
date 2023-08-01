@@ -501,9 +501,9 @@ int print_debug_floats(const float* ary, size_t len) {
 
 #define print(v)                                \
     _Generic((v)                                \
-             , String: print_String             \
-             , const char*: print_string        \
              , char*: print_string              \
+             , string: print_string             \
+             , String: print_String             \
              , char: putchar                    \
              , int: print_int                   \
              , uint: print_uint                 \
@@ -537,8 +537,9 @@ GENERATE_PRINTLN(double);
 
 #define println(v)                              \
     _Generic((v)                                \
-             , String: println_String           \
              , char*: println_string            \
+             , string: println_string           \
+             , String: println_String           \
              , char: println_char               \
              , int: println_int                 \
              , uint: println_uint               \
@@ -559,9 +560,10 @@ GENERATE_PRINTLN(double);
 
 #define print_debug(v)                                        \
     _Generic((v)                                              \
+             , char**: print_debug_string                     \
+             , string*: print_debug_string                    \
              , String*: print_debug_String                    \
              , String: print_debug_move_String                \
-             , char*: print_debug_string                      \
              , bool: print_debug_bool                         \
              , char: print_debug_char                         \
              , int: print_int                                 \
