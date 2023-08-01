@@ -47,6 +47,11 @@ int print_debug_move_String(String s) {
     return r;
 }
 
+static UNUSED
+string deref_String(String *s) {
+    return s->str;
+}
+
 
 GENERATE_Option(String);
 

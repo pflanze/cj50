@@ -798,6 +798,23 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Result(String, SystemError): unwrap_Result_String__SystemError \
         )(v)
 
+/// Dereferencing a wrapper type ('smart pointer') to the simpler
+/// contained type; both the argument and the result are reference
+/// types (not owned).
+
+/// Example:
+///
+/// ```C
+/// String s = unwrap(filecontents_String(path));
+/// string s1 = deref(&s);
+/// ```
+
+#define deref(v)                                                        \
+    _Generic((v)                                                        \
+             , String*: deref_String                                    \
+        )(v)
+
+
 /// Returns the name of the type of `e` as a string constant.
 #define type_name(e)                                    \
     _Generic((e)                                        \
