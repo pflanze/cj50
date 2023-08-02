@@ -66,6 +66,11 @@ sub prototype_from_E_cleanup($s) {
     chompspace $s
 }
 
+sub prototype_cleanup_for_display($s) {
+    $s=~ s/\bstatic\b(?:\s*UNUSED\b)?//s;
+    chompspace $s
+}
+
 my $std_prototypes = +{
     putchar=> "int putchar(int c)",
     free=> "void free(void *ptr)",
@@ -111,8 +116,7 @@ package DocEntry {
 
     sub prototype($self) {
         my $s = $self->bare_prototype;
-        $s =~ s{^\s+}{}s;
-        $s =~ s{\s+\z}{}s;
+        $s = main::prototype_cleanup_for_display($s);
         # Remove #define, or leave it in? At least canonicalize it
         #$s =~ s{^#\s*define\s+}{#define }s;
         $s =~ s{^#\s*define\s+}{}s;
