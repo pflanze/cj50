@@ -119,6 +119,7 @@ GENERATE_Result(CStr, SystemError);
 /// characters contained in the file will be part of the returned
 /// String and lead to it being interpreted as terminating there.
 
+static UNUSED
 Result(CStr, SystemError) filecontents_CStr(cstr path) {
     int fd = open(path, O_RDONLY);
     if (fd < 0) {
