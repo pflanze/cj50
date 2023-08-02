@@ -27,6 +27,12 @@ bool equal_string(const string *a, const string *b) {
     return strcmp(*a, *b) == 0;
 }
 
+static UNUSED
+bool equal_move_string(string a, string b) {
+    return strcmp(a, b) == 0;
+}
+
+
 int print_string(string str) {
     return printf("%s", str);
 }
