@@ -1,10 +1,10 @@
 #pragma once
 
 #include <cj50/gen/Option.h>
-#include <cj50/string.h>
+#include <cj50/CStr.h>
 // #include <cj50/char.h>
 
-/// `String` is an owned type that holds a "C string", an string of
+/// `String` is an owned type that holds a "C cstr", an cstr of
 /// characters, more precisely, an array of `char`, that represents
 /// the text, and a '\0' character after it to signal the end. There
 /// is no length information, the length has to be determined by
@@ -30,14 +30,14 @@ bool equal_String(const String *a, const String *b) {
 
 // XX change to borrow? But do it for all of `print`.
 int print_String(const String s) {
-    return print_string(s.str);
+    return print_cstr(s.str);
 }
 
 static UNUSED
 int print_debug_String(const String *s) {
     // Have to cast here because C only silences non-const to const
     // casting if `const` is on the left-most (outmost) level:
-    return print_debug_string((const string *)&s->str);
+    return print_debug_cstr((const cstr *)&s->str);
 }
 
 static UNUSED
@@ -48,7 +48,7 @@ int print_debug_move_String(String s) {
 }
 
 static UNUSED
-string deref_String(String *s) {
+cstr deref_String(String *s) {
     return s->str;
 }
 

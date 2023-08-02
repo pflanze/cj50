@@ -17,7 +17,7 @@ in `msg`.
 WARN_(msg, ...)
 ```
 
-Print a warning to standard error. `msg` is a format string, the
+Print a warning to standard error. `msg` is a format cstr, the
 values to embed are expected afterwards.
 
 ## DIE
@@ -36,7 +36,7 @@ DIE_(msg, ...)
 ```
 
 Print a message to standard error, then abort. `msg` is a format
-string, the values to embed are expected afterwards.
+cstr, the values to embed are expected afterwards.
 
 <hr>
 <p>&nbsp;</p>

@@ -1,6 +1,6 @@
 #include <cj50.h>
 
-int main(int argc, string* argv) {
+int main(int argc, cstr* argv) {
     if (argc != 2) {
         DIE("usage: random range");
     }

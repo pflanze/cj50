@@ -42,7 +42,7 @@ Ok(T, E)
 Returns the constructor function for the `ok` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
 
 ```C
-Ok(int, string)(42)
+Ok(int, cstr)(42)
 ```
 
 ## Err
@@ -54,7 +54,7 @@ Err(T, E)
 Returns the constructor function for the `err` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
 
 ```C
-Err(int, string)("the input does not contain a number")
+Err(int, cstr)("the input does not contain a number")
 ```
 
 ## if_let_Ok

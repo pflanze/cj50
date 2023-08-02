@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
     assert(argc == 2);
-    string path = argv[1];
+    cstr path = argv[1];
     if_let_Ok(String cnt, filecontents_String(path)) {
         print(cnt);
         drop(cnt);

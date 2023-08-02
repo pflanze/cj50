@@ -10,7 +10,7 @@ typedef struct String {
 } String
 ```
 
-`String` is an owned type that holds a "C string", an string of
+`String` is an owned type that holds a "C cstr", an cstr of
 characters, more precisely, an array of `char`, that represents
 the text, and a '\0' character after it to signal the end. There
 is no length information, the length has to be determined by

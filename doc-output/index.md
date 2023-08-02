@@ -17,6 +17,8 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50.h](cj50.h.md)
 
+* [cj50/CStr.h](cj50/CStr.h.md)
+
 * [cj50/String.h](cj50/String.h.md)
 
 * [cj50/basic-util.h](cj50/basic-util.h.md)
@@ -37,8 +39,6 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50/sdlutil.h](cj50/sdlutil.h.md)
 
-* [cj50/string.h](cj50/string.h.md)
-
 * [cj50/u64.h](cj50/u64.h.md)
 
 * [cj50/uint.h](cj50/uint.h.md)
@@ -58,8 +58,8 @@ If you want to read a book about the C programming language, here are some:
 
 ## Type aliases
 
+* [cstr](cj50/CStr.h.md#cstr)
 * [ParseError](cj50.h.md#parseerror)
-* [string](cj50/string.h.md#string)
 * [u64](cj50/u64.h.md#u64)
 * [uint](cj50/uint.h.md#uint)
 
@@ -82,11 +82,11 @@ If you want to read a book about the C programming language, here are some:
 * [graphics_render](cj50/sdlutil.h.md#graphics_render)
 * [line2](cj50/math.h.md#line2)
 * [new_chars](cj50.h.md#new_chars)
+* [new_cstr](cj50.h.md#new_cstr)
+* [new_cstrs](cj50.h.md#new_cstrs)
 * [new_floats](cj50.h.md#new_floats)
 * [new_ints](cj50.h.md#new_ints)
 * [new_Option_Strings](cj50.h.md#new_option_strings)
-* [new_string](cj50.h.md#new_string)
-* [new_strings](cj50.h.md#new_strings)
 * [parse_float](cj50.h.md#parse_float)
 * [parse_int](cj50.h.md#parse_int)
 * [parse_nat](cj50.h.md#parse_nat)

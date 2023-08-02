@@ -19,11 +19,11 @@ and the system error.
 ## filecontents_String
 
 ```C
-Result(String, SystemError) filecontents_String(string path)
+Result(String, SystemError) filecontents_String(cstr path)
 ```
 
 Returns a copy of the contents of the file at the given `path` as
-a string, if possible (no system errors occurred).
+a cstr, if possible (no system errors occurred).
 
 Note: the String has a '\0' terminator character added. Any '\0'
 characters contained in the file will be part of the returned

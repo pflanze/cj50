@@ -5,11 +5,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <cj50/string.h>
+#include <cj50/CStr.h>
 #include <cj50/gen/Result.h>
 
 static UNUSED
-char* new_string(size_t len);
+char* new_cstr(size_t len);
 
 static
 int print_int(int n);
@@ -38,11 +38,11 @@ typedef struct SyscallInfo {
 static
 int print_debug_SyscallInfo(const SyscallInfo v) {
     INIT_RESRET;
-    RESRET(print_string("(SyscallInfo){ .id = "));
+    RESRET(print_cstr("(SyscallInfo){ .id = "));
     RESRET(print_int(v.id));
-    RESRET(print_string(", .name = "));
-    RESRET(print_debug_string(&v.name));
-    RESRET(print_string(" }"));
+    RESRET(print_cstr(", .name = "));
+    RESRET(print_debug_cstr(&v.name));
+    RESRET(print_cstr(" }"));
 cleanup:
     return ret;
 }
@@ -85,11 +85,11 @@ bool equal_SystemError(const SystemError* a, const SystemError* b) {
 static
 int print_debug_SystemError(const SystemError *v) {
     INIT_RESRET;
-    RESRET(print_string("systemError("));
+    RESRET(print_cstr("systemError("));
     RESRET(print_debug_SyscallInfo(syscallinfos[v->syscallinfo_id]));
-    RESRET(print_string(", "));
+    RESRET(print_cstr(", "));
     RESRET(print_int(v->_errno)); // todo: look up constant names like ENOPERM etc.?
-    RESRET(print_string(")"));
+    RESRET(print_cstr(")"));
 cleanup:
     return ret;
 }
@@ -111,16 +111,16 @@ cleanup:
 
 GENERATE_Result(String, SystemError);
 
-// todo: use a string with len so that \0 will not be lost?
+// todo: use a cstr with len so that \0 will not be lost?
 
 /// Returns a copy of the contents of the file at the given `path` as
-/// a string, if possible (no system errors occurred).
+/// a cstr, if possible (no system errors occurred).
 
 /// Note: the String has a '\0' terminator character added. Any '\0'
 /// characters contained in the file will be part of the returned
 /// String and lead to it being interpreted as terminating there.
 
-Result(String, SystemError) filecontents_String(string path) {
+Result(String, SystemError) filecontents_String(cstr path) {
     int fd = open(path, O_RDONLY);
     if (fd < 0) {
         int e = errno;
@@ -133,7 +133,7 @@ Result(String, SystemError) filecontents_String(string path) {
         return Err(String, SystemError)(systemError(SYSCALLINFO_fstat, e));
     }
     off_t len = st.st_size;
-    char* s = new_string(len + 1); // + 1 for the \0 byte
+    char* s = new_cstr(len + 1); // + 1 for the \0 byte
     ssize_t did = read(fd, s, len);
     if (did < 0) {
         int e = errno;

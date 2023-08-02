@@ -6,7 +6,7 @@
 
 GENERATE_Result(char, ParseError);
 GENERATE_Result(double, ParseError);
-GENERATE_Result(string, ParseError);
+GENERATE_Result(cstr, ParseError);
 GENERATE_Result(String, ParseError);
 
 
@@ -32,13 +32,13 @@ int main() {
     S(Option(int));
     S(Option(float));
     S(Option(double));
-    S(Option(string));
+    S(Option(cstr));
 
     S(Result(char, ParseError));
     S(Result(int, ParseError));
     S(Result(float, ParseError));
     S(Result(double, ParseError));
-    S(Result(string, ParseError));
+    S(Result(cstr, ParseError));
     S(Result(String, ParseError));
 
     S(Result(String, SystemError));

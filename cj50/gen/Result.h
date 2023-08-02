@@ -129,7 +129,7 @@
 /// Returns the constructor function for the `ok` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
 
 /// ```C
-/// Ok(int, string)(42)
+/// Ok(int, cstr)(42)
 /// ```
 #define Ok(T, E)                                \
     XCAT(ok_, Result(T, E))
@@ -137,7 +137,7 @@
 /// Returns the constructor function for the `err` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
 
 /// ```C
-/// Err(int, string)("the input does not contain a number")
+/// Err(int, cstr)("the input does not contain a number")
 /// ```
 #define Err(T, E)                               \
     XCAT(err_, Result(T, E))

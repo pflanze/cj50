@@ -10,11 +10,11 @@ Option(char)	2
 Option(int)	8
 Option(float)	8
 Option(double)	16
-Option(string)	16
+Option(cstr)	16
 Result(char, ParseError)	4
 Result(int, ParseError)	8
 Result(float, ParseError)	8
 Result(double, ParseError)	16
-Result(string, ParseError)	16
+Result(cstr, ParseError)	16
 Result(String, ParseError)	16
 Result(String, SystemError)	16
