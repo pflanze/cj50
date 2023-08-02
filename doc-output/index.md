@@ -49,6 +49,7 @@ If you want to read a book about the C programming language, here are some:
 
 * [Color](cj50/math.h.md#color)
 * [ColorFunction_float](cj50/plot.h.md#colorfunction_float)
+* [CStr](cj50/CStr.h.md#cstr)
 * [Line2](cj50/math.h.md#line2)
 * [Rect2](cj50/math.h.md#rect2)
 * [String](cj50/String.h.md#string)
@@ -72,8 +73,9 @@ If you want to read a book about the C programming language, here are some:
 
 * [clear](cj50/sdlutil.h.md#clear)
 * [color](cj50/math.h.md#color)
+* [cStr_from_cstr](cj50/CStr.h.md#cstr_from_cstr)
 * [draw_rect](cj50/sdlutil.h.md#draw_rect)
-* [filecontents_String](cj50/filecontents.h.md#filecontents_string)
+* [filecontents_CStr](cj50/filecontents.h.md#filecontents_cstr)
 * [get_float](cj50.h.md#get_float)
 * [get_int](cj50.h.md#get_int)
 * [get_nat](cj50.h.md#get_nat)
@@ -82,7 +84,7 @@ If you want to read a book about the C programming language, here are some:
 * [graphics_render](cj50/sdlutil.h.md#graphics_render)
 * [line2](cj50/math.h.md#line2)
 * [new_chars](cj50.h.md#new_chars)
-* [new_cstr](cj50.h.md#new_cstr)
+* [new_CStr](cj50/CStr.h.md#new_cstr)
 * [new_cstrs](cj50.h.md#new_cstrs)
 * [new_floats](cj50.h.md#new_floats)
 * [new_ints](cj50.h.md#new_ints)
@@ -127,6 +129,7 @@ If you want to read a book about the C programming language, here are some:
 
 ## Macros
 
+* [CStr_from_cstr_unsafe](cj50/CStr.h.md#cstr_from_cstr_unsafe)
 * [DBG](cj50.h.md#dbg)
 * [DBGA](cj50.h.md#dbga)
 * [DIE](cj50/basic-util.h.md#die)

@@ -16,10 +16,10 @@ and the system error.
 
 # Normal functions
 
-## filecontents_String
+## filecontents_CStr
 
 ```C
-Result(String, SystemError) filecontents_String(cstr path)
+Result(CStr, SystemError) filecontents_CStr(cstr path)
 ```
 
 Returns a copy of the contents of the file at the given `path` as
