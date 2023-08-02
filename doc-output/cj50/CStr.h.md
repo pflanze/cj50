@@ -39,7 +39,6 @@ that).
 ## cStr_from_cstr
 
 ```C
-static UNUSED
 Result(CStr, CStrError) cStr_from_cstr(char *s, size_t siz)
 ```
 
@@ -50,7 +49,6 @@ terminator.
 ## new_CStr
 
 ```C
-static
 CStr new_CStr(size_t len)
 ```
 
