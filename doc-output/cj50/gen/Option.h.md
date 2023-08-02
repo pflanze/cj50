@@ -86,6 +86,28 @@ Option(float) x = NONE;
 It cannot be used in a function call like `f(NONE)`, instead
 `f(none(float))` has to be used.
 
+## if_let_Some
+
+```C
+if_let_Some(decl, expr)
+```
+
+This macro allows for convenient matching and conditional
+execution depending on what case of the Option was
+received. CAREFUL: it must always be paired with `else_None`, or
+weird syntax errors will be reported because curly braces will not
+be balanced! (The `else_None` always has to be there, but the `{
+}` after it are optional.)
+
+```C
+if_let_Some(float w, get_float()) {
+    float h = unwrap(get_float());
+    println(w * h);
+} else_None {
+    print("You cancelled.\n");
+}
+```
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

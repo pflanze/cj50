@@ -17,6 +17,8 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50.h](cj50.h.md)
 
+* [cj50/String.h](cj50/String.h.md)
+
 * [cj50/basic-util.h](cj50/basic-util.h.md)
 
 * [cj50/filecontents.h](cj50/filecontents.h.md)
@@ -49,13 +51,13 @@ If you want to read a book about the C programming language, here are some:
 * [ColorFunction_float](cj50/plot.h.md#colorfunction_float)
 * [Line2](cj50/math.h.md#line2)
 * [Rect2](cj50/math.h.md#rect2)
+* [String](cj50/String.h.md#string)
 * [SystemError](cj50/filecontents.h.md#systemerror)
 * [Vec2](cj50/math.h.md#vec2)
 * [Vec3](cj50/math.h.md#vec3)
 
 ## Type aliases
 
-* [const_string](cj50/string.h.md#const_string)
 * [ParseError](cj50.h.md#parseerror)
 * [string](cj50/string.h.md#string)
 * [u64](cj50/u64.h.md#u64)
@@ -71,17 +73,18 @@ If you want to read a book about the C programming language, here are some:
 * [clear](cj50/sdlutil.h.md#clear)
 * [color](cj50/math.h.md#color)
 * [draw_rect](cj50/sdlutil.h.md#draw_rect)
-* [filecontents_string](cj50/filecontents.h.md#filecontents_string)
+* [filecontents_String](cj50/filecontents.h.md#filecontents_string)
 * [get_float](cj50.h.md#get_float)
 * [get_int](cj50.h.md#get_int)
 * [get_nat](cj50.h.md#get_nat)
 * [get_nat0](cj50.h.md#get_nat0)
-* [get_string](cj50.h.md#get_string)
+* [get_String](cj50.h.md#get_string)
 * [graphics_render](cj50/sdlutil.h.md#graphics_render)
 * [line2](cj50/math.h.md#line2)
 * [new_chars](cj50.h.md#new_chars)
 * [new_floats](cj50.h.md#new_floats)
 * [new_ints](cj50.h.md#new_ints)
+* [new_Option_Strings](cj50.h.md#new_option_strings)
 * [new_string](cj50.h.md#new_string)
 * [new_strings](cj50.h.md#new_strings)
 * [parse_float](cj50.h.md#parse_float)
@@ -103,6 +106,7 @@ If you want to read a book about the C programming language, here are some:
 
 * [add](cj50/math.h.md#add)
 * [assert_sdl](cj50/sdlutil.h.md#assert_sdl)
+* [deref](cj50.h.md#deref)
 * [drop](cj50.h.md#drop)
 * [drop_array](cj50.h.md#drop_array)
 * [equal](cj50.h.md#equal)
@@ -130,6 +134,8 @@ If you want to read a book about the C programming language, here are some:
 * [Err](cj50/gen/Result.h.md#err)
 * [GENERATE_equal_array](cj50/gen/equal_array.h.md#generate_equal_array)
 * [GENERATE_Option](cj50/gen/Option.h.md#generate_option)
+* [if_let_Ok](cj50/gen/Result.h.md#if_let_ok)
+* [if_let_Some](cj50/gen/Option.h.md#if_let_some)
 * [NONE](cj50/gen/Option.h.md#none)
 * [Ok](cj50/gen/Result.h.md#ok)
 * [Option](cj50/gen/Option.h.md#option)

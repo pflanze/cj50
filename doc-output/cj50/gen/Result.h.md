@@ -57,6 +57,27 @@ Returns the constructor function for the `err` variant of the `Result(T, E)` typ
 Err(int, string)("the input does not contain a number")
 ```
 
+## if_let_Ok
+
+```C
+if_let_Ok(decl, expr)
+```
+
+This macro allows for convenient matching and conditional
+execution depending on what case of the Result was
+received. CAREFUL: it must always be paired with `else_Err` and
+`end_let_Ok`, or weird syntax errors will be reported because
+curly braces will not be balanced!
+
+```C
+if_let_Ok(String cnt, filecontents_String(path)) {
+    print(cnt);
+    drop(cnt);
+} else_Err(SystemError e) {
+    fprintln_SystemError(stderr, e);
+} end_let_Ok;
+```
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

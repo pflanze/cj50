@@ -16,18 +16,18 @@ and the system error.
 
 # Normal functions
 
-## filecontents_string
+## filecontents_String
 
 ```C
-Result(string, SystemError) filecontents_string(string path)
+Result(String, SystemError) filecontents_String(string path)
 ```
 
 Returns a copy of the contents of the file at the given `path` as
 a string, if possible (no system errors occurred).
 
-Note: the string has a '\0' terminator character added. Any '\0'
+Note: the String has a '\0' terminator character added. Any '\0'
 characters contained in the file will be part of the returned
-string and lead to it being interpreted as terminating there.
+String and lead to it being interpreted as terminating there.
 
 <hr>
 <p>&nbsp;</p>
