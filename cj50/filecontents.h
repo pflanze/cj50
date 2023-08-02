@@ -8,9 +8,6 @@
 #include <cj50/CStr.h>
 #include <cj50/gen/Result.h>
 
-static UNUSED
-char* new_cstr(size_t len);
-
 static
 int print_int(int n);
 
@@ -108,8 +105,10 @@ cleanup:
 
 
 
-
+// XX for future when going 'back' to using String
 GENERATE_Result(String, SystemError);
+
+GENERATE_Result(CStr, SystemError);
 
 // XXX todo: use a string type with len so that \0 will not be lost
 
@@ -120,35 +119,35 @@ GENERATE_Result(String, SystemError);
 /// characters contained in the file will be part of the returned
 /// String and lead to it being interpreted as terminating there.
 
-Result(String, SystemError) filecontents_String(cstr path) {
+Result(CStr, SystemError) filecontents_CStr(cstr path) {
     int fd = open(path, O_RDONLY);
     if (fd < 0) {
         int e = errno;
-        return Err(String, SystemError)(systemError(SYSCALLINFO_open, e));
+        return Err(CStr, SystemError)(systemError(SYSCALLINFO_open, e));
     }
     struct stat st;
     if (fstat(fd, &st) < 0) {
         int e = errno;
         close(fd);
-        return Err(String, SystemError)(systemError(SYSCALLINFO_fstat, e));
+        return Err(CStr, SystemError)(systemError(SYSCALLINFO_fstat, e));
     }
     off_t len = st.st_size;
-    char* s = new_cstr(len + 1); // + 1 for the \0 byte
-    ssize_t did = read(fd, s, len);
+    CStr s = new_CStr(len + 1); // + 1 for the \0 byte
+    ssize_t did = read(fd, s.cstr, len);
     if (did < 0) {
         int e = errno;
         close(fd);
-        free(s);
-        return Err(String, SystemError)(systemError(SYSCALLINFO_read, e));
+        drop_CStr(s);
+        return Err(CStr, SystemError)(systemError(SYSCALLINFO_read, e));
     }
     // do we have to retry? probably. But, should also avoid stat.
     assert(did == len);
     if (close(fd) < 0) {
         int e = errno;
-        free(s);
-        return Err(String, SystemError)(systemError(SYSCALLINFO_close, e));
+        drop_CStr(s);
+        return Err(CStr, SystemError)(systemError(SYSCALLINFO_close, e));
     }
-    return Ok(String, SystemError)(String(s));
+    return Ok(CStr, SystemError)(s);
 }
 
 

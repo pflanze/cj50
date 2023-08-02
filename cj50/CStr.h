@@ -3,6 +3,7 @@
 #include <cj50/gen/Option.h>
 #include <cj50/gen/Result.h>
 #include <cj50/char.h>
+#include <cj50/xmem.h>
 
 
 #define RESRET(e)                \
@@ -164,6 +165,28 @@ Result(CStr, CStrError) cStr_from_cstr(char *s, size_t siz) {
         }
     }
     return Ok(CStr, CStrError)(CStr_from_cstr_unsafe(s));
+}
+
+/// Allocate space for a C string of capacity `len`. Aborts when there
+/// is not enough memory. All slots are set to '\0' (the string starts
+/// out as the empty string).
+
+/// NOTE: This means that the contained cstr is *not* a '\0'-less
+/// string as required by `cStr_from_cstr` with regards to `len`. It
+/// is shortened to the first '\0' encountered. Mutating the contained
+/// cstr is *unsafe* (nothing except your being careful is preventing
+/// you from writing behind the end of the contained cstr (buffer
+/// overflow), and nothing is preventing you from filling it with
+/// non-'\0' characters till the end meaning it loses its terminator).
+static
+CStr new_CStr(size_t len) {
+    return CStr_from_cstr_unsafe(xcallocarray(len, 1));
+}
+
+
+static UNUSED
+int print_CStr(const CStr *s) {
+    return print_cstr(s->cstr);
 }
 
 

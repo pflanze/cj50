@@ -44,6 +44,13 @@ void *xreallocarray(void *ptr, size_t nmemb, size_t size) {
     return p;
 }
 
+static UNUSED
+void *xcallocarray(size_t nmemb, size_t size) {
+    void *p = calloc(nmemb, size);
+    if (!p) die_outofmemory();
+    return p;
+}
+
 
 static UNUSED
 char *xstrdup(const char *str) {

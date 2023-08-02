@@ -9,7 +9,9 @@ int main(int argc, cstr* argv) {
         Result(int, ParseError) _range = parse_int(argv[1]);
         DBG(_range);
         if (! _range.is_ok) {
-            DIE_("argument 1 %s", string_from_ParseError(_range.err));
+            CStr s = string_from_ParseError(_range.err);
+            DIE_("argument 1 %s", s.cstr);
+            drop(s); // well :)
         }
         range = _range.ok;
     } else {
