@@ -4,7 +4,7 @@
 #include <cj50/CStr.h>
 // #include <cj50/char.h>
 
-/// `String` is an owned type that holds a "C cstr", an cstr of
+/// `String` is an owned type that holds a "C string", a string of
 /// characters, more precisely, an array of `char`, that represents
 /// the text, and a '\0' character after it to signal the end. There
 /// is no length information, the length has to be determined by

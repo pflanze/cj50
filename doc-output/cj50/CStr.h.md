@@ -9,7 +9,7 @@ typedef const char* cstr
 ```
 
 `cstr` is a non-mutable borrowed type that represents a "C
-cstr". It is an array of `char`, that represents the text, and a
+string". It is an array of `char`, that represents the text, and a
 '\0' character after it to signal the end. There is no length
 information, the length has to be determined by walking the array
 until encountering the '\0' character (`strlen` will do that).

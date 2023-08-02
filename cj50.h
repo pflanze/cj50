@@ -79,7 +79,7 @@ Option(cstr) _get_cstr() {
             return some_cstr(line);
         }
         free(line);
-        print_cstr("Your answer is empty. Please enter a cstr: ");
+        print_cstr("Your answer is empty. Please enter a string: ");
     }
 }
 
@@ -104,7 +104,7 @@ int print_int(int n) {
 }
 
 
-/// Values of this type (a number) describe the reason why a cstr
+/// Values of this type (a number) describe the reason why a string
 /// does not contain text that properly represents a value that the
 /// used parse function should return.
 
@@ -133,12 +133,12 @@ const ParseError E_not_greater_than_zero = 502;
 const ParseError E_negative = 503;
 const ParseError E_not_a_number = 504;
 
-// TODO: remove, should use new_Array_char instead, or just xmallocarray
+// TODO: remove, should use new_Array_char instead, or just xmallocarray -- XXX new_CStr
 static
 char* new_cstr(size_t len);
 
 /// Convert a `ParseError` value into a `cstr` for display. The
-/// receiver owns the returned cstr.
+/// receiver owns the returned cstr. XXX use CStr instead
 static
 char* string_from_ParseError(ParseError e) {
     if (e == E_not_in_int_range) {
@@ -186,7 +186,7 @@ cleanup:
 
 GENERATE_Result(int, ParseError);
 
-/// Translate a cstr into an `int` if possible.
+/// Translate a string into an `int` if possible.
 static
 Result(int, ParseError) parse_int(cstr s) {
     // UBSan leads to strtol call causing exit(1), which prevents debugging
@@ -227,11 +227,11 @@ Result(int, ParseError) parse_int(cstr s) {
         if (r.is_ok) {                                  \
             return XCAT(some_, T)(r.ok);                \
         }                                               \
-        print_cstr("Your answer ");                   \
-        cstr errstr = string_from_ParseError(r.err);  \
-        print_cstr(errstr);                           \
+        print_cstr("Your answer ");                     \
+        cstr errstr = string_from_ParseError(r.err);    \
+        print_cstr(errstr);                                           \
         free((char*)errstr); /* todo: don't hack, don't use `cstr` */ \
-        print_cstr(". Please enter " type_desc ": "); \
+        print_cstr(". Please enter " type_desc ": ");                 \
     }
 
 /// Read an integer number from standard input, terminated by a
@@ -242,7 +242,7 @@ Option(int) get_int() {
 }
 
 
-/// Translate a cstr into an `int` in the natural number range (1 or
+/// Translate a string into an `int` in the natural number range (1 or
 /// higher) if possible.
 static
 Result(int, ParseError) parse_nat(cstr s) {
@@ -276,7 +276,7 @@ int print_nat(int n) {
 }
 
 
-/// Translate a cstr into an `int` in the natural number range
+/// Translate a string into an `int` in the natural number range
 /// including 0 (0 or higher) if possible.
 static
 Result(int, ParseError) parse_nat0(cstr s) {
@@ -361,7 +361,7 @@ void* new_array_of_type_and_len(const char* typename,
 /// Allocate and return a new array of `len` char values. Aborts
 /// when there is not enough memory (never returns the NULL
 /// pointer). The slots in the returned array are all initialized to
-/// the '\0' char. This is the same as `new_cstr`.
+/// the '\0' char.
 static UNUSED
 char* new_chars(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
@@ -373,6 +373,7 @@ char* new_chars(size_t len) {
 /// there is not enough memory (never returns the NULL pointer). The
 /// cstr is set to the empty cstr. This is the same as
 /// `new_chars`.
+// TODO: remove, should use new_Array_char instead, or just xmallocarray -- XXX new_CStr
 static
 char* new_cstr(size_t len) {
     return new_array_of_type_and_len("char", sizeof(char), len);
@@ -451,14 +452,14 @@ float* new_floats(size_t len) {
 
 #define PRINT_ARRAY(print_typ, ary, len)        \
     INIT_RESRET;                                \
-    RESRET(print_cstr("{"));                  \
+    RESRET(print_cstr("{"));                    \
     for (size_t i = 0; i < len; i++) {          \
         if (i > 0) {                            \
-            RESRET(print_cstr(", "));         \
+            RESRET(print_cstr(", "));           \
         }                                       \
         RESRET(print_typ(&ary[i]));             \
     }                                           \
-    RESRET(print_cstr("}"));                  \
+    RESRET(print_cstr("}"));                    \
 cleanup:                                        \
     return ret;
 
@@ -501,8 +502,8 @@ int print_debug_floats(const float* ary, size_t len) {
 
 #define print(v)                                \
     _Generic((v)                                \
-             , char*: print_cstr              \
-             , cstr: print_cstr             \
+             , char*: print_cstr                \
+             , cstr: print_cstr                 \
              , String: print_String             \
              , char: putchar                    \
              , int: print_int                   \
@@ -537,8 +538,8 @@ GENERATE_PRINTLN(double);
 
 #define println(v)                              \
     _Generic((v)                                \
-             , char*: println_cstr            \
-             , cstr: println_cstr           \
+             , char*: println_cstr              \
+             , cstr: println_cstr               \
              , String: println_String           \
              , char: println_char               \
              , int: println_int                 \
@@ -560,8 +561,8 @@ GENERATE_PRINTLN(double);
 
 #define print_debug(v)                                        \
     _Generic((v)                                              \
-             , char**: print_debug_cstr                     \
-             , cstr*: print_debug_cstr                    \
+             , char**: print_debug_cstr                       \
+             , cstr*: print_debug_cstr                        \
              , String*: print_debug_String                    \
              , String: print_debug_move_String                \
              , bool: print_debug_bool                         \
@@ -573,11 +574,11 @@ GENERATE_PRINTLN(double);
              , double: print_double                           \
              , Vec2: print_debug_Vec2                         \
              , Vec3: print_debug_Vec3                         \
-             , Option(cstr): print_debug_move_Option_cstr \
+             , Option(cstr): print_debug_move_Option_cstr     \
              , Option(String): print_debug_move_Option_String \
              , Option(int): print_debug_move_Option_int       \
              , Option(float): print_debug_move_Option_float   \
-             , Option(cstr)*: print_debug_Option_cstr     \
+             , Option(cstr)*: print_debug_Option_cstr         \
              , Option(String)*: print_debug_Option_String     \
              , Option(int)*: print_debug_Option_int           \
              , Option(float)*: print_debug_Option_float       \
@@ -602,7 +603,7 @@ GENERATE_PRINTLN(double);
 #define print_debug_array(v, len)                               \
     _Generic((v)                                                \
              , char*: print_debug_chars                         \
-             , cstr*: print_debug_cstrs                       \
+             , cstr*: print_debug_cstrs                         \
              , Option(String)*: print_debug_Option_Strings      \
              , int*: print_debug_ints                           \
              , float*: print_debug_floats                       \
@@ -615,13 +616,13 @@ GENERATE_PRINTLN(double);
 #define drop(v)                                        \
     _Generic((v)                                       \
              , String: drop_String                     \
-             , const char*: drop_cstr                \
-             , char*: drop_cstr                      \
+             , const char*: drop_cstr                  \
+             , char*: drop_cstr                        \
              , int*: free                              \
              , float*: free                            \
              , Vec2*: free                             \
              , Vec3*: free                             \
-             , Option(cstr): drop_Option_cstr      \
+             , Option(cstr): drop_Option_cstr          \
              , Option(String): drop_Option_String      \
              , Option(int): drop_Option_int            \
              , Option(float): drop_Option_float        \
@@ -703,7 +704,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// values, NULL pointers, or similar).
 #define resize(v, oldlen, newlen)                       \
     _Generic((v)                                        \
-             , cstr*: resize_cstrs                    \
+             , cstr*: resize_cstrs                      \
              , Option(String)*: resize_Option_Strings   \
              , int*: resize_ints                        \
              , float*: resize_floats                    \
@@ -716,7 +717,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// skipped.
 #define drop_array(v, len)                              \
     _Generic((v)                                        \
-             , cstr*: drop_cstrs                      \
+             , cstr*: drop_cstrs                        \
              , Option(String)*: drop_Option_Strings     \
         )((v), (len))
 
@@ -725,15 +726,15 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// `true` if `a` and `b` are structurally equivalent.
 #define equal(a, b)                                                     \
     _Generic((a)                                                        \
-             , Option(cstr)*: equal_Option_cstr                     \
+             , Option(cstr)*: equal_Option_cstr                         \
              , Option(String)*: equal_Option_String                     \
              , Option(int)*: equal_Option_int                           \
              , Option(float)*: equal_Option_float                       \
              , Result(int, ParseError)*: equal_Result_int__ParseError   \
              , Result(String, SystemError)*: equal_Result_String__SystemError \
-             , cstr*: equal_cstr                                    \
+             , cstr*: equal_cstr                                        \
              , String*: equal_String                                    \
-             , cstr: equal_move_cstr                                \
+             , cstr: equal_move_cstr                                    \
              , int*: equal_int                                          \
              , int: equal_move_int                                      \
              , float*: equal_float                                      \
@@ -749,7 +750,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// `Option(T)` containing the value.
 #define some(v)                                         \
     _Generic((v)                                        \
-             , cstr: some_cstr                      \
+             , cstr: some_cstr                          \
              , String: some_String                      \
              , int: some_int                            \
              , u64: some_u64                            \
@@ -762,7 +763,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 /// `none(T)` allows T to also be a `typeof` expression.
 #define none(T)                                         \
     _Generic(*((T*)(NULL))                              \
-             , cstr: none_cstr                      \
+             , cstr: none_cstr                          \
              , String: none_String                      \
              , int: none_int                            \
              , u64: none_u64                            \
@@ -787,7 +788,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 #define unwrap(v)                                                       \
     _Generic((v)                                                        \
-             , Option(cstr): unwrap_Option_cstr                     \
+             , Option(cstr): unwrap_Option_cstr                         \
              , Option(String): unwrap_Option_String                     \
              , Option(int): unwrap_Option_int                           \
              , Option(u64): unwrap_Option_u64                           \
@@ -815,17 +816,17 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         )(v)
 
 
-/// Returns the name of the type of `e` as a cstr constant.
+/// Returns the name of the type of `e` as a string constant (cstr).
 #define type_name(e)                                    \
     _Generic((e)                                        \
-             , cstr: "cstr"                         \
+             , cstr: "cstr"                             \
              , String: "String"                         \
              , int: "int"                               \
              , unsigned int: "uint"                     \
              , u64: "u64"                               \
              , float: "float"                           \
              , double: "double"                         \
-             , Option(cstr): "Option(cstr)"         \
+             , Option(cstr): "Option(cstr)"             \
              , Option(String): "Option(String)"         \
              , Option(int): "Option(int)"               \
              , Option(u64): "Option(u64)"               \
@@ -854,7 +855,7 @@ GENERATE_equal_array(double);
 #define equal_array(array1, len1, array2, len2)         \
     _Generic((array1)[0]                                \
              , char: equal_array_char                   \
-             , cstr: equal_array_cstr               \
+             , cstr: equal_array_cstr                   \
              , String: equal_array_String               \
              , int: equal_array_int                     \
              , uint: equal_array_uint                   \

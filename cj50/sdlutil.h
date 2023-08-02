@@ -91,7 +91,7 @@ void graphics_render(int window_width,
                 quit = true;
             } else if (e.type == SDL_TEXTINPUT) {
                 /* DBG(e.text.text); */
-                // ah, cstr because unicode
+                // ah, string because unicode
                 /*
                 char c0 = e.text.text[0];
                 if (c0 == 'q') {

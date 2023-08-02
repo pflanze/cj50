@@ -26,7 +26,7 @@
 #define WARN(msg)                                               \
     fprintf(stderr, "%s\n", msg)
 
-/// Print a warning to standard error. `msg` is a format cstr, the
+/// Print a warning to standard error. `msg` is a format string, the
 /// values to embed are expected afterwards.
 #define WARN_(msg, ...)                                         \
     fprintf(stderr, msg "\n", __VA_ARGS__)
@@ -41,7 +41,7 @@
     } while(0)
 
 /// Print a message to standard error, then abort. `msg` is a format
-/// cstr, the values to embed are expected afterwards.
+/// string, the values to embed are expected afterwards.
 #define DIE_(msg, ...)                                          \
     do {                                                        \
         fprintf(stderr, msg "\n", __VA_ARGS__);                 \

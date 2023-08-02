@@ -23,9 +23,9 @@ Result(String, SystemError) filecontents_String(cstr path)
 ```
 
 Returns a copy of the contents of the file at the given `path` as
-a cstr, if possible (no system errors occurred).
+a String, if possible (no system errors occurred).
 
-Note: the String has a '\0' terminator character added. Any '\0'
+XXX Note: the String has a '\0' terminator character added. Any '\0'
 characters contained in the file will be part of the returned
 String and lead to it being interpreted as terminating there.
 

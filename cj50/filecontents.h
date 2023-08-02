@@ -111,12 +111,12 @@ cleanup:
 
 GENERATE_Result(String, SystemError);
 
-// todo: use a cstr with len so that \0 will not be lost?
+// XXX todo: use a string type with len so that \0 will not be lost
 
 /// Returns a copy of the contents of the file at the given `path` as
-/// a cstr, if possible (no system errors occurred).
+/// a String, if possible (no system errors occurred).
 
-/// Note: the String has a '\0' terminator character added. Any '\0'
+/// XXX Note: the String has a '\0' terminator character added. Any '\0'
 /// characters contained in the file will be part of the returned
 /// String and lead to it being interpreted as terminating there.
 
