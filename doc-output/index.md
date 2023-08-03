@@ -21,6 +21,8 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50/String.h](cj50/String.h.md)
 
+* [cj50/Unit.h](cj50/Unit.h.md)
+
 * [cj50/basic-util.h](cj50/basic-util.h.md)
 
 * [cj50/filecontents.h](cj50/filecontents.h.md)
@@ -30,6 +32,8 @@ If you want to read a book about the C programming language, here are some:
 * [cj50/gen/Result.h](cj50/gen/Result.h.md)
 
 * [cj50/gen/equal_array.h](cj50/gen/equal_array.h.md)
+
+* [cj50/gen/template/Vec.h](cj50/gen/template/Vec.h.md)
 
 * [cj50/math.h](cj50/math.h.md)
 
@@ -54,6 +58,7 @@ If you want to read a book about the C programming language, here are some:
 * [Rect2](cj50/math.h.md#rect2)
 * [String](cj50/String.h.md#string)
 * [SystemError](cj50/filecontents.h.md#systemerror)
+* [Unit](cj50/Unit.h.md#unit)
 * [Vec2](cj50/math.h.md#vec2)
 * [Vec3](cj50/math.h.md#vec3)
 
@@ -71,6 +76,7 @@ If you want to read a book about the C programming language, here are some:
 
 ## Normal functions
 
+* [append_Vec_$T](cj50/gen/template/Vec.h.md#append_vec_$t)
 * [clear](cj50/sdlutil.h.md#clear)
 * [color](cj50/math.h.md#color)
 * [cStr_from_cstr](cj50/CStr.h.md#cstr_from_cstr)
@@ -89,12 +95,14 @@ If you want to read a book about the C programming language, here are some:
 * [new_floats](cj50.h.md#new_floats)
 * [new_ints](cj50.h.md#new_ints)
 * [new_Option_Strings](cj50.h.md#new_option_strings)
+* [new_Vec_$T](cj50/gen/template/Vec.h.md#new_vec_$t)
 * [parse_float](cj50.h.md#parse_float)
 * [parse_int](cj50.h.md#parse_int)
 * [parse_nat](cj50.h.md#parse_nat)
 * [parse_nat0](cj50.h.md#parse_nat0)
 * [plot_function_float](cj50/plot.h.md#plot_function_float)
 * [plot_functions_float](cj50/plot.h.md#plot_functions_float)
+* [pop_Vec_$T](cj50/gen/template/Vec.h.md#pop_vec_$t)
 * [random_double](cj50/random.h.md#random_double)
 * [random_float](cj50/random.h.md#random_float)
 * [random_int](cj50/random.h.md#random_int)
@@ -103,10 +111,12 @@ If you want to read a book about the C programming language, here are some:
 * [string_from_ParseError](cj50.h.md#string_from_parseerror)
 * [vec2](cj50/math.h.md#vec2)
 * [vec3](cj50/math.h.md#vec3)
+* [with_capacity_Vec_$T](cj50/gen/template/Vec.h.md#with_capacity_vec_$t)
 
 ## Generic functions
 
 * [add](cj50/math.h.md#add)
+* [append](cj50.h.md#append)
 * [assert_sdl](cj50/sdlutil.h.md#assert_sdl)
 * [deref](cj50.h.md#deref)
 * [drop](cj50.h.md#drop)
@@ -116,10 +126,12 @@ If you want to read a book about the C programming language, here are some:
 * [mul](cj50/math.h.md#mul)
 * [neg](cj50/math.h.md#neg)
 * [none](cj50.h.md#none)
+* [pop](cj50.h.md#pop)
 * [print](cj50.h.md#print)
 * [print_debug](cj50.h.md#print_debug)
 * [print_debug_array](cj50.h.md#print_debug_array)
 * [println](cj50.h.md#println)
+* [push](cj50.h.md#push)
 * [resize](cj50.h.md#resize)
 * [some](cj50.h.md#some)
 * [sub](cj50/math.h.md#sub)
@@ -143,8 +155,10 @@ If you want to read a book about the C programming language, here are some:
 * [Ok](cj50/gen/Result.h.md#ok)
 * [Option](cj50/gen/Option.h.md#option)
 * [Result](cj50/gen/Result.h.md#result)
+* [Unit](cj50/Unit.h.md#unit)
 * [WARN](cj50/basic-util.h.md#warn)
 * [WARN_](cj50/basic-util.h.md#warn_)
+* [while_let_Some](cj50/gen/Option.h.md#while_let_some)
 
 <hr>
 <p>&nbsp;</p>

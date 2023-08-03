@@ -2,22 +2,28 @@
 
 # Types
 
-## String
+## Unit
 
 ```C
-typedef struct String {
-    char* str;
-} String
+typedef struct Unit {
+} Unit
 ```
 
-`String` is an owned, mutable type that holds a string of
-characters, more precisely, an array of bytes, that represents a
-text in UTF-8 encoding. Unlike C strings (see `CStr`), it does not
-use a '\0' terminator, and can represent embedded '\0'
-characters. It automatically resizes itself as needed to accept
-additional text that is added.
+The `Unit` type has exactly one value, `Unit()`, and is used when
+there is no other meaningful value that could be returned. Note
+that the C programming language also has `void`, but that can't be
+made part of data structures, hence we use `Unit` instead in such
+cases.
 
-It is implemented via a `Vec(char)`.
+# Macros
+
+## Unit
+
+```C
+Unit() ((Unit)
+```
+
+Construct the single possible value that `Unit` can represent.
 
 <hr>
 <p>&nbsp;</p>

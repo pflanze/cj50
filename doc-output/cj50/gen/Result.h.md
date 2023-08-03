@@ -60,7 +60,7 @@ Err(int, cstr)("the input does not contain a number")
 ## if_let_Ok
 
 ```C
-if_let_Ok(decl, expr)
+if_let_Ok(var, expr)
 ```
 
 This macro allows for convenient matching and conditional
@@ -69,11 +69,16 @@ received. CAREFUL: it must always be paired with `else_Err` and
 `end_let_Ok`, or weird syntax errors will be reported because
 curly braces will not be balanced!
 
+The `var`s are introduced in the given scopes `{ .. }`. Note that
+you don't need to specify a type for them, they are derived
+automatically. You can still give modifiers like `UNUSED` or
+`const`.
+
 ```C
-if_let_Ok(String cnt, filecontents_String(path)) {
+if_let_Ok(cnt, filecontents_String(path)) {
     print(cnt);
     drop(cnt);
-} else_Err(SystemError e) {
+} else_Err(e) {
     fprintln_SystemError(stderr, e);
 } end_let_Ok;
 ```

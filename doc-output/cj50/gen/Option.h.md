@@ -89,7 +89,7 @@ It cannot be used in a function call like `f(NONE)`, instead
 ## if_let_Some
 
 ```C
-if_let_Some(decl, expr)
+if_let_Some(var, expr)
 ```
 
 This macro allows for convenient matching and conditional
@@ -99,12 +99,37 @@ weird syntax errors will be reported because curly braces will not
 be balanced! (The `else_None` always has to be there, but the `{
 }` after it are optional.)
 
+`var` is introduced in the given scope `{ .. }`. Note that you
+don't need to specify a type for `var`, it is derived
+automatically.
+
 ```C
-if_let_Some(float w, get_float()) {
-    float h = unwrap(get_float());
-    println(w * h);
+if_let_Some(w, get_float()) {
+    if_let_Some(h, get_float()) {
+        println(w * h);
+    } else_None {
+        goto cancelled;
+    }
 } else_None {
-    print("You cancelled.\n");
+    goto cancelled;
+}
+```
+
+## while_let_Some
+
+```C
+while_let_Some(var, expr)
+```
+
+Convenient conditional loop macro.
+
+`var` is introduced in the given scope `{ .. }`. Note that you
+don't need to specify a type for `var`, it is derived
+automatically.
+
+```C
+while_let_Some(v, pop(&vec)) {
+    DBG(v);
 }
 ```
 
