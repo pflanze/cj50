@@ -73,6 +73,22 @@ sub prototype_cleanup_for_display($s) {
     chompspace $s
 }
 
+# Pandoc sadly changes links like
+# 'cj50/gen/template/Vec.h.md#new_Vec_$T' into
+# 'cj50/gen/template/Vec.h.md#new_vec_t', and perhaps GitHub
+# similarly. We also have symbols that are only distinguished by case,
+# so we can't just `lc`.
+sub sym_to_id($sym) {
+    $sym=~ s/q/qq/sg;
+    $sym=~ s/u/qu/sg;
+    $sym=~ s/\$/qd/sg;
+    $sym=~ s/([A-Z])/u$1/sg;
+    lc $sym
+}
+
+TEST { sym_to_id 'new_Vec_$T' } 'new_uvec_qdut';
+TEST { sym_to_id 'new_vec' } 'new_vec';
+TEST { sym_to_id 'XCAT' } 'uxucuaut';
 
 # ------------------------------------------------------------------
 package TypedNameExpression {
@@ -625,7 +641,7 @@ my @itemss = map { [ filedocs($_) ] } @headerfiles;
                 my $item = $items->{$sym};
                 my $path = $item->headerpath;
                 $documented_headerfiles{$path}++;
-                my $id = $sym;
+                my $id = sym_to_id($sym);
                 $doc .= "* [$sym]($path.md#$id)\n";
             }
             $doc .= "\n";
