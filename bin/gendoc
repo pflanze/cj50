@@ -361,25 +361,28 @@ package DocEntry {
 
     sub symbol($self) {
         my $s = $self->bare_prototype;
-        if ($s=~ m{^\s*#\s*define\s+(\w+)}) {
-            $1
-        } elsif ($s=~ m{^typedef\s+struct\s+(\w+)}) {
-            $1
-        } elsif ($s=~ m{^typedef\b.*\b(\w+)\s*$}) {
-            $1
-        } else {
-            # Now it gets hard! ucfirst really disambiguates here? !
-            if ($s=~ m{ ([a-z]\w*)\s*\(}) {
+        $self->{symbol} //= do {
+            if ($s=~ m{^\s*#\s*define\s+(\w+)}) {
                 $1
-            } elsif ($s=~ m{ (X?CAT\(.*)}s) {
-                main::perhaps_xcat_symbol($1)
-                    or die "looks like XCAT but doesn't parse as such: '$1'"
-            } elsif ($s=~ m{^ \s* const \s+ \S+ \s+ ([a-zA-Z_]\w*) \s*
-                              =[^=] }sx) {
-                # global constants
+            } elsif ($s=~ m{^typedef\s+struct\s+(\w+)}) {
+                $1
+            } elsif ($s=~ m{^typedef\b.*\b(\w+)\s*$}) {
                 $1
             } else {
-                die "no match"
+                # Now it gets hard! ucfirst really disambiguates here? !
+                if ($s=~ m{ ([a-z]\w*)\s*\(}) {
+                    $1
+                } elsif ($s=~ m{ (X?CAT\(.*)}s) {
+                    main::perhaps_xcat_symbol($1)
+                        or die("looks like XCAT but ".
+                               "doesn't parse as such: '$1'")
+                } elsif ($s=~ m{^ \s* const \s+ \S+ \s+ ([a-zA-Z_]\w*) \s*
+                                  =[^=] }sx) {
+                    # global constants
+                    $1
+                } else {
+                    die "no match"
+                }
             }
         }
     }
