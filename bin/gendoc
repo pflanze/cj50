@@ -625,7 +625,7 @@ my @itemss = map { [ filedocs($_) ] } @headerfiles;
                 my $item = $items->{$sym};
                 my $path = $item->headerpath;
                 $documented_headerfiles{$path}++;
-                my $id = lc($sym);
+                my $id = $sym;
                 $doc .= "* [$sym]($path.md#$id)\n";
             }
             $doc .= "\n";
