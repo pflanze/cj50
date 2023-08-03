@@ -2,7 +2,7 @@
 
 # Normal functions
 
-## new_Vec_$T
+## new_Vec_$T {#new_uvec_qdut}
 
 ```C
 Vec(T) XCAT(new_, Vec(T))()
@@ -10,7 +10,7 @@ Vec(T) XCAT(new_, Vec(T))()
 
 Construct a new, empty vector
 
-## with_capacity_Vec_$T
+## with_capacity_Vec_$T {#with_capacity_uvec_qdut}
 
 ```C
 Vec(T) XCAT(with_capacity_, Vec(T))(size_t cap)
@@ -18,7 +18,7 @@ Vec(T) XCAT(with_capacity_, Vec(T))(size_t cap)
 
 Construct a new, empty vector with at least the specified capacity.
 
-## pop_Vec_$T
+## pop_Vec_$T {#pop_uvec_qdut}
 
 ```C
 Option(T) XCAT(pop_, Vec(T))(Vec(T) *self)
@@ -27,7 +27,7 @@ Option(T) XCAT(pop_, Vec(T))(Vec(T) *self)
 Removes the last element from a vector and returns it, or None if
 it is empty.
 
-## append_Vec_$T
+## append_Vec_$T {#append_uvec_qdut}
 
 ```C
 void XCAT(append_, Vec(T))(Vec(T) *self, Vec(T) *other)

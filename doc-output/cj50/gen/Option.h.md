@@ -46,7 +46,7 @@ Member functions for the following generic functions are also defined:
 
 # Macros
 
-## Option
+## Option {#uoption}
 
 ```C
 Option(T) XCAT(Option_,T)
@@ -60,7 +60,7 @@ given type name. For this reason, the type name `T` must not
 contain spaces, e.g. `unsigned int` would not work and a typedef
 like `uint` has to be used instead.
 
-## GENERATE_Option
+## GENERATE_Option {#ugueunueuruautue_uoption}
 
 ```C
 GENERATE_Option(T)
@@ -70,7 +70,7 @@ This macro defines the struct and functions to implement the type
 `Option(T)`. It has to be used once for a given type
 `T`. Afterwards `Option(T)` can be used any number of times.
 
-## NONE
+## NONE {#unuounue}
 
 ```C
 NONE
@@ -86,7 +86,7 @@ Option(float) x = NONE;
 It cannot be used in a function call like `f(NONE)`, instead
 `f(none(float))` has to be used.
 
-## if_let_Some
+## if_let_Some {#if_let_usome}
 
 ```C
 if_let_Some(var, expr)
@@ -115,7 +115,7 @@ if_let_Some(w, get_float()) {
 }
 ```
 
-## while_let_Some
+## while_let_Some {#while_let_usome}
 
 ```C
 while_let_Some(var, expr)

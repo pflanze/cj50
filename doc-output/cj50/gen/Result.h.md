@@ -19,7 +19,7 @@ typedef struct Result(T, E) {
 
 # Macros
 
-## Result
+## Result {#uresqult}
 
 ```C
 Result(T, E) XCAT(Result_, XCAT(T, XCAT(__, E)))
@@ -33,7 +33,7 @@ Implementation wise, it simply concatenates `Result_`, `T`, `__`,
 spaces, e.g. `unsigned int` would not work and a typedef like
 `uint` has to be used instead.
 
-## Ok
+## Ok {#uok}
 
 ```C
 Ok(T, E)
@@ -45,7 +45,7 @@ Returns the constructor function for the `ok` variant of the `Result(T, E)` type
 Ok(int, cstr)(42)
 ```
 
-## Err
+## Err {#uerr}
 
 ```C
 Err(T, E)
@@ -57,7 +57,7 @@ Returns the constructor function for the `err` variant of the `Result(T, E)` typ
 Err(int, cstr)("the input does not contain a number")
 ```
 
-## if_let_Ok
+## if_let_Ok {#if_let_uok}
 
 ```C
 if_let_Ok(var, expr)

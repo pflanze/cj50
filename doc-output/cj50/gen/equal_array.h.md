@@ -8,7 +8,7 @@ GENERATE_.. macro, this is needed separately.
 
 # Macros
 
-## GENERATE_equal_array
+## GENERATE_equal_array {#ugueunueuruautue_eqqqual_array}
 
 ```C
 GENERATE_equal_array(T)

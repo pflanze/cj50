@@ -2,7 +2,7 @@
 
 # Macros
 
-## WARN
+## WARN {#uwuaurun}
 
 ```C
 WARN(msg)
@@ -11,7 +11,7 @@ WARN(msg)
 Print a warning to standard error. Does not take values to embed
 in `msg`.
 
-## WARN_
+## WARN_ {#uwuaurun_}
 
 ```C
 WARN_(msg, ...)
@@ -20,7 +20,7 @@ WARN_(msg, ...)
 Print a warning to standard error. `msg` is a format string, the
 values to embed are expected afterwards.
 
-## DIE
+## DIE {#uduiue}
 
 ```C
 DIE(msg)
@@ -29,7 +29,7 @@ DIE(msg)
 Print a message to standard error, then abort. Does not take
 values to embed in `msg`.
 
-## DIE_
+## DIE_ {#uduiue_}
 
 ```C
 DIE_(msg, ...)

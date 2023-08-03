@@ -5,7 +5,7 @@ Functions for getting good random numbers.
 
 # Normal functions
 
-## random_int
+## random_int {#random_int}
 
 ```C
 int random_int(int range)
@@ -13,7 +13,7 @@ int random_int(int range)
 
 Get a random integer value between 0 (inclusive) and `range` (exclusive).
 
-## random_double
+## random_double {#random_doquble}
 
 ```C
 double random_double()
@@ -22,7 +22,7 @@ double random_double()
 Get a random real value (as double precision floating point type)
 between 0. (inclusive) and 1. (exclusive).
 
-## random_float
+## random_float {#random_float}
 
 ```C
 float random_float()

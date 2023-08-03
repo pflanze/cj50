@@ -2,7 +2,7 @@
 
 # Types
 
-## CStr
+## CStr {#ucustr}
 
 ```C
 typedef struct CStr {
@@ -21,7 +21,7 @@ verify for that to be true).
 
 # Type aliases
 
-## cstr
+## cstr {#cstr}
 
 ```C
 typedef const char* cstr
@@ -36,7 +36,7 @@ that).
 
 # Normal functions
 
-## cStr_from_cstr
+## cStr_from_cstr {#custr_from_cstr}
 
 ```C
 Result(CStr, CStrError) cStr_from_cstr(char *s, size_t siz)
@@ -46,7 +46,7 @@ Consume `s`, verify that it ends with a '\0' but does not contain
 any '\0' elsewhere. `siz` is the length including the '\0'
 terminator.
 
-## new_CStr
+## new_CStr {#new_ucustr}
 
 ```C
 CStr new_CStr(size_t len)
@@ -66,7 +66,7 @@ non-'\0' characters till the end meaning it loses its terminator).
 
 # Macros
 
-## CStr_from_cstr_unsafe
+## CStr_from_cstr_unsafe {#ucustr_from_cstr_qunsafe}
 
 ```C
 CStr_from_cstr_unsafe(s) ((CStr)
