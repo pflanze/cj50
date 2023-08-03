@@ -26,6 +26,8 @@ use Chj::IO::Command;
 use Chj::xperlfunc ":all";
 use Chj::xIOUtil "xputfile_utf8";
 use Chj::chompspace;
+use Chj::TEST;
+
 
 sub usage {
     print STDERR map{"$_\n"} @_ if @_;
@@ -70,6 +72,224 @@ sub prototype_cleanup_for_display($s) {
     $s=~ s/\bstatic\b(?:\s*UNUSED\b)?//s;
     chompspace $s
 }
+
+
+# ------------------------------------------------------------------
+package TypedNameExpression {
+    use FP::Struct ["name"]=> qw(FP::Struct::Show);
+    _END_
+}
+
+package BareExpression {
+    use FP::Struct []=> qw(TypedNameExpression);
+
+    sub is_xcat($self) {
+        # can't be a *proper* XCAT call, anyway.
+        0
+    }
+
+    sub symbolname($self) {
+        my $name = $self->name;
+        if ($name =~ /^[A-Z]$/) {
+            # free type variable
+            '$'.$name
+        } else {
+            $name
+        }
+    }
+    _END_ "main"
+}
+
+package ParameterizedExpression {
+    use FP::Struct ["arguments"]=> qw(TypedNameExpression);
+
+    sub is_xcat($self) {
+        $self->name=~ /^X?CAT$/
+    }
+
+    # Imitate what the C macros are doing
+    sub symbolname($self) {
+        if ($self->is_xcat) {
+            join("",
+                 map {
+                     $_->symbolname
+                 } @{$self->arguments})
+        } else {
+            (
+             $self->name .
+             "_" .
+             join("__",
+                  map {
+                      $_->symbolname
+                  } @{$self->arguments})
+             )
+        }
+    }
+    
+    _END_ "main"
+}
+
+# ------------------------------------------------------------------
+package ParseReturn {
+    use FP::Predicates ":all";
+    use FP::Struct [
+        [\&is_natural0, "list_level"], # 0 = toplevel
+        ]=> qw(FP::Struct::Show);
+    sub is_ok($self) {
+        ! $self->is_err
+    }
+    sub is_err { 0 }
+    sub is_arguments_list { 0 }
+    sub items($self) {
+        # only guaranteed to work if is_arguments_list is true
+        $self->list->array
+    }
+    _END_
+}
+
+
+# when encountering ')'
+package ParseNull {
+    use FP::Predicates ":all";
+    use FP::List qw(cons null);
+    use FP::Struct [
+        [\&is_string, "remainder"],
+        ]=> qw(ParseReturn);
+
+    sub is_arguments_list($self, $last_was_comma, $is_first) {
+        !$last_was_comma
+    }
+    sub list($self) {
+        null
+    }
+    _END_ "main"
+}
+
+# A single value
+package ParseValue {
+    use FP::Predicates ":all";
+    use FP::List qw(cons null);
+    use FP::Struct [
+        [instance_of("TypedNameExpression"), "value"],
+        [instance_of("ParseReturn"), "rest"],
+        ]=> qw(ParseReturn);
+
+    sub is_arguments_list($self, $last_was_comma, $is_first) {
+        ($is_first or $last_was_comma)
+            and $self->rest->is_arguments_list(0, 0)
+    }
+    sub remainder($self) {
+        $self->rest->remainder
+    }
+    sub list($self) {
+        cons($self->value, $self->rest->list)
+    }
+    _END_ "main"
+}
+
+# A comma token.
+package ParseComma {
+    use FP::Predicates ":all";
+    use FP::List qw(cons null);
+    use FP::Struct [
+        [instance_of("ParseReturn"), "rest"],
+        ]=> qw(ParseReturn);
+
+    sub is_arguments_list($self, $last_was_comma, $is_first) {
+        !$is_first and !$last_was_comma
+            and $self->rest->is_arguments_list(1, 0)
+    }
+    sub remainder($self) {
+        $self->rest->remainder
+    }
+    sub list($self) {
+        $self->rest->list
+    }
+    _END_ "main"
+}
+
+package ParseError {
+    use FP::Predicates ":all";
+    use FP::Struct [
+        [\&is_string, "remainder"],
+        [\&is_string, "message"],
+        ]=> qw(ParseReturn);
+
+    sub is_err { 1 }
+    _END_ "main"
+}
+# ------------------------------------------------------------------
+
+# Returns a `ParseReturn`
+sub parse_typednameexpression($s, $call_level, $list_level) {
+    my $origs= $s;
+    #warn "perhaps_parse_typednameexpression('$s', $call_level, $list_level)";
+    $s=~ s/^\s+//;
+    if (0 == length $s) {
+        ParseNull(0, $s)
+    } elsif ($s=~ s/^(\w+)\s*//s) {
+        my $name = $1;
+
+        my $rest = parse_typednameexpression($s, $call_level+1, $list_level);
+        my $leveldiff = $rest->list_level - $list_level;
+        if ($rest->is_arguments_list(0, 1) and $leveldiff) {
+            if ($leveldiff > 1) {
+                die "more than one list nesting ($leveldiff), should never happen"
+            }
+            #warn "it's a call";
+            ParseValue($list_level,
+                       ParameterizedExpression($name, $rest->items),
+                       parse_typednameexpression($rest->remainder,
+                                                 $call_level+1,
+                                                 $list_level))
+        } else {
+            ParseValue($list_level,
+                       BareExpression($name),
+                       $rest)
+        }
+    } elsif ($s=~ s/^\(//) {
+        #warn "it's a list";
+        parse_typednameexpression($s, $call_level+1, $list_level+1);
+    } elsif ($s=~ s/^\s*,\s*//s) {
+        #warn "comma, have more";
+        # uh
+        my $rest = parse_typednameexpression($s, $call_level+1, $list_level);
+        ParseComma($list_level,
+                   $rest)
+    } elsif ($s=~ s/^\s*\)//) {
+        #warn "end paren, it's the end of comma list";
+        ParseNull($list_level,
+                  $s)
+    } else {
+        ParseError($list_level, $s, "no match")
+    }
+}
+
+sub perhaps_xcat_symbol($s) {
+    # e.g. 'XCAT(new_, Vec(T))...' -> 'new_Vec_$T'
+    my $e = parse_typednameexpression($s, 0, 0);
+    if ($e->isa("ParseValue")) {
+        # take first item, ignore the rest.
+        my $v = $e->value;
+        if ($v->is_xcat) {
+            $v->symbolname
+        } else {
+            ()
+        }
+    } else {
+        ()
+    }
+}
+
+TEST { [ perhaps_xcat_symbol 'XCAT(new_, Vec(T))...' ] } [ 'new_Vec_$T' ];
+TEST { [ perhaps_xcat_symbol 'XCAT(new_, Vec(T, C))...' ] } [ 'new_Vec_$T__$C' ];
+TEST { [ perhaps_xcat_symbol 'XCAT(new_, T)...' ] } [ 'new_$T' ];
+TEST { [ perhaps_xcat_symbol 'XCAT(new_, XCAT(foo_, T))...' ] } [ 'new_foo_$T' ];
+TEST { [ perhaps_xcat_symbol '(new_, XCAT(foo_, T))...' ] } [  ];
+TEST { [ perhaps_xcat_symbol 'A(new_, XCAT(foo_, T))...' ] } [  ];
+TEST { [ perhaps_xcat_symbol 'XCAT(new_, XCAT(foo_, T))...' ] } [ 'new_foo_$T' ];
+
+# use FP::Repl; repl;
 
 my $std_prototypes = +{
     putchar=> "int putchar(int c)",
@@ -135,6 +355,9 @@ package DocEntry {
             # Now it gets hard! ucfirst really disambiguates here? !
             if ($s=~ m{ ([a-z]\w*)\s*\(}) {
                 $1
+            } elsif ($s=~ m{ (X?CAT\(.*)}s) {
+                main::perhaps_xcat_symbol($1)
+                    or die "looks like XCAT but doesn't parse as such: '$1'"
             } elsif ($s=~ m{^ \s* const \s+ \S+ \s+ ([a-zA-Z_]\w*) \s*
                               =[^=] }sx) {
                 # global constants
