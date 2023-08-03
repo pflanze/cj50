@@ -461,10 +461,11 @@ package DocEntry {
                  )
                 )
         } : "";
-        
+        my $sym = $self->symbol;
+        my $id = main::sym_to_id($sym);
         join("",
              (
-              "## " . $self->symbol . "\n",
+              "## $sym {#$id}\n",
               "\n",
               "```C\n",
               @code,
