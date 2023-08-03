@@ -73,22 +73,19 @@ sub prototype_cleanup_for_display($s) {
     chompspace $s
 }
 
-# Pandoc sadly changes links like
-# 'cj50/gen/template/Vec.h.md#new_Vec_$T' into
-# 'cj50/gen/template/Vec.h.md#new_vec_t', and perhaps GitHub
-# similarly. We also have symbols that are only distinguished by case,
-# so we can't just `lc`.
+# Pandoc can't work with 'new_Vec_$T' because it understands the '$'
+# as TeX indicator (why in this context, huh?).
 sub sym_to_id($sym) {
-    $sym=~ s/q/qq/sg;
-    $sym=~ s/u/qu/sg;
-    $sym=~ s/\$/qd/sg;
-    $sym=~ s/([A-Z])/u$1/sg;
-    lc $sym
+    $sym=~ s/Q/QQ/sg;
+    $sym=~ s/\$/QD/sg;
+    $sym=~ s/([^A-Za-z0-9_])/"Q".ord($1)."E"/sge;
+    $sym
 }
 
-TEST { sym_to_id 'new_Vec_$T' } 'new_uvec_qdut';
+TEST { sym_to_id 'new_Vec_$T' } 'new_Vec_QDT';
 TEST { sym_to_id 'new_vec' } 'new_vec';
-TEST { sym_to_id 'XCAT' } 'uxucuaut';
+TEST { sym_to_id 'XCAT' } 'XCAT';
+TEST { sym_to_id 'new_Vec_<T>' } 'new_Vec_Q60ETQ62E';
 
 # ------------------------------------------------------------------
 package TypedNameExpression {
