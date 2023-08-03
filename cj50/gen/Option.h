@@ -156,19 +156,26 @@
 /// be balanced! (The `else_None` always has to be there, but the `{
 /// }` after it are optional.)
 
+/// `var` is introduced in the given scope `{ .. }`. Note that you
+/// don't need to specify a type for `var`, it is derived
+/// automatically.
+
 /// ```C
-/// if_let_Some(float w, get_float()) {
-///     float h = unwrap(get_float());
-///     println(w * h);
+/// if_let_Some(w, get_float()) {
+///     if_let_Some(h, get_float()) {
+///         println(w * h);
+///     } else_None {
+///         goto cancelled;
+///     }
 /// } else_None {
-///     print("You cancelled.\n");
+///     goto cancelled;
 /// }
 /// ```
 
-#define if_let_Some(decl, expr)                 \
+#define if_let_Some(var, expr)                  \
     AUTO HYGIENIC(res) = (expr);                \
     if (HYGIENIC(res).is_some) {                \
-    decl = HYGIENIC(res).value;
+        AUTO var = HYGIENIC(res).value;
 
 #define else_None                               \
     } else
@@ -177,14 +184,15 @@
 
 /// Convenient conditional loop macro.
 
+/// `var` is introduced in the given scope `{ .. }`. Note that you
+/// don't need to specify a type for `var`, it is derived
+/// automatically.
+
 /// ```C
 /// while_let_Some(v, pop(&vec)) {
 ///     DBG(v);
 /// }
 /// ```
-
-/// `v` is introduced in the scope `{ .. }`. Note that you don't need
-/// to specify a type for `v`, it is derived automatically.
 
 #define while_let_Some(var, expr)                               \
     for (typeof((expr).value) var;                              \

@@ -31,9 +31,9 @@ int main() {
 
     if (!getenv("NOFLOAT")) {
         print("Width: ");
-        if_let_Some(float w, get_float()) {
+        if_let_Some(w, get_float()) {
             print("Height: ");
-            if_let_Some(float h, get_float()) {
+            if_let_Some(h, get_float()) {
                 print("Area = ");
                 println(w * h);
             } else_None {
