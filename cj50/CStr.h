@@ -89,7 +89,7 @@ bool equal_CStr(const CStr *a, const CStr *b) {
 
 static UNUSED
 int print_debug_CStr(const CStr *s) {
-    return print_debug_cstr((const cstr*)s->cstr);
+    return print_debug_cstr((const cstr*)&s->cstr);
 }
 
 
