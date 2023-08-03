@@ -173,3 +173,23 @@
 #define else_None                               \
     } else
 
+
+
+/// Convenient conditional loop macro.
+
+/// ```C
+/// while_let_Some(v, pop(&vec)) {
+///     DBG(v);
+/// }
+/// ```
+
+/// `v` is introduced in the scope `{ .. }`. Note that you don't need
+/// to specify a type for `v`, it is derived automatically.
+
+#define while_let_Some(var, expr)                               \
+    for (typeof((expr).value) var;                              \
+         ({  AUTO HYGIENIC(res) = (expr);                       \
+             var = HYGIENIC(res).value;                         \
+             HYGIENIC(res).is_some; });                         \
+        )
+

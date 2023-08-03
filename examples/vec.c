@@ -16,12 +16,8 @@ int main(int argc, char** argv) {
     } else {
         DBG(&vec);
         Vec(CStr) vec3 = new_Vec_CStr();
-        while (true) {
-            if_let_Some(AUTO v, pop(&vec)) {
-                push(&vec3, v);
-            } else_None {
-                break;
-            }
+        while_let_Some(v, pop(&vec)) {
+            push(&vec3, v);
             DBG(&vec);
         }
         drop(vec);
