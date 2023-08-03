@@ -22,6 +22,7 @@
 #include "cj50/sdlutil.h"
 #include "cj50/basic-util.h"
 // #include "cj50/plot.h"  include it at the end to pass DBG
+#include "cj50/gen/Vec.h"
 #include "cj50/CStr.h"
 #include "cj50/String.h"
 #include "cj50/char.h" /* already included via CStr.h though */
@@ -36,6 +37,10 @@
 #include "cj50/bool.h"
 #include "cj50/filecontents.h"
 #include "cj50/xmem.h"
+
+#define T CStr
+#include <cj50/gen/template/Vec.h>
+#undef T
 
 
 #define INIT_RESRET                             \
@@ -582,6 +587,8 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , double: print_double                           \
              , Vec2: print_debug_Vec2                         \
              , Vec3: print_debug_Vec3                         \
+             , Vec(CStr): print_debug_move_Vec_CStr           \
+             , Vec(CStr)*: print_debug_Vec_CStr               \
              , Option(cstr): print_debug_move_Option_cstr     \
              , Option(String): print_debug_move_Option_String \
              , Option(int): print_debug_move_Option_int       \
@@ -631,6 +638,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , float*: free                            \
              , Vec2*: free                             \
              , Vec3*: free                             \
+             , Vec(CStr): drop_Vec_CStr                \
              , Option(cstr): drop_Option_cstr          \
              , Option(String): drop_Option_String      \
              , Option(int): drop_Option_int            \
@@ -941,6 +949,31 @@ cleanup:
         print_debug_array(expr, len);                   \
         print("\n");                                    \
     } while (0)
+
+
+/// Push a value onto the end of a collection. For Vec and String.
+#define push(coll, val)                                 \
+    _Generic((coll)                                     \
+             , Vec(CStr)*: push_Vec_CStr                \
+        )(coll, val)
+
+
+/// Pop a value off the end of a collection. For Vec and String.
+#define pop(coll)                                       \
+    _Generic((coll)                                     \
+             , Vec(CStr)*: pop_Vec_CStr                 \
+        )(coll)
+
+
+/// Append the items from coll2 onto the end of coll1, leaving coll2
+/// empty. For Vec and String.
+#define append(coll1, coll2)                            \
+    _Generic((coll1)                                    \
+             , Vec(CStr)*: append_Vec_CStr              \
+        )(coll1, coll2)
+
+
+
 
 
 #undef GET_THING

@@ -1,0 +1,8 @@
+DEBUG: vec2 == {}
+DEBUG: &vec == {"hi", "there", "there", "hi", "examples/vec_opt"}
+DEBUG: &vec == {"hi", "there", "there", "hi"}
+DEBUG: &vec == {"hi", "there", "there"}
+DEBUG: &vec == {"hi", "there"}
+DEBUG: &vec == {"hi"}
+DEBUG: &vec == {}
+DEBUG: vec3 == {"examples/vec_opt", "hi", "there", "there", "hi"}

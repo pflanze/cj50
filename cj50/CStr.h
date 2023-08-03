@@ -4,6 +4,7 @@
 #include <cj50/gen/Result.h>
 #include <cj50/char.h>
 #include <cj50/xmem.h>
+#include <cj50/gen/error.h>
 
 
 #define RESRET(e)                \
@@ -95,6 +96,9 @@ int print_debug_CStr(const CStr *s) {
 
 GENERATE_Option(CStr);
 
+// ------------------------------------------------------------------
+// Errors
+
 typedef struct CStrError {
     uint8_t code;
 } CStrError;
@@ -106,25 +110,21 @@ bool equal_CStrError(const CStrError *a, const CStrError *b) {
     return a->code == b->code;
 }
 
-struct CSE_and_message {
-    const char* cse; // constant name
-    const char* message;
-};
-
 #define DEF_CStrError(code, name) const CStrError name = CStrError(code)
 
 DEF_CStrError(1, CSE_missing_terminator);
 DEF_CStrError(2, CSE_contains_nul);
 DEF_CStrError(3, CSE_size_0);
 
-const struct CSE_and_message _CSE_and_message_from_CStrError_code[] = {
+const struct constant_name_and_message _CSE_and_message_from_CStrError_code[] = {
     { NULL, NULL},
     { "CSE_missing_terminator", "char array is missing '\\0' terminator" },
     { "CSE_contains_nul", "C string contains '\\0' before the end" },
     { "CSE_size_0", "char array of size 0 cannot be a C string" },
 };
-#define _CSE_and_message_from_CStrError_code_len \
-    (sizeof(_CSE_and_message_from_CStrError_code) / sizeof(struct CSE_and_message))
+#define _CSE_and_message_from_CStrError_code_len        \
+    (sizeof(_CSE_and_message_from_CStrError_code)       \
+     / sizeof(struct constant_name_and_message))
 
 #undef DEF_CStrError
 // Make final (well)
@@ -135,7 +135,7 @@ int print_debug_CStrError(const CStrError *e) {
     // (We said final, and now we're printing syntax using the constructor!...)
     assert(e->code < _CSE_and_message_from_CStrError_code_len);
     return printf("CStrError(%s)",
-                  _CSE_and_message_from_CStrError_code[e->code].cse);
+                  _CSE_and_message_from_CStrError_code[e->code].constant_name);
 }
 
 static
@@ -144,6 +144,7 @@ int fprintln_CStrError(FILE *out, CStrError e) {
     return fprintf(out, "CStr error: %s\n",
                    _CSE_and_message_from_CStrError_code[e.code].message);
 }
+// ------------------------------------------------------------------
 
 
 GENERATE_Result(CStr, CStrError);
