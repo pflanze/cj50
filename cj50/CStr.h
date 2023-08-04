@@ -25,22 +25,28 @@ typedef const char* cstr;
 static UNUSED
 void drop_cstr(UNUSED cstr s) {}
 
-// receive pointers to pointers just for standard in Option
+/// Check equivalence. (Standard borrowing API, even though cstr is
+/// already a reference type.)
 static UNUSED
 bool equal_cstr(const cstr *a, const cstr *b) {
     return strcmp(*a, *b) == 0;
 }
 
+/// Check equivalence, "consuming" the references, although consuming
+/// references is a NOOP (those are Copy, and the referenced value is
+/// not dropped). Offered to satisfy the expectation that one can
+/// compare reference types without using `&`.
 static UNUSED
 bool equal_move_cstr(cstr a, cstr b) {
     return strcmp(a, b) == 0;
 }
 
-
+/// Print for program user.
 int print_cstr(cstr str) {
     return printf("%s", str);
 }
 
+/// Print in C code syntax.
 static
 int print_debug_cstr(const cstr *s) {
     int ret = 0;
@@ -79,16 +85,20 @@ typedef struct CStr {
 #define CStr_from_cstr_unsafe(s)                \
     ((CStr) { .cstr = s })
 
+
+/// Remove from existence.
 static UNUSED
 void drop_CStr(CStr s) {
     free(s.cstr);
 }
 
+/// Check equivalence.
 static UNUSED
 bool equal_CStr(const CStr *a, const CStr *b) {
     return strcmp(a->cstr, b->cstr) == 0;
 }
 
+/// Print in C code syntax.
 static UNUSED
 int print_debug_CStr(const CStr *s) {
     return print_debug_cstr((const cstr*)&s->cstr);
@@ -100,6 +110,12 @@ GENERATE_Option(CStr);
 // ------------------------------------------------------------------
 // Errors
 
+/// A type indicating an error handling C strings. The instances are:
+
+///     CSE_missing_terminator
+///     CSE_contains_nul
+///     CSE_size_0
+
 typedef struct CStrError {
     uint8_t code;
 } CStrError;
@@ -107,12 +123,15 @@ typedef struct CStrError {
 #define CStrError(cod)                          \
     ((CStrError) { .code = cod })
 
+/// Check equivalence.
 static
 bool equal_CStrError(const CStrError *a, const CStrError *b) {
     return a->code == b->code;
 }
 
 #define DEF_CStrError(code, name) const CStrError name = CStrError(code)
+
+// Duplication: also see the docstring for struct CStrError
 
 DEF_CStrError(1, CSE_missing_terminator);
 DEF_CStrError(2, CSE_contains_nul);
@@ -132,6 +151,7 @@ const struct constant_name_and_message _CSE_and_message_from_CStrError_code[] = 
 // Make final (well)
 #undef CStrError
 
+/// Print in C code syntax.
 static UNUSED
 int print_debug_CStrError(const CStrError *e) {
     // (We said final, and now we're printing syntax using the constructor!...)
@@ -140,6 +160,7 @@ int print_debug_CStrError(const CStrError *e) {
                   _CSE_and_message_from_CStrError_code[e->code].constant_name);
 }
 
+/// Print for program user.
 static
 int fprintln_CStrError(FILE *out, CStrError e) {
     assert(e.code < _CSE_and_message_from_CStrError_code_len);
@@ -186,7 +207,7 @@ CStr new_CStr(size_t len) {
     return CStr_from_cstr_unsafe(xcallocarray(len, 1));
 }
 
-
+/// Print a CStr (without any escaping) to stdout.
 static UNUSED
 int print_CStr(const CStr *s) {
     return print_cstr(s->cstr);

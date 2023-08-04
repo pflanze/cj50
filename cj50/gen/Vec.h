@@ -14,12 +14,17 @@
 // Errors
 // XX ~copy-paste from CStr.h, should generate such, too.
 
+/// A type indicating an error handling Vec. The instances are:
+
+///     VecError_out_of_capacity
+
 typedef struct VecError {
     uint8_t code;
 } VecError;
 
 #define VecError(cod) ((VecError) { .code = cod })
 
+/// Check equivalence.
 static UNUSED
 bool equal_VecError(const VecError *a, const VecError *b) {
     return a->code == b->code;
@@ -40,6 +45,7 @@ const struct constant_name_and_message constant_name_and_message_from_VecError_c
 // Make final (well)
 #undef VecError
 
+/// Print in C code syntax.
 static UNUSED
 int print_debug_VecError(const VecError *e) {
     // (We said final, and now we're printing syntax using the constructor!...)
@@ -48,6 +54,7 @@ int print_debug_VecError(const VecError *e) {
                   constant_name_and_message_from_VecError_code[e->code].constant_name);
 }
 
+/// Print for program user.
 static UNUSED
 int fprintln_VecError(FILE *out, VecError e) {
     assert(e.code < constant_name_and_message_from_VecError_code_len);
@@ -59,6 +66,7 @@ int fprintln_VecError(FILE *out, VecError e) {
 GENERATE_Result(Unit, VecError);
 
 
+/// Return the larger of the two arguments.
 static UNUSED
 size_t max_size_t(size_t a, size_t b) {
     return a > b ? a : b;

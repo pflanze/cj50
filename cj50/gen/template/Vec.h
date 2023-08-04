@@ -28,6 +28,13 @@ cleanup:                                        \
 // /COPY-PASTE from cj50.h
 
 
+/// A Vec consists of three fields, a pointer to a heap-allocated
+/// array, the current size of that array, and the current length used
+/// out of that array.
+
+/// Never mutate those fields directly, use accessor functions
+/// instead!
+
 typedef struct Vec(T) {
     T *ptr;
     size_t cap;
@@ -57,6 +64,10 @@ Vec(T) XCAT(with_capacity_, Vec(T))(size_t cap) {
     };
 }
 
+/// Appends an element to the back of the vector if there's still
+/// capacity left for it, otherwise returns a
+/// `VecError_out_of_capacity` error. I.e. never allocates additional
+/// memory.
 static UNUSED
 Result(Unit, VecError) XCAT(push_within_capacity_, Vec(T))(
     Vec(T) *self, T value)
@@ -72,6 +83,8 @@ Result(Unit, VecError) XCAT(push_within_capacity_, Vec(T))(
     }
 }
 
+/// Reserve space for `additional` more elements on top of the current
+/// capacity (not len).
 static UNUSED
 void XCAT(reserve_, Vec(T))(Vec(T) *self, size_t additional) {
     // Does the Rust version add `additional` to cap or to len?
@@ -84,7 +97,7 @@ void XCAT(reserve_, Vec(T))(Vec(T) *self, size_t additional) {
     self->cap = cap2;
 }
 
-// Appends an element to the back of the vector.
+/// Appends an element to the back of the vector.
 static UNUSED
 void XCAT(push_, Vec(T))(Vec(T) *self, T value) {
     AUTO res = XCAT(push_within_capacity_, Vec(T))(self, value);
@@ -127,16 +140,19 @@ void XCAT(append_, Vec(T))(Vec(T) *self, Vec(T) *other) {
     other->len = 0;
 }
 
+/// The number of elements the Vec is currently holding.
 static UNUSED
 size_t XCAT(len_, Vec(T))(const Vec(T) *self) {
     return self->len;
 }
 
+/// Whether the Vec has exactly 0 elements.
 static UNUSED
 size_t XCAT(is_empty_, Vec(T))(const Vec(T) *self) {
     return self->len == 0;
 }
 
+/// Remove from existence, along with the owned elements.
 static UNUSED
 void XCAT(drop_, Vec(T))(Vec(T) self) {
     size_t len = self.len;
@@ -151,6 +167,7 @@ void XCAT(drop_, Vec(T))(Vec(T) self) {
     }
 }
 
+/// Print in C code syntax.
 static UNUSED
 int XCAT(print_debug_, Vec(T))(const Vec(T) *self) {
     INIT_RESRET;
@@ -159,6 +176,7 @@ int XCAT(print_debug_, Vec(T))(const Vec(T) *self) {
     PRINT_ARRAY(XCAT(print_debug_, T), ptr, len);
 }
 
+/// Print in C code syntax, consuming the argument.
 static UNUSED
 int XCAT(print_debug_move_, Vec(T))(Vec(T) self) {
     int res = XCAT(print_debug_, Vec(T))(&self);
