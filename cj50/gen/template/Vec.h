@@ -167,6 +167,25 @@ void XCAT(drop_, Vec(T))(Vec(T) self) {
     }
 }
 
+/// Whether the two vectors have the same number of elements with
+/// equal elements in every position.
+static UNUSED
+bool XCAT(equal_, Vec(T))(const Vec(T) *a, const Vec(T) *b) {
+    size_t len = a->len;
+    return (len == b->len) && ({
+            bool res = true;
+            T* av = a->ptr;
+            T* bv = b->ptr;
+            for (size_t i = 0; i < len; i++) {
+                if (! XCAT(equal_, T)(&av[i], &bv[i])) {
+                    res = false;
+                    break;
+                }
+            }
+            res;
+        });
+}
+
 /// Print in C code syntax.
 static UNUSED
 int XCAT(print_debug_, Vec(T))(const Vec(T) *self) {
