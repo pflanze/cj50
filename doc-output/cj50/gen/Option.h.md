@@ -49,7 +49,7 @@ Member functions for the following generic functions are also defined:
 ## Option {#three_Option}
 
 ```C
-Option(T) XCAT(Option_,T)
+Option(T) Option_$T
 ```
 
 This macro creates a type name for an `Option` specific for the

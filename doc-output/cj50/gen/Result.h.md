@@ -22,7 +22,7 @@ typedef struct Result(T, E) {
 ## Result {#three_Result}
 
 ```C
-Result(T, E) XCAT(Result_, XCAT(T, XCAT(__, E)))
+Result(T, E) Result_$T__$E
 ```
 
 This macro creates a type name for a `Result` specific for the
