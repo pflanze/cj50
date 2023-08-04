@@ -19,6 +19,20 @@ that). In addition to `cstr` it guarantees that there are no '\0'
 characters contained in the text (functions generating `CStr` must
 verify for that to be true).
 
+## CStrError {#zero_CStrError}
+
+```C
+typedef struct CStrError {
+    uint8_t code;
+} CStrError
+```
+
+A type indicating an error handling C strings. The instances are:
+
+    CSE_missing_terminator
+    CSE_contains_nul
+    CSE_size_0
+
 # Type aliases
 
 ## cstr {#zero.one_cstr}
@@ -35,6 +49,90 @@ array until encountering the '\0' character (`strlen` will do
 that).
 
 # Normal functions
+
+## equal_cstr {#one_equal_cstr}
+
+```C
+bool equal_cstr(const cstr *a, const cstr *b)
+```
+
+Check equivalence. (Standard borrowing API, even though cstr is
+already a reference type.)
+
+## equal_move_cstr {#one_equal_move_cstr}
+
+```C
+bool equal_move_cstr(cstr a, cstr b)
+```
+
+Check equivalence, "consuming" the references, although consuming
+references is a NOOP (those are Copy, and the referenced value is
+not dropped). Offered to satisfy the expectation that one can
+compare reference types without using `&`.
+
+## print_cstr {#one_print_cstr}
+
+```C
+int print_cstr(cstr str)
+```
+
+Print for program user.
+
+## print_debug_cstr {#one_print_debug_cstr}
+
+```C
+int print_debug_cstr(const cstr *s)
+```
+
+Print in C code syntax.
+
+## drop_CStr {#one_drop_CStr}
+
+```C
+void drop_CStr(CStr s)
+```
+
+Remove from existence.
+
+## equal_CStr {#one_equal_CStr}
+
+```C
+bool equal_CStr(const CStr *a, const CStr *b)
+```
+
+Check equivalence.
+
+## print_debug_CStr {#one_print_debug_CStr}
+
+```C
+int print_debug_CStr(const CStr *s)
+```
+
+Print in C code syntax.
+
+## equal_CStrError {#one_equal_CStrError}
+
+```C
+bool equal_CStrError(const CStrError *a, const CStrError *b)
+```
+
+Check equivalence.
+
+## print_debug_CStrError {#one_print_debug_CStrError}
+
+```C
+int print_debug_CStrError(const CStrError *e)
+```
+
+Print in C code syntax.
+
+## fprintln_CStrError {#one_fprintln_CStrError}
+
+```C
+int fprintln_CStrError(FILE *out, CStrError e)
+```
+
+Print for program user.
 
 ## cStr_from_cstr {#one_cStr_from_cstr}
 
@@ -63,6 +161,14 @@ cstr is *unsafe* (nothing except your being careful is preventing
 you from writing behind the end of the contained cstr (buffer
 overflow), and nothing is preventing you from filling it with
 non-'\0' characters till the end meaning it loses its terminator).
+
+## print_CStr {#one_print_CStr}
+
+```C
+int print_CStr(const CStr *s)
+```
+
+Print a CStr (without any escaping) to stdout.
 
 # Macros
 
