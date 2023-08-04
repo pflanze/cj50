@@ -545,7 +545,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
 
 
 /// Prints the given value for normal text use, followed by a newline
-/// ("\n") for convenience.
+/// (`"\n"`) for convenience.
 
 #define println(v)                              \
     _Generic((v)                                \
