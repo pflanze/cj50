@@ -70,7 +70,7 @@ sub prototype_from_E_cleanup($s) {
 
 sub prototype_cleanup_for_display($s) {
     $s=~ s/\bstatic\b(?:\s*UNUSED\b)?//s;
-    chompspace $s
+    chompspace expand_xcat_in_prototype($s)
 }
 
 # Pandoc can't work with 'new_Vec_$T' because it understands the '$'
@@ -174,7 +174,9 @@ package ParseReturn {
     use FP::Predicates ":all";
     use FP::Struct [
         [\&is_natural0, "list_level"], # 0 = toplevel
+        [\&is_string, "immediate_remainder"],
         ]=> qw(FP::Struct::Show);
+
     sub is_ok($self) {
         ! $self->is_err
     }
@@ -193,11 +195,13 @@ package ParseNull {
     use FP::Predicates ":all";
     use FP::List qw(cons null);
     use FP::Struct [
-        [\&is_string, "remainder"],
         ]=> qw(ParseReturn);
 
     sub is_arguments_list($self, $last_was_comma, $is_first) {
         !$last_was_comma
+    }
+    sub far_remainder($self) {
+        $self->immediate_remainder
     }
     sub list($self) {
         null
@@ -218,8 +222,8 @@ package ParseValue {
         ($is_first or $last_was_comma)
             and $self->rest->is_arguments_list(0, 0)
     }
-    sub remainder($self) {
-        $self->rest->remainder
+    sub far_remainder($self) {
+        $self->rest->far_remainder
     }
     sub list($self) {
         cons($self->value, $self->rest->list)
@@ -239,8 +243,8 @@ package ParseComma {
         !$is_first and !$last_was_comma
             and $self->rest->is_arguments_list(1, 0)
     }
-    sub remainder($self) {
-        $self->rest->remainder
+    sub far_remainder($self) {
+        $self->rest->far_remainder
     }
     sub list($self) {
         $self->rest->list
@@ -251,14 +255,12 @@ package ParseComma {
 package ParseError {
     use FP::Predicates ":all";
     use FP::Struct [
-        [\&is_string, "remainder"],
         [\&is_string, "message"],
         ]=> qw(ParseReturn);
 
     sub is_err { 1 }
     _END_ "main"
 }
-# ------------------------------------------------------------------
 
 # Returns a `ParseReturn`
 sub parse_typednameexpression($s, $call_level, $list_level) {
@@ -277,13 +279,16 @@ sub parse_typednameexpression($s, $call_level, $list_level) {
                 die "more than one list nesting ($leveldiff), should never happen"
             }
             #warn "it's a call";
+            my $remainder = $rest->far_remainder;
             ParseValue($list_level,
+                       $remainder,
                        ParameterizedExpression($name, $rest->items),
-                       parse_typednameexpression($rest->remainder,
+                       parse_typednameexpression($remainder,
                                                  $call_level+1,
                                                  $list_level))
         } else {
             ParseValue($list_level,
+                       $s,
                        BareExpression($name),
                        $rest)
         }
@@ -295,6 +300,7 @@ sub parse_typednameexpression($s, $call_level, $list_level) {
         # uh
         my $rest = parse_typednameexpression($s, $call_level+1, $list_level);
         ParseComma($list_level,
+                   $s,
                    $rest)
     } elsif ($s=~ s/^\s*\)//) {
         #warn "end paren, it's the end of comma list";
@@ -329,7 +335,40 @@ TEST { [ perhaps_xcat_symbol '(new_, XCAT(foo_, T))...' ] } [  ];
 TEST { [ perhaps_xcat_symbol 'A(new_, XCAT(foo_, T))...' ] } [  ];
 TEST { [ perhaps_xcat_symbol 'XCAT(new_, XCAT(foo_, T))...' ] } [ 'new_foo_$T' ];
 
+
+sub expand_xcat_in_prototype($s) {
+    if ($s=~ m/\b(X?CAT\()/sg) {
+        my $posend = pos($s);
+        my $pos = $posend - length($1);
+        my $p0 = substr($s, 0, $pos);
+        my $p1 = substr($s, $pos);
+        
+        my $e = parse_typednameexpression($p1, 0, 0);
+        if ($e->isa("ParseValue")) {
+            # take first item, ignore the rest.
+            my $v = $e->value;
+            if ($v->is_xcat) {
+                $p0 . $v->symbolname . expand_xcat_in_prototype($e->immediate_remainder)
+            } else {
+                $s
+            }
+        } else {
+            $s
+        }
+    } else {
+        $s
+    }
+}
+
+TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, Vec(T))(const Vec(T) *self)' } 'size_t is_empty_Vec_$T(const Vec(T) *self)';
+TEST { expand_xcat_in_prototype 'size_t is_empty_Vec(T)(const Vec(T) *self)' } 'size_t is_empty_Vec(T)(const Vec(T) *self)';
+TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, Vec(T))XCAT(const Vec(T)) *self)' } 'size_t is_empty_Vec_$TXCAT(const Vec(T)) *self)';
+TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, Vec(T))XCAT(const, Vec(T)) *self)' } 'size_t is_empty_Vec_$TconstVec_$T *self)';
+TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, Vec(T)) XCAT(const, Vec(T)) *self)' } 'size_t is_empty_Vec_$T constVec_$T *self)';
+
 # use FP::Repl; repl;
+# __END__
+# ------------------------------------------------------------------
 
 my $std_prototypes = +{
     putchar=> "int putchar(int c)",
