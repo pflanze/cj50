@@ -69,7 +69,7 @@ non-'\0' characters till the end meaning it loses its terminator).
 ## CStr_from_cstr_unsafe {#three_CStr_from_cstr_unsafe}
 
 ```C
-CStr_from_cstr_unsafe(s) ((CStr)
+CStr_from_cstr_unsafe(s)
 ```
 
 Generate a `CStr` from a `cstr`. `cstr` must end with a '\0' and

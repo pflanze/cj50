@@ -20,7 +20,7 @@ cases.
 ## Unit {#three_Unit}
 
 ```C
-Unit() ((Unit)
+Unit()
 ```
 
 Construct the single possible value that `Unit` can represent.
