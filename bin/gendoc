@@ -74,19 +74,43 @@ sub prototype_cleanup_for_display($s) {
 }
 
 # Pandoc can't work with 'new_Vec_$T' because it understands the '$'
-# as TeX indicator (why in this context, huh?).
+# as TeX indicator (why in this context, huh?). Also, apparently
+# digits are not valid in anchor identifiers, so avoid those, too
+# (huh!).
+
+my %digit2id= (
+    0=> "zero",
+    1=> "one",
+    2=> "two",
+    3=> "three",
+    4=> "four",
+    5=> "five",
+    6=> "six",
+    7=> "seven",
+    8=> "eight",
+    9=> "nine",
+    );
+
 sub sym_to_id($subsection, $sym) {
-    $sym=~ s/Q/QQ/sg;
-    $sym=~ s/\$/QD/sg;
-    $sym=~ s/([^A-Za-z0-9_])/"Q".ord($1)."E"/sge;
     $subsection=~ s/ .*//;
-    "${subsection}_${sym}"
+    $subsection=~ s{([0-9])}{$digit2id{$1}}sg;
+    # leave in the '.', OK?
+    my $id = "${subsection}_${sym}";
+    $id=~ s/Q/QQ/sg;
+    $id=~ s/\$/QD/sg;
+    $id=~ s{([0-9]+)}{
+          "Q".join("", map { $digit2id{$_} } split //, $1)."E"
+    }sge;
+    $id=~ s{([^A-Za-z0-9_.])}{
+        "Qord".join("", map { $digit2id{$_} } split //, ord($1))."E"
+    }sge;
+    $id
 }
 
-TEST { sym_to_id '1.5 foo', 'new_Vec_$T' } '1.5_new_Vec_QDT';
-TEST { sym_to_id '1 foo', 'new_vec' } '1_new_vec';
+TEST { sym_to_id '1.5 foo', 'new_Vec_$T' } 'one.five_new_Vec_QDT';
+TEST { sym_to_id '1 foo', 'new_vec' } 'one_new_vec';
 TEST { sym_to_id '', 'XCAT' } '_XCAT';
-TEST { sym_to_id '', 'new_Vec_<T>' } '_new_Vec_Q60ETQ62E';
+TEST { sym_to_id '', 'new_Vec_<T>' } '_new_Vec_QordsixzeroETQordsixtwoE';
 
 # use FP::Repl; repl;
 # __END__
