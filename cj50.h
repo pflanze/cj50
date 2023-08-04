@@ -139,8 +139,7 @@ const ParseError E_negative = 503;
 const ParseError E_not_a_number = 504;
 
 
-/// Convert a `ParseError` value into a `cstr` for display. The
-/// receiver owns the returned cstr. XXX use CStr instead
+/// Convert a `ParseError` value into a `CStr` for display.
 static
 CStr string_from_ParseError(ParseError e) {
     if (e == E_not_in_int_range) {
@@ -793,15 +792,16 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 /// Takes a wrapper for some type `T` (like `Option(T)`, or `Result(T,
 /// E)`) and returns the contained value of type `T` if possible, or
-/// aborts if not possible.
+/// aborts if not possible. This moves the value, i.e. the wrapper
+/// is consumed.
 
 /// Example:
 ///
 /// ```C
-/// Option(cstr) maybe_name = get_cstr();
-/// // maybe_name can be a `none(cstr)` or e.g. `some("Alex")`.
-/// cstr name = unwrap(maybe_name);
-/// // Now we're guaranteed to have a cstr in `name`, "Alex" if we
+/// Option(CStr) maybe_name = get_CStr();
+/// // maybe_name can be a `none(CStr)` or e.g. `some("Alex")`.
+/// CStr name = unwrap(maybe_name);
+/// // Now we're guaranteed to have a CStr in `name`, "Alex" if we
 /// // had the second case above. But if `maybe_name` was a none
 /// // then the program has terminated by now instead.
 /// ```
