@@ -76,7 +76,8 @@ typedef struct CStr {
 /// Generate a `CStr` from a `cstr`. `cstr` must end with a '\0' and
 /// not contain any '\0' in other places; this is not checked, hence
 /// unsafe.
-#define CStr_from_cstr_unsafe(s) ((CStr) { .cstr = s })
+#define CStr_from_cstr_unsafe(s)                \
+    ((CStr) { .cstr = s })
 
 static UNUSED
 void drop_CStr(CStr s) {
@@ -103,7 +104,8 @@ typedef struct CStrError {
     uint8_t code;
 } CStrError;
 
-#define CStrError(cod) ((CStrError) { .code = cod })
+#define CStrError(cod)                          \
+    ((CStrError) { .code = cod })
 
 static
 bool equal_CStrError(const CStrError *a, const CStrError *b) {

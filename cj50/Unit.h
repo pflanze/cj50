@@ -13,7 +13,8 @@ typedef struct Unit {
 
 /// Construct the single possible value that `Unit` can represent.
 
-#define Unit() ((Unit) {})
+#define Unit() \
+    ((Unit) {})
 
 static UNUSED
 bool equal_Unit(UNUSED const Unit *a, UNUSED const Unit *b) {
