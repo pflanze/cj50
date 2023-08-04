@@ -10,14 +10,13 @@ typedef struct String {
 } String
 ```
 
-`String` is an owned, mutable type that holds a string of
-characters, more precisely, an array of bytes, that represents a
-text in UTF-8 encoding. Unlike C strings (see `CStr`), it does not
-use a '\0' terminator, and can represent embedded '\0'
-characters. It automatically resizes itself as needed to accept
-additional text that is added.
-
-It is implemented via a `Vec(char)`.
+`String` is an owned type that holds a "C string", a string of
+characters, more precisely, an array of `char`, that represents
+the text, and a '\0' character after it to signal the end. There
+is no length information, the length has to be determined by
+walking the array until encountering the '\0' character (`strlen`
+will do that on the contained array, or `len` on the String
+wrapper type).
 
 <hr>
 <p>&nbsp;</p>
