@@ -2,7 +2,7 @@
 
 # Type aliases
 
-## uint {#quint}
+## uint {#zero.one_uint}
 
 ```C
 typedef unsigned int uint

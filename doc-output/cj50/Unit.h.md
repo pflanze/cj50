@@ -2,7 +2,7 @@
 
 # Types
 
-## Unit {#uunit}
+## Unit {#zero_Unit}
 
 ```C
 typedef struct Unit {
@@ -17,7 +17,7 @@ cases.
 
 # Macros
 
-## Unit {#uunit}
+## Unit {#three_Unit}
 
 ```C
 Unit() ((Unit)

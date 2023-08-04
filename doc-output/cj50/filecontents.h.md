@@ -2,7 +2,7 @@
 
 # Types
 
-## SystemError {#usystemuerror}
+## SystemError {#zero_SystemError}
 
 ```C
 typedef struct SystemError {
@@ -16,7 +16,7 @@ and the system error.
 
 # Normal functions
 
-## filecontents_CStr {#filecontents_ucustr}
+## filecontents_CStr {#one_filecontents_CStr}
 
 ```C
 Result(CStr, SystemError) filecontents_CStr(cstr path)

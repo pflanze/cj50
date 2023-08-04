@@ -2,7 +2,7 @@
 
 # Types
 
-## String {#ustring}
+## String {#zero_String}
 
 ```C
 typedef struct String {

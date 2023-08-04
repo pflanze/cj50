@@ -5,7 +5,7 @@ This provides mathematical types: vectors and shapes.
 
 # Types
 
-## Vec2 {#uvec2}
+## Vec2 {#zero_VecQtwoE}
 
 ```C
 typedef struct Vec2 {
@@ -16,7 +16,7 @@ typedef struct Vec2 {
 
 A 2-dimentional vector.
 
-## Vec3 {#uvec3}
+## Vec3 {#zero_VecQthreeE}
 
 ```C
 typedef struct Vec3 {
@@ -28,7 +28,7 @@ typedef struct Vec3 {
 
 A 3-dimentional vector.
 
-## Line2 {#uline2}
+## Line2 {#zero_LineQtwoE}
 
 ```C
 typedef struct Line2 {
@@ -39,7 +39,7 @@ typedef struct Line2 {
 
 A line. The end point is at add(start, extent).
 
-## Rect2 {#urect2}
+## Rect2 {#zero_RectQtwoE}
 
 ```C
 typedef struct Rect2 {
@@ -50,7 +50,7 @@ typedef struct Rect2 {
 
 A rectangle. The opposite corner is at add(start, extent).
 
-## Color {#ucolor}
+## Color {#zero_Color}
 
 ```C
 typedef struct Color {
@@ -64,7 +64,7 @@ A standard 8-bit RGB color representation.
 
 # Constants
 
-## math_pi {#math_pi}
+## math_pi {#zero.five_math_pi}
 
 ```C
 const double math_pi = 3.14159265358979323846264338
@@ -74,7 +74,7 @@ The math constant pi.
 
 (This may also be available as `M_PI` from <math.h>.)
 
-## math_e {#math_e}
+## math_e {#zero.five_math_e}
 
 ```C
 const double math_e = 2.71828182845904523536028747
@@ -84,7 +84,7 @@ The math constant e (Euler's number).
 
 # Normal functions
 
-## vec2 {#vec2}
+## vec2 {#one_vecQtwoE}
 
 ```C
 Vec2 vec2(float x, float y)
@@ -92,7 +92,7 @@ Vec2 vec2(float x, float y)
 
 Construct a Vec2.
 
-## vec3 {#vec3}
+## vec3 {#one_vecQthreeE}
 
 ```C
 Vec3 vec3(float x, float y, float z)
@@ -100,7 +100,7 @@ Vec3 vec3(float x, float y, float z)
 
 Construct a Vec3.
 
-## line2 {#line2}
+## line2 {#one_lineQtwoE}
 
 ```C
 Line2 line2(Vec2 start, Vec2 extent)
@@ -108,7 +108,7 @@ Line2 line2(Vec2 start, Vec2 extent)
 
 Construct a Rect2
 
-## rect2 {#rect2}
+## rect2 {#one_rectQtwoE}
 
 ```C
 Rect2 rect2(Vec2 start, Vec2 extent)
@@ -116,7 +116,7 @@ Rect2 rect2(Vec2 start, Vec2 extent)
 
 Construct a Rect2
 
-## color {#color}
+## color {#one_color}
 
 ```C
 Color color(uint8_t r, uint8_t g, uint8_t b)
@@ -126,7 +126,7 @@ Constructing a color
 
 # Generic functions
 
-## to_sdl {#to_sdl}
+## to_sdl {#two_to_sdl}
 
 ```C
 to_sdl(v)
@@ -140,7 +140,7 @@ Members:
 Rect2 : SDL_Rect to_sdl_Rect2(Rect2 r);
 ```
 
-## add {#add}
+## add {#two_add}
 
 ```C
 add(a, b)
@@ -162,7 +162,7 @@ Vec2 : Vec2 add_Vec2(Vec2 a, Vec2 b);
 Vec3 : Vec3 add_Vec3(Vec3 a, Vec3 b);
 ```
 
-## sub {#squb}
+## sub {#two_sub}
 
 ```C
 sub(a, b)
@@ -184,7 +184,7 @@ Vec2 : Vec2 sub_Vec2(Vec2 a, Vec2 b);
 Vec3 : Vec3 sub_Vec3(Vec3 a, Vec3 b);
 ```
 
-## neg {#neg}
+## neg {#two_neg}
 
 ```C
 neg(a)
@@ -205,7 +205,7 @@ Vec2 : Vec2 neg_Vec2(Vec2 a);
 Vec3 : Vec3 neg_Vec3(Vec3 a);
 ```
 
-## mul {#mqul}
+## mul {#two_mul}
 
 ```C
 mul(a, b)

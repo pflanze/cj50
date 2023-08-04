@@ -5,7 +5,7 @@ Utilities for working with the SDL2 library.
 
 # Normal functions
 
-## graphics_render {#graphics_render}
+## graphics_render {#one_graphics_render}
 
 ```C
 void graphics_render(int window_width,
@@ -24,7 +24,7 @@ them. If `renderframe` returns `true`, the image is drawn and
 `renderframe` is called again 1/60 seconds later. If it returns
 `false`, the drawing stops and `graphics_render` returns.
 
-## set_draw_color {#set_draw_color}
+## set_draw_color {#one_set_draw_color}
 
 ```C
 void set_draw_color(SDL_Renderer* renderer, Color color)
@@ -33,7 +33,7 @@ void set_draw_color(SDL_Renderer* renderer, Color color)
 Set the drawing color that the `SDL_Renderer` should use for future
 drawing.
 
-## clear {#clear}
+## clear {#one_clear}
 
 ```C
 void clear(SDL_Renderer* renderer)
@@ -42,7 +42,7 @@ void clear(SDL_Renderer* renderer)
 Clear the rendering area, i.e. fill it with the current drawing
 color.
 
-## draw_rect {#draw_rect}
+## draw_rect {#one_draw_rect}
 
 ```C
 void draw_rect(SDL_Renderer* renderer, Rect2 r)
@@ -52,7 +52,7 @@ Draw the given rectangle with the current colors.
 
 # Generic functions
 
-## assert_sdl {#assert_sdl}
+## assert_sdl {#two_assert_sdl}
 
 ```C
 assert_sdl(v)

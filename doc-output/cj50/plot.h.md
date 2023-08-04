@@ -2,7 +2,7 @@
 
 # Types
 
-## ColorFunction_float {#ucolorufqunction_float}
+## ColorFunction_float {#zero_ColorFunction_float}
 
 ```C
 typedef struct ColorFunction_float {
@@ -16,7 +16,7 @@ functions in the same plot via `plot_functions_float`.
 
 # Normal functions
 
-## plot_functions_float {#plot_fqunctions_float}
+## plot_functions_float {#one_plot_functions_float}
 
 ```C
 int plot_functions_float(size_t num_fs, ColorFunction_float* fs,
@@ -28,7 +28,7 @@ functions, which expect a float and return an optional float
 when possible. `viewport` is the (initial) range of coordinates
 that is shown on the screen.
 
-## plot_function_float {#plot_fqunction_float}
+## plot_function_float {#one_plot_function_float}
 
 ```C
 int plot_function_float(Option(float)(*f)(float), Rect2 viewport)
