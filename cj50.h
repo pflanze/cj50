@@ -54,8 +54,15 @@
     ret += res;
 
 
+
+/// Read a CStr from standard input, terminated by a
+/// newline. Returns none on end of file (when ctl-d is pressed).
+
+/// The difference to get_String is that a String can be mutated and
+/// can represent `'\0'` bytes in the input.
+
 static
-Option(cstr) _get_cstr() {
+Option(CStr) get_CStr() {
     while (true) {
 #define SIZ 100
         char *line = malloc(SIZ);
@@ -66,7 +73,7 @@ Option(cstr) _get_cstr() {
         if (n < 0) {
             if (errno == 0) {
                 free(line);
-                return none_cstr();
+                return none_CStr();
             } else {
                 DIE_("Could not get a line from stdin: %s",
                      strerror(errno));
@@ -81,10 +88,10 @@ Option(cstr) _get_cstr() {
             l--;
         }
         if (l > 0) {
-            return some_cstr(line);
+            return some_CStr(CStr_from_cstr_unsafe(line));
         }
         free(line);
-        print_cstr("Your answer is empty. Please enter a string: ");
+        print_move_cstr("Your answer is empty. Please enter a string: ");
     }
 }
 
@@ -93,10 +100,10 @@ Option(cstr) _get_cstr() {
 
 static UNUSED
 Option(String) get_String() {
-    Option(cstr) s = _get_cstr();
+    Option(CStr) s = get_CStr();
     if (s.is_some) {
         // need to discard const qualifier
-        return some_String((String) { .str = (char*) s.value });
+        return some_String((String) { .str = (char*) s.value.cstr });
     } else {
         return none_String();
     }
@@ -173,7 +180,7 @@ static UNUSED
 int print_ParseError(ParseError e) {
     INIT_RESRET;
     Option(CStr) s = NONE;
-    RESRET(print_cstr("parse error: "));
+    RESRET(print_move_cstr("parse error: "));
     s = some_CStr(string_from_ParseError(e));
     RESRET(print_CStr(&s.value));
 cleanup:
@@ -223,22 +230,22 @@ Result(int, ParseError) parse_int(cstr s) {
     }
 }
 
-#define GET_THING(T, type_desc, parse)                  \
-    while (true) {                                      \
-        Option(String) s = get_String();                \
-        if (!s.is_some) {                               \
-            return XCAT(none_, T)();                    \
-        }                                               \
-        Result(T, ParseError) r = parse(s.value.str);   \
-        drop_Option_String(s);                          \
-        if (r.is_ok) {                                  \
-            return XCAT(some_, T)(r.ok);                \
-        }                                               \
-        print_cstr("Your answer ");                     \
-        CStr errstr = string_from_ParseError(r.err);    \
-        print_CStr(&errstr);                            \
-        drop_CStr(errstr);                              \
-        print_cstr(". Please enter " type_desc ": ");   \
+#define GET_THING(T, type_desc, parse)                          \
+    while (true) {                                              \
+        Option(String) s = get_String();                        \
+        if (!s.is_some) {                                       \
+            return XCAT(none_, T)();                            \
+        }                                                       \
+        Result(T, ParseError) r = parse(s.value.str);           \
+        drop_Option_String(s);                                  \
+        if (r.is_ok) {                                          \
+            return XCAT(some_, T)(r.ok);                        \
+        }                                                       \
+        print_move_cstr("Your answer ");                        \
+        CStr errstr = string_from_ParseError(r.err);            \
+        print_CStr(&errstr);                                    \
+        drop_CStr(errstr);                                      \
+        print_move_cstr(". Please enter " type_desc ": ");      \
     }
 
 /// Read an integer number from standard input, terminated by a
@@ -448,14 +455,14 @@ float* new_floats(size_t len) {
 
 #define PRINT_ARRAY(print_typ, ary, len)        \
     INIT_RESRET;                                \
-    RESRET(print_cstr("{"));                    \
+    RESRET(print_move_cstr("{"));               \
     for (size_t i = 0; i < len; i++) {          \
         if (i > 0) {                            \
-            RESRET(print_cstr(", "));           \
+            RESRET(print_move_cstr(", "));      \
         }                                       \
         RESRET(print_typ(&ary[i]));             \
     }                                           \
-    RESRET(print_cstr("}"));                    \
+    RESRET(print_move_cstr("}"));               \
 cleanup:                                        \
     return ret;
 
@@ -498,9 +505,11 @@ int print_debug_floats(const float* ary, size_t len) {
 
 #define print(v)                                \
     _Generic((v)                                \
-             , char*: print_cstr                \
-             , cstr: print_cstr                 \
+             , char*: print_move_cstr           \
+             , cstr*: print_cstr                \
+             , cstr: print_move_cstr            \
              , CStr*: print_CStr                \
+             , CStr: print_move_CStr            \
              , String: print_String             \
              , char: putchar                    \
              , int: print_int                   \
@@ -573,8 +582,11 @@ FUTURE_GENERATE_PRINTLN(CStr);
 #define print_debug(v)                                        \
     _Generic((v)                                              \
              , char**: print_debug_cstr                       \
+             , char*: print_debug_move_cstr                   \
              , cstr*: print_debug_cstr                        \
+             , cstr: print_debug_move_cstr                    \
              , CStr*: print_debug_CStr                        \
+             , CStr: print_debug_move_CStr                    \
              , String*: print_debug_String                    \
              , String: print_debug_move_String                \
              , bool: print_debug_bool                         \
@@ -588,14 +600,16 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , Vec3: print_debug_Vec3                         \
              , Vec(CStr): print_debug_move_Vec_CStr           \
              , Vec(CStr)*: print_debug_Vec_CStr               \
-             , Option(cstr): print_debug_move_Option_cstr     \
-             , Option(String): print_debug_move_Option_String \
-             , Option(int): print_debug_move_Option_int       \
-             , Option(float): print_debug_move_Option_float   \
              , Option(cstr)*: print_debug_Option_cstr         \
+             , Option(cstr): print_debug_move_Option_cstr     \
+             , Option(CStr)*: print_debug_Option_CStr         \
+             , Option(CStr): print_debug_move_Option_CStr     \
              , Option(String)*: print_debug_Option_String     \
+             , Option(String): print_debug_move_Option_String \
              , Option(int)*: print_debug_Option_int           \
+             , Option(int): print_debug_move_Option_int       \
              , Option(float)*: print_debug_Option_float       \
+             , Option(float): print_debug_move_Option_float   \
              , Line2: print_debug_Line2                       \
              , Rect2: print_debug_Rect2                       \
              , Result(int, ParseError)*: print_debug_Result_int__ParseError \
@@ -639,6 +653,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , Vec3*: free                             \
              , Vec(CStr): drop_Vec_CStr                \
              , Option(cstr): drop_Option_cstr          \
+             , Option(CStr): drop_Option_CStr          \
              , Option(String): drop_Option_String      \
              , Option(int): drop_Option_int            \
              , Option(float): drop_Option_float        \
@@ -926,11 +941,11 @@ static UNUSED
 int print_var_or_expr(const char* s) {
     INIT_RESRET;
     if (is_symbol(s)) {
-        RESRET(print_cstr(s));
+        RESRET(print(s));
     } else {
-        RESRET(print_cstr("("));
-        RESRET(print_cstr(s));
-        RESRET(print_cstr(")"));
+        RESRET(print("("));
+        RESRET(print(s));
+        RESRET(print(")"));
     }
 cleanup:
     return ret;

@@ -31,7 +31,7 @@ bool equal_String(const String *a, const String *b) {
 
 // XX change to borrow? But do it for all of `print`.
 int print_String(const String s) {
-    return print_cstr(s.str);
+    return print_move_cstr(s.str);
 }
 
 static UNUSED

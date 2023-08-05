@@ -1,2 +1,2 @@
-What is your name? DEBUG: name == none(String)
+What is your name? DEBUG: name == none(CStr)
 You cancelled.

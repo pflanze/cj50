@@ -42,8 +42,15 @@ bool equal_move_cstr(cstr a, cstr b) {
 }
 
 /// Print for program user.
-int print_cstr(cstr str) {
-    return printf("%s", str);
+int print_cstr(const cstr *s) {
+    return printf("%s", *s);
+}
+
+/// Same as `print_cstr`, but move (rather, copy) the reference. Like
+/// print_cstr, still does not consume `s` since it's a borrowed type
+/// anyway.
+int print_move_cstr(cstr s) {
+    return print_cstr(&s);
 }
 
 /// Print in C code syntax.
@@ -51,15 +58,22 @@ static
 int print_debug_cstr(const cstr *s) {
     int ret = 0;
     int res;
-    RESRET(print_cstr("\""));
+    RESRET(print_move_cstr("\""));
 
     cstr str = *s;
     while (*str) {
         RESRET(_print_debug_char(*str));
         str++;
     }
-    RESRET(print_cstr("\""));
+    RESRET(print_move_cstr("\""));
     return ret;
+}
+
+/// Same as `print_debug_move_cstr`, again move/copy but it's a
+/// borrowed type anyway.
+static UNUSED
+int print_debug_move_cstr(cstr s) {
+    return print_debug_cstr(&s);
 }
 
 
@@ -102,6 +116,14 @@ bool equal_CStr(const CStr *a, const CStr *b) {
 static UNUSED
 int print_debug_CStr(const CStr *s) {
     return print_debug_cstr((const cstr*)&s->cstr);
+}
+
+/// Same as `print_debug_CStr` but consuming `s`.
+static UNUSED
+int print_debug_move_CStr(CStr s) {
+    int res = print_debug_cstr((const cstr*)&s.cstr);
+    drop_CStr(s);
+    return res;
 }
 
 
@@ -210,7 +232,15 @@ CStr new_CStr(size_t len) {
 /// Print a CStr (without any escaping) to stdout.
 static UNUSED
 int print_CStr(const CStr *s) {
-    return print_cstr(s->cstr);
+    return print_move_cstr(s->cstr);
+}
+
+/// Like print_CStr but consuming the argument.
+static UNUSED
+int print_move_CStr(CStr s) {
+    int res = print_CStr(&s);
+    drop_CStr(s);
+    return res;
 }
 
 

@@ -35,11 +35,11 @@ typedef struct SyscallInfo {
 static
 int print_debug_SyscallInfo(const SyscallInfo v) {
     INIT_RESRET;
-    RESRET(print_cstr("(SyscallInfo){ .id = "));
+    RESRET(print_move_cstr("(SyscallInfo){ .id = "));
     RESRET(print_int(v.id));
-    RESRET(print_cstr(", .name = "));
+    RESRET(print_move_cstr(", .name = "));
     RESRET(print_debug_cstr(&v.name));
-    RESRET(print_cstr(" }"));
+    RESRET(print_move_cstr(" }"));
 cleanup:
     return ret;
 }
@@ -82,11 +82,11 @@ bool equal_SystemError(const SystemError* a, const SystemError* b) {
 static
 int print_debug_SystemError(const SystemError *v) {
     INIT_RESRET;
-    RESRET(print_cstr("systemError("));
+    RESRET(print_move_cstr("systemError("));
     RESRET(print_debug_SyscallInfo(syscallinfos[v->syscallinfo_id]));
-    RESRET(print_cstr(", "));
+    RESRET(print_move_cstr(", "));
     RESRET(print_int(v->_errno)); // todo: look up constant names like ENOPERM etc.?
-    RESRET(print_cstr(")"));
+    RESRET(print_move_cstr(")"));
 cleanup:
     return ret;
 }

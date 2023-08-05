@@ -12,7 +12,9 @@ float average(const float* vs, size_t len) {
 int main() {
     if (!getenv("NONAME")) {
         print("What is your name? ");
-        Option(String) name = get_String();
+        // Should use get_String instead! But for compatibility with
+        // cs50 it's still supported.
+        Option(CStr) name = get_CStr(); 
         DBG(name);
         if (!name.is_some) {
             print("You cancelled.\n");
@@ -26,7 +28,6 @@ int main() {
         print("In a year, you will be ");
         print_nat0(age + 1);
         print("!\n");
-        drop(name);
     }
 
     if (!getenv("NOFLOAT")) {

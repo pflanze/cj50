@@ -14,14 +14,14 @@
     ret += res;
 
 #define PRINT_ARRAY(print_typ, ary, len)        \
-    RESRET(print_cstr("{"));                    \
+    RESRET(print_move_cstr("{"));               \
     for (size_t i = 0; i < len; i++) {          \
         if (i > 0) {                            \
-            RESRET(print_cstr(", "));           \
+            RESRET(print_move_cstr(", "));      \
         }                                       \
         RESRET(print_typ(&ary[i]));             \
     }                                           \
-    RESRET(print_cstr("}"));                    \
+    RESRET(print_move_cstr("}"));               \
 cleanup:                                        \
     return ret;
 
