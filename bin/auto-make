@@ -23,6 +23,7 @@ use Getopt::Long;
 #use Chj::ruse;
 #use Chj::Backtrace; 
 #use FP::Show; use FP::Repl; use FP::Repl::Trap; #
+use Fcntl qw(:flock);
 
 my @watchdirs = (
     ".",
@@ -64,6 +65,13 @@ GetOptions("verbose"=> \$verbose,
 
 
 $ENV{BASEDIR} = "."; # communicate to _auto-make-handler
+
+my $lockfile = (-e ".git") ? ".git/cj-auto-make.lck" : ".cj-auto-make.lck";
+$^F = 1000;
+open my $lock, "+>", $lockfile or die "open '$lockfile': $!";
+if (!flock $lock, LOCK_EX|LOCK_NB) {
+    die "$myname: auto-make is already running from this directory\n"
+}
 
 print "Watching for changing *.c files in any of the following directories:\n\n";
 print "    $dirs\n\n";
