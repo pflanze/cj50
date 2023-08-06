@@ -138,3 +138,15 @@ void draw_rect(SDL_Renderer* renderer, Rect2 r) {
     assert_sdl(SDL_RenderDrawRect(renderer, &sr));
 }
 
+#include "sdlutil_circle.h"
+
+/// Draw the given circle with the current colors.
+void draw_circle(SDL_Renderer* renderer, Vec2 pos, int radius) {
+    assert_sdl(SDL_RenderDrawCircle(renderer, pos.x, pos.y, radius));
+}
+
+/// Draw the given circle with the current colors.
+void draw_fill_circle(SDL_Renderer* renderer, Vec2 pos, int radius) {
+    assert_sdl(SDL_RenderFillCircle(renderer, pos.x, pos.y, radius));
+}
+

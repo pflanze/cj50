@@ -6,8 +6,6 @@ SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
     int offsetx, offsety, d;
     int status;
 
-    CHECK_RENDERER_MAGIC(renderer, -1);
-
     offsetx = 0;
     offsety = radius;
     d = radius -1;
@@ -52,8 +50,6 @@ SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
 {
     int offsetx, offsety, d;
     int status;
-
-    CHECK_RENDERER_MAGIC(renderer, -1);
 
     offsetx = 0;
     offsety = radius;
