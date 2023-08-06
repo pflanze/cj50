@@ -25,5 +25,6 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
 
 int main() {
     float t = 0;
-    graphics_render(window_width, window_height, render_squares, &t);
+    graphics_render("Graphics",
+                    window_width, window_height, render_squares, &t);
 }

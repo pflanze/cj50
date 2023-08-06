@@ -4,6 +4,7 @@
 
 #include <SDL2/SDL.h>
 #include <cj50/basic-util.h>
+#include <cj50/CStr.h>
 
 int assert_sdl_int(int code) {
     if (code < 0) {
@@ -34,7 +35,8 @@ int assert_sdl_int(int code) {
 /// `renderframe` is called again 1/60 seconds later. If it returns
 /// `false`, the drawing stops and `graphics_render` returns.
 
-void graphics_render(int window_width,
+void graphics_render(cstr title,
+                     int window_width,
                      int window_height,
                      bool (*renderframe)(SDL_Renderer*, void*),
                      void* context)
@@ -44,7 +46,7 @@ void graphics_render(int window_width,
              SDL_GetError());
     }
     SDL_Window* window = SDL_CreateWindow(
-        "SDL Tutorial",
+        title,
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         window_width,

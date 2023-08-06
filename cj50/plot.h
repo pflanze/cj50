@@ -76,7 +76,8 @@ int plot_functions_float(size_t num_fs, ColorFunction_float* fs,
         num_fs, fs, width, height, viewport
     };
 
-    graphics_render(width, height, plot_render, &ctx);
+    graphics_render("Plot multiple functions",
+                    width, height, plot_render, &ctx);
 
     return 0;
 }
@@ -99,7 +100,7 @@ int plot_function_float(Option(float)(*f)(float), Rect2 viewport) {
         NUMFS, fs, width, height, viewport
     };
 
-    graphics_render(width, height, plot_render, &ctx);
+    graphics_render("Plot single function", width, height, plot_render, &ctx);
 
     return 0;
 #undef NUMFS
