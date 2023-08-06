@@ -73,10 +73,20 @@ compare reference types without using `&`.
 ## print_cstr {#one_print_cstr}
 
 ```C
-int print_cstr(cstr str)
+int print_cstr(const cstr *s)
 ```
 
 Print for program user.
+
+## print_move_cstr {#one_print_move_cstr}
+
+```C
+int print_move_cstr(cstr s)
+```
+
+Same as `print_cstr`, but move (rather, copy) the reference. Like
+print_cstr, still does not consume `s` since it's a borrowed type
+anyway.
 
 ## print_debug_cstr {#one_print_debug_cstr}
 
@@ -85,6 +95,15 @@ int print_debug_cstr(const cstr *s)
 ```
 
 Print in C code syntax.
+
+## print_debug_move_cstr {#one_print_debug_move_cstr}
+
+```C
+int print_debug_move_cstr(cstr s)
+```
+
+Same as `print_debug_move_cstr`, again move/copy but it's a
+borrowed type anyway.
 
 ## drop_CStr {#one_drop_CStr}
 
@@ -109,6 +128,14 @@ int print_debug_CStr(const CStr *s)
 ```
 
 Print in C code syntax.
+
+## print_debug_move_CStr {#one_print_debug_move_CStr}
+
+```C
+int print_debug_move_CStr(CStr s)
+```
+
+Same as `print_debug_CStr` but consuming `s`.
 
 ## equal_CStrError {#one_equal_CStrError}
 
@@ -169,6 +196,14 @@ int print_CStr(const CStr *s)
 ```
 
 Print a CStr (without any escaping) to stdout.
+
+## print_move_CStr {#one_print_move_CStr}
+
+```C
+int print_move_CStr(CStr s)
+```
+
+Like print_CStr but consuming the argument.
 
 # Macros
 
