@@ -998,6 +998,14 @@ cleanup:
         )(coll1, coll2)
 
 
+/// Give the length of a given collection. For Vec (and String. XXX
+/// bytes or characters...?)
+#define len(coll)                                       \
+    _Generic((coll)                                     \
+             , Vec(CStr)*: len_Vec_CStr                 \
+        )(coll)
+
+
 
 
 
