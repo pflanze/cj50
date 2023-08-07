@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cj50/gen/Vec.h>
 
 #define RESRET(e)                \
     res = (e);                   \
@@ -62,4 +63,8 @@ int print_debug_char(const char *c) {
 
 
 GENERATE_Option(char);
+
+#define T char
+#include <cj50/gen/template/Vec.h>
+#undef T
 

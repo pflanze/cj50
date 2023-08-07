@@ -6,6 +6,7 @@
 #include <cj50/gen/Option.h>
 #include <cj50/gen/Result.h>
 #include <cj50/Unit.h>
+#include <cj50/CStr.h>
 #include <cj50/gen/error.h>
 
 #define Vec(T) XCAT(Vec_,T)
