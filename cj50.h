@@ -55,27 +55,27 @@
 
 
 
-/// Read a CStr from standard input, terminated by a
-/// newline. Returns none on end of file (when ctl-d is pressed).
-
-/// The difference to get_String is that a String can be mutated and
-/// can represent `'\0'` bytes in the input.
+/// Read a CStr from `inp`, terminated by a newline (the newline is
+/// not included in the returned string). Returns none on end of file
+/// (or in the case of terminal input, when ctl-d is pressed). In case
+/// of errors, it dies with a message that shows the `filename`.
 
 static
-Option(CStr) get_CStr() {
+Option(CStr) fget_CStr(FILE *inp, cstr filename) {
     while (true) {
 #define SIZ 100
         char *line = malloc(SIZ);
         size_t len = SIZ;
 #undef SIZ
         errno = 0;
-        ssize_t n = getline(&line, &len, stdin);
+        ssize_t n = getline(&line, &len, inp);
         if (n < 0) {
             if (errno == 0) {
                 free(line);
                 return none_CStr();
             } else {
-                DIE_("Could not get a line from stdin: %s",
+                DIE_("Could not get a line from '%s': %s",
+                     filename,
                      strerror(errno));
             }
         }
@@ -93,6 +93,16 @@ Option(CStr) get_CStr() {
         free(line);
         print_move_cstr("Your answer is empty. Please enter a string: ");
     }
+}
+
+
+/// Read a CStr from stdin (standard input), terminated by a newline
+/// (the newline is not included in the returned string). Returns none
+/// on end of file (when ctl-d is pressed).
+
+static
+Option(CStr) get_CStr() {
+    return fget_CStr(stdin, "stdin");
 }
 
 /// Read a String from standard input, terminated by a
