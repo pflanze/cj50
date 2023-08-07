@@ -1005,7 +1005,12 @@ cleanup:
              , Vec(CStr)*: len_Vec_CStr                 \
         )(coll)
 
-
+/// Give the length of a given collection. For Vec (and String. XXX
+/// bytes or characters...?)
+#define cstr(v)                                         \
+    _Generic((v)                                        \
+             , CStr*: cstr_CStr                         \
+        )(v)
 
 
 

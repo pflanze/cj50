@@ -244,5 +244,13 @@ int print_move_CStr(CStr s) {
 }
 
 
+/// Give a read-only borrow to the contained cstr.
+static UNUSED
+cstr cstr_CStr(CStr *s) {
+    return s->cstr;
+}
+
+
+
 #undef RESRET
 
