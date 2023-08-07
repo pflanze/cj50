@@ -6,10 +6,16 @@
 #include <cj50/gen/Option.h>
 #include <cj50/gen/Result.h>
 #include <cj50/Unit.h>
-#include <cj50/CStr.h>
+#include <cj50/CStr.h> /* int print_move_cstr(cstr s) */
 #include <cj50/gen/error.h>
 
 #define Vec(T) XCAT(Vec_,T)
+
+
+// XX Bummer, why necessary, circular dependencies?
+typedef const char* cstr;
+int print_move_cstr(cstr s);
+
 
 // ------------------------------------------------------------------
 // Errors
