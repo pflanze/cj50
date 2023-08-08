@@ -1,8 +1,8 @@
 #pragma once
 
-/// Get the conversion function from T1 to T2.
+/// Get the conversion function from type `T1` to type `T2`.
 
-#define new_from(T2, T1)                                                \
+#define new_from_(T2, T1)                                               \
     _Generic(*((T2*)(NULL))                                             \
              , UnicodeError:                                            \
              _Generic(*((T1*)(NULL))                                    \
@@ -11,4 +11,9 @@
                  )                                                      \
         )
 
+
+/// Convert `v` into type `T`.
+
+#define new_from(T, v)                          \
+    new_from_(T, typeof(v))(v)
 

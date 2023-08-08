@@ -213,7 +213,7 @@
         __propagate_return_val.is_ok = false;        \
         __propagate_return_val.err = new_from(       \
             typeof(__propagate_return_val.err),      \
-            typeof((v).err))((v).err);               \
+            (v).err);                                \
         goto label;                                  \
     }
 
