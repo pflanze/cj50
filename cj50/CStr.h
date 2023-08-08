@@ -184,10 +184,11 @@ int print_debug_CStrError(const CStrError *e) {
 
 /// Print for program user.
 static
-int fprintln_CStrError(FILE *out, CStrError e) {
-    assert(e.code < _CSE_and_message_from_CStrError_code_len);
-    return fprintf(out, "CStr error: %s\n",
-                   _CSE_and_message_from_CStrError_code[e.code].message);
+int fprintln_CStrError(FILE *out, const CStrError *e) {
+    assert(e->code < _CSE_and_message_from_CStrError_code_len);
+    return fprintf(
+        out, "CStr error: %s\n",
+        _CSE_and_message_from_CStrError_code[e->code].message);
 }
 // ------------------------------------------------------------------
 

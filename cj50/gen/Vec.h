@@ -64,10 +64,11 @@ int print_debug_VecError(const VecError *e) {
 
 /// Print for program user.
 static UNUSED
-int fprintln_VecError(FILE *out, VecError e) {
-    assert(e.code < constant_name_and_message_from_VecError_code_len);
-    return fprintf(out, "Vec error: %s\n",
-                   constant_name_and_message_from_VecError_code[e.code].message);
+int fprintln_VecError(FILE *out, const VecError *e) {
+    assert(e->code < constant_name_and_message_from_VecError_code_len);
+    return fprintf(
+        out, "Vec error: %s\n",
+        constant_name_and_message_from_VecError_code[e->code].message);
 }
 // ------------------------------------------------------------------
 

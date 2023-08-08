@@ -159,23 +159,23 @@ const ParseError E_not_a_number = 504;
 
 /// Convert a `ParseError` value into a `CStr` for display.
 static
-CStr string_from_ParseError(ParseError e) {
-    if (e == E_not_in_int_range) {
+CStr string_from_ParseError(const ParseError *e) {
+    if (*e == E_not_in_int_range) {
         return CStr_from_cstr_unsafe(
             xstrdup("is not within the range of numbers of the `int` type"));
-    } else if (e == E_invalid_text_after_number) {
+    } else if (*e == E_invalid_text_after_number) {
         return CStr_from_cstr_unsafe(
             xstrdup("has invalid text after the number"));
-    } else if (e == E_not_greater_than_zero) {
+    } else if (*e == E_not_greater_than_zero) {
         return CStr_from_cstr_unsafe(
             xstrdup("is not greater than zero"));
-    } else if (e == E_negative) {
+    } else if (*e == E_negative) {
         return CStr_from_cstr_unsafe(
             xstrdup("is negative"));
-    } else if (e == E_not_a_number) {
+    } else if (*e == E_not_a_number) {
         return CStr_from_cstr_unsafe(
             xstrdup("is not a number"));
-    } else if (e < 256) {
+    } else if (*e < 256) {
 #define SIZ_ 200
         CStr s = new_CStr(SIZ_);
         assert(snprintf(s.cstr, SIZ_,
@@ -188,7 +188,7 @@ CStr string_from_ParseError(ParseError e) {
 }
 
 static UNUSED
-int print_ParseError(ParseError e) {
+int print_ParseError(const ParseError *e) {
     INIT_RESRET;
     Option(CStr) s = NONE;
     RESRET(print_move_cstr("parse error: "));
@@ -200,7 +200,7 @@ cleanup:
 }
 
 static
-int fprintln_ParseError(FILE* out, ParseError e) {
+int fprintln_ParseError(FILE* out, const ParseError *e) {
     INIT_RESRET;
     CStr s = string_from_ParseError(e);
     RESRET(fprintf(out, "parse error: input %s\n", s.cstr));
@@ -253,9 +253,10 @@ Result(int, ParseError) parse_int(cstr s) {
             return XCAT(some_, T)(r.ok);                        \
         }                                                       \
         print_move_cstr("Your answer ");                        \
-        CStr errstr = string_from_ParseError(r.err);            \
+        CStr errstr = string_from_ParseError(&r.err);           \
         print_CStr(&errstr);                                    \
         drop_CStr(errstr);                                      \
+        /* drop_ParseError(r.err); */                           \
         print_move_cstr(". Please enter " type_desc ": ");      \
     }
 

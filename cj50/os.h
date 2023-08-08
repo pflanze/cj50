@@ -79,11 +79,11 @@ cleanup:
 
 // used in Result
 static UNUSED
-int fprintln_SystemError(FILE* out, SystemError e) {
+int fprintln_SystemError(FILE* out, const SystemError *e) {
     INIT_RESRET;
     RESRET(fprintf(out, "system error: %s: %s\n",
-                   syscallinfos[e.syscallinfo_id].name,
-                   strerror(e.oserror.number)));
+                   syscallinfos[e->syscallinfo_id].name,
+                   strerror(e->oserror.number)));
 cleanup:
     return ret;
 }

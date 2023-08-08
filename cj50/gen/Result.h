@@ -105,7 +105,8 @@
         if (s.is_ok) {                                          \
             return s.ok;                                        \
         } else {                                                \
-            XCAT(fprintln_, E)(stderr, s.err);                  \
+            XCAT(fprintln_, E)(stderr, &s.err);                 \
+            /* XXX drop(s.err) */                               \
             fflush(stderr);                                     \
             abort();                                            \
         }                                                       \
