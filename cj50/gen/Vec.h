@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <cj50/macro-util.h>
 #include <cj50/xmem.h>
 #include <cj50/gen/Option.h>
