@@ -18,6 +18,7 @@
 #include <math.h>
 #include <ctype.h>
 
+#include "cj50/unicode.h"
 #include "cj50/math.h"
 #include "cj50/sdlutil.h"
 #include "cj50/basic-util.h"
