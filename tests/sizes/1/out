@@ -4,7 +4,7 @@ Line2	16
 Rect2	16
 Color	3
 SyscallInfo	16
-SystemError	2
+SystemError	8
 ParseError	2
 Option(char)	2
 Option(int)	8
