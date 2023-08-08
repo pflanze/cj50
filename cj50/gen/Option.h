@@ -201,3 +201,23 @@
              HYGIENIC(res).is_some; });                         \
         )
 
+
+/// Set `var` to the value if `expr` evaluated to Some, otherwise run
+/// the (statement or) block that is following.
+
+/// The following example prints `x`.
+
+/// ```C
+/// LET_Some_ELSE(b1, some('x')) {
+///     RETURN_Ok(None(u32));
+/// }
+/// print(b1);
+/// ```
+
+#define LET_Some_ELSE(var, expr)                \
+    typeof((expr).value) var;                   \
+    AUTO HYGIENIC(res) = (expr);                \
+    if (HYGIENIC(res).is_some) {                \
+        var = HYGIENIC(res).value;              \
+    } else 
+
