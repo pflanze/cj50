@@ -28,6 +28,7 @@
 #include "cj50/char.h" /* already included via CStr.h though */
 #include "cj50/int.h"
 #include "cj50/uint.h"
+#include "cj50/u8.h"
 #include "cj50/u64.h"
 #include "cj50/gen/equal_array.h"
 #include "cj50/gen/Result.h"
@@ -524,6 +525,7 @@ int print_debug_floats(const float* ary, size_t len) {
              , char: putchar                    \
              , int: print_int                   \
              , uint: print_uint                 \
+             , u8: print_u8                     \
              , u64: print_u64                   \
              , float: print_float               \
              , double: print_double             \
@@ -545,6 +547,7 @@ GENERATE_PRINTLN(String);
 GENERATE_PRINTLN(char);
 GENERATE_PRINTLN(int);
 GENERATE_PRINTLN(uint);
+GENERATE_PRINTLN(u8);
 GENERATE_PRINTLN(u64);
 GENERATE_PRINTLN(float);
 GENERATE_PRINTLN(double);
@@ -574,6 +577,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , char: println_char               \
              , int: println_int                 \
              , uint: println_uint               \
+             , u8: println_u8                   \
              , u64: println_u64                 \
              , float: println_float             \
              , double: println_double           \
@@ -603,6 +607,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , char: print_debug_char                         \
              , int: print_int                                 \
              , uint: print_uint                               \
+             , u8: print_u8                                   \
              , u64: print_u64                                 \
              , float: print_float                             \
              , double: print_double                           \
@@ -796,6 +801,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , CStr: some_CStr                          \
              , String: some_String                      \
              , int: some_int                            \
+             , u8: some_u8                              \
              , u64: some_u64                            \
              , float: some_float                        \
              , double: some_double                      \
@@ -810,6 +816,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , CStr: none_CStr                          \
              , String: none_String                      \
              , int: none_int                            \
+             , u8: none_u8                              \
              , u64: none_u64                            \
              , float: none_float                        \
              , double: none_double                      \
@@ -837,6 +844,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(CStr): unwrap_Option_CStr                         \
              , Option(String): unwrap_Option_String                     \
              , Option(int): unwrap_Option_int                           \
+             , Option(u8): unwrap_Option_u8                             \
              , Option(u64): unwrap_Option_u64                           \
              , Option(float): unwrap_Option_float                       \
              , Option(double): unwrap_Option_double                     \
@@ -869,12 +877,14 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , String: "String"                         \
              , int: "int"                               \
              , unsigned int: "uint"                     \
+             , u8: "u8"                                 \
              , u64: "u64"                               \
              , float: "float"                           \
              , double: "double"                         \
              , Option(cstr): "Option(cstr)"             \
              , Option(String): "Option(String)"         \
              , Option(int): "Option(int)"               \
+             , Option(u8): "Option(u8)"                 \
              , Option(u64): "Option(u64)"               \
              , Option(float): "Option(float)"           \
              , Option(double): "Option(double)"         \
