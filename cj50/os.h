@@ -88,6 +88,9 @@ cleanup:
     return ret;
 }
 
+static UNUSED
+void drop_SystemError(UNUSED SystemError e) {}
+
 // ------------------------------------------------------------------ 
 
 GENERATE_Result(Option(u8), SystemError);

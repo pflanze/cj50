@@ -209,6 +209,10 @@ cleanup:
     return ret;
 }
 
+static UNUSED
+void drop_ParseError(UNUSED ParseError e) {}
+
+
 GENERATE_Result(int, ParseError);
 
 /// Translate a string into an `int` if possible.
@@ -661,6 +665,10 @@ FUTURE_GENERATE_PRINTLN(CStr);
     _Generic((v)                                       \
              , CStr: drop_CStr                         \
              , String: drop_String                     \
+             , SystemError: drop_SystemError           \
+             , ParseError: drop_ParseError             \
+             , CStrError: drop_CStrError               \
+             , VecError: drop_VecError                 \
              , const char*: drop_cstr                  \
              , char*: drop_cstr                        \
              , int*: free                              \

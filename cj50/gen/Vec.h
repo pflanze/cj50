@@ -70,6 +70,10 @@ int fprintln_VecError(FILE *out, const VecError *e) {
         out, "Vec error: %s\n",
         constant_name_and_message_from_VecError_code[e->code].message);
 }
+
+static UNUSED
+void drop_VecError(UNUSED VecError e) {}
+
 // ------------------------------------------------------------------
 
 GENERATE_Result(Unit, VecError);

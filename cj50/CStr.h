@@ -190,6 +190,10 @@ int fprintln_CStrError(FILE *out, const CStrError *e) {
         out, "CStr error: %s\n",
         _CSE_and_message_from_CStrError_code[e->code].message);
 }
+
+static UNUSED
+void drop_CStrError(UNUSED CStrError e) {}
+
 // ------------------------------------------------------------------
 
 
