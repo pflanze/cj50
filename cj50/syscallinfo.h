@@ -46,6 +46,8 @@ const SyscallInfo syscallinfos[] = {
     { 1, 2, "fstat" },
     { 2, 2, "read" },
     { 3, 2, "close" },
+    { 4, 3, "getc" },
+    { 5, 3, "getc_unlocked" },
 };
 
 // `syscallInfoId_t` identifies a SyscallInfo instance
@@ -55,6 +57,8 @@ typedef uint16_t syscallInfoId_t;
 #define SYSCALLINFO_fstat (syscallinfos[1])
 #define SYSCALLINFO_read (syscallinfos[2])
 #define SYSCALLINFO_close (syscallinfos[3])
+#define SYSCALLINFO_getc (syscallinfos[4])
+#define SYSCALLINFO_getc_unlocked (syscallinfos[5])
 
 
 

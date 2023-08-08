@@ -5,6 +5,7 @@
 //! and `errno`.
 
 #include <cj50/syscallinfo.h> /* rename to oscallinfo ? */
+#include <cj50/u8.h>
 
 
 
@@ -89,6 +90,27 @@ cleanup:
 
 // ------------------------------------------------------------------ 
 
+GENERATE_Result(Option(u8), SystemError);
+
+
+/// Returns a single byte from the input, if possible; at EOF (end of
+/// file), returns Ok(None). `inp` must previously have been locked
+/// using `flockfile` and afterwards unlocked using `funlockfile` (see
+/// `man 3 flockfile`).
+static UNUSED
+Result(Option(u8), SystemError) os_fgetc_unlocked(FILE* inp) {
+    int r = getc_unlocked(inp);
+    if (r == EOF) {
+        if (ferror(inp)) {
+            return Err(Option(u8), SystemError)(
+                systemError(SYSCALLINFO_getc_unlocked, errno));
+        } else {
+            return Ok(Option(u8), SystemError)(none_u8());
+        }
+    } else {
+        return Ok(Option(u8), SystemError)(some_u8(r));
+    }
+}
 
 
 #undef RESRET
