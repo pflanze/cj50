@@ -3,6 +3,8 @@
   Published under the terms of the MIT License, see the LICENSE file.
 */
 
+//! ## Overview
+
 //! A Result is a value that has two variants and can represent either
 //! success with a value of one type, `T`, or an error with an error
 //! value of another type, `E`. It has a field `is_ok` that is `true`
@@ -19,7 +21,9 @@
 //! } Result(T, E);
 //! ```
 
-//! Member functions for the following generic functions are also defined:
+//! ## Member functions
+
+//! Member functions for the following generic functions are defined:
 
 //! `equal(res1, res2)`
 //! : Returns `true` if both arguments are structurally equivalent.
@@ -32,6 +36,16 @@
 
 //! `print_debug_move(opt)`
 //! : Print a programmer's view of the Option value, given by copy.
+
+//! ## Error propagation
+
+//! By using normal if statements or `if_let_Ok`, you can build the
+//! proper control flow to clean up and return from a function when
+//! you receive an error via `Result` inside said function.
+//! Alternatively, there is a set of macros that makes some of the
+//! tedious parts more automatic. XXX continue docs.
+
+
 
 /* future?:
 
@@ -175,4 +189,40 @@
 
 #define end_let_Ok                              \
     }}
+
+
+
+
+
+#define BEGIN_Result(T, E)                      \
+    Result(T, E) __propagate_return_val;
+
+#define RETURN_Ok(val, label)                   \
+    __propagate_return_val.is_ok = true;        \
+    __propagate_return_val.ok = val;            \
+    goto label;
+
+#define RETURN_Err(e, label)                    \
+    __propagate_return_val.is_ok = false;       \
+    __propagate_return_val.err = e;             \
+    goto label;
+
+#define PROPAGATE_Result(v, label)                   \
+    if (! (v).is_ok) {                               \
+        __propagate_return_val.is_ok = false;        \
+        __propagate_return_val.err = new_from(       \
+            typeof(__propagate_return_val.err),      \
+            typeof((v).err))((v).err);               \
+        goto label;                                  \
+    }
+
+#define LET_Ok(v, e, label)                             \
+    typeof((e).ok) v = ({                               \
+        typeof(e) __let_ok_result = (e);                \
+        PROPAGATE_Result(__let_ok_result, label);       \
+        __let_ok_result.ok;                             \
+        });
+
+#define END_Result()                            \
+    return __propagate_return_val;
 
