@@ -19,7 +19,7 @@
 //! } Result(T, E);
 //! ```
 
- //! Member functions for the following generic functions are also defined:
+//! Member functions for the following generic functions are also defined:
 
 //! `equal(res1, res2)`
 //! : Returns `true` if both arguments are structurally equivalent.
