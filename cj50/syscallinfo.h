@@ -23,6 +23,7 @@ int print_int(int n);
 
 typedef struct SyscallInfo {
     uint8_t id;
+    int8_t manpage_section; // 2 => POSIX, 3=> C library
     const char* name;
 } SyscallInfo;
 
@@ -31,6 +32,8 @@ int print_debug_SyscallInfo(const SyscallInfo v) {
     INIT_RESRET;
     RESRET(print_move_cstr("(SyscallInfo){ .id = "));
     RESRET(print_int(v.id));
+    RESRET(print_move_cstr(", .manpage_section = "));
+    RESRET(print_int(v.manpage_section));
     RESRET(print_move_cstr(", .name = "));
     RESRET(print_debug_cstr(&v.name));
     RESRET(print_move_cstr(" }"));
@@ -39,10 +42,10 @@ cleanup:
 }
 
 const SyscallInfo syscallinfos[] = {
-    { 0, "open" },
-    { 1, "fstat" },
-    { 2, "read" },
-    { 3, "close" },
+    { 0, 2, "open" },
+    { 1, 2, "fstat" },
+    { 2, 2, "read" },
+    { 3, 2, "close" },
 };
 
 // `syscallInfoId_t` identifies a SyscallInfo instance
