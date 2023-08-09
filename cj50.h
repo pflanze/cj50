@@ -647,6 +647,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , Result(int, ParseError): print_debug_move_Result_int__ParseError \
              , Result(String, SystemError): print_debug_move_Result_String__SystemError \
              , SystemError: print_debug_SystemError                     \
+             , UnicodeError*: print_debug_UnicodeError                  \
         )(v)
 
 
@@ -680,6 +681,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , ParseError: drop_ParseError             \
              , CStrError: drop_CStrError               \
              , VecError: drop_VecError                 \
+             , UnicodeError: drop_UnicodeError         \
              , CFile: drop_CFile                       \
              , const char*: drop_cstr                  \
              , char*: drop_cstr                        \
@@ -1050,6 +1052,16 @@ cleanup:
              , CStr*: cstr_CStr                         \
         )(v)
 
+
+#define fprintln(out, v)                                \
+    _Generic((v)                                        \
+             , ParseError*: fprintln_ParseError         \
+             , CStrError*: fprintln_CStrError                   \
+             , VecError*: fprintln_VecError                     \
+             , SystemError*: fprintln_SystemError               \
+             , DecodingError*: fprintln_DecodingError           \
+             , UnicodeError*: fprintln_UnicodeError             \
+        )((out), (v))
 
 
 #undef GET_THING
