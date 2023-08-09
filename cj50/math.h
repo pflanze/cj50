@@ -4,13 +4,8 @@
 #pragma once
 
 #include <cj50/basic-util.h>
+#include "cj50/resret.h"
 #include <SDL2/SDL.h>
-
-
-#define RESRET(e)                \
-    res = (e);                   \
-    if (res < 0) { return res; } \
-    ret += res;
 
 
 /// A 2-dimentional vector.
@@ -84,13 +79,13 @@ Line2 line2(Vec2 start, Vec2 extent) {
 }
 
 int print_debug_Line2(Line2 s) {
-    int ret = 0;
-    int res;
+    INIT_RESRET;
     RESRET(printf("Line2("));
     RESRET(print_debug_Vec2(s.start));
     RESRET(printf(", "));
     RESRET(print_debug_Vec2(s.extent));
     RESRET(printf(")"));
+cleanup:
     return ret;
 }
 
@@ -109,13 +104,13 @@ Rect2 rect2(Vec2 start, Vec2 extent) {
 }
 
 int print_debug_Rect2(Rect2 s) {
-    int ret = 0;
-    int res;
+    INIT_RESRET;
     RESRET(printf("Rect2("));
     RESRET(print_debug_Vec2(s.start));
     RESRET(printf(", "));
     RESRET(print_debug_Vec2(s.extent));
     RESRET(printf(")"));
+cleanup:
     return ret;
 }
 
@@ -226,4 +221,3 @@ const double math_e_float = 2.71828182845904523536028747f;
 // verified algorithmically: 2.71828182845905
 
 
-#undef RESRET

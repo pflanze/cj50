@@ -39,21 +39,11 @@
 #include "cj50/bool.h"
 #include "cj50/filecontents.h"
 #include "cj50/xmem.h"
+#include "cj50/resret.h"
 
 #define T CStr
 #include <cj50/gen/template/Vec.h>
 #undef T
-
-
-#define INIT_RESRET                             \
-    __label__ cleanup; /* GCC extension */      \
-    int ret = 0;                                \
-    int res;
-
-#define RESRET(e)                               \
-    res = (e);                                  \
-    if (res < 0) { ret = res; goto cleanup; }   \
-    ret += res;
 
 
 
@@ -1065,7 +1055,5 @@ cleanup:
 
 
 #undef GET_THING
-#undef RESRET
-#undef INIT_RESRET
 
 #include "cj50/plot.h"

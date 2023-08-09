@@ -5,12 +5,7 @@
 #include <cj50/char.h>
 #include <cj50/xmem.h>
 #include <cj50/gen/error.h>
-
-
-#define RESRET(e)                \
-    res = (e);                   \
-    if (res < 0) { return res; } \
-    ret += res;
+#include <cj50/resret.h>
 
 
 /// `cstr` is a non-mutable borrowed type that represents a "C
@@ -56,8 +51,7 @@ int print_move_cstr(cstr s) {
 /// Print in C code syntax.
 static
 int print_debug_cstr(const cstr *s) {
-    int ret = 0;
-    int res;
+    INIT_RESRET;
     RESRET(print_move_cstr("\""));
 
     cstr str = *s;
@@ -66,6 +60,7 @@ int print_debug_cstr(const cstr *s) {
         str++;
     }
     RESRET(print_move_cstr("\""));
+cleanup:
     return ret;
 }
 
@@ -255,7 +250,4 @@ cstr cstr_CStr(CStr *s) {
     return s->cstr;
 }
 
-
-
-#undef RESRET
 

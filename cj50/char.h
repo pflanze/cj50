@@ -1,11 +1,7 @@
 #pragma once
 
 #include <cj50/gen/Vec.h>
-
-#define RESRET(e)                \
-    res = (e);                   \
-    if (res < 0) { return res; } \
-    ret += res;
+#include <cj50/resret.h>
 
 
 static UNUSED
@@ -53,15 +49,13 @@ int _print_debug_char(char c) {
 
 static UNUSED
 int print_debug_char(const char *c) {
-    int ret = 0;
-    int res;
+    INIT_RESRET;
     RESRET(fputc('\'', stdout));
     RESRET(_print_debug_char(*c));
     RESRET(fputc('\'', stdout));
+cleanup:
     return ret;
 }
-
-#undef RESRET
 
 
 GENERATE_Option(char);

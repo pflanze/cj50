@@ -11,17 +11,7 @@
 #include <cj50/u32.h>
 #include <cj50/os.h>
 #include <cj50/gen/dispatch/new_from.h>
-
-#define INIT_RESRET                             \
-    __label__ cleanup; /* GCC extension */      \
-    int ret = 0;                                \
-    int res;
-
-#define RESRET(e)                               \
-    res = (e);                                  \
-    if (res < 0) { ret = res; goto cleanup; }   \
-    ret += res;
-
+#include "cj50/resret.h"
 
 
 /// A single Unicode code point (a single character, unless it's a
@@ -360,6 +350,3 @@ cleanup:
 #undef EBUFSIZ
 }
 
-
-#undef RESRET
-#undef INIT_RESRET

@@ -1,24 +1,12 @@
 #pragma once
 
 #include <cj50/CStr.h>
+#include "cj50/resret.h"
 
 
 static
 int print_int(int n);
-
-
-
-#define INIT_RESRET                             \
-    __label__ cleanup; /* GCC extension */      \
-    int ret = 0;                                \
-    int res;
-
-#define RESRET(e)                               \
-    res = (e);                                  \
-    if (res < 0) { ret = res; goto cleanup; }   \
-    ret += res;
-
-
+// /stupid
 
 
 typedef struct SyscallInfo {
@@ -74,6 +62,3 @@ typedef uint16_t syscallInfoId_t;
 
 
 
-
-#undef RESRET
-#undef INIT_RESRET

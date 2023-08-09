@@ -13,18 +13,6 @@ static
 int print_int(int n);
 
 
-
-#define INIT_RESRET                             \
-    __label__ cleanup; /* GCC extension */      \
-    int ret = 0;                                \
-    int res;
-
-#define RESRET(e)                               \
-    res = (e);                                  \
-    if (res < 0) { ret = res; goto cleanup; }   \
-    ret += res;
-
-
 // ------------------------------------------------------------------ 
 
 // XX for future when going 'back' to using String
@@ -74,5 +62,3 @@ Result(CStr, SystemError) filecontents_CStr(cstr path) {
 }
 
 
-#undef RESRET
-#undef INIT_RESRET

@@ -8,18 +8,7 @@
 
 #include <cj50/syscallinfo.h> /* rename to oscallinfo ? */
 #include <cj50/u8.h>
-
-
-
-#define INIT_RESRET                             \
-    __label__ cleanup; /* GCC extension */      \
-    int ret = 0;                                \
-    int res;
-
-#define RESRET(e)                               \
-    res = (e);                                  \
-    if (res < 0) { ret = res; goto cleanup; }   \
-    ret += res;
+#include "cj50/resret.h"
 
 
 
@@ -283,6 +272,3 @@ void drop_CFile(CFile f) {
     }
 }
 
-
-#undef RESRET
-#undef INIT_RESRET

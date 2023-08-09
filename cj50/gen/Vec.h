@@ -10,6 +10,10 @@
 #include <cj50/CStr.h> /* int print_move_cstr(cstr s) */
 #include <cj50/gen/error.h>
 
+// For the template/Vec.h:
+#include <cj50/resret.h>
+
+
 #define Vec(T) XCAT(Vec_,T)
 
 
