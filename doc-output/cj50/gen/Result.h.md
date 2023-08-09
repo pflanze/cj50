@@ -110,7 +110,7 @@ spaces, e.g. `unsigned int` would not work and a typedef like
 ## Ok {#three_Ok}
 
 ```C
-Ok(T, E)
+Ok(T, E) ok_Result_$T__$E
 ```
 
 Returns the constructor function for the `ok` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
@@ -122,7 +122,7 @@ Ok(int, cstr)(42)
 ## Err {#three_Err}
 
 ```C
-Err(T, E)
+Err(T, E) err_Result_$T__$E
 ```
 
 Returns the constructor function for the `err` variant of the `Result(T, E)` type for the given `T` and `E` types. Usage example:
