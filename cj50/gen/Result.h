@@ -208,14 +208,18 @@
     __propagate_return_val.err = e;             \
     goto label;
 
-#define PROPAGATE_Result(v, label)                   \
-    if (! (v).is_ok) {                               \
+#define PROPAGATE_Result(e, label)                   \
+    ({                                               \
+    typeof(e) HYGIENIC(v) = (e);                     \
+    if (! HYGIENIC(v).is_ok) {                       \
         __propagate_return_val.is_ok = false;        \
         __propagate_return_val.err = new_from(       \
             typeof(__propagate_return_val.err),      \
-            (v).err);                                \
+            HYGIENIC(v).err);                        \
         goto label;                                  \
-    }
+    }                                                \
+    HYGIENIC(v).ok;                                  \
+    })
 
 #define LET_Ok(v, e, label)                             \
     typeof((e).ok) v = ({                               \
