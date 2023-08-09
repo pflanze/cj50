@@ -22,6 +22,7 @@ bool equal_move_char(const char a, const char b) {
 }
 
 
+static UNUSED
 int _print_debug_char(char c) {
     if (c == '"') {
         return printf("\\\"");
@@ -50,6 +51,7 @@ int _print_debug_char(char c) {
     }
 }
 
+static UNUSED
 int print_debug_char(const char *c) {
     int ret = 0;
     int res;
