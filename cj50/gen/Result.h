@@ -43,7 +43,8 @@
 //! proper control flow to clean up and return from a function when
 //! you receive an error via `Result` inside said function.
 //! Alternatively, there is a set of macros that makes some of the
-//! tedious parts more automatic. XXX continue docs.
+//! tedious parts more automatic: see `BEGIN_Result` and its related
+//! macros.
 
 
 
@@ -193,40 +194,83 @@
 
 
 
-
+/// This must be placed at the beginning of the function or block in
+/// which you want to use `RETURN_Ok`, `RETURN_Err`,
+/// `PROPAGATE_Result`, or `LET_Ok`.
 
 #define BEGIN_Result(T, E)                      \
     Result(T, E) __propagate_return_val;
 
+/// Requires a `BEGIN_Result` in its scope.
+
+/// Stores `val` as an Ok Result in the context to be returned by
+/// `END_Result` and jumps to `label`. This is to allow the program to
+/// run cleanup actions.
+
 #define RETURN_Ok(val, label)                   \
     __propagate_return_val.is_ok = true;        \
-    __propagate_return_val.ok = val;            \
+    __propagate_return_val.ok = (val);          \
     goto label;
 
-#define RETURN_Err(e, label)                    \
+/// Requires a `BEGIN_Result` in its scope.
+
+/// Stores `errval` as an Err Result in the context to be returned by
+/// `END_Result` and jumps to `label`. This is to allow the program to
+/// run cleanup actions.
+
+#define RETURN_Err(errval, label)               \
     __propagate_return_val.is_ok = false;       \
-    __propagate_return_val.err = e;             \
+    __propagate_return_val.err = (errval);      \
     goto label;
 
-#define PROPAGATE_Result(e, label)                   \
+/// Requires a `BEGIN_Result` in its scope.
+
+/// `expr` must evaluate to a Result. If the Result is an Ok, the
+/// unwrapped value is returned by the `PROPAGATE_Result`
+/// expression. If the Result is an Err, it is stored in the context
+/// to be returned by `END_Result` and a jump to `label` is issued;
+/// this is to enable the program to run cleanup actions.
+
+#define PROPAGATE_Result(expr, label)                \
     ({                                               \
-    typeof(e) HYGIENIC(v) = (e);                     \
-    if (! HYGIENIC(v).is_ok) {                       \
-        __propagate_return_val.is_ok = false;        \
-        __propagate_return_val.err = new_from(       \
-            typeof(__propagate_return_val.err),      \
-            HYGIENIC(v).err);                        \
-        goto label;                                  \
-    }                                                \
-    HYGIENIC(v).ok;                                  \
+        typeof(expr) HYGIENIC(v) = (expr);           \
+        if (! HYGIENIC(v).is_ok) {                   \
+            __propagate_return_val.is_ok = false;    \
+            __propagate_return_val.err = new_from(   \
+                typeof(__propagate_return_val.err),  \
+                HYGIENIC(v).err);                    \
+            goto label;                              \
+        }                                            \
+        HYGIENIC(v).ok;                              \
     })
 
-#define LET_Ok(v, e, label)                             \
-    typeof((e).ok) v = ({                               \
-        typeof(e) __let_ok_result = (e);                \
-        PROPAGATE_Result(__let_ok_result, label);       \
-        __let_ok_result.ok;                             \
+
+/// Requires a `BEGIN_Result` in its scope.
+
+/// `expr` must evaluate to a Result. If the Result is an Ok, `var` is
+/// set to the unwrapped value, and the program continues after the
+/// `LET_Ok` statement, with `var` in scope. If the Result is an Err,
+/// is stored in the context to be returned by `END_Result` and a jump
+/// to `label` is issued; this is to enable the program to run cleanup
+/// actions.
+
+#define LET_Ok(var, expr, label)                        \
+    typeof((expr).ok) var = ({                          \
+            typeof(expr) __let_ok_result = (expr);      \
+            PROPAGATE_Result(__let_ok_result, label);   \
+            __let_ok_result.ok;                         \
         });
+
+
+/// This must be placed at the very end of the function or block in
+/// which you placed `BEGIN_Result`, after cleanup actions. It always
+/// returns from the function with the Result that was temporarily
+/// stored by `RETURN_Ok`, `RETURN_Err`, `PROPAGATE_Result`, or
+/// `LET_Ok`.
+
+/// Requires a `BEGIN_Result` in its scope, as well as one of the 4
+/// forms mentioned above (otherwise it returns an undefined value,
+/// which the compiler will be warning about).
 
 #define END_Result()                            \
     return __propagate_return_val;
