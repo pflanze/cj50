@@ -83,8 +83,9 @@ cleanup:
 static UNUSED
 int fprintln_SystemError(FILE* out, const SystemError *e) {
     INIT_RESRET;
-    RESRET(fprintf(out, "system error: %s: %s\n",
+    RESRET(fprintf(out, "system error: %s(%i): %s\n",
                    syscallinfos[e->syscallinfo_id].name,
+                   syscallinfos[e->syscallinfo_id].manpage_section,
                    strerror(e->oserror.number)));
 cleanup:
     return ret;
