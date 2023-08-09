@@ -48,6 +48,12 @@ const SyscallInfo syscallinfos[] = {
     { 3, 2, "close" },
     { 4, 3, "getc" },
     { 5, 3, "getc_unlocked" },
+    { 6, 3, "fclose" },
+    { 7, 3, "fopen" },
+    { 8, 3, "fflush" },
+    { 9, 2, "fsync" },
+    { 10, 2, "fdatasync" },
+    { 11, 3, "fmemopen" },
 };
 
 // `syscallInfoId_t` identifies a SyscallInfo instance
@@ -59,6 +65,12 @@ typedef uint16_t syscallInfoId_t;
 #define SYSCALLINFO_close (syscallinfos[3])
 #define SYSCALLINFO_getc (syscallinfos[4])
 #define SYSCALLINFO_getc_unlocked (syscallinfos[5])
+#define SYSCALLINFO_fclose (syscallinfos[6])
+#define SYSCALLINFO_fopen (syscallinfos[7])
+#define SYSCALLINFO_fflush (syscallinfos[8])
+#define SYSCALLINFO_fsync (syscallinfos[9])
+#define SYSCALLINFO_fdatasync (syscallinfos[10])
+#define SYSCALLINFO_fmemopen (syscallinfos[11])
 
 
 

@@ -670,6 +670,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , ParseError: drop_ParseError             \
              , CStrError: drop_CStrError               \
              , VecError: drop_VecError                 \
+             , CFile: drop_CFile                       \
              , const char*: drop_cstr                  \
              , char*: drop_cstr                        \
              , int*: free                              \
