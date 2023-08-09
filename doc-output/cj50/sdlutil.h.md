@@ -8,7 +8,8 @@ Utilities for working with the SDL2 library.
 ## graphics_render {#one_graphics_render}
 
 ```C
-void graphics_render(int window_width,
+void graphics_render(cstr title,
+                     int window_width,
                      int window_height,
                      bool (*renderframe)(SDL_Renderer*, void*),
                      void* context)
@@ -49,6 +50,22 @@ void draw_rect(SDL_Renderer* renderer, Rect2 r)
 ```
 
 Draw the given rectangle with the current colors.
+
+## draw_circle {#one_draw_circle}
+
+```C
+void draw_circle(SDL_Renderer* renderer, Vec2 pos, int radius)
+```
+
+Draw the given circle with the current colors.
+
+## draw_fill_circle {#one_draw_fill_circle}
+
+```C
+void draw_fill_circle(SDL_Renderer* renderer, Vec2 pos, int radius)
+```
+
+Draw the given circle with the current colors.
 
 # Generic functions
 

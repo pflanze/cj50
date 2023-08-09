@@ -156,7 +156,7 @@ Print in C code syntax.
 ## fprintln_CStrError {#one_fprintln_CStrError}
 
 ```C
-int fprintln_CStrError(FILE *out, CStrError e)
+int fprintln_CStrError(FILE *out, const CStrError *e)
 ```
 
 Print for program user.
@@ -204,6 +204,14 @@ int print_move_CStr(CStr s)
 ```
 
 Like print_CStr but consuming the argument.
+
+## cstr_CStr {#one_cstr_CStr}
+
+```C
+cstr cstr_CStr(CStr *s)
+```
+
+Give a read-only borrow to the contained cstr.
 
 # Macros
 

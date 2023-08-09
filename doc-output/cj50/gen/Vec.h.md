@@ -35,7 +35,7 @@ Print in C code syntax.
 ## fprintln_VecError {#one_fprintln_VecError}
 
 ```C
-int fprintln_VecError(FILE *out, VecError e)
+int fprintln_VecError(FILE *out, const VecError *e)
 ```
 
 Print for program user.

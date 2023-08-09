@@ -33,11 +33,15 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50/gen/Vec.h](cj50/gen/Vec.h.md)
 
+* [cj50/gen/dispatch/new_from.h](cj50/gen/dispatch/new_from.h.md)
+
 * [cj50/gen/equal_array.h](cj50/gen/equal_array.h.md)
 
 * [cj50/gen/template/Vec.h](cj50/gen/template/Vec.h.md)
 
 * [cj50/math.h](cj50/math.h.md)
+
+* [cj50/os.h](cj50/os.h.md)
 
 * [cj50/plot.h](cj50/plot.h.md)
 
@@ -45,22 +49,31 @@ If you want to read a book about the C programming language, here are some:
 
 * [cj50/sdlutil.h](cj50/sdlutil.h.md)
 
+* [cj50/u32.h](cj50/u32.h.md)
+
 * [cj50/u64.h](cj50/u64.h.md)
 
+* [cj50/u8.h](cj50/u8.h.md)
+
 * [cj50/uint.h](cj50/uint.h.md)
+
+* [cj50/unicode.h](cj50/unicode.h.md)
 
 # Names
 
 ## Types
 
+* [CFile](cj50/os.h.md#zero_CFile)
 * [Color](cj50/math.h.md#zero_Color)
 * [ColorFunction_float](cj50/plot.h.md#zero_ColorFunction_float)
 * [CStr](cj50/CStr.h.md#zero_CStr)
 * [CStrError](cj50/CStr.h.md#zero_CStrError)
 * [Line2](cj50/math.h.md#zero_LineQtwoE)
+* [OsError](cj50/os.h.md#zero_OsError)
 * [Rect2](cj50/math.h.md#zero_RectQtwoE)
 * [String](cj50/String.h.md#zero_String)
-* [SystemError](cj50/filecontents.h.md#zero_SystemError)
+* [SystemError](cj50/os.h.md#zero_SystemError)
+* [ucodepoint](cj50/unicode.h.md#zero_ucodepoint)
 * [Unit](cj50/Unit.h.md#zero_Unit)
 * [Vec](cj50/gen/template/Vec.h.md#zero_Vec)
 * [Vec2](cj50/math.h.md#zero_VecQtwoE)
@@ -71,7 +84,9 @@ If you want to read a book about the C programming language, here are some:
 
 * [cstr](cj50/CStr.h.md#zero.one_cstr)
 * [ParseError](cj50.h.md#zero.one_ParseError)
+* [u32](cj50/u32.h.md#zero.one_uQthreetwoE)
 * [u64](cj50/u64.h.md#zero.one_uQsixfourE)
+* [u8](cj50/u8.h.md#zero.one_uQeightE)
 * [uint](cj50/uint.h.md#zero.one_uint)
 
 ## Constants
@@ -83,18 +98,26 @@ If you want to read a book about the C programming language, here are some:
 
 * [append_Vec_$T](cj50/gen/template/Vec.h.md#one_append_Vec_QDT)
 * [clear](cj50/sdlutil.h.md#one_clear)
+* [close_CFile](cj50/os.h.md#one_close_CFile)
 * [color](cj50/math.h.md#one_color)
+* [cstr_CStr](cj50/CStr.h.md#one_cstr_CStr)
 * [cStr_from_cstr](cj50/CStr.h.md#one_cStr_from_cstr)
+* [draw_circle](cj50/sdlutil.h.md#one_draw_circle)
+* [draw_fill_circle](cj50/sdlutil.h.md#one_draw_fill_circle)
 * [draw_rect](cj50/sdlutil.h.md#one_draw_rect)
+* [drop_CFile](cj50/os.h.md#one_drop_CFile)
 * [drop_CStr](cj50/CStr.h.md#one_drop_CStr)
 * [drop_Vec_$T](cj50/gen/template/Vec.h.md#one_drop_Vec_QDT)
-* [equal_CStr](cj50/CStr.h.md#one_equal_CStr)
+* [equal_CFile](cj50/os.h.md#one_equal_CFile)
 * [equal_cstr](cj50/CStr.h.md#one_equal_cstr)
+* [equal_CStr](cj50/CStr.h.md#one_equal_CStr)
 * [equal_CStrError](cj50/CStr.h.md#one_equal_CStrError)
 * [equal_move_cstr](cj50/CStr.h.md#one_equal_move_cstr)
 * [equal_Vec_$T](cj50/gen/template/Vec.h.md#one_equal_Vec_QDT)
 * [equal_VecError](cj50/gen/Vec.h.md#one_equal_VecError)
+* [fget_CStr](cj50.h.md#one_fget_CStr)
 * [filecontents_CStr](cj50/filecontents.h.md#one_filecontents_CStr)
+* [flush_CFile](cj50/os.h.md#one_flush_CFile)
 * [fprintln_CStrError](cj50/CStr.h.md#one_fprintln_CStrError)
 * [fprintln_VecError](cj50/gen/Vec.h.md#one_fprintln_VecError)
 * [get_CStr](cj50.h.md#one_get_CStr)
@@ -103,11 +126,13 @@ If you want to read a book about the C programming language, here are some:
 * [get_nat](cj50.h.md#one_get_nat)
 * [get_nat0](cj50.h.md#one_get_natQzeroE)
 * [get_String](cj50.h.md#one_get_String)
+* [get_ucodepoint_unlocked](cj50/unicode.h.md#one_get_ucodepoint_unlocked)
 * [graphics_render](cj50/sdlutil.h.md#one_graphics_render)
 * [is_empty_Vec_$T](cj50/gen/template/Vec.h.md#one_is_empty_Vec_QDT)
 * [len_Vec_$T](cj50/gen/template/Vec.h.md#one_len_Vec_QDT)
 * [line2](cj50/math.h.md#one_lineQtwoE)
 * [max_size_t](cj50/gen/Vec.h.md#one_max_size_t)
+* [memopen_CFile](cj50/os.h.md#one_memopen_CFile)
 * [new_chars](cj50.h.md#one_new_chars)
 * [new_CStr](cj50/CStr.h.md#one_new_CStr)
 * [new_cstrs](cj50.h.md#one_new_cstrs)
@@ -115,6 +140,8 @@ If you want to read a book about the C programming language, here are some:
 * [new_ints](cj50.h.md#one_new_ints)
 * [new_Option_Strings](cj50.h.md#one_new_Option_Strings)
 * [new_Vec_$T](cj50/gen/template/Vec.h.md#one_new_Vec_QDT)
+* [open_CFile](cj50/os.h.md#one_open_CFile)
+* [os_getc_unlocked](cj50/os.h.md#one_os_getc_unlocked)
 * [parse_float](cj50.h.md#one_parse_float)
 * [parse_int](cj50.h.md#one_parse_int)
 * [parse_nat](cj50.h.md#one_parse_nat)
@@ -124,16 +151,16 @@ If you want to read a book about the C programming language, here are some:
 * [pop_Vec_$T](cj50/gen/template/Vec.h.md#one_pop_Vec_QDT)
 * [print_cstr](cj50/CStr.h.md#one_print_cstr)
 * [print_CStr](cj50/CStr.h.md#one_print_CStr)
-* [print_debug_CStr](cj50/CStr.h.md#one_print_debug_CStr)
 * [print_debug_cstr](cj50/CStr.h.md#one_print_debug_cstr)
+* [print_debug_CStr](cj50/CStr.h.md#one_print_debug_CStr)
 * [print_debug_CStrError](cj50/CStr.h.md#one_print_debug_CStrError)
 * [print_debug_move_CStr](cj50/CStr.h.md#one_print_debug_move_CStr)
 * [print_debug_move_cstr](cj50/CStr.h.md#one_print_debug_move_cstr)
 * [print_debug_move_Vec_$T](cj50/gen/template/Vec.h.md#one_print_debug_move_Vec_QDT)
 * [print_debug_Vec_$T](cj50/gen/template/Vec.h.md#one_print_debug_Vec_QDT)
 * [print_debug_VecError](cj50/gen/Vec.h.md#one_print_debug_VecError)
-* [print_move_CStr](cj50/CStr.h.md#one_print_move_CStr)
 * [print_move_cstr](cj50/CStr.h.md#one_print_move_cstr)
+* [print_move_CStr](cj50/CStr.h.md#one_print_move_CStr)
 * [push_Vec_$T](cj50/gen/template/Vec.h.md#one_push_Vec_QDT)
 * [push_within_capacity_Vec_$T](cj50/gen/template/Vec.h.md#one_push_within_capacity_Vec_QDT)
 * [random_double](cj50/random.h.md#one_random_double)
@@ -143,6 +170,7 @@ If you want to read a book about the C programming language, here are some:
 * [reserve_Vec_$T](cj50/gen/template/Vec.h.md#one_reserve_Vec_QDT)
 * [set_draw_color](cj50/sdlutil.h.md#one_set_draw_color)
 * [string_from_ParseError](cj50.h.md#one_string_from_ParseError)
+* [sync_CFile](cj50/os.h.md#one_sync_CFile)
 * [vec2](cj50/math.h.md#one_vecQtwoE)
 * [vec3](cj50/math.h.md#one_vecQthreeE)
 * [with_capacity_Vec_$T](cj50/gen/template/Vec.h.md#one_with_capacity_Vec_QDT)
@@ -152,13 +180,16 @@ If you want to read a book about the C programming language, here are some:
 * [add](cj50/math.h.md#two_add)
 * [append](cj50.h.md#two_append)
 * [assert_sdl](cj50/sdlutil.h.md#two_assert_sdl)
+* [cstr](cj50.h.md#two_cstr)
 * [deref](cj50.h.md#two_deref)
 * [drop](cj50.h.md#two_drop)
 * [drop_array](cj50.h.md#two_drop_array)
 * [equal](cj50.h.md#two_equal)
 * [equal_array](cj50.h.md#two_equal_array)
+* [len](cj50.h.md#two_len)
 * [mul](cj50/math.h.md#two_mul)
 * [neg](cj50/math.h.md#two_neg)
+* [new_from_](cj50/gen/dispatch/new_from.h.md#two_new_from_)
 * [none](cj50.h.md#two_none)
 * [pop](cj50.h.md#two_pop)
 * [print](cj50.h.md#two_print)
@@ -175,20 +206,27 @@ If you want to read a book about the C programming language, here are some:
 
 ## Macros
 
+* [BEGIN_Result](cj50/gen/Result.h.md#three_BEGIN_Result)
 * [CStr_from_cstr_unsafe](cj50/CStr.h.md#three_CStr_from_cstr_unsafe)
 * [DBG](cj50.h.md#three_DBG)
 * [DBGA](cj50.h.md#three_DBGA)
 * [DIE](cj50/basic-util.h.md#three_DIE)
 * [DIE_](cj50/basic-util.h.md#three_DIE_)
+* [END_Result](cj50/gen/Result.h.md#three_END_Result)
 * [Err](cj50/gen/Result.h.md#three_Err)
 * [GENERATE_equal_array](cj50/gen/equal_array.h.md#three_GENERATE_equal_array)
 * [GENERATE_Option](cj50/gen/Option.h.md#three_GENERATE_Option)
 * [if_let_Ok](cj50/gen/Result.h.md#three_if_let_Ok)
 * [if_let_Some](cj50/gen/Option.h.md#three_if_let_Some)
+* [LET_Some_ELSE](cj50/gen/Option.h.md#three_LET_Some_ELSE)
+* [new_from](cj50/gen/dispatch/new_from.h.md#three_new_from)
 * [NONE](cj50/gen/Option.h.md#three_NONE)
 * [Ok](cj50/gen/Result.h.md#three_Ok)
 * [Option](cj50/gen/Option.h.md#three_Option)
 * [Result](cj50/gen/Result.h.md#three_Result)
+* [RETURN_Err](cj50/gen/Result.h.md#three_RETURN_Err)
+* [RETURN_Ok](cj50/gen/Result.h.md#three_RETURN_Ok)
+* [TRY](cj50/gen/Result.h.md#three_TRY)
 * [Unit](cj50/Unit.h.md#three_Unit)
 * [WARN](cj50/basic-util.h.md#three_WARN)
 * [WARN_](cj50/basic-util.h.md#three_WARN_)
