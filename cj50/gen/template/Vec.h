@@ -3,25 +3,27 @@
 
 // COPY-PASTE from cj50.h  except INIT_RESRET removed from PRINT_ARRAY
 
-#define INIT_RESRET                             \
+// Also, have to previx the names, as, there is no nesting. Stupid.
+
+#define Vec_INIT_RESRET                         \
     __label__ cleanup; /* GCC extension */      \
     int ret = 0;                                \
     int res;
 
-#define RESRET(e)                               \
+#define Vec_RESRET(e)                           \
     res = (e);                                  \
     if (res < 0) { ret = res; goto cleanup; }   \
     ret += res;
 
-#define PRINT_ARRAY(print_typ, ary, len)        \
-    RESRET(print_move_cstr("{"));               \
+#define Vec_PRINT_ARRAY(print_typ, ary, len)    \
+    Vec_RESRET(print_move_cstr("{"));           \
     for (size_t i = 0; i < len; i++) {          \
         if (i > 0) {                            \
-            RESRET(print_move_cstr(", "));      \
+            Vec_RESRET(print_move_cstr(", "));  \
         }                                       \
-        RESRET(print_typ(&ary[i]));             \
+        Vec_RESRET(print_typ(&ary[i]));         \
     }                                           \
-    RESRET(print_move_cstr("}"));               \
+    Vec_RESRET(print_move_cstr("}"));           \
 cleanup:                                        \
     return ret;
 
@@ -189,10 +191,10 @@ bool XCAT(equal_, Vec(T))(const Vec(T) *a, const Vec(T) *b) {
 /// Print in C code syntax.
 static UNUSED
 int XCAT(print_debug_, Vec(T))(const Vec(T) *self) {
-    INIT_RESRET;
+    Vec_INIT_RESRET;
     size_t len = self->len;
     const T *ptr = self->ptr;
-    PRINT_ARRAY(XCAT(print_debug_, T), ptr, len);
+    Vec_PRINT_ARRAY(XCAT(print_debug_, T), ptr, len);
 }
 
 /// Print in C code syntax, consuming the argument.
@@ -205,6 +207,6 @@ int XCAT(print_debug_move_, Vec(T))(Vec(T) self) {
 
 
 
-#undef PRINT_ARRAY
-#undef RESRET
-#undef INIT_RESRET
+#undef Vec_PRINT_ARRAY
+#undef Vec_RESRET
+#undef Vec_INIT_RESRET
