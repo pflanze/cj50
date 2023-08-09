@@ -16,8 +16,7 @@ Result(Unit, UnicodeError) run(char *str) {
 
     Vec(ucodepoint) v = new_Vec_ucodepoint();
 
-    while_let_Some(c, PROPAGATE_Result(get_ucodepoint_unlocked(&in),
-                                       cleanup2)) {
+    while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
         push(&v, c);
     }
     DBG(v);
