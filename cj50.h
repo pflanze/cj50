@@ -100,12 +100,13 @@ Option(CStr) get_CStr() {
 /// Read a String from standard input, terminated by a
 /// newline. Returns none on end of file (when ctl-d is pressed).
 
+/// Note: currently can't take a `'\0'` as it works via `get_CStr`.
+
 static UNUSED
 Option(String) get_String() {
     Option(CStr) s = get_CStr();
     if (s.is_some) {
-        // need to discard const qualifier
-        return some_String((String) { .str = (char*) s.value.cstr });
+        return some_String(new_String_from_CStr(s.value));
     } else {
         return none_String();
     }
@@ -238,12 +239,12 @@ Result(int, ParseError) parse_int(cstr s) {
 
 #define GET_THING(T, type_desc, parse)                          \
     while (true) {                                              \
-        Option(String) s = get_String();                        \
+        Option(CStr) s = get_CStr();                            \
         if (!s.is_some) {                                       \
             return XCAT(none_, T)();                            \
         }                                                       \
-        Result(T, ParseError) r = parse(s.value.str);           \
-        drop_Option_String(s);                                  \
+        Result(T, ParseError) r = parse(s.value.cstr);          \
+        drop_Option_CStr(s);                                    \
         if (r.is_ok) {                                          \
             return XCAT(some_, T)(r.ok);                        \
         }                                                       \
