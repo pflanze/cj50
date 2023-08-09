@@ -255,11 +255,7 @@
 /// actions.
 
 #define LET_Ok(var, expr, label)                        \
-    typeof((expr).ok) var = ({                          \
-            typeof(expr) __let_ok_result = (expr);      \
-            TRY(__let_ok_result, label);                \
-            __let_ok_result.ok;                         \
-        });
+    typeof((expr).ok) var = TRY((expr), label);
 
 
 /// This must be placed at the very end of the function or block in
