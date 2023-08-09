@@ -511,6 +511,14 @@ int print_debug_floats(const float* ary, size_t len) {
 #undef PRINT_ARRAY
 
 
+// Somewhere we have to stuff all the parametrizations? And it's so
+// evil.
+#define T ucodepoint
+#include <cj50/gen/template/Vec.h>
+#undef T
+
+
+
 /// Prints the given value for normal text use.
 
 /// Returns an `int` that when negative signifies an error (check
@@ -621,6 +629,8 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , Vec3: print_debug_Vec3                         \
              , Vec(CStr): print_debug_move_Vec_CStr           \
              , Vec(CStr)*: print_debug_Vec_CStr               \
+             , Vec(ucodepoint): print_debug_move_Vec_ucodepoint \
+             , Vec(ucodepoint)*: print_debug_Vec_ucodepoint   \
              , Option(cstr)*: print_debug_Option_cstr         \
              , Option(cstr): print_debug_move_Option_cstr     \
              , Option(CStr)*: print_debug_Option_CStr         \
@@ -678,6 +688,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , Vec2*: free                             \
              , Vec3*: free                             \
              , Vec(CStr): drop_Vec_CStr                \
+             , Vec(ucodepoint): drop_Vec_ucodepoint    \
              , Option(cstr): drop_Option_cstr          \
              , Option(CStr): drop_Option_CStr          \
              , Option(String): drop_Option_String      \
@@ -899,6 +910,8 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(u64): "Option(u64)"               \
              , Option(float): "Option(float)"           \
              , Option(double): "Option(double)"         \
+             , Vec(CStr): "Vec(CStr)"                   \
+             , Vec(ucodepoint): "Vec(ucodepoint)"       \
              , Vec2: "Vec2"                             \
              , Vec3: "Vec3"                             \
              , Rect2: "Rect2"                           \
@@ -1001,6 +1014,7 @@ cleanup:
 #define push(coll, val)                                 \
     _Generic((coll)                                     \
              , Vec(CStr)*: push_Vec_CStr                \
+             , Vec(ucodepoint)*: push_Vec_ucodepoint    \
         )(coll, val)
 
 
@@ -1008,6 +1022,7 @@ cleanup:
 #define pop(coll)                                       \
     _Generic((coll)                                     \
              , Vec(CStr)*: pop_Vec_CStr                 \
+             , Vec(ucodepoint)*: pop_Vec_ucodepoint     \
         )(coll)
 
 
@@ -1016,6 +1031,7 @@ cleanup:
 #define append(coll1, coll2)                            \
     _Generic((coll1)                                    \
              , Vec(CStr)*: append_Vec_CStr              \
+             , Vec(ucodepoint)*: append_Vec_ucodepoint  \
         )(coll1, coll2)
 
 
@@ -1024,6 +1040,7 @@ cleanup:
 #define len(coll)                                       \
     _Generic((coll)                                     \
              , Vec(CStr)*: len_Vec_CStr                 \
+             , Vec(ucodepoint)*: len_Vec_ucodepoint     \
         )(coll)
 
 /// Give the length of a given collection. For Vec (and String. XXX
