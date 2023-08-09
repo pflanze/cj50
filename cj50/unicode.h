@@ -294,15 +294,15 @@ GENERATE_Result(Option(ucodepoint), UnicodeError);
 /// format.
 
 static UNUSED
-Result(Option(ucodepoint), UnicodeError) fget_ucodepoint_unlocked(
-    FILE *in)
+Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(
+    CFile *in)
 {
     BEGIN_Result(Option(ucodepoint), UnicodeError);
     
     // https://en.wikipedia.org/wiki/Utf-8#Encoding
 #define EBUFSIZ 256
     u32 codepoint;
-    LET_Ok(opt_b1, os_fgetc_unlocked(in), cleanup);
+    LET_Ok(opt_b1, os_getc_unlocked(in), cleanup);
     LET_Some_ELSE(b1, opt_b1) {
         RETURN_Ok(none_ucodepoint(), cleanup);
     }
@@ -326,7 +326,7 @@ Result(Option(ucodepoint), UnicodeError) fget_ucodepoint_unlocked(
                        cleanup);
         }
         for (int i = 1; i < numbytes; i++) {
-            LET_Ok(opt_b, os_fgetc_unlocked(in), cleanup);
+            LET_Ok(opt_b, os_getc_unlocked(in), cleanup);
             LET_Some_ELSE(b, opt_b) {
                 RETURN_Err(
                     new_from(UnicodeError,

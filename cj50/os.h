@@ -95,31 +95,6 @@ void drop_SystemError(UNUSED SystemError e) {}
 
 // ------------------------------------------------------------------ 
 
-GENERATE_Result(Option(u8), SystemError);
-
-
-/// Returns a single byte from the input, if possible; at EOF (end of
-/// file), returns Ok(None). `inp` must previously have been locked
-/// using `flockfile` and afterwards unlocked using `funlockfile` (see
-/// `man 3 flockfile`).
-static UNUSED
-Result(Option(u8), SystemError) os_fgetc_unlocked(FILE* inp) {
-    int r = getc_unlocked(inp);
-    if (r == EOF) {
-        if (ferror(inp)) {
-            return Err(Option(u8), SystemError)(
-                systemError(SYSCALLINFO_getc_unlocked, errno));
-        } else {
-            return Ok(Option(u8), SystemError)(none_u8());
-        }
-    } else {
-        return Ok(Option(u8), SystemError)(some_u8(r));
-    }
-}
-
-
-// ------------------------------------------------------------------ 
-
 /// An owned type holding a C library `FILE*` type. The contained
 /// pointer is never `NULL` except after calling `close_File`.
 
@@ -148,9 +123,33 @@ cleanup:
 }
 
 
+// ------------------------------------------------------------------ 
 
 GENERATE_Result(CFile, SystemError);
 GENERATE_Result(Unit, SystemError);
+GENERATE_Result(Option(u8), SystemError);
+
+
+// ------------------------------------------------------------------ 
+
+/// Returns a single byte from the input, if possible; at EOF (end of
+/// file), returns Ok(None). `inp` must previously have been locked
+/// using `flockfile` and afterwards unlocked using `funlockfile` (see
+/// `man 3 flockfile`).
+static UNUSED
+Result(Option(u8), SystemError) os_getc_unlocked(CFile *inp) {
+    int r = getc_unlocked(inp->ptr);
+    if (r == EOF) {
+        if (ferror(inp->ptr)) {
+            return Err(Option(u8), SystemError)(
+                systemError(SYSCALLINFO_getc_unlocked, errno));
+        } else {
+            return Ok(Option(u8), SystemError)(none_u8());
+        }
+    } else {
+        return Ok(Option(u8), SystemError)(some_u8(r));
+    }
+}
 
 
 /// Opens the file whose name is the string pointed to by `pathname` and
