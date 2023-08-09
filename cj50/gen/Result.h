@@ -46,7 +46,52 @@
 //! tedious parts more automatic: see `BEGIN_Result` and its related
 //! macros.
 
+//! Example:
 
+//! ```C
+//! Result(Unit, UnicodeError) run(char *str) {
+//!     BEGIN_Result(Unit, UnicodeError);
+//! 
+//!     CFile in = TRY(memopen_CFile(str, strlen(str), "r"), cleanup1);
+//! 
+//!     Vec(ucodepoint) v = new_Vec_ucodepoint(); // get us an empty vector
+//! 
+//!     while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
+//!         push(&v, c); // add c to the vector
+//!     }
+//!     DBG(v); // show the vector
+//! 
+//!     RETURN_Ok(Unit(), cleanup2); // we have nothing to return so use Unit()
+//!     
+//! cleanup2:
+//!     drop(in);
+//! cleanup1:
+//!     END_Result();
+//! }
+//! ```
+
+//! The function `run` here tries to get a `CFile` via
+//! `memopen_CFile`, which can fail; if it failed, the error it
+//! returned (a `SystemError`) is converted to a `UnicodeError`, the
+//! program jumps to `cleanup1`, and returns that `UnicodeError` as the
+//! Err variant of `Result(Unit, UnicodeError)`.
+
+//! Otherwise, `in` is set to the successfully returned `CFile` value,
+//! which needs to be `drop`ed later on.
+
+//! `while_let_Some` from Option.h expects an Option as its second
+//! argument. `get_ucodepoint_unlocked` returns
+//! `Result(Option(ucodepoint), UnicodeError)`, though. so we use
+//! `TRY` again to extract the `Option(ucodepoint)` in the successful
+//! case, and jump to `cleanup2` in the error case. In that latter
+//! case, the error is already of type `UnicodeError`, thus no
+//! conversion is done, although it still calls the conversion
+//! function `new_UnicodeError_from_UnicodeError` because there is no
+//! way to handle special cases like this via macros.
+
+//! After the cleanup actions (only one here), `END_Result()` actually
+//! returns the success or error result that was stored in the context
+//! set up by the `BEGIN_Result` macro call.
 
 /* future?:
 
@@ -230,6 +275,14 @@
 /// expression. If the Result is an Err, it is stored in the context
 /// to be returned by `END_Result` and a jump to `label` is issued;
 /// this is to enable the program to run cleanup actions.
+
+/// `TRY` automatically inserts `new_from` calls to convert Err values
+/// into the type that was defined using `BEGIN_Result`. If `expr`
+/// returns a Result with an Err type `Given`, and
+/// `BEGIN_Result(SomeType, Wanted)` was stated, this means that a
+/// conversion function `new_Wanted_from_Given` needs to exist, which
+/// needs to be part of the _Generic type dispatch in `new_from_` in
+/// the file `cj50/gen/dispatch/new_from.h`.
 
 #define TRY(expr, label)                             \
     ({                                               \
