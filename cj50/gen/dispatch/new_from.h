@@ -8,6 +8,7 @@
              _Generic(*((T1*)(NULL))                                    \
                       , DecodingError: new_UnicodeError_from_DecodingError \
                       , SystemError: new_UnicodeError_from_SystemError  \
+                      , UnicodeError: new_UnicodeError_from_UnicodeError \
                  )                                                      \
         )
 
