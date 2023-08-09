@@ -83,5 +83,38 @@ String new_String_from_CStr(CStr s) {
     };
 }
 
+/// The length in *bytes*, not characters. This operation is fast (has
+/// a constant cost), unlike `strlen` for C strings.
+
+static UNUSED
+size_t len_String(const String *s) {
+    return s->vec.len;
+}
+
+
+/// Get `s` as a C string, if possible--it's only possible if there
+/// are no embedded `'\0'` characters.
+
+/// The returned `cstr` is borrowed and shares storage with `s`, so
+/// `s` may not be mutated while the `cstr` is in use.
+static UNUSED
+Option(cstr) to_cstr_String(String *s) {
+    size_t cap = s->vec.cap;
+    size_t len = s->vec.len;
+    // Do we have embedded `'\0'`s?
+    if (memchr(s->vec.ptr, 0, len)) {
+        return none_cstr();
+    }
+    // Make sure we have a `'\0'` terminator
+    if (!(cap > len)) {
+        reserve_Vec_char(&s->vec, len);
+    }
+    char *ptr = s->vec.ptr; // get fresh, after reserve_Vec_char!
+    ptr[len] = '\0';
+    return some_cstr(ptr);
+}
+
+
+
 GENERATE_Option(String);
 
