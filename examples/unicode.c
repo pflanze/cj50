@@ -12,7 +12,7 @@ GENERATE_Result(Unit, UnicodeError);
 Result(Unit, UnicodeError) run(char *str) {
     BEGIN_Result(Unit, UnicodeError);
 
-    LET_Ok(in, memopen_CFile(str, strlen(str), "r"), cleanup1);
+    CFile in = TRY(memopen_CFile(str, strlen(str), "r"), cleanup1);
 
     Vec(ucodepoint) v = new_Vec_ucodepoint();
 

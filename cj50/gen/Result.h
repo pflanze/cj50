@@ -195,8 +195,8 @@
 
 
 /// This must be placed at the beginning of the function or block in
-/// which you want to use `RETURN_Ok`, `RETURN_Err`,
-/// `TRY`, or `LET_Ok`.
+/// which you want to use `RETURN_Ok`, `RETURN_Err`, or
+/// `TRY`.
 
 #define BEGIN_Result(T, E)                      \
     Result(T, E) __propagate_return_val;
@@ -245,24 +245,10 @@
     })
 
 
-/// Requires a `BEGIN_Result` in its scope.
-
-/// `expr` must evaluate to a Result. If the Result is an Ok, `var` is
-/// set to the unwrapped value, and the program continues after the
-/// `LET_Ok` statement, with `var` in scope. If the Result is an Err,
-/// is stored in the context to be returned by `END_Result` and a jump
-/// to `label` is issued; this is to enable the program to run cleanup
-/// actions.
-
-#define LET_Ok(var, expr, label)                        \
-    typeof((expr).ok) var = TRY((expr), label);
-
-
 /// This must be placed at the very end of the function or block in
 /// which you placed `BEGIN_Result`, after cleanup actions. It always
 /// returns from the function with the Result that was temporarily
-/// stored by `RETURN_Ok`, `RETURN_Err`, `TRY`, or
-/// `LET_Ok`.
+/// stored by `RETURN_Ok`, `RETURN_Err`, or `TRY`.
 
 /// Requires a `BEGIN_Result` in its scope, as well as one of the 4
 /// forms mentioned above (otherwise it returns an undefined value,
