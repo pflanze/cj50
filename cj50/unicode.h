@@ -365,6 +365,11 @@ bool equal_utf8char(const utf8char *a, const utf8char *b) {
 }
 
 static UNUSED
+bool equal_move_utf8char(utf8char a, utf8char b) {
+    return equal_utf8char(&a, &b);
+}
+
+static UNUSED
 int print_debug_utf8char(const utf8char *c) {
     INIT_RESRET;
     RESRET(print_move_cstr("utf8char(")); // XX use something executable please
