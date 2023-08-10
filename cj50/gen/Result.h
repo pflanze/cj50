@@ -156,6 +156,15 @@
     }                                                           \
                                                                 \
     static UNUSED                                               \
+    bool XCAT(equal_move_, Result(T, E))(Result(T, E) a,        \
+                                         Result(T, E) b) {      \
+        bool res = XCAT(equal_, Result(T, E))(&a, &b);          \
+        XCAT(drop_, Result(T, E))(a);                           \
+        XCAT(drop_, Result(T, E))(b);                           \
+        return res;                                             \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
     T XCAT(unwrap_, Result(T, E))(const Result(T, E) s) {       \
         if (s.is_ok) {                                          \
             return s.ok;                                        \
