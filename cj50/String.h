@@ -25,6 +25,16 @@ void drop_String(String s) {
     drop_Vec_char(s.vec);
 }
 
+/// Clear the string, removing all characters.
+
+/// Note that this method has no effect on the allocated capacity of
+/// the String.
+
+static UNUSED
+void clear_String(String *s) {
+    clear_Vec_char(&s->vec);
+}
+
 static UNUSED
 bool equal_String(const String *a, const String *b) {
     return equal_Vec_char(&a->vec, &b->vec);
