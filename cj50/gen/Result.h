@@ -138,6 +138,15 @@
     }                                                           \
                                                                 \
     static UNUSED                                               \
+    void XCAT(drop_, Result(T, E))(Result(T, E) v) {            \
+        if (v.is_ok) {                                          \
+            XCAT(drop_, T)(v.ok);                               \
+        } else {                                                \
+            XCAT(drop_, E)(v.err);                              \
+        }                                                       \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
     bool XCAT(equal_, Result(T, E))(const Result(T, E) *a,      \
                                     const Result(T, E) *b) {    \
         return ((a->is_ok == b->is_ok) &&                       \
