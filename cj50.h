@@ -1035,9 +1035,15 @@ cleanup:
         )(v)
 
 
-#define fprintln(out, v)                                \
-    _Generic((v)                                        \
-             , ParseError*: fprintln_ParseError         \
+/// Like println but printing to `out`.
+
+/// (Currently only defined for types for which `unwrap` is defined,
+/// to be used for error messaging. Todo: define `println` in terms of
+/// `fprintln` and thus share implementations.)
+
+#define fprintln(out, v)                                        \
+    _Generic((v)                                                \
+             , ParseError*: fprintln_ParseError                 \
              , CStrError*: fprintln_CStrError                   \
              , VecError*: fprintln_VecError                     \
              , SystemError*: fprintln_SystemError               \
