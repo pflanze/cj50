@@ -517,3 +517,65 @@ Option(utf8char) get_utf8char_String(const String *s, size_t idx) {
         return none_utf8char();
     }
 }
+
+
+#include <cj50/instantiations/Result_Vec_ucodepoint__UnicodeError.h>
+
+/// Convert a `cstr` into a vector of unicode codepoints, if possible.
+/// Conversion failures due to invalid UTF-8 are reported.
+
+static UNUSED
+Result(Vec(ucodepoint), UnicodeError) new_Vec_ucodepoint_from_cstr(cstr s)
+{
+    BEGIN_Result(Vec(ucodepoint), UnicodeError);
+
+    CFile in = TRY(memopen_CFile((char*)s, strlen(s), "r"), cleanup1);
+    Vec(ucodepoint) v = new_Vec_ucodepoint();
+    while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
+        push_Vec_ucodepoint(&v, c);
+    }
+    RETURN_Ok(v, cleanup2);
+cleanup2:
+    drop_CFile(in);
+cleanup1:
+    END_Result();
+}
+
+#include <cj50/instantiations/Result_Vec_utf8char__UnicodeError.h>
+
+static UNUSED
+void die_bug_unicode() {
+    DIE("bug in unicode.h");
+}
+
+/// Convert a `cstr` into a vector of unicode codepoints, if possible.
+/// Conversion failures due to invalid UTF-8 are reported.
+
+static UNUSED
+Result(Vec(utf8char), UnicodeError) new_Vec_utf8char_from_cstr(cstr s)
+{
+    BEGIN_Result(Vec(utf8char), UnicodeError);
+
+    // Go the 'cheap' route of converting to Vec(ucodepoint) first.
+    Vec(ucodepoint) v0 = TRY(new_Vec_ucodepoint_from_cstr(s), cleanup1);
+    Vec(utf8char) v1 = new_Vec_utf8char();
+
+    // Should have FOR_EACH syntax
+    for (size_t i = 0; i < v0.len; i++) {
+        // Since ucodepoint is Copy, we don't need to take it by ref
+        if_let_Some(uc, new_utf8char_from_ucodepoint(v0.ptr[i])) {
+            push_Vec_utf8char(&v1, uc);
+        } else_None {
+            // should never happen, since UTF-8 decoding above would
+            // have reported any issue already.
+            die_bug_unicode();
+        }
+    }
+    RETURN_Ok(v1, cleanup2);
+
+cleanup2:
+    drop_Vec_ucodepoint(v0);
+cleanup1:
+    END_Result();
+}
+
