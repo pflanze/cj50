@@ -15,9 +15,15 @@
 #include "cj50/resret.h"
 
 
+static UNUSED
+void die_bug_unicode() {
+    DIE("bug in unicode.h");
+}
+
+
 /// A single Unicode code point (a single character, unless it's a
 /// code point that combines with other code points to a composed
-/// character).
+/// character). ucodepoint only ever carries valid codes.
 
 typedef struct ucodepoint {
     uint32_t u32; // would only need 21 bits
@@ -25,8 +31,11 @@ typedef struct ucodepoint {
 
 // ^ Should this be called UCodepoint ? It's a Copy type, but so what?
 
+/// Unsafe constructor, does not verify the code.
 #define ucodepoint(cp) \
     ((ucodepoint) { .u32 = (cp) })
+
+// XX todo: add safe constructor!
 
 static UNUSED
 void drop_ucodepoint(UNUSED ucodepoint c) {}
@@ -409,16 +418,20 @@ cleanup:
 
 GENERATE_Option(utf8char);
 
+/// Convert a ucodepoint to a utf8char.
+
 static UNUSED
-Option(utf8char) new_utf8char_from_ucodepoint(ucodepoint cp) {
+utf8char new_utf8char_from_ucodepoint(ucodepoint cp) {
     utf8char c;
     int len = encode_utf8(cp.u32, c.data);
     if (len < 0) {
-        return none_utf8char();
+        // should never happen because ucodepoint should never accept
+        // invalid codes
+        die_bug_unicode();
     }
     c.data[len] = '\0';
     c.data[5] = len;
-    return some_utf8char(c);
+    return c;
 }
 
 // ------------------------------------------------------------------
@@ -542,6 +555,7 @@ Result(Vec(ucodepoint), UnicodeError) new_Vec_ucodepoint_from_cstr(cstr s)
 {
     BEGIN_Result(Vec(ucodepoint), UnicodeError);
 
+    // XX 'cheap' route
     CFile in = TRY(memopen_CFile((char*)s, strlen(s), "r"), cleanup1);
     Vec(ucodepoint) v = new_Vec_ucodepoint();
     while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
@@ -555,11 +569,6 @@ cleanup1:
 }
 
 #include <cj50/instantiations/Result_Vec_utf8char__UnicodeError.h>
-
-static UNUSED
-void die_bug_unicode() {
-    DIE("bug in unicode.h");
-}
 
 /// Convert a `cstr` into a vector of unicode codepoints, if possible.
 /// Conversion failures due to invalid UTF-8 are reported.
@@ -576,13 +585,8 @@ Result(Vec(utf8char), UnicodeError) new_Vec_utf8char_from_cstr(cstr s)
     // Should have FOR_EACH syntax
     for (size_t i = 0; i < v0.len; i++) {
         // Since ucodepoint is Copy, we don't need to take it by ref
-        if_let_Some(uc, new_utf8char_from_ucodepoint(v0.ptr[i])) {
-            push_Vec_utf8char(&v1, uc);
-        } else_None {
-            // should never happen, since UTF-8 decoding above would
-            // have reported any issue already.
-            die_bug_unicode();
-        }
+        push_Vec_utf8char(&v1,
+                          new_utf8char_from_ucodepoint(v0.ptr[i]));
     }
     RETURN_Ok(v1, cleanup2);
 
@@ -591,4 +595,47 @@ cleanup2:
 cleanup1:
     END_Result();
 }
+
+
+/// Appends the given codepoint in utf8char format to the end of this
+/// String.
+
+static UNUSED
+void push_utf8char_String(String *s, utf8char c) {
+    // (XX todo: there should be something in Vec to add multiple
+    // items; slices of course)
+    cstr cs = cstr_utf8char(&c);
+    size_t len = len_utf8char(c);
+    for (size_t i = 0; i < len; i++) {
+        push_Vec_char(&s->vec, cs[i]);
+    }
+}
+
+/// Appends the given unicode codepoint to the end of this
+/// String.
+
+static UNUSED
+void push_ucodepoint_String(String *s, ucodepoint c) {
+    push_utf8char_String(s, new_utf8char_from_ucodepoint(c));
+}
+
+
+
+/* /// Appends the given cstr `cs` to the end of this String. `cs` is */
+/* /// checked for correct UTF-8 encoding. */
+
+/* static UNUSED */
+/* Result(Unit, UnicodeError) push_cstr_String(String *s, cstr cs) { */
+/*     BEGIN_Result(Unit, UnicodeError); */
+    
+/*     // XX 'cheap' route, stupid */
+/*     CFile in = TRY(memopen_CFile((char*)s, strlen(s), "r"), cleanup1); */
+    
+/* cleanup2: */
+/*     drop_CFile(in); */
+/* cleanup1: */
+/*     END_Result(); */
+/* } */
+
+// ^ not now. once separate, faster decoder is ready, then.
 

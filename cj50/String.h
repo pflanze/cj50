@@ -93,6 +93,13 @@ size_t len_String(const String *s) {
 }
 
 
+/// Appends the given char to the end of this String.
+static UNUSED
+void push_String(String *s, char c) {
+    push_Vec_char(&s->vec, c);
+}
+
+
 /// Get `s` as a C string, if possible--it's only possible if there
 /// are no embedded `'\0'` characters.
 
