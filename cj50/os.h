@@ -112,6 +112,26 @@ cleanup:
     return ret;
 }
 
+/// Closes the file.
+
+/// This does not report errors (except it does print a warning),
+/// because the drop interface can't, except via abort. This is
+/// exactly like in Rust. IIRC the conclusion there was that modern
+/// systems don't ever report errors on `close` any more, except
+/// perhaps some networked file systems like NFS or wrongly made fuse
+/// file systems. To be sure that there was no problem writing, either
+/// call `fclose(f.ptr)` or `flush(&f)` and handle the errors
+/// there. (Also, `sync(&f)`.)
+
+static UNUSED
+void drop_CFile(CFile f) {
+    if (f.ptr) {
+        if (fclose(f.ptr) != 0) {
+            WARN_("Warning: drop_CFile: fclose failed: %s",
+                  strerror(errno));
+        }
+    }
+}
 
 // ------------------------------------------------------------------ 
 
@@ -248,27 +268,6 @@ Result(Unit, SystemError) close_CFile(CFile *f) {
     } else {
         return Err(Unit, SystemError)(
             systemError(SYSCALLINFO_fclose, errno));
-    }
-}
-
-/// Closes the file.
-
-/// This does not report errors (except it does print a warning),
-/// because the drop interface can't, except via abort. This is
-/// exactly like in Rust. IIRC the conclusion there was that modern
-/// systems don't ever report errors on `close` any more, except
-/// perhaps some networked file systems like NFS or wrongly made fuse
-/// file systems. To be sure that there was no problem writing, either
-/// call `fclose(f.ptr)` or `flush(&f)` and handle the errors
-/// there. (Also, `sync(&f)`.)
-
-static UNUSED
-void drop_CFile(CFile f) {
-    if (f.ptr) {
-        if (fclose(f.ptr) != 0) {
-            WARN_("Warning: drop_CFile: fclose failed: %s",
-                  strerror(errno));
-        }
     }
 }
 
