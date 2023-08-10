@@ -1085,6 +1085,7 @@ cleanup:
     _Generic((v)                                        \
              , CStr*: cstr_CStr                         \
              , utf8char*: cstr_utf8char                 \
+             , String*: cstr_String                     \
         )(v)
 
 

@@ -99,7 +99,7 @@ size_t len_String(const String *s) {
 /// The returned `cstr` is borrowed and shares storage with `s`, so
 /// `s` may not be mutated while the `cstr` is in use.
 static UNUSED
-Option(cstr) to_cstr_String(String *s) {
+Option(cstr) cstr_String(String *s) {
     size_t cap = s->vec.cap;
     size_t len = s->vec.len;
     // Do we have embedded `'\0'`s?
