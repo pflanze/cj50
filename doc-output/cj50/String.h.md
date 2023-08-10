@@ -6,17 +6,57 @@
 
 ```C
 typedef struct String {
-    char* str;
+    Vec(char) vec;
 } String
 ```
 
-`String` is an owned type that holds a "C string", a string of
-characters, more precisely, an array of `char`, that represents
-the text, and a '\0' character after it to signal the end. There
-is no length information, the length has to be determined by
-walking the array until encountering the '\0' character (`strlen`
-will do that on the contained array, or `len` on the String
-wrapper type).
+`String` is an owned, mutable type that holds a string of
+characters, more precisely, an array of bytes, that represents a
+text in UTF-8 encoding. Unlike C strings (see `CStr`), it does not
+use a '\0' terminator, and can represent embedded '\0'
+characters. It automatically resizes itself as needed to accept
+additional text that is added.
+
+It is implemented via a `Vec(char)`.
+
+# Normal functions
+
+## new_String_from_CStr {#one_new_String_from_CStr}
+
+```C
+String new_String_from_CStr(CStr s)
+```
+
+Create a String from a CStr, consuming the latter.
+
+## len_String {#one_len_String}
+
+```C
+size_t len_String(const String *s)
+```
+
+The length in *bytes*, not characters. This operation is fast (has
+a constant cost), unlike `strlen` for C strings.
+
+## push_String {#one_push_String}
+
+```C
+void push_String(String *s, char c)
+```
+
+Appends the given char to the end of this String.
+
+## cstr_String {#one_cstr_String}
+
+```C
+Option(cstr) cstr_String(String *s)
+```
+
+Get `s` as a C string, if possible--it's only possible if there
+are no embedded `'\0'` characters.
+
+The returned `cstr` is borrowed and shares storage with `s`, so
+`s` may not be mutated while the `cstr` is in use.
 
 <hr>
 <p>&nbsp;</p>

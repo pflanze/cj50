@@ -12,9 +12,85 @@ typedef struct ucodepoint {
 
 A single Unicode code point (a single character, unless it's a
 code point that combines with other code points to a composed
-character).
+character). ucodepoint only ever carries valid codes.
+
+## utf8char {#zero_utfQeightEchar}
+
+```C
+typedef struct utf8char {
+    // 1..4 bytes data, then a \0 char, and a len indicator
+    uint8_t data[6];
+} utf8char
+```
+
+A single Unicode code point in UTF-8 format.
 
 # Normal functions
+
+## encode_utf8 {#one_encode_utfQeightE}
+
+```C
+int encode_utf8(uint32_t cp, uint8_t *out)
+```
+
+Encode a unicode code point as UTF-8 characters, writing it to
+`out`. `out` must have 4 bytes of storage or more. No `'\0'` byte
+is written afterwards. Returns -1 if `cp` is not a valid unicode
+codepoint, otherwise returns the number of bytes written.
+
+## utf8_sequence_len {#one_utfQeightE_sequence_len}
+
+```C
+Option(u8) utf8_sequence_len(u8 b)
+```
+
+How many bytes the UTF-8 character sequence takes when `b` is its
+initial byte. None is returned if `b` is not ascii or an initial
+byte, but a continuation byte.
+
+## new_utf8char_from_bytes_seqlen_unsafe {#one_new_utfQeightEchar_from_bytes_seqlen_unsafe}
+
+```C
+utf8char new_utf8char_from_bytes_seqlen_unsafe(const char *bytes,
+                                               u8 seqlen)
+```
+
+Create utf8char from bytes and length of the UTF-8 sequence. No
+safety checks whatsoever are done.
+
+## new_utf8char_from_cstr_unsafe {#one_new_utfQeightEchar_from_cstr_unsafe}
+
+```C
+utf8char new_utf8char_from_cstr_unsafe(cstr s)
+```
+
+Create utf8char from bytes and length of the UTF-8 sequence. No
+safety checks whatsoever are done.
+
+## len_utf8char {#one_len_utfQeightEchar}
+
+```C
+size_t len_utf8char(utf8char c)
+```
+
+The length of the UTF-8 byte sequence making up the given unicode
+codepoint.
+
+## cstr_utf8char {#one_cstr_utfQeightEchar}
+
+```C
+cstr cstr_utf8char(const utf8char *c)
+```
+
+A cstr borrowed from the data in `c`.
+
+## new_utf8char_from_ucodepoint {#one_new_utfQeightEchar_from_ucodepoint}
+
+```C
+utf8char new_utf8char_from_ucodepoint(ucodepoint cp)
+```
+
+Convert a ucodepoint to a utf8char.
 
 ## get_ucodepoint_unlocked {#one_get_ucodepoint_unlocked}
 
@@ -27,6 +103,73 @@ Read a single Unicode code point from `in`.
 
 This function is currently hard-coded to decode files in the UTF-8
 format.
+
+## get_utf8char_String {#one_get_utfQeightEchar_String}
+
+```C
+Option(utf8char) get_utf8char_String(const String *s, size_t idx)
+```
+
+Get the character (unicode codepoint, to be precise) at byte
+position `idx` of `s`, if possible. Failures can be because `idx`
+is at or behind the end of the string contents, or because it does
+not point to the beginning of a byte sequence for a UTF-8 encoded
+codepoint.
+
+## new_Vec_ucodepoint_from_cstr {#one_new_Vec_ucodepoint_from_cstr}
+
+```C
+Result(Vec(ucodepoint), UnicodeError) new_Vec_ucodepoint_from_cstr(cstr s)
+```
+
+Convert a `cstr` into a vector of unicode codepoints, if possible.
+Conversion failures due to invalid UTF-8 are reported.
+
+## new_Vec_utf8char_from_cstr {#one_new_Vec_utfQeightEchar_from_cstr}
+
+```C
+Result(Vec(utf8char), UnicodeError) new_Vec_utf8char_from_cstr(cstr s)
+```
+
+Convert a `cstr` into a vector of unicode codepoints, if possible.
+Conversion failures due to invalid UTF-8 are reported.
+
+## push_utf8char_String {#one_push_utfQeightEchar_String}
+
+```C
+void push_utf8char_String(String *s, utf8char c)
+```
+
+Appends the given codepoint in utf8char format to the end of this
+String.
+
+## push_ucodepoint_String {#one_push_ucodepoint_String}
+
+```C
+void push_ucodepoint_String(String *s, ucodepoint c)
+```
+
+Appends the given unicode codepoint to the end of this
+String.
+
+# Macros
+
+## ucodepoint {#three_ucodepoint}
+
+```C
+ucodepoint(cp)
+```
+
+Unsafe constructor, does not verify the code.
+
+## utf8char {#three_utfQeightEchar}
+
+```C
+utf8char(str)
+```
+
+Careful, currently unsafe, assumes that the str is a string
+constant and carefully entered!
 
 <hr>
 <p>&nbsp;</p>

@@ -213,6 +213,15 @@ cstr cstr_CStr(CStr *s)
 
 Give a read-only borrow to the contained cstr.
 
+## deref_CStr {#one_deref_CStr}
+
+```C
+cstr deref_CStr(const CStr *s)
+```
+
+"Dereference" the `CStr` wrapper, meaning, get the wrapped value
+out, a `cstr`.
+
 # Macros
 
 ## CStr_from_cstr_unsafe {#three_CStr_from_cstr_unsafe}

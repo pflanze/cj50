@@ -55,6 +55,23 @@ bool equal_CFile(const CFile *a, const CFile *b)
 Equality on CFile does not make much sense; it does report whether
 the embedded `FILE*` pointers are identical.
 
+## drop_CFile {#one_drop_CFile}
+
+```C
+void drop_CFile(CFile f)
+```
+
+Closes the file.
+
+This does not report errors (except it does print a warning),
+because the drop interface can't, except via abort. This is
+exactly like in Rust. IIRC the conclusion there was that modern
+systems don't ever report errors on `close` any more, except
+perhaps some networked file systems like NFS or wrongly made fuse
+file systems. To be sure that there was no problem writing, either
+call `fclose(f.ptr)` or `flush(&f)` and handle the errors
+there. (Also, `sync(&f)`.)
+
 ## os_getc_unlocked {#one_os_getc_unlocked}
 
 ```C
@@ -131,23 +148,6 @@ Result(Unit, SystemError) close_CFile(CFile *f)
 Close the file. Marks `f` so that the embedded `FILE*` pointer is
 `NULL`. It is safe to call `drop` afterwards, but any other
 function will segfault (NULL pointer dereference)!
-
-## drop_CFile {#one_drop_CFile}
-
-```C
-void drop_CFile(CFile f)
-```
-
-Closes the file.
-
-This does not report errors (except it does print a warning),
-because the drop interface can't, except via abort. This is
-exactly like in Rust. IIRC the conclusion there was that modern
-systems don't ever report errors on `close` any more, except
-perhaps some networked file systems like NFS or wrongly made fuse
-file systems. To be sure that there was no problem writing, either
-call `fclose(f.ptr)` or `flush(&f)` and handle the errors
-there. (Also, `sync(&f)`.)
 
 <hr>
 <p>&nbsp;</p>
