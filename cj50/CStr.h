@@ -37,6 +37,7 @@ bool equal_move_cstr(cstr a, cstr b) {
 }
 
 /// Print for program user.
+static UNUSED
 int print_cstr(const cstr *s) {
     return printf("%s", *s);
 }
@@ -44,9 +45,23 @@ int print_cstr(const cstr *s) {
 /// Same as `print_cstr`, but move (rather, copy) the reference. Like
 /// print_cstr, still does not consume `s` since it's a borrowed type
 /// anyway.
+static UNUSED
 int print_move_cstr(cstr s) {
     return print_cstr(&s);
 }
+
+
+/// Print for program user.
+static UNUSED
+int fprintln_cstr(FILE *out, const cstr *s) {
+    return fprintf(out, "%s", *s);
+}
+
+static UNUSED
+int fprintln_move_cstr(FILE *out, cstr s) {
+    return fprintln_cstr(out, &s);
+}
+
 
 /// Print in C code syntax.
 static

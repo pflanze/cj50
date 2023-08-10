@@ -19,6 +19,7 @@
 
 // XX Bummer, why necessary, circular dependencies?
 typedef const char* cstr;
+static UNUSED
 int print_move_cstr(cstr s);
 
 
