@@ -128,7 +128,10 @@ void set_draw_color(SDL_Renderer* renderer, Color color) {
 
 /// Clear the rendering area, i.e. fill it with the current drawing
 /// color.
-void clear(SDL_Renderer* renderer) {
+
+/// Note that you can use the generic `clear` as a shortcut.
+
+void clear_SDL_Renderer(SDL_Renderer* renderer) {
     assert_sdl(SDL_RenderClear(renderer));
 }
 
