@@ -907,19 +907,18 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
         )(v)
 
 /// Dereferencing a wrapper type ('smart pointer') to the simpler
-/// contained type; both the argument and the result are reference
-/// types (not owned).
+/// contained type; the result is of a reference type (not owned).
 
 /// Example:
 ///
 /// ```C
-/// String s = unwrap(filecontents_String(path));
+/// CStr s = unwrap(filecontents_CStr(path));
 /// cstr s1 = deref(&s);
 /// ```
 
 #define deref(v)                                                        \
     _Generic((v)                                                        \
-             , String*: deref_String                                    \
+             , CStr*: deref_CStr                                        \
         )(v)
 
 

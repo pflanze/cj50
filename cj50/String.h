@@ -61,13 +61,6 @@ int print_debug_move_String(String s) {
     return r;
 }
 
-/*
-static UNUSED
-cstr deref_String(String *s) {
-    return s->str;
-}
-*/
-
 
 /// Create a String from a CStr, consuming the latter.
 

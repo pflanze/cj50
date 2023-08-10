@@ -251,3 +251,10 @@ cstr cstr_CStr(CStr *s) {
 }
 
 
+/// "Dereference" the `CStr` wrapper, meaning, get the wrapped value
+/// out, a `cstr`.
+static UNUSED
+cstr deref_CStr(const CStr *s) {
+    return s->cstr;
+}
+
