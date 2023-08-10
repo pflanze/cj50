@@ -1077,6 +1077,7 @@ cleanup:
              , Vec(CStr)*: len_Vec_CStr                 \
              , Vec(ucodepoint)*: len_Vec_ucodepoint     \
              , Vec(utf8char)*: len_Vec_utf8char         \
+             , String*: len_String                      \
         )(coll)
 
 /// Give the length of a given collection. For Vec (and String. XXX
