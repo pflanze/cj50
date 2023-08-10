@@ -17,6 +17,9 @@ typedef struct Unit {
     ((Unit) {})
 
 static UNUSED
+void drop_Unit(UNUSED Unit v) {}
+
+static UNUSED
 bool equal_Unit(UNUSED const Unit *a, UNUSED const Unit *b) {
     return true;
 }
