@@ -42,6 +42,7 @@
 #include "cj50/resret.h"
 #include "cj50/instantiations/Vec_CStr.h"
 #include "cj50/instantiations/Vec_ucodepoint.h"
+#include "cj50/instantiations/Vec_utf8char.h"
 #include <cj50/instantiations/Vec_char.h>
 
 
@@ -613,6 +614,8 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , Vec(CStr)*: print_debug_Vec_CStr               \
              , Vec(ucodepoint): print_debug_move_Vec_ucodepoint \
              , Vec(ucodepoint)*: print_debug_Vec_ucodepoint   \
+             , Vec(utf8char): print_debug_move_Vec_utf8char   \
+             , Vec(utf8char)*: print_debug_Vec_utf8char       \
              , Option(cstr)*: print_debug_Option_cstr         \
              , Option(cstr): print_debug_move_Option_cstr     \
              , Option(CStr)*: print_debug_Option_CStr         \
@@ -673,6 +676,7 @@ FUTURE_GENERATE_PRINTLN(CStr);
              , Vec3*: free                             \
              , Vec(CStr): drop_Vec_CStr                \
              , Vec(ucodepoint): drop_Vec_ucodepoint    \
+             , Vec(utf8char): drop_Vec_utf8char        \
              , Option(cstr): drop_Option_cstr          \
              , Option(CStr): drop_Option_CStr          \
              , Option(String): drop_Option_String      \
@@ -918,6 +922,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(double): "Option(double)"         \
              , Vec(CStr): "Vec(CStr)"                   \
              , Vec(ucodepoint): "Vec(ucodepoint)"       \
+             , Vec(utf8char): "Vec(utf8char)"           \
              , Vec2: "Vec2"                             \
              , Vec3: "Vec3"                             \
              , Rect2: "Rect2"                           \
@@ -1021,6 +1026,7 @@ cleanup:
     _Generic((coll)                                     \
              , Vec(CStr)*: push_Vec_CStr                \
              , Vec(ucodepoint)*: push_Vec_ucodepoint    \
+             , Vec(utf8char)*: push_Vec_utf8char        \
         )(coll, val)
 
 
@@ -1029,6 +1035,7 @@ cleanup:
     _Generic((coll)                                     \
              , Vec(CStr)*: pop_Vec_CStr                 \
              , Vec(ucodepoint)*: pop_Vec_ucodepoint     \
+             , Vec(utf8char)*: pop_Vec_utf8char         \
         )(coll)
 
 
@@ -1038,6 +1045,7 @@ cleanup:
     _Generic((coll1)                                    \
              , Vec(CStr)*: append_Vec_CStr              \
              , Vec(ucodepoint)*: append_Vec_ucodepoint  \
+             , Vec(utf8char)*: append_Vec_utf8char      \
         )(coll1, coll2)
 
 
@@ -1047,6 +1055,7 @@ cleanup:
     _Generic((coll)                                     \
              , Vec(CStr)*: len_Vec_CStr                 \
              , Vec(ucodepoint)*: len_Vec_ucodepoint     \
+             , Vec(utf8char)*: len_Vec_utf8char         \
         )(coll)
 
 /// Give the length of a given collection. For Vec (and String. XXX
