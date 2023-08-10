@@ -100,6 +100,15 @@
     }                                                           \
                                                                 \
     static UNUSED                                               \
+    bool XCAT(equal_move_, Option(T))(Option(T) a,              \
+                                      Option(T) b) {            \
+        bool res = XCAT(equal_, Option(T))(&a, &b);             \
+        XCAT(drop_, Option(T))(a);                              \
+        XCAT(drop_, Option(T))(b);                              \
+        return res;                                             \
+    }                                                           \
+                                                                \
+    static UNUSED                                               \
     T XCAT(unwrap_, Option(T))(const Option(T) s) {             \
         if (s.is_some) {                                        \
             return s.value;                                     \
