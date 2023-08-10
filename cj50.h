@@ -1045,6 +1045,13 @@ cleanup:
              , UnicodeError*: fprintln_UnicodeError             \
         )((out), (v))
 
+/// Get a `utf8char` from a collection.
+
+#define get_utf8char(s, idx)                                    \
+    _Generic((s)                                                \
+             , String*: get_utf8char_String                     \
+        )((s), (idx))
+
 
 #undef GET_THING
 

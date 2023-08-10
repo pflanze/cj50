@@ -8,6 +8,7 @@
 #include <cj50/gen/Result.h>
 #include <cj50/gen/Option.h>
 #include <cj50/CStr.h>
+#include <cj50/String.h>
 #include <cj50/u32.h>
 #include <cj50/os.h>
 #include <cj50/gen/dispatch/new_from.h>
@@ -272,6 +273,124 @@ void drop_UnicodeError(UnicodeError e) {
 
 // ------------------------------------------------------------------
 
+/// Encode a unicode code point as UTF-8 characters, writing it to
+/// `out`. `out` must have 4 bytes of storage or more. No `'\0'` byte
+/// is written afterwards. Returns -1 if `cp` is not a valid unicode
+/// codepoint, otherwise returns the number of bytes written.
+
+static UNUSED
+int encode_utf8(uint32_t cp, uint8_t *out) {
+    if (cp <= 0x7F) {
+        out[0] = cp & 0x7F;
+        return 1;
+    }
+    // The lower bits appear later in the encoding!
+    if (cp <= 0x7FF) {
+        out[0] = (cp >> 6) | 0b11000000;
+        out[1] = (cp & 0x1F) | 0b10000000;
+        return 2;
+    }
+    if (cp <= 0xFFFF) {
+        out[0] = ((cp >> 12) & 0x0F) | 0b11100000;
+        out[1] = ((cp >> 6) & 0x1F) | 0b10000000;
+        out[2] = (cp & 0x1F) | 0b10000000;
+        return 3;
+    }
+    if (cp <= 0x10FFFF) {
+        out[0] = ((cp >> 18) & 0x07) | 0b11110000;
+        out[1] = ((cp >> 12) & 0x1F) | 0b10000000;
+        out[2] = ((cp >> 6) & 0x1F) | 0b10000000;
+        out[3] = (cp & 0x1F) | 0b10000000;
+        return 4;
+    }
+    return -1;
+    // XX weren't there holes in validity, too?
+}
+
+/// How many bytes the UTF-8 character sequence takes when `b` is its
+/// initial byte. None is returned if `b` is not ascii or an initial
+/// byte, but a continuation byte.
+
+static UNUSED
+Option(u8) utf8_sequence_len(u8 b) {
+    if (b <= 0x7F) { return some_u8(1); }
+    if ((b & 0b11100000) == 0b11000000) { return some_u8(2); }
+    if ((b & 0b11110000) == 0b11100000) { return some_u8(3); }
+    if ((b & 0b11111000) == 0b11110000) { return some_u8(4); }
+    return none_u8();
+}
+
+// ------------------------------------------------------------------
+
+
+/// A single Unicode code point in UTF-8 format.
+
+typedef struct utf8char {
+    // 1..4 bytes data, then a \0 char, and a len indicator
+    uint8_t data[6];
+} utf8char;
+
+/// Create utf8char from bytes and length of the UTF-8 sequence. No
+/// safety checks whatsoever are done.
+static UNUSED
+utf8char new_utf8char_from_bytes_seqlen_unsafe(const char *bytes,
+                                               u8 seqlen) {
+    utf8char c;
+    memcpy(c.data, bytes, seqlen);
+    c.data[seqlen] = '\0';
+    c.data[5] = seqlen;
+    return c;
+}
+
+/// The length of the UTF-8 byte sequence making up the given unicode
+/// codepoint.
+static UNUSED
+size_t len_utf8char(utf8char c) {
+    return c.data[5];
+}
+
+/// A cstr borrowed from the data in `c`.
+static UNUSED
+cstr to_cstr_utf8char(const utf8char *c) {
+    return (cstr)c->data;
+}
+
+static UNUSED
+void drop_utf8char(UNUSED utf8char c) {}
+
+static UNUSED
+bool equal_utf8char(const utf8char *a, const utf8char *b) {
+    return ((len_utf8char(*a) == len_utf8char(*b)) &&
+            memcmp(a->data, b->data, len_utf8char(*a)) == 0);
+}
+
+static UNUSED
+int print_debug_utf8char(const utf8char *c) {
+    INIT_RESRET;
+    RESRET(print_move_cstr("utf8char(")); // XX use something executable please
+    RESRET(print_debug_move_cstr(to_cstr_utf8char(c)));
+    RESRET(print_move_cstr(")"));
+cleanup:
+    return ret;
+}
+
+
+GENERATE_Option(utf8char);
+
+static UNUSED
+Option(utf8char) new_utf8char_from_ucodepoint(ucodepoint cp) {
+    utf8char c;
+    int len = encode_utf8(cp.u32, c.data);
+    if (len < 0) {
+        return none_utf8char();
+    }
+    c.data[len] = '\0';
+    c.data[5] = len;
+    return some_utf8char(c);
+}
+
+// ------------------------------------------------------------------
+
 
 GENERATE_Option(ucodepoint);
 
@@ -350,3 +469,32 @@ cleanup:
 #undef EBUFSIZ
 }
 
+
+// ------------------------------------------------------------------
+// Operations for String
+
+/// Get the character (unicode codepoint, to be precise) at byte
+/// position `idx` of `s`, if possible. Failures can be because `idx`
+/// is at or behind the end of the string contents, or because it does
+/// not point to the beginning of a byte sequence for a UTF-8 encoded
+/// codepoint.
+
+static UNUSED
+Option(utf8char) get_utf8char_String(const String *s, size_t idx) {
+    size_t len = s->vec.len;
+    char *ptr = s->vec.ptr;
+    if (idx < len) {
+        if_let_Some(seqlen, utf8_sequence_len(ptr[idx])) {
+            assert((idx + seqlen) <= len); // String guarantees UTF-8
+            return some_utf8char(
+                new_utf8char_from_bytes_seqlen_unsafe(
+                    &ptr[idx], seqlen));
+        } else_None {
+            // middle of UTF-8 sequence
+            return none_utf8char();
+        }
+    } else {
+        // past the end
+        return none_utf8char();
+    }
+}
