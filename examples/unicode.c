@@ -13,15 +13,22 @@ Result(Unit, UnicodeError) run(char *str) {
     BEGIN_Result(Unit, UnicodeError);
 
     CFile in = TRY(memopen_CFile(str, strlen(str), "r"), cleanup1);
-
     Vec(ucodepoint) v = new_Vec_ucodepoint();
-
     while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
         push(&v, c);
     }
     DBG(v);
-    RETURN_Ok(Unit(), cleanup2);
-    
+
+    AUTO v2 = TRY(new_Vec_utf8char_from_cstr(str), cleanup2);
+    DBG(&v2);
+
+    while_let_Some(c, pop(&v2)) {
+        println(c);
+    }
+
+    RETURN_Ok(Unit(), cleanup3);
+cleanup3:
+    drop(v2);
 cleanup2:
     drop(in);
 cleanup1:
