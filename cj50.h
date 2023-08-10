@@ -799,6 +799,20 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , char: equal_move_char                                    \
         )((a), (b))
 
+/* /// Call `equal(&a, &b)` but works even if `a` or `b` are expressions */
+/* /// that are not variables or data structure slots. */
+/* #define EQUAL(a, b)                                             \ */
+/*     ({                                                          \ */
+/*         typeof(a) HYGIENIC(a) = (a);                            \ */
+/*         typeof(b) HYGIENIC(b) = (b);                            \ */
+/*         bool HYGIENIC(res) = equal(&HYGIENIC(a), &HYGIENIC(b)); \ */
+/*         drop(HYGIENIC(a));                                      \ */
+/*         drop(HYGIENIC(b));                                      \ */
+/*         HYGIENIC(res);                                          \ */
+/*     }) */
+// This can't ever work.
+
+
 /// Takes a value of some type `T` and returns a `some` variant of
 /// `Option(T)` containing the value.
 #define some(v)                                         \
