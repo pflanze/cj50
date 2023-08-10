@@ -15,8 +15,6 @@ void cancel() {
 
 void run_name() {
     print("What is your name? ");
-    // Should use get_String instead! But for compatibility with
-    // cs50 it's still supported.
     Option(CStr) name = get_CStr(); 
     DBG(name);
     if (!name.is_some) {
