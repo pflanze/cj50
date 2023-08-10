@@ -3,6 +3,7 @@
 #include <cj50/gen/Option.h>
 #include <cj50/CStr.h>
 #include <cj50/char.h>
+#include <cj50/instantiations/Vec_char.h>
 #include <cj50/resret.h>
 
 

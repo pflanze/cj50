@@ -60,7 +60,3 @@ cleanup:
 
 GENERATE_Option(char);
 
-#define T char
-#include <cj50/gen/template/Vec.h>
-#undef T
-

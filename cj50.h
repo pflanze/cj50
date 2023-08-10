@@ -40,10 +40,9 @@
 #include "cj50/filecontents.h"
 #include "cj50/xmem.h"
 #include "cj50/resret.h"
-
-#define T CStr
-#include <cj50/gen/template/Vec.h>
-#undef T
+#include "cj50/instantiations/Vec_CStr.h"
+#include "cj50/instantiations/Vec_ucodepoint.h"
+#include <cj50/instantiations/Vec_char.h>
 
 
 
@@ -500,14 +499,6 @@ int print_debug_floats(const float* ary, size_t len) {
 }
 
 #undef PRINT_ARRAY
-
-
-// Somewhere we have to stuff all the parametrizations? And it's so
-// evil.
-#define T ucodepoint
-#include <cj50/gen/template/Vec.h>
-#undef T
-
 
 
 /// Prints the given value for normal text use.
