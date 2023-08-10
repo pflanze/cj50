@@ -159,6 +159,25 @@ void XCAT(drop_, Vec(T))(Vec(T) self) {
     }
 }
 
+/// Clears the vector, removing all values.
+
+/// Note that this method has no effect on the allocated capacity of
+/// the vector.
+
+static UNUSED
+void XCAT(clear_, Vec(T))(Vec(T) *self) {
+    size_t len = self->len;
+    T* ptr = self->ptr;
+    if (ptr) {
+        for (size_t i = 0; i < len; i++) {
+            XCAT(drop_, T)(ptr[i]);
+        }
+    } else {
+        assert(len == 0);
+    }
+    self->len = 0;
+}
+
 /// Whether the two vectors have the same number of elements with
 /// equal elements in every position.
 static UNUSED
