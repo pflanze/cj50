@@ -782,6 +782,10 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(String)*: equal_Option_String                     \
              , Option(int)*: equal_Option_int                           \
              , Option(float)*: equal_Option_float                       \
+             , Option(char)*: equal_Option_char                         \
+             , Option(char): equal_move_Option_char                     \
+             , Option(utf8char)*: equal_Option_utf8char                 \
+             , Option(utf8char): equal_move_Option_utf8char             \
              , Result(int, ParseError)*: equal_Result_int__ParseError   \
              , Result(String, SystemError)*: equal_Result_String__SystemError \
              , cstr*: equal_cstr                                        \
@@ -863,6 +867,8 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(cstr): unwrap_Option_cstr                         \
              , Option(CStr): unwrap_Option_CStr                         \
              , Option(String): unwrap_Option_String                     \
+             , Option(char): unwrap_Option_char                         \
+             , Option(utf8char): unwrap_Option_utf8char                 \
              , Option(int): unwrap_Option_int                           \
              , Option(u8): unwrap_Option_u8                             \
              , Option(u64): unwrap_Option_u64                           \
