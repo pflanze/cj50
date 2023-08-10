@@ -330,6 +330,11 @@ typedef struct utf8char {
     uint8_t data[6];
 } utf8char;
 
+/// Careful, currently unsafe, assumes that the str is a string
+/// constant and carefully entered!
+#define utf8char(str)                          \
+    new_utf8char_from_cstr_unsafe(str)
+
 /// Create utf8char from bytes and length of the UTF-8 sequence. No
 /// safety checks whatsoever are done.
 static UNUSED
@@ -341,6 +346,15 @@ utf8char new_utf8char_from_bytes_seqlen_unsafe(const char *bytes,
     c.data[5] = seqlen;
     return c;
 }
+
+/// Create utf8char from bytes and length of the UTF-8 sequence. No
+/// safety checks whatsoever are done.
+static UNUSED
+utf8char new_utf8char_from_cstr_unsafe(cstr s) {
+    return new_utf8char_from_bytes_seqlen_unsafe(s,
+                                                 strlen(s));
+}
+
 
 /// The length of the UTF-8 byte sequence making up the given unicode
 /// codepoint.
