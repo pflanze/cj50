@@ -384,6 +384,19 @@ bool equal_move_utf8char(utf8char a, utf8char b) {
 }
 
 static UNUSED
+int print_utf8char(const utf8char *c) {
+    INIT_RESRET;
+    RESRET(print_move_cstr(to_cstr_utf8char(c)));
+cleanup:
+    return ret;
+}
+
+static UNUSED
+int print_move_utf8char(utf8char c) {
+    return print_utf8char(&c);
+}
+
+static UNUSED
 int print_debug_utf8char(const utf8char *c) {
     INIT_RESRET;
     RESRET(print_move_cstr("utf8char(")); // XX use something executable please

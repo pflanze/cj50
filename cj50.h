@@ -516,10 +516,14 @@ int print_debug_floats(const float* ary, size_t len) {
              , char*: print_move_cstr           \
              , cstr*: print_cstr                \
              , cstr: print_move_cstr            \
+             , const CStr*: print_CStr          \
              , CStr*: print_CStr                \
              , CStr: print_move_CStr            \
              , String: print_String             \
              , char: putchar                    \
+             , utf8char: print_move_utf8char    \
+             , utf8char*: print_utf8char        \
+             , const utf8char*: print_utf8char  \
              , int: print_int                   \
              , uint: print_uint                 \
              , u8: print_u8                     \
@@ -552,32 +556,49 @@ GENERATE_PRINTLN(double);
 // XX borrowing version as everything should be in the future
 #define FUTURE_GENERATE_PRINTLN(T)              \
     static UNUSED                               \
-    int XCAT(println_, T)(T *v) {               \
+    int XCAT(println_, T)(const T *v) {         \
         INIT_RESRET;                            \
         RESRET(print(v));                       \
-        RESRET(print("\n"));                    \
+        RESRET(print_move_cstr("\n"));          \
     cleanup:                                    \
         return ret;                             \
     }
 FUTURE_GENERATE_PRINTLN(CStr);
+FUTURE_GENERATE_PRINTLN(utf8char);
+
+// XX and that should probably be part of FUTURE_GENERATE_PRINTLN
+#define FUTURE_GENERATE_PRINTLN_MOVE(T)         \
+    static UNUSED                               \
+    int XCAT(println_move_, T)(T v) {           \
+        INIT_RESRET;                            \
+        RESRET(print(v));                       \
+        RESRET(print_move_cstr("\n"));          \
+    cleanup:                                    \
+        return ret;                             \
+    }
+FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
+
 
 
 /// Prints the given value for normal text use, followed by a newline
 /// (`"\n"`) for convenience.
 
-#define println(v)                              \
-    _Generic((v)                                \
-             , char*: println_cstr              \
-             , cstr: println_cstr               \
-             , CStr*: println_CStr              \
-             , String: println_String           \
-             , char: println_char               \
-             , int: println_int                 \
-             , uint: println_uint               \
-             , u8: println_u8                   \
-             , u64: println_u64                 \
-             , float: println_float             \
-             , double: println_double           \
+#define println(v)                                      \
+    _Generic((v)                                        \
+             , char*: println_cstr                      \
+             , cstr: println_cstr                       \
+             , CStr*: println_CStr                      \
+             , String: println_String                   \
+             , char: println_char                       \
+             , utf8char: println_move_utf8char          \
+             , utf8char*: println_utf8char              \
+             , const utf8char*: println_utf8char        \
+             , int: println_int                         \
+             , uint: println_uint                       \
+             , u8: println_u8                           \
+             , u64: println_u64                         \
+             , float: println_float                     \
+             , double: println_double                   \
         )(v)
 
 /// Prints the given value in a programmer's view, for debugging
