@@ -1084,6 +1084,7 @@ cleanup:
 #define cstr(v)                                         \
     _Generic((v)                                        \
              , CStr*: cstr_CStr                         \
+             , utf8char*: cstr_utf8char                 \
         )(v)
 
 
