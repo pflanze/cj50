@@ -1112,6 +1112,17 @@ cleanup:
              , String*: get_utf8char_String                     \
         )((s), (idx))
 
+/// Clear a collection or similar thing (make it empty).
+
+#define clear(s)                                                \
+    _Generic((s)                                                \
+             , SDL_Renderer*: clear_SDL_Renderer /* evil? */    \
+             , Vec(CStr)*: clear_Vec_CStr                       \
+             , Vec(ucodepoint)*: clear_Vec_ucodepoint           \
+             , Vec(utf8char)*: clear_Vec_utf8char               \
+             , String*: clear_String                            \
+        )(s)
+
 
 #undef GET_THING
 
