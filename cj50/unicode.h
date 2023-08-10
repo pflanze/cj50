@@ -287,20 +287,20 @@ int encode_utf8(uint32_t cp, uint8_t *out) {
     // The lower bits appear later in the encoding!
     if (cp <= 0x7FF) {
         out[0] = (cp >> 6) | 0b11000000;
-        out[1] = (cp & 0x1F) | 0b10000000;
+        out[1] = (cp & 0b00111111) | 0b10000000;
         return 2;
     }
     if (cp <= 0xFFFF) {
-        out[0] = ((cp >> 12) & 0x0F) | 0b11100000;
-        out[1] = ((cp >> 6) & 0x1F) | 0b10000000;
-        out[2] = (cp & 0x1F) | 0b10000000;
+        out[0] = (cp >> 12) | 0b11100000;
+        out[1] = ((cp >> 6) & 0b00111111) | 0b10000000;
+        out[2] = (cp & 0b00111111) | 0b10000000;
         return 3;
     }
     if (cp <= 0x10FFFF) {
-        out[0] = ((cp >> 18) & 0x07) | 0b11110000;
-        out[1] = ((cp >> 12) & 0x1F) | 0b10000000;
-        out[2] = ((cp >> 6) & 0x1F) | 0b10000000;
-        out[3] = (cp & 0x1F) | 0b10000000;
+        out[0] = (cp >> 18) | 0b11110000;
+        out[1] = ((cp >> 12) & 0b00111111) | 0b10000000;
+        out[2] = ((cp >> 6) & 0b00111111) | 0b10000000;
+        out[3] = (cp & 0b00111111) | 0b10000000;
         return 4;
     }
     return -1;
