@@ -1079,8 +1079,8 @@ cleanup:
              , String*: len_String                      \
         )(coll)
 
-/// Give the length of a given collection. For Vec (and String. XXX
-/// bytes or characters...?)
+/// Give a cstr to the given character collection. Note that this may
+/// return an error if the collection contains `'\0'` bytes.
 #define cstr(v)                                         \
     _Generic((v)                                        \
              , CStr*: cstr_CStr                         \
