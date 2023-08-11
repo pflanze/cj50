@@ -187,7 +187,8 @@ void drop_DecodingError(UNUSED DecodingError e) {}
 
 enum UnicodeErrorKind {
     UnicodeErrorKind_SystemError,
-    UnicodeErrorKind_DecodingError
+    UnicodeErrorKind_DecodingError,
+    UnicodeErrorKind_LimitExceededError,
 };
 
 typedef struct UnicodeError {
@@ -195,6 +196,7 @@ typedef struct UnicodeError {
     union {
         SystemError systemError;
         DecodingError decodingError;
+        // LimitExceededError -;
     };
 } UnicodeError;
 
@@ -220,6 +222,11 @@ UnicodeError new_UnicodeError_from_UnicodeError(UnicodeError e) {
     return e;
 }
 
+#define UnicodeError_LimitExceeded                      \
+    ((UnicodeError) {                                   \
+        .kind = UnicodeErrorKind_LimitExceededError     \
+    })
+
 
 // See "sick" above.
 static UNUSED
@@ -234,6 +241,8 @@ bool equal_UnicodeError(const UnicodeError *a, const UnicodeError *b) {
             equal_SystemError(&a->systemError, &b->systemError) :
             (a->kind == UnicodeErrorKind_DecodingError) ?
             equal_DecodingError(&a->decodingError, &b->decodingError) :
+            (a->kind == UnicodeErrorKind_LimitExceededError) ?
+            true :
             die_invalid_UnicodeErrorKind(a->kind));
 }
 
@@ -245,9 +254,14 @@ int print_debug_UnicodeError(const UnicodeError *e) {
     default: die_match_failure();
 
     case UnicodeErrorKind_SystemError:
-        return print_debug_SystemError(&e->systemError);
+        RESRET(print_debug_SystemError(&e->systemError));
+        break;
     case UnicodeErrorKind_DecodingError:
-        return print_debug_DecodingError(&e->decodingError);
+        RESRET(print_debug_DecodingError(&e->decodingError));
+        break;
+    case UnicodeErrorKind_LimitExceededError:
+        RESRET(print_move_cstr("LimitExceededError"));
+        break;
     }
     RESRET(printf(")"));
 cleanup:
@@ -263,6 +277,9 @@ int fprintln_UnicodeError(FILE* out, const UnicodeError* e) {
         return fprintln_SystemError(out, &e->systemError);
     case UnicodeErrorKind_DecodingError:
         return fprintln_DecodingError(out, &e->decodingError);
+    case UnicodeErrorKind_LimitExceededError:
+        // XX this could have more information? (Also, context?)
+        return fprintln_move_cstr(out, "Error: a limit was exceeded");
     }
 }
 
@@ -276,6 +293,8 @@ void drop_UnicodeError(UnicodeError e) {
         break;
     case UnicodeErrorKind_DecodingError:
         drop_DecodingError(e.decodingError);
+        break;
+    case UnicodeErrorKind_LimitExceededError:
         break;
     }
 }
@@ -639,3 +658,48 @@ void push_ucodepoint_String(String *s, ucodepoint c) {
 
 // ^ not now. once separate, faster decoder is ready, then.
 
+
+#include <cj50/instantiations/Result_size_t__UnicodeError.h>
+
+/// Read all unicode codepoints into buf until the delimiter character
+/// or EOF is reached.
+
+/// This function will read characters from the underlying stream
+/// until the delimiter or EOF is found. Once found, all characters up
+/// to, and, unless `strip_delimiter` is true, including, the
+/// delimiter (if found) will be appended to `buf`.
+
+/// If successful, this function will return the total number of
+/// characters read.
+
+/// `max_len` is the maximum number of characters that will be
+/// appended to `buf`. After this point, an error with `.kind ==
+/// UnicodeErrorKind_LimitExceededError` is returned.
+
+Result(size_t, UnicodeError) read_until_Vec_ucodepoint
+    (CFile *in,
+     ucodepoint delimiter,
+     Vec(ucodepoint) *buf,
+     bool strip_delimiter,
+     size_t max_len)
+{
+    BEGIN_Result(size_t, UnicodeError);
+
+    size_t nread = 0;
+    while_let_Some(c, TRY(get_ucodepoint_unlocked(in), cleanup1)) {
+        bool is_end = equal_ucodepoint(&c, &delimiter);
+        bool needs_push = is_end ? (!strip_delimiter) : true;
+        if (needs_push) {
+            if (nread < max_len) {
+                push_Vec_ucodepoint(buf, c);
+                nread++;
+            } else {
+                RETURN_Err(UnicodeError_LimitExceeded, cleanup1);
+            }
+        }
+    }
+    RETURN_Ok(nread, cleanup1);
+    
+ cleanup1:
+    END_Result();
+}
