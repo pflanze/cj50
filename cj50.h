@@ -1123,6 +1123,13 @@ cleanup:
              , String*: clear_String                            \
         )(s)
 
+/// Read items into buf until the delimiter or EOF is reached.
+
+#define read_until(in, delimiter, buf, strip_delimiter, max_len) \
+    _Generic((buf),                                              \
+             , Vec(ucodepoint)*: read_until_Vec_ucodepoint       \
+        )(in, delimiter, buf, strip_delimiter, max_len)
+
 
 #undef GET_THING
 
