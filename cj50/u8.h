@@ -31,7 +31,7 @@ int print_u8(u8 n) {
 
 static UNUSED
 int print_debug_u8(const u8 *n) {
-    return printf("%hhu", *n);
+    return print_u8(*n);
 }
 
 GENERATE_Option(u8);

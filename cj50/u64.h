@@ -31,7 +31,7 @@ int print_u64(u64 n) {
 
 static UNUSED
 int print_debug_u64(const u64 *n) {
-    return printf("%lu", *n);
+    return print_u64(*n);
 }
 
 GENERATE_Option(u64);
