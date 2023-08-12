@@ -249,23 +249,17 @@ Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(CFile *in)
             numbytes = 4;
             codepoint = b1 & 0b111;
         } else {
-            RETURN_Err(DecodingError__invalid_start_byte(),
+            RETURN_Err(DecodingError_InvalidStartByte(),
                        cleanup);
         }
         for (int i = 1; i < numbytes; i++) {
             LET_Some_ELSE(b, TRY(os_getc_unlocked(in), cleanup)) {
-                RETURN_Err(
-                    DecodingError_with_byte_number(
-                        DecodingErrorKind_premature_eof,
-                        i+1),
-                    cleanup);
+                RETURN_Err(DecodingError_PrematureEof(i+1),
+                           cleanup);
             }
             if ((b & 0b11000000) != 0b10000000) {
-                RETURN_Err(
-                    DecodingError_with_byte_number(
-                        DecodingErrorKind_invalid_continuation_byte,
-                        i+1),
-                    cleanup);
+                RETURN_Err(DecodingError_InvalidContinuationByte(i+1),
+                           cleanup);
             }
             codepoint <<= 6;
             codepoint |= (b & 0b00111111);
@@ -275,7 +269,7 @@ Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(CFile *in)
         RETURN_Ok(some_ucodepoint(ucodepoint(codepoint)),
                   cleanup);
     } else {
-        RETURN_Err(DecodingError_with_codepoint(codepoint),
+        RETURN_Err(DecodingError_InvalidCodepoint(codepoint),
                    cleanup);
     }
 cleanup:

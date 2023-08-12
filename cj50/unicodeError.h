@@ -2,14 +2,14 @@
 
 
 enum DecodingErrorKind {
-    DecodingErrorKind_invalid_start_byte,
-    DecodingErrorKind_premature_eof,
-    DecodingErrorKind_invalid_continuation_byte,
-    DecodingErrorKind_invalid_codepoint,
+    DecodingErrorKind_InvalidStartByte,
+    DecodingErrorKind_PrematureEof,
+    DecodingErrorKind_InvalidContinuationByte,
+    DecodingErrorKind_InvalidCodepoint,
     // XX todo:
-    // DecodingErrorKind_unexpected_continuation_byte, // same as DecodingErrorKind_invalid_start_byte?
-    // non-continuation byte before the end of the character -> DecodingErrorKind_invalid_continuation_byte ?
-    DecodingErrorKind_overlong_encoding,
+    // DecodingErrorKind_unexpected_continuation_byte, // same as DecodingErrorKind_InvalidStartByte?
+    // non-continuation byte before the end of the character -> DecodingErrorKind_InvalidContinuationByte ?
+    DecodingErrorKind_OverlongEncoding,
 };
 
 typedef struct DecodingError {
@@ -20,20 +20,29 @@ typedef struct DecodingError {
     };
 } DecodingError;
 
-#define DecodingError__invalid_start_byte()             \
-    ((DecodingError) {                                  \
-        .kind = DecodingErrorKind_invalid_start_byte    \
+#define DecodingError_InvalidStartByte()              \
+    ((DecodingError) {                                \
+        .kind = DecodingErrorKind_InvalidStartByte    \
     })
 
-#define DecodingError_with_byte_number(_kind, bytenum)  \
-    ((DecodingError) {                                  \
-        .kind = (_kind),                                \
-        .byte_number = (bytenum)                        \
+#define _DecodingError_with_byte_number(_kind, bytenum)  \
+    ((DecodingError) {                                   \
+        .kind = (_kind),                                 \
+        .byte_number = (bytenum)                         \
     })
 
-#define DecodingError_with_codepoint(cp)                \
+#define DecodingError_PrematureEof(bytenum)                         \
+    _DecodingError_with_byte_number(DecodingErrorKind_PrematureEof, \
+                                    bytenum)
+
+#define DecodingError_InvalidContinuationByte(bytenum)              \
+    _DecodingError_with_byte_number(                                \
+        DecodingErrorKind_InvalidContinuationByte,                  \
+        bytenum)
+
+#define DecodingError_InvalidCodepoint(cp)              \
     ((DecodingError) {                                  \
-        .kind = DecodingErrorKind_invalid_codepoint,    \
+        .kind = DecodingErrorKind_InvalidCodepoint,     \
         .byte_number = (cp)                             \
     })
 
@@ -48,13 +57,13 @@ bool die_match_failure() {
 static UNUSED
 bool equal_DecodingError(const DecodingError *a, const DecodingError *b) {
     return (a->kind == b->kind)
-        && ((a->kind == DecodingErrorKind_invalid_start_byte)
+        && ((a->kind == DecodingErrorKind_InvalidStartByte)
             ||
-            ((a->kind == DecodingErrorKind_premature_eof) ?
+            ((a->kind == DecodingErrorKind_PrematureEof) ?
              (a->byte_number == b->byte_number) :
-             (a->kind == DecodingErrorKind_invalid_continuation_byte) ?
+             (a->kind == DecodingErrorKind_InvalidContinuationByte) ?
              (a->byte_number == b->byte_number) :
-             (a->kind == DecodingErrorKind_invalid_codepoint) ?
+             (a->kind == DecodingErrorKind_InvalidCodepoint) ?
              (a->codepoint == b->codepoint) :
              die_match_failure()));
 }
@@ -66,26 +75,26 @@ int print_debug_DecodingError(const DecodingError *e) {
     switch (e->kind) {
     default: die_match_failure();
 
-    case DecodingErrorKind_invalid_start_byte:
-        RESRET(printf("DecodingErrorKind_invalid_start_byte"));
+    case DecodingErrorKind_InvalidStartByte:
+        RESRET(printf("DecodingErrorKind_InvalidStartByte"));
         break;        
-    case DecodingErrorKind_premature_eof:
+    case DecodingErrorKind_PrematureEof:
         // well, this is proper ADT approach but not proper C syntax!
         // Except if I make macros. todo?
-        RESRET(printf("DecodingErrorKind_premature_eof(%i)",
+        RESRET(printf("DecodingErrorKind_PrematureEof(%i)",
                       e->byte_number));
         break;
-    case DecodingErrorKind_invalid_continuation_byte:
-        RESRET(printf("DecodingErrorKind_invalid_continuation_byte(%i)",
+    case DecodingErrorKind_InvalidContinuationByte:
+        RESRET(printf("DecodingErrorKind_InvalidContinuationByte(%i)",
                       e->byte_number));
         break;
-    case DecodingErrorKind_invalid_codepoint:
-        RESRET(printf("DecodingErrorKind_invalid_continuation_byte(%i)",
+    case DecodingErrorKind_InvalidCodepoint:
+        RESRET(printf("DecodingErrorKind_InvalidContinuationByte(%i)",
                       e->byte_number));
         break;
-    case DecodingErrorKind_overlong_encoding:
+    case DecodingErrorKind_OverlongEncoding:
         // XX will it have some info?
-        RESRET(printf("DecodingErrorKind_overlong_encoding"));
+        RESRET(printf("DecodingErrorKind_OverlongEncoding"));
         break;
     }
     RESRET(printf(")"));
@@ -100,22 +109,22 @@ int fprintln_DecodingError(FILE* out, const DecodingError* e) {
     switch (e->kind) {
     default: die_match_failure();
 
-    case DecodingErrorKind_invalid_start_byte:
+    case DecodingErrorKind_InvalidStartByte:
         RESRET(fprintf(out, "invalid start byte"));
         break;
-    case DecodingErrorKind_premature_eof:
+    case DecodingErrorKind_PrematureEof:
         RESRET(fprintf(out, "premature EOF decoding UTF-8 (byte #%i)",
                        e->byte_number));
         break;
-    case DecodingErrorKind_invalid_continuation_byte:
+    case DecodingErrorKind_InvalidContinuationByte:
         RESRET(fprintf(out, "invalid continuation byte (byte #%i)",
                        e->byte_number));
         break;
-    case DecodingErrorKind_invalid_codepoint:
+    case DecodingErrorKind_InvalidCodepoint:
         RESRET(fprintf(out, "invalid code point %ui",
                        e->codepoint));
         break;
-    case DecodingErrorKind_overlong_encoding:
+    case DecodingErrorKind_OverlongEncoding:
         // XX will this have additional info?
         RESRET(fprintf(out, "overlong encoding"));
         break;
