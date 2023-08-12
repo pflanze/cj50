@@ -224,16 +224,14 @@ GENERATE_Result(Option(ucodepoint), UnicodeError);
 /// format.
 
 static UNUSED
-Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(
-    CFile *in)
+Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(CFile *in)
 {
     BEGIN_Result(Option(ucodepoint), UnicodeError);
     
     // https://en.wikipedia.org/wiki/Utf-8#Encoding
 #define EBUFSIZ 256
     u32 codepoint;
-    AUTO opt_b1 = TRY(os_getc_unlocked(in), cleanup);
-    LET_Some_ELSE(b1, opt_b1) {
+    LET_Some_ELSE(b1, TRY(os_getc_unlocked(in), cleanup)) {
         RETURN_Ok(none_ucodepoint(), cleanup);
     }
     if ((b1 & 128) == 0) {
@@ -256,8 +254,7 @@ Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(
                        cleanup);
         }
         for (int i = 1; i < numbytes; i++) {
-            AUTO opt_b = TRY(os_getc_unlocked(in), cleanup);
-            LET_Some_ELSE(b, opt_b) {
+            LET_Some_ELSE(b, TRY(os_getc_unlocked(in), cleanup)) {
                 RETURN_Err(
                     new_from(UnicodeError,
                              DecodingError_with_byte_number(
