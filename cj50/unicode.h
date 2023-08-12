@@ -94,7 +94,7 @@ int encode_utf8(uint32_t cp, uint8_t *out) {
 
 /// How many bytes the UTF-8 character sequence takes when `b` is its
 /// initial byte. None is returned if `b` is not ascii or an initial
-/// byte, but a continuation byte.
+/// byte, but a continuation byte or invalid.
 
 static UNUSED
 Option(u8) utf8_sequence_len(u8 b) {
