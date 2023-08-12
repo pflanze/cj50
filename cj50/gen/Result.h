@@ -281,9 +281,19 @@
 /// `END_Result` and jumps to `label`. This is to allow the program to
 /// run cleanup actions.
 
-#define RETURN_Err(errval, label)               \
-    __propagate_return_val.is_ok = false;       \
-    __propagate_return_val.err = (errval);      \
+/// `RETURN_Err` automatically inserts `new_from` calls to convert Err values
+/// into the type that was defined using `BEGIN_Result`. If `expr`
+/// returns a Result with an Err type `Given`, and
+/// `BEGIN_Result(SomeType, Wanted)` was stated, this means that a
+/// conversion function `new_Wanted_from_Given` needs to exist, which
+/// needs to be part of the _Generic type dispatch in `new_from_` in
+/// the file `cj50/gen/dispatch/new_from.h`.
+
+#define RETURN_Err(errval, label)                    \
+    __propagate_return_val.is_ok = false;            \
+    __propagate_return_val.err = new_from(           \
+        typeof(__propagate_return_val.err),          \
+        errval);                                     \
     goto label;
 
 /// Requires a `BEGIN_Result` in its scope.
@@ -294,13 +304,8 @@
 /// to be returned by `END_Result` and a jump to `label` is issued;
 /// this is to enable the program to run cleanup actions.
 
-/// `TRY` automatically inserts `new_from` calls to convert Err values
-/// into the type that was defined using `BEGIN_Result`. If `expr`
-/// returns a Result with an Err type `Given`, and
-/// `BEGIN_Result(SomeType, Wanted)` was stated, this means that a
-/// conversion function `new_Wanted_from_Given` needs to exist, which
-/// needs to be part of the _Generic type dispatch in `new_from_` in
-/// the file `cj50/gen/dispatch/new_from.h`.
+/// `TRY` automatically inserts `new_from` calls in the error case;
+/// see `RETURN_Err` for details.
 
 #define TRY(expr, label)                             \
     ({                                               \
