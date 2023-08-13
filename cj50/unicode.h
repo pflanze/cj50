@@ -226,55 +226,13 @@ GENERATE_Result(Option(ucodepoint), UnicodeError);
 static UNUSED
 Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(CFile *in)
 {
-    BEGIN_Result(Option(ucodepoint), UnicodeError);
-    
-    // https://en.wikipedia.org/wiki/Utf-8#Encoding
-#define EBUFSIZ 256
-    u32 codepoint;
-    LET_Some_ELSE(b1, TRY(os_getc_unlocked(in), cleanup)) {
-        RETURN_Ok(none_ucodepoint(), cleanup);
-    }
-    if ((b1 & 128) == 0) {
-        // codepoint encoded as a single byte
-        codepoint = b1;
-    } else {
-        int numbytes;
-        if        ((b1 & 0b11100000) == 0b11000000) {
-            numbytes = 2;
-            codepoint = b1 & 0b11111;
-        } else if ((b1 & 0b11110000) == 0b11100000) {
-            numbytes = 3;
-            codepoint = b1 & 0b1111;
-        } else if ((b1 & 0b11111000) == 0b11110000) {
-            numbytes = 4;
-            codepoint = b1 & 0b111;
-        } else {
-            RETURN_Err(DecodingError_InvalidStartByte(),
-                       cleanup);
-        }
-        for (int i = 1; i < numbytes; i++) {
-            LET_Some_ELSE(b, TRY(os_getc_unlocked(in), cleanup)) {
-                RETURN_Err(DecodingError_PrematureEof(i+1),
-                           cleanup);
-            }
-            if ((b & 0b11000000) != 0b10000000) {
-                RETURN_Err(DecodingError_InvalidContinuationByte(i+1),
-                           cleanup);
-            }
-            codepoint <<= 6;
-            codepoint |= (b & 0b00111111);
-        }
-    }
-    if (codepoint <= 0x10FFFF) {
-        RETURN_Ok(some_ucodepoint(ucodepoint(codepoint)),
-                  cleanup);
-    } else {
-        RETURN_Err(DecodingError_InvalidCodepoint(codepoint),
-                   cleanup);
-    }
-cleanup:
-    END_Result();
-#undef EBUFSIZ
+#define getc_unlocked(in) os_getc_unlocked(in)
+#define POSSIBLYTRY(expr, label) TRY(expr, label)
+#define POSSIBLYDEREF(v) v
+#include "cj50/gen/template/unicode_utf8decode.h"
+#undef POSSIBLYDEREF
+#undef POSSIBLYTRY
+#undef getc_unlocked
 }
 
 
