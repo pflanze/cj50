@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cj50/gen/Option.h>
 #include <cj50/resret.h>
 
 
