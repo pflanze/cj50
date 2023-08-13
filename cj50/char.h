@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cj50/gen/Vec.h>
 #include <cj50/resret.h>
 
 
