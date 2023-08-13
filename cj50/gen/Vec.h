@@ -14,7 +14,33 @@
 #include <cj50/resret.h>
 
 
+//! Vectors and slices are related: a `Vec` is an owned data structure
+//! (it must reside in exactly one place at any time), whereas both
+//! `slice` and its mutable sibling `mutslice` are borrowed (they must
+//! only be used as long as the holder of the storage, either a `Vec`,
+//! or static storage (which exists for the duration of the program
+//! and hence is unproblematic), is available). `Vec` allows both
+//! replacing existing elements, as well as changing its size (via
+//! `push` and `pop` and (in the future) other functions), which is
+//! only allowed when there are no `slices` of it in use. `mutslice`
+//! can only be borrowed from `Vec` (not constant storage), and allows
+//! replacing its elements, which replaces them for the `Vec` they are
+//! borrowed from, too; but it cannot change size (there are no `push`
+//! or similar operations). `slice` cannot be modified at all, but in
+//! exchange any number of `slice`s can exist at the same time as long
+//! as there is no `mutslice` and `Vec` is left untouched.
+
+//! Vectors and slices are cj50's replacement for pointers to arrays
+//! which are the basic building blocks for sequences of items in C,
+//! but which are prone to mistaken use. The vectors and slices here
+//! are very closely modelled after their counterparts in Rust.
+
+
 #define Vec(T) XCAT(Vec_,T)
+
+#define slice(T) XCAT(slice_,T)
+
+#define mutslice(T) XCAT(mutslice_,T)
 
 
 // XX Bummer, why necessary, circular dependencies?
