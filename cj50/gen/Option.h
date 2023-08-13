@@ -57,10 +57,11 @@
 /// This macro creates a type name for an `Option` specific for the
 /// given type name `T`.
 
-/// Implementation wise, it simply concatenates `Option_` and the
-/// given type name. For this reason, the type name `T` must not
-/// contain spaces, e.g. `unsigned int` would not work and a typedef
-/// like `uint` has to be used instead.
+/// Implementation wise, it simply concatenates `ref_` and the given
+/// type name. For this reason, the type name `T` must not contain
+/// spaces or `*`, e.g. `unsigned int` would not work and a typedef
+/// like `uint` has to be used instead. For handling references, see
+/// the `ref(T)` type generator.
 #define Option(T) XCAT(Option_,T)
 
 /// This macro defines the struct and functions to implement the type
