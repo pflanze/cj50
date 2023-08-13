@@ -158,6 +158,35 @@
 #define NONE { .is_some = false }
 
 
+/// The constructor for some value of `T`. Example.
+
+///```C
+///     return Some(cstr)("foo")
+///```
+
+/// NOTE: only works if T is known textually
+/// (e.g. `None(typeof(somevar))` does not work, while
+/// `none(typeof(somevar))` does). 
+
+#define Some(T) XCAT(some_, T)
+
+// The none value for `T`.
+
+///```C
+///     return None(cstr);
+///```
+
+/// NOTE: only works if T is known textually
+/// (e.g. `None(typeof(somevar))` does not work, while
+/// `none(typeof(somevar))` does). The advantage over `none` is that
+/// the latter is a generic that currently must be updated manually
+/// and might be outdated or not in scope yet (within files of cj50
+/// itself).
+
+#define None(T) \
+    XCAT(none_, T)()
+
+
 /// This macro allows for convenient matching and conditional
 /// execution depending on what case of the Option was
 /// received. CAREFUL: it must always be paired with `else_None`, or
