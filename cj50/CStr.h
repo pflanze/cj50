@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <cj50/gen/Option.h>
 #include <cj50/gen/Result.h>
 #include <cj50/char.h>
