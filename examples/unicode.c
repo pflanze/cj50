@@ -8,8 +8,17 @@ void usage(cstr arg0, cstr msg) {
     exit(1);
 }
 
-Result(Unit, UnicodeError) run(char *str) {
+Result(Unit, UnicodeError) run(slice(cstr) argv) {
     BEGIN_Result(Unit, UnicodeError);
+
+    if (argv.len != 2) {
+        DBG(uchar("\n"));
+        DBG(uchar("ä"));
+        DBG(uchar("↓"));
+        usage(argv.ptr[0], "need 1 argument");
+    }
+
+    cstr str = argv.ptr[1];
 
     CFile in = TRY(memopen_CFile(str, strlen(str), "r"), cleanup1);
     Vec(ucodepoint) v = new_Vec_ucodepoint();
@@ -34,13 +43,4 @@ cleanup1:
     END_Result();
 }
 
-int main(int argc, char** argv) {
-    if (argc != 2) {
-        DBG(uchar("\n"));
-        DBG(uchar("ä"));
-        DBG(uchar("↓"));
-        usage(argv[0], "need 1 argument");
-    }
-
-    unwrap(run(argv[1]));
-}
+MAIN(run);
