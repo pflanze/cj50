@@ -42,12 +42,5 @@ int main(int argc, char** argv) {
         usage(argv[0], "need 1 argument");
     }
 
-    if_let_Ok(UNUSED _, run(argv[1])) {
-        exit(0);
-    } else_Err(e) {
-        DBG(&e); //
-        fprintln(stdout, &e);
-        drop(e);
-        exit(1);
-    } end_let_Ok;
+    unwrap(run(argv[1]));
 }
