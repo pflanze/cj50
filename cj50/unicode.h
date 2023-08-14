@@ -204,6 +204,11 @@ cleanup:
     return ret;
 }
 
+static UNUSED
+int print_debug_move_utf8char(utf8char c) {
+    return print_debug_utf8char(&c);
+}
+
 
 GENERATE_Option(utf8char);
 
