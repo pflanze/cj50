@@ -614,50 +614,66 @@ FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
 /// See `print` for printing as normal text, not for debugging, and
 /// `print_debug_array` for printing arrays.
 
-#define print_debug(v)                                        \
-    _Generic((v)                                              \
-             , char**: print_debug_cstr                       \
-             , char*: print_debug_move_cstr                   \
-             , cstr*: print_debug_cstr                        \
-             , cstr: print_debug_move_cstr                    \
-             , CStr*: print_debug_CStr                        \
-             , CStr: print_debug_move_CStr                    \
-             , String*: print_debug_String                    \
-             , String: print_debug_move_String                \
-             , bool: print_debug_bool                         \
-             , char: print_debug_char                         \
-             , int: print_int                                 \
-             , uint: print_uint                               \
-             , u8: print_u8                                   \
-             , u64: print_u64                                 \
-             , float: print_float                             \
-             , double: print_double                           \
-             , utf8char*: print_debug_utf8char                \
-             , utf8char: print_debug_move_utf8char            \
-             , ucodepoint*: print_debug_ucodepoint            \
-             , ucodepoint: print_debug_move_ucodepoint        \
-             , Vec2: print_debug_Vec2                         \
-             , Vec3: print_debug_Vec3                         \
-             , Vec(cstr): print_debug_move_Vec_cstr           \
-             , Vec(cstr)*: print_debug_Vec_cstr               \
-             , Vec(CStr): print_debug_move_Vec_CStr           \
-             , Vec(CStr)*: print_debug_Vec_CStr               \
-             , Vec(ucodepoint): print_debug_move_Vec_ucodepoint \
-             , Vec(ucodepoint)*: print_debug_Vec_ucodepoint   \
-             , Vec(utf8char): print_debug_move_Vec_utf8char   \
-             , Vec(utf8char)*: print_debug_Vec_utf8char       \
-             , Option(cstr)*: print_debug_Option_cstr         \
-             , Option(cstr): print_debug_move_Option_cstr     \
-             , Option(CStr)*: print_debug_Option_CStr         \
-             , Option(CStr): print_debug_move_Option_CStr     \
-             , Option(String)*: print_debug_Option_String     \
-             , Option(String): print_debug_move_Option_String \
-             , Option(int)*: print_debug_Option_int           \
-             , Option(int): print_debug_move_Option_int       \
-             , Option(float)*: print_debug_Option_float       \
-             , Option(float): print_debug_move_Option_float   \
-             , Line2: print_debug_Line2                       \
-             , Rect2: print_debug_Rect2                       \
+#define print_debug(v)                                                  \
+    _Generic((v)                                                        \
+             , char**: print_debug_cstr                                 \
+             , char*: print_debug_move_cstr                             \
+             , cstr*: print_debug_cstr                                  \
+             , cstr: print_debug_move_cstr                              \
+             , CStr*: print_debug_CStr                                  \
+             , CStr: print_debug_move_CStr                              \
+             , String*: print_debug_String                              \
+             , String: print_debug_move_String                          \
+             , bool: print_debug_bool                                   \
+             , char: print_debug_char                                   \
+             , int: print_int                                           \
+             , uint: print_uint                                         \
+             , u8: print_u8                                             \
+             , u64: print_u64                                           \
+             , float: print_float                                       \
+             , double: print_double                                     \
+             , utf8char*: print_debug_utf8char                          \
+             , utf8char: print_debug_move_utf8char                      \
+             , ucodepoint*: print_debug_ucodepoint                      \
+             , ucodepoint: print_debug_move_ucodepoint                  \
+             , Vec2: print_debug_Vec2                                   \
+             , Vec3: print_debug_Vec3                                   \
+             , Vec(cstr): print_debug_move_Vec_cstr                     \
+             , Vec(cstr)*: print_debug_Vec_cstr                         \
+             , Vec(CStr): print_debug_move_Vec_CStr                     \
+             , Vec(CStr)*: print_debug_Vec_CStr                         \
+             , Vec(ucodepoint): print_debug_move_Vec_ucodepoint         \
+             , Vec(ucodepoint)*: print_debug_Vec_ucodepoint             \
+             , Vec(utf8char): print_debug_move_Vec_utf8char             \
+             , Vec(utf8char)*: print_debug_Vec_utf8char                 \
+             , mutslice(cstr): print_debug_move_mutslice_cstr           \
+             , mutslice(cstr)*: print_debug_mutslice_cstr               \
+             , mutslice(CStr): print_debug_move_mutslice_CStr           \
+             , mutslice(CStr)*: print_debug_mutslice_CStr               \
+             , mutslice(ucodepoint): print_debug_move_mutslice_ucodepoint \
+             , mutslice(ucodepoint)*: print_debug_mutslice_ucodepoint   \
+             , mutslice(utf8char): print_debug_move_mutslice_utf8char   \
+             , mutslice(utf8char)*: print_debug_mutslice_utf8char       \
+             , slice(cstr): print_debug_move_slice_cstr                 \
+             , slice(cstr)*: print_debug_slice_cstr                     \
+             , slice(CStr): print_debug_move_slice_CStr                 \
+             , slice(CStr)*: print_debug_slice_CStr                     \
+             , slice(ucodepoint): print_debug_move_slice_ucodepoint     \
+             , slice(ucodepoint)*: print_debug_slice_ucodepoint         \
+             , slice(utf8char): print_debug_move_slice_utf8char         \
+             , slice(utf8char)*: print_debug_slice_utf8char             \
+             , Option(cstr)*: print_debug_Option_cstr                   \
+             , Option(cstr): print_debug_move_Option_cstr               \
+             , Option(CStr)*: print_debug_Option_CStr                   \
+             , Option(CStr): print_debug_move_Option_CStr               \
+             , Option(String)*: print_debug_Option_String               \
+             , Option(String): print_debug_move_Option_String           \
+             , Option(int)*: print_debug_Option_int                     \
+             , Option(int): print_debug_move_Option_int                 \
+             , Option(float)*: print_debug_Option_float                 \
+             , Option(float): print_debug_move_Option_float             \
+             , Line2: print_debug_Line2                                 \
+             , Rect2: print_debug_Rect2                                 \
              , Result(int, ParseError)*: print_debug_Result_int__ParseError \
              , Result(int, ParseError): print_debug_move_Result_int__ParseError \
              , Result(String, SystemError): print_debug_move_Result_String__SystemError \
@@ -688,33 +704,41 @@ FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
 
 /// Frees the resources held by the given value (including resources
 /// held by contained values, recursively, unlike the `free` function).
-#define drop(v)                                        \
-    _Generic((v)                                       \
-             , CStr: drop_CStr                         \
-             , String: drop_String                     \
-             , SystemError: drop_SystemError           \
-             , ParseError: drop_ParseError             \
-             , CStrError: drop_CStrError               \
-             , VecError: drop_VecError                 \
-             , UnicodeError: drop_UnicodeError         \
-             , CFile: drop_CFile                       \
-             , const char*: drop_cstr                  \
-             , char*: drop_cstr                        \
-             , int*: free                              \
-             , float*: free                            \
-             , Vec2*: free                             \
-             , Vec3*: free                             \
-             , ucodepoint: drop_ucodepoint             \
-             , Vec(cstr): drop_Vec_cstr                \
-             , Vec(CStr): drop_Vec_CStr                \
-             , Vec(ucodepoint): drop_Vec_ucodepoint    \
-             , Vec(utf8char): drop_Vec_utf8char        \
-             , Option(cstr): drop_Option_cstr          \
-             , Option(CStr): drop_Option_CStr          \
-             , Option(String): drop_Option_String      \
-             , Option(int): drop_Option_int            \
-             , Option(float): drop_Option_float        \
-             , Option(double): drop_Option_double      \
+#define drop(v)                                                  \
+    _Generic((v)                                                 \
+             , CStr: drop_CStr                                   \
+             , String: drop_String                               \
+             , SystemError: drop_SystemError                     \
+             , ParseError: drop_ParseError                       \
+             , CStrError: drop_CStrError                         \
+             , VecError: drop_VecError                           \
+             , UnicodeError: drop_UnicodeError                   \
+             , CFile: drop_CFile                                 \
+             , const char*: drop_cstr                            \
+             , char*: drop_cstr                                  \
+             , int*: free                                        \
+             , float*: free                                      \
+             , Vec2*: free                                       \
+             , Vec3*: free                                       \
+             , ucodepoint: drop_ucodepoint                       \
+             , Vec(cstr): drop_Vec_cstr                          \
+             , Vec(CStr): drop_Vec_CStr                          \
+             , Vec(ucodepoint): drop_Vec_ucodepoint              \
+             , Vec(utf8char): drop_Vec_utf8char                  \
+             , mutslice(cstr): drop_mutslice_cstr                \
+             , mutslice(CStr): drop_mutslice_CStr                \
+             , mutslice(ucodepoint): drop_mutslice_ucodepoint    \
+             , mutslice(utf8char): drop_mutslice_utf8char        \
+             , slice(cstr): drop_slice_cstr                      \
+             , slice(CStr): drop_slice_CStr                      \
+             , slice(ucodepoint): drop_slice_ucodepoint          \
+             , slice(utf8char): drop_slice_utf8char              \
+             , Option(cstr): drop_Option_cstr                    \
+             , Option(CStr): drop_Option_CStr                    \
+             , Option(String): drop_Option_String                \
+             , Option(int): drop_Option_int                      \
+             , Option(float): drop_Option_float                  \
+             , Option(double): drop_Option_double                \
         )(v)
 
 
@@ -939,31 +963,40 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 
 
 /// Returns the name of the type of `e` as a string constant (cstr).
-#define type_name(e)                                    \
-    _Generic((e)                                        \
-             , cstr: "cstr"                             \
-             , String: "String"                         \
-             , int: "int"                               \
-             , unsigned int: "uint"                     \
-             , u8: "u8"                                 \
-             , u64: "u64"                               \
-             , float: "float"                           \
-             , double: "double"                         \
-             , ucodepoint: "ucodepoint"                 \
-             , Option(cstr): "Option(cstr)"             \
-             , Option(String): "Option(String)"         \
-             , Option(int): "Option(int)"               \
-             , Option(u8): "Option(u8)"                 \
-             , Option(u64): "Option(u64)"               \
-             , Option(float): "Option(float)"           \
-             , Option(double): "Option(double)"         \
-             , Vec(CStr): "Vec(CStr)"                   \
-             , Vec(ucodepoint): "Vec(ucodepoint)"       \
-             , Vec(utf8char): "Vec(utf8char)"           \
-             , Vec2: "Vec2"                             \
-             , Vec3: "Vec3"                             \
-             , Rect2: "Rect2"                           \
-             , Line2: "Line2"                           \
+#define type_name(e)                                                    \
+    _Generic((e)                                                        \
+             , cstr: "cstr"                                             \
+             , String: "String"                                         \
+             , int: "int"                                               \
+             , unsigned int: "uint"                                     \
+             , u8: "u8"                                                 \
+             , u64: "u64"                                               \
+             , float: "float"                                           \
+             , double: "double"                                         \
+             , ucodepoint: "ucodepoint"                                 \
+             , Option(cstr): "Option(cstr)"                             \
+             , Option(String): "Option(String)"                         \
+             , Option(int): "Option(int)"                               \
+             , Option(u8): "Option(u8)"                                 \
+             , Option(u64): "Option(u64)"                               \
+             , Option(float): "Option(float)"                           \
+             , Option(double): "Option(double)"                         \
+             , Vec(cstr): "Vec(cstr)"                                   \
+             , Vec(CStr): "Vec(CStr)"                                   \
+             , Vec(ucodepoint): "Vec(ucodepoint)"                       \
+             , Vec(utf8char): "Vec(utf8char)"                           \
+             , mutslice(cstr): "mutslice(cstr)"                         \
+             , mutslice(CStr): "mutslice(CStr)"                         \
+             , mutslice(ucodepoint): "mutslice(ucodepoint)"             \
+             , mutslice(utf8char): "mutslice(utf8char)"                 \
+             , slice(cstr): "slice(cstr)"                               \
+             , slice(CStr): "slice(CStr)"                               \
+             , slice(ucodepoint): "slice(ucodepoint)"                   \
+             , slice(utf8char): "slice(utf8char)"                       \
+             , Vec2: "Vec2"                                             \
+             , Vec3: "Vec3"                                             \
+             , Rect2: "Rect2"                                           \
+             , Line2: "Line2"                                           \
              , Result(int, ParseError): "Result(int, ParseError)"       \
              , Result(String, SystemError): "Result(String, SystemError)" \
         )
@@ -1091,13 +1124,21 @@ cleanup:
 
 /// Give the length of a given collection. For Vec (and String. XXX
 /// bytes or characters...?)
-#define len(coll)                                       \
-    _Generic((coll)                                     \
-             , Vec(cstr)*: len_Vec_cstr                 \
-             , Vec(CStr)*: len_Vec_CStr                 \
-             , Vec(ucodepoint)*: len_Vec_ucodepoint     \
-             , Vec(utf8char)*: len_Vec_utf8char         \
-             , String*: len_String                      \
+#define len(coll)                                                 \
+    _Generic((coll)                                               \
+             , Vec(cstr)*: len_Vec_cstr                           \
+             , Vec(CStr)*: len_Vec_CStr                           \
+             , Vec(ucodepoint)*: len_Vec_ucodepoint               \
+             , Vec(utf8char)*: len_Vec_utf8char                   \
+             , mutslice(cstr)*: len_mutslice_cstr                 \
+             , mutslice(CStr)*: len_mutslice_CStr                 \
+             , mutslice(ucodepoint)*: len_mutslice_ucodepoint     \
+             , mutslice(utf8char)*: len_mutslice_utf8char         \
+             , slice(cstr)*: len_slice_cstr                       \
+             , slice(CStr)*: len_slice_CStr                       \
+             , slice(ucodepoint)*: len_slice_ucodepoint           \
+             , slice(utf8char)*: len_slice_utf8char               \
+             , String*: len_String                                \
         )(coll)
 
 /// Give a cstr to the given character collection. Note that this may
