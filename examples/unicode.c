@@ -1,4 +1,5 @@
 #include <cj50.h>
+#include <cj50/instantiations/Result_Unit__UnicodeError.h>
 
 void usage(cstr arg0, cstr msg) {
     fprintf(stderr, "error: %s\n", msg);
@@ -6,8 +7,6 @@ void usage(cstr arg0, cstr msg) {
     fprintf(stderr, "  decodes the argument and shows in various views.\n");
     exit(1);
 }
-
-GENERATE_Result(Unit, UnicodeError);
 
 Result(Unit, UnicodeError) run(char *str) {
     BEGIN_Result(Unit, UnicodeError);
