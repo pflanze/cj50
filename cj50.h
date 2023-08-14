@@ -41,6 +41,7 @@
 #include "cj50/xmem.h"
 #include "cj50/resret.h"
 #include "cj50/instantiations/Vec_CStr.h"
+#include "cj50/instantiations/Vec_cstr.h"
 #include "cj50/instantiations/Vec_ucodepoint.h"
 #include "cj50/instantiations/Vec_utf8char.h"
 #include <cj50/instantiations/Vec_char.h>
@@ -637,6 +638,8 @@ FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
              , ucodepoint: print_debug_move_ucodepoint        \
              , Vec2: print_debug_Vec2                         \
              , Vec3: print_debug_Vec3                         \
+             , Vec(cstr): print_debug_move_Vec_cstr           \
+             , Vec(cstr)*: print_debug_Vec_cstr               \
              , Vec(CStr): print_debug_move_Vec_CStr           \
              , Vec(CStr)*: print_debug_Vec_CStr               \
              , Vec(ucodepoint): print_debug_move_Vec_ucodepoint \
@@ -702,6 +705,7 @@ FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
              , Vec2*: free                             \
              , Vec3*: free                             \
              , ucodepoint: drop_ucodepoint             \
+             , Vec(cstr): drop_Vec_cstr                \
              , Vec(CStr): drop_Vec_CStr                \
              , Vec(ucodepoint): drop_Vec_ucodepoint    \
              , Vec(utf8char): drop_Vec_utf8char        \
@@ -1057,6 +1061,7 @@ cleanup:
 /// Push a value onto the end of a collection. For Vec and String.
 #define push(coll, val)                                 \
     _Generic((coll)                                     \
+             , Vec(cstr)*: push_Vec_cstr                \
              , Vec(CStr)*: push_Vec_CStr                \
              , Vec(ucodepoint)*: push_Vec_ucodepoint    \
              , Vec(utf8char)*: push_Vec_utf8char        \
@@ -1066,6 +1071,7 @@ cleanup:
 /// Pop a value off the end of a collection. For Vec and String.
 #define pop(coll)                                       \
     _Generic((coll)                                     \
+             , Vec(cstr)*: pop_Vec_cstr                 \
              , Vec(CStr)*: pop_Vec_CStr                 \
              , Vec(ucodepoint)*: pop_Vec_ucodepoint     \
              , Vec(utf8char)*: pop_Vec_utf8char         \
@@ -1076,6 +1082,7 @@ cleanup:
 /// empty. For Vec and String.
 #define append(coll1, coll2)                            \
     _Generic((coll1)                                    \
+             , Vec(cstr)*: append_Vec_cstr              \
              , Vec(CStr)*: append_Vec_CStr              \
              , Vec(ucodepoint)*: append_Vec_ucodepoint  \
              , Vec(utf8char)*: append_Vec_utf8char      \
@@ -1086,6 +1093,7 @@ cleanup:
 /// bytes or characters...?)
 #define len(coll)                                       \
     _Generic((coll)                                     \
+             , Vec(cstr)*: len_Vec_cstr                 \
              , Vec(CStr)*: len_Vec_CStr                 \
              , Vec(ucodepoint)*: len_Vec_ucodepoint     \
              , Vec(utf8char)*: len_Vec_utf8char         \
@@ -1130,6 +1138,7 @@ cleanup:
 #define clear(s)                                                \
     _Generic((s)                                                \
              , SDL_Renderer*: clear_SDL_Renderer /* evil? */    \
+             , Vec(cstr)*: clear_Vec_cstr                       \
              , Vec(CStr)*: clear_Vec_CStr                       \
              , Vec(ucodepoint)*: clear_Vec_ucodepoint           \
              , Vec(utf8char)*: clear_Vec_utf8char               \
