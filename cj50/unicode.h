@@ -288,26 +288,34 @@ Option(utf8char) get_utf8char_String(const String *s, size_t idx) {
 
 #include <cj50/instantiations/Result_Vec_ucodepoint__UnicodeError.h>
 
+/// Convert a slice of characters into a vector of unicode codepoints, if possible.
+/// Conversion failures due to invalid UTF-8 are reported.
+
+static UNUSED
+Result(Vec(ucodepoint), UnicodeError) new_Vec_ucodepoint_from_slice_char(slice(char) s)
+{
+    BEGIN_Result(Vec(ucodepoint), UnicodeError);
+
+    AUTO in = new_SliceIterator_char(s);
+    Vec(ucodepoint) v = new_Vec_ucodepoint();
+    while_let_Some(c, TRY(get_ucodepoint_unlocked_SliceIterator_char(&in), cleanup)) {
+        push_Vec_ucodepoint(&v, c);
+    }
+    RETURN_Ok(v, cleanup);
+cleanup:
+    drop_SliceIterator_char(in);
+    END_Result();
+}
+
 /// Convert a `cstr` into a vector of unicode codepoints, if possible.
 /// Conversion failures due to invalid UTF-8 are reported.
 
 static UNUSED
 Result(Vec(ucodepoint), UnicodeError) new_Vec_ucodepoint_from_cstr(cstr s)
 {
-    BEGIN_Result(Vec(ucodepoint), UnicodeError);
-
-    // XX 'cheap' route
-    CFile in = TRY(memopen_CFile((char*)s, strlen(s), "r"), cleanup1);
-    Vec(ucodepoint) v = new_Vec_ucodepoint();
-    while_let_Some(c, TRY(get_ucodepoint_unlocked_CFile(&in), cleanup2)) {
-        push_Vec_ucodepoint(&v, c);
-    }
-    RETURN_Ok(v, cleanup2);
-cleanup2:
-    drop_CFile(in);
-cleanup1:
-    END_Result();
+    return new_Vec_ucodepoint_from_slice_char(new_slice_char(s, strlen(s)));
 }
+
 
 #include <cj50/instantiations/Result_Vec_utf8char__UnicodeError.h>
 
