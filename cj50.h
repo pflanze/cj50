@@ -911,6 +911,11 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Result(int, ParseError): unwrap_Result_int__ParseError   \
              , Result(float, ParseError): unwrap_Result_float__ParseError   \
              , Result(String, SystemError): unwrap_Result_String__SystemError \
+             , Result(Unit, UnicodeError): unwrap_Result_Unit__UnicodeError \
+             , Result(ucodepoint, UnicodeError): unwrap_Result_ucodepoint__UnicodeError \
+             , Result(size_t, UnicodeError): unwrap_Result_size_t__UnicodeError \
+             , Result(Vec(utf8char), UnicodeError): unwrap_Result_Vec_utf8char__UnicodeError \
+             , Result(Vec(ucodepoint), UnicodeError): unwrap_Result_Vec_ucodepoint__UnicodeError \
         )(v)
 
 /// Dereferencing a wrapper type ('smart pointer') to the simpler
