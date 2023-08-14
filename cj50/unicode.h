@@ -14,6 +14,7 @@
 #include <cj50/gen/dispatch/new_from.h>
 #include <cj50/resret.h>
 #include <cj50/unicodeError.h>
+#include <cj50/instantiations/Result_Unit__UnicodeError.h>
 
 
 static UNUSED
@@ -370,23 +371,28 @@ void push_ucodepoint_String(String *s, ucodepoint c) {
 
 
 
-/* /// Appends the given cstr `cs` to the end of this String. `cs` is */
-/* /// checked for correct UTF-8 encoding. */
+/// Appends the given cstr `cs` to the end of this String. `cs` is
+/// checked for correct UTF-8 encoding.
 
-/* static UNUSED */
-/* Result(Unit, UnicodeError) push_cstr_String(String *s, cstr cs) { */
-/*     BEGIN_Result(Unit, UnicodeError); */
-    
-/*     // XX 'cheap' route, stupid */
-/*     CFile in = TRY(memopen_CFile((char*)s, strlen(s), "r"), cleanup1); */
-    
-/* cleanup2: */
-/*     drop_CFile(in); */
-/* cleanup1: */
-/*     END_Result(); */
-/* } */
+static UNUSED
+Result(Unit, UnicodeError) push_cstr_String(String *s, cstr cs) {
+    BEGIN_Result(Unit, UnicodeError);
 
-// ^ not now. once separate, faster decoder is ready, then.
+    AUTO slice = new_slice_char(cs, strlen(cs));
+    AUTO in = new_SliceIterator_char(slice);
+    while_let_Some(cp, TRY(get_ucodepoint_unlocked_SliceIterator_char(&in), cleanup1)) {
+        utf8char c = new_utf8char_from_ucodepoint(cp);
+        size_t len = len_utf8char(c);
+        for (size_t i = 0; i < len; i++) {
+            push_String(s, c.data[i]);
+        }
+    }
+    RETURN_Ok(Unit(), cleanup1);
+
+cleanup1:
+    drop_SliceIterator_char(in);
+    END_Result();
+}
 
 
 #include <cj50/instantiations/Result_size_t__UnicodeError.h>
