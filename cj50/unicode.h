@@ -116,6 +116,11 @@ cleanup:
     return ret;
 }
 
+static UNUSED
+int print_debug_move_ucodepoint(ucodepoint a) {
+    return print_debug_ucodepoint(&a);
+}
+
 // print_ucodepoint, print_move_ucodepoint see further down
 
 // ------------------------------------------------------------------
