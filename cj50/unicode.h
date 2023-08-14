@@ -218,13 +218,13 @@ GENERATE_Option(ucodepoint);
 GENERATE_Result(Option(ucodepoint), UnicodeError);
 
 
-/// Read a single Unicode code point from `in`.
+/// Read a single Unicode code point from the given `CFile`.
 
 /// This function is currently hard-coded to decode files in the UTF-8
 /// format.
 
 static UNUSED
-Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(CFile *in)
+Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked_CFile(CFile *in)
 {
 #define getc_unlocked(in) os_getc_unlocked(in)
 #define POSSIBLYTRY(expr, label) TRY(expr, label)
@@ -235,6 +235,26 @@ Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(CFile *in)
 #undef getc_unlocked
 }
 
+
+#include <cj50/instantiations/SliceIterator_char.h>
+
+/// Read a single Unicode code point from the given `CFile`.
+
+/// This function is currently hard-coded to decode files in the UTF-8
+/// format.
+
+static UNUSED
+Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked_SliceIterator_char(
+    SliceIterator(char) *in)
+{
+#define getc_unlocked(in) next_SliceIterator_char(in)
+#define POSSIBLYTRY(expr, label) expr
+#define POSSIBLYDEREF(v) (*(v))
+#include "cj50/gen/template/unicode_utf8decode.h"
+#undef POSSIBLYDEREF
+#undef POSSIBLYTRY
+#undef getc_unlocked
+}
 
 // ------------------------------------------------------------------
 // Operations for String
@@ -279,7 +299,7 @@ Result(Vec(ucodepoint), UnicodeError) new_Vec_ucodepoint_from_cstr(cstr s)
     // XX 'cheap' route
     CFile in = TRY(memopen_CFile((char*)s, strlen(s), "r"), cleanup1);
     Vec(ucodepoint) v = new_Vec_ucodepoint();
-    while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
+    while_let_Some(c, TRY(get_ucodepoint_unlocked_CFile(&in), cleanup2)) {
         push_Vec_ucodepoint(&v, c);
     }
     RETURN_Ok(v, cleanup2);
@@ -388,7 +408,7 @@ Result(size_t, UnicodeError) read_until_Vec_ucodepoint
     BEGIN_Result(size_t, UnicodeError);
 
     size_t nread = 0;
-    while_let_Some(c, TRY(get_ucodepoint_unlocked(in), cleanup1)) {
+    while_let_Some(c, TRY(get_ucodepoint_unlocked_CFile(in), cleanup1)) {
         bool is_end = equal_ucodepoint(&c, &delimiter);
         bool needs_push = is_end ? (!strip_delimiter) : true;
         if (needs_push) {

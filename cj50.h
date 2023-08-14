@@ -1131,6 +1131,15 @@ cleanup:
         )(in, delimiter, buf, strip_delimiter, max_len)
 
 
+/// Read an ucodepoint from `in`.
+
+#define get_ucodepoint_unlocked(in)                                     \
+    _Generic((in)                                                       \
+             , CFile*: get_ucodepoint_unlocked_CFile                    \
+             , SliceIterator(char)*: get_ucodepoint_unlocked_SliceIterator_char \
+        )(in)
+
+
 #undef GET_THING
 
 #include "cj50/plot.h"
