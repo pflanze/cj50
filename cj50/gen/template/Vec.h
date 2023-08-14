@@ -15,8 +15,10 @@ typedef struct slice(T) {
 
 
 #define VEC slice
+#define POSSIBLY_CONST const
 #include <cj50/gen/template/slices.h>
 #include <cj50/gen/template/vectorlikes.h>
+#undef POSSIBLY_CONST 
 #undef VEC
 
 
@@ -32,8 +34,10 @@ typedef struct mutslice(T) {
 
 
 #define VEC mutslice
+#define POSSIBLY_CONST 
 #include <cj50/gen/template/slices.h>
 #include <cj50/gen/template/vectorlikes.h>
+#undef POSSIBLY_CONST 
 #undef VEC
 
 
