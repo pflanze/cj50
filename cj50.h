@@ -511,25 +511,27 @@ int print_debug_floats(const float* ary, size_t len) {
 /// Also see `print_debug` and `print_debug_array`, which support more
 /// types, but are not meant for printing output for normal humans.
 
-#define print(v)                                \
-    _Generic((v)                                \
-             , char*: print_move_cstr           \
-             , cstr*: print_cstr                \
-             , cstr: print_move_cstr            \
-             , const CStr*: print_CStr          \
-             , CStr*: print_CStr                \
-             , CStr: print_move_CStr            \
-             , String: print_String             \
-             , char: putchar                    \
-             , utf8char: print_move_utf8char    \
-             , utf8char*: print_utf8char        \
-             , const utf8char*: print_utf8char  \
-             , int: print_int                   \
-             , uint: print_uint                 \
-             , u8: print_u8                     \
-             , u64: print_u64                   \
-             , float: print_float               \
-             , double: print_double             \
+#define print(v)                                        \
+    _Generic((v)                                        \
+             , char*: print_move_cstr                   \
+             , cstr*: print_cstr                        \
+             , cstr: print_move_cstr                    \
+             , ucodepoint*: print_ucodepoint            \
+             , ucodepoint: print_move_ucodepoint        \
+             , const CStr*: print_CStr                  \
+             , CStr*: print_CStr                        \
+             , CStr: print_move_CStr                    \
+             , String: print_String                     \
+             , char: putchar                            \
+             , utf8char: print_move_utf8char            \
+             , utf8char*: print_utf8char                \
+             , const utf8char*: print_utf8char          \
+             , int: print_int                           \
+             , uint: print_uint                         \
+             , u8: print_u8                             \
+             , u64: print_u64                           \
+             , float: print_float                       \
+             , double: print_double                     \
         )(v)
 
 #define GENERATE_PRINTLN(T)                     \
@@ -629,6 +631,10 @@ FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
              , u64: print_u64                                 \
              , float: print_float                             \
              , double: print_double                           \
+             , utf8char*: print_debug_utf8char                \
+             , utf8char: print_debug_move_utf8char            \
+             , ucodepoint*: print_debug_ucodepoint            \
+             , ucodepoint: print_debug_move_ucodepoint        \
              , Vec2: print_debug_Vec2                         \
              , Vec3: print_debug_Vec3                         \
              , Vec(CStr): print_debug_move_Vec_CStr           \
@@ -695,6 +701,7 @@ FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
              , float*: free                            \
              , Vec2*: free                             \
              , Vec3*: free                             \
+             , ucodepoint: drop_ucodepoint             \
              , Vec(CStr): drop_Vec_CStr                \
              , Vec(ucodepoint): drop_Vec_ucodepoint    \
              , Vec(utf8char): drop_Vec_utf8char        \
@@ -933,6 +940,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , u64: "u64"                               \
              , float: "float"                           \
              , double: "double"                         \
+             , ucodepoint: "ucodepoint"                 \
              , Option(cstr): "Option(cstr)"             \
              , Option(String): "Option(String)"         \
              , Option(int): "Option(int)"               \
