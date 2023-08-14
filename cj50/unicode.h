@@ -116,6 +116,8 @@ cleanup:
     return ret;
 }
 
+// print_ucodepoint, print_move_ucodepoint see further down
+
 // ------------------------------------------------------------------
 
 
@@ -220,6 +222,23 @@ utf8char new_utf8char_from_ucodepoint(ucodepoint cp) {
     c.data[5] = len;
     return c;
 }
+
+// ------------------------------------------------------------------
+
+static UNUSED
+int print_ucodepoint(const ucodepoint *a) {
+    INIT_RESRET;
+    utf8char uc = new_utf8char_from_ucodepoint(*a);
+    RESRET(fwrite(cstr_utf8char(&uc), 1, len_utf8char(uc), stdout));
+cleanup:
+    return ret;
+}
+
+static UNUSED
+int print_move_ucodepoint(ucodepoint a) {
+    return print_ucodepoint(&a);
+}
+
 
 // ------------------------------------------------------------------
 
