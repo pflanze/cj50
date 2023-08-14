@@ -23,39 +23,6 @@ void die_bug_unicode() {
 }
 
 
-/// A single Unicode code point (a single character, unless it's a
-/// code point that combines with other code points to a composed
-/// character). ucodepoint only ever carries valid codes.
-
-typedef struct ucodepoint {
-    uint32_t u32; // would only need 21 bits
-} ucodepoint;
-
-// ^ Should this be called UCodepoint ? It's a Copy type, but so what?
-
-/// Unsafe constructor, does not verify the code.
-#define ucodepoint(cp) \
-    ((ucodepoint) { .u32 = (cp) })
-
-// XX todo: add safe constructor!
-
-static UNUSED
-void drop_ucodepoint(UNUSED ucodepoint c) {}
-
-static UNUSED
-bool equal_ucodepoint(const ucodepoint *a, const ucodepoint *b) {
-    return a->u32 == b->u32;
-}
-
-static UNUSED
-int print_debug_ucodepoint(const ucodepoint *a) {
-    INIT_RESRET;
-    RESRET(print_move_cstr("ucodepoint("));
-    RESRET(print_u32(a->u32));
-    RESRET(print_move_cstr(")"));
-cleanup:
-    return ret;
-}
 
 // ------------------------------------------------------------------
 
@@ -104,6 +71,49 @@ Option(u8) utf8_sequence_len(u8 b) {
     if ((b & 0b11110000) == 0b11100000) { return some_u8(3); }
     if ((b & 0b11111000) == 0b11110000) { return some_u8(4); }
     return none_u8();
+}
+
+
+// ------------------------------------------------------------------
+
+/// A single Unicode code point (a single character, unless it's a
+/// code point that combines with other code points to a composed
+/// character). ucodepoint only ever carries valid codes.
+
+typedef struct ucodepoint {
+    uint32_t u32; // would only need 21 bits
+} ucodepoint;
+
+// ^ Should this be called UCodepoint ? It's a Copy type, but so what?
+
+/// Unsafe constructor, does not verify the code. Can be evaluated in
+/// the toplevel.
+#define ucodepoint(cp) \
+    ((ucodepoint) { .u32 = (cp) })
+
+/// Safe constructor, does decode str and verify its validity and that
+/// there is only one codepoint and aborts (via unwrap) if not. Cannot
+/// be evaluated in the toplevel.
+#define uchar(str)                              \
+    unwrap_Result_ucodepoint__UnicodeError(ucodepoint_from_cstr(str))
+
+
+static UNUSED
+void drop_ucodepoint(UNUSED ucodepoint c) {}
+
+static UNUSED
+bool equal_ucodepoint(const ucodepoint *a, const ucodepoint *b) {
+    return a->u32 == b->u32;
+}
+
+static UNUSED
+int print_debug_ucodepoint(const ucodepoint *a) {
+    INIT_RESRET;
+    RESRET(print_move_cstr("ucodepoint("));
+    RESRET(print_u32(a->u32));
+    RESRET(print_move_cstr(")"));
+cleanup:
+    return ret;
 }
 
 // ------------------------------------------------------------------
@@ -439,3 +449,37 @@ Result(size_t, UnicodeError) read_until_Vec_ucodepoint
  cleanup1:
     END_Result();
 }
+
+
+#include <cj50/instantiations/Result_ucodepoint__UnicodeError.h>
+
+/// Return the single ucodepoint in `s`, if possible, returning
+/// decoding errors as well when there are fewer or more than 1
+/// ucodepoint in `s`.
+
+static UNUSED
+Result(ucodepoint, UnicodeError) ucodepoint_from_cstr(cstr s) {
+    BEGIN_Result(ucodepoint, UnicodeError);
+    if (s[0] == '\0') {
+        // cstr can't represent \0, so it's the end of string
+        RETURN_Err(UnicodeError_ExpectedOneCodepoint, cleanup1);
+    }
+    if_let_Some(slen, utf8_sequence_len(s[0])) {
+        size_t len = strlen(s);
+        if (len == slen) {
+            AUTO iter = new_SliceIterator_char(new_slice_char(s, len));
+            RETURN_Ok(unwrap_Option_ucodepoint(
+                          TRY(get_ucodepoint_unlocked_SliceIterator_char(&iter),
+                              cleanup1)),
+                      cleanup1);
+        } else {
+            RETURN_Err(UnicodeError_ExpectedOneCodepoint, cleanup1);
+        }
+    } else_None {
+        RETURN_Err(DecodingError_InvalidStartByte(), cleanup1);
+    }
+
+cleanup1:
+    END_Result();
+}
+

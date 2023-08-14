@@ -142,6 +142,7 @@ enum UnicodeErrorKind {
     UnicodeErrorKind_SystemError,
     UnicodeErrorKind_DecodingError,
     UnicodeErrorKind_LimitExceededError,
+    UnicodeErrorKind_ExpectedOneCodepointError,
 };
 
 typedef struct UnicodeError {
@@ -150,6 +151,7 @@ typedef struct UnicodeError {
         SystemError systemError;
         DecodingError decodingError;
         // LimitExceededError -;
+        // ExpectedOneCodepointError -;
     };
 } UnicodeError;
 
@@ -180,6 +182,11 @@ UnicodeError new_UnicodeError_from_UnicodeError(UnicodeError e) {
         .kind = UnicodeErrorKind_LimitExceededError     \
     })
 
+#define UnicodeError_ExpectedOneCodepoint                      \
+    ((UnicodeError) {                                          \
+        .kind = UnicodeErrorKind_ExpectedOneCodepointError     \
+    })
+
 
 // See "sick" above.
 static UNUSED
@@ -195,6 +202,8 @@ bool equal_UnicodeError(const UnicodeError *a, const UnicodeError *b) {
             (a->kind == UnicodeErrorKind_DecodingError) ?
             equal_DecodingError(&a->decodingError, &b->decodingError) :
             (a->kind == UnicodeErrorKind_LimitExceededError) ?
+            true :
+            (a->kind == UnicodeErrorKind_ExpectedOneCodepointError) ?
             true :
             die_invalid_UnicodeErrorKind(a->kind));
 }
@@ -215,6 +224,9 @@ int print_debug_UnicodeError(const UnicodeError *e) {
     case UnicodeErrorKind_LimitExceededError:
         RESRET(print_move_cstr("LimitExceededError"));
         break;
+    case UnicodeErrorKind_ExpectedOneCodepointError:
+        RESRET(print_move_cstr("ExpectedOneCodepointError"));
+        break;
     }
     RESRET(printf(")"));
 cleanup:
@@ -233,6 +245,9 @@ int fprintln_UnicodeError(FILE* out, const UnicodeError* e) {
     case UnicodeErrorKind_LimitExceededError:
         // XX this could have more information? (Also, context?)
         return fprintln_move_cstr(out, "Error: a limit was exceeded");
+    case UnicodeErrorKind_ExpectedOneCodepointError:
+        // XX this could have more information? (Also, context?)
+        return fprintln_move_cstr(out, "Error: expected a single unicode codepoint");
     }
 }
 
@@ -248,6 +263,8 @@ void drop_UnicodeError(UnicodeError e) {
         drop_DecodingError(e.decodingError);
         break;
     case UnicodeErrorKind_LimitExceededError:
+        break;
+    case UnicodeErrorKind_ExpectedOneCodepointError:
         break;
     }
 }
