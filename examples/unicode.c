@@ -20,7 +20,7 @@ Result(Unit, UnicodeError) run(slice(cstr) argv) {
 
     cstr str = argv.ptr[1];
 
-    CFile in = TRY(memopen_CFile(str, strlen(str), "r"), cleanup1);
+    CFile in = TRY(memopen_CFile((void*)str, strlen(str), "r"), cleanup1);
     Vec(ucodepoint) v = new_Vec_ucodepoint();
     while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
         push(&v, c);
