@@ -35,8 +35,12 @@ cleanup1:
 }
 
 int main(int argc, char** argv) {
-    if (argc != 2)
+    if (argc != 2) {
+        DBG(uchar("\n"));
+        DBG(uchar("ä"));
+        DBG(uchar("↓"));
         usage(argv[0], "need 1 argument");
+    }
 
     if_let_Ok(UNUSED _, run(argv[1])) {
         exit(0);
