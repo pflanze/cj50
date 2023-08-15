@@ -525,3 +525,38 @@ Result(size_t, UnicodeError) read_line_Vec_ucodepoint
 {
     return read_until_Vec_ucodepoint(in, uchar("\n"), buf, strip_delimiter, max_len);
 }
+
+
+/// The number of unicode code points in the given slice.
+
+static UNUSED
+Result(size_t, UnicodeError) ucodepoint_count_slice_char(slice(char) s) {
+    // NOTE: count(ucodepoint_iter(s)) would be the right approach in
+    // the FUTURE instead!
+    BEGIN_Result(size_t, UnicodeError);
+
+    AUTO iter = new_SliceIterator_char(s);
+    size_t count = 0;
+    while_let_Some(_, TRY(get_ucodepoint_unlocked_SliceIterator_char(&iter),
+                          cleanup1)) {
+        drop_ucodepoint(_);
+        count++;
+    }
+    RETURN_Ok(count, cleanup1);
+
+cleanup1:
+    drop_SliceIterator_char(iter); // (even though it's a noop)
+    END_Result();
+}
+
+/// Whether the given slice represents valid and canonically UTF-8
+/// encoded unicode codepoints.
+
+static UNUSED
+bool is_valid_utf8_slice_char(slice(char) s) {
+    if_let_Ok(UNUSED _, ucodepoint_count_slice_char(s)) {
+        return true;
+    } else_Err(UNUSED _) {
+        return false;
+    } end_let_Ok;
+}
