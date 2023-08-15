@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
         print(&cnt);
         drop(cnt);
     } else_Err(e) {
-        fprintln_SystemError(stderr, &e);
+        fprintln(stderr, &e);
         drop(e);
         exit(1);
     } end_let_Ok;

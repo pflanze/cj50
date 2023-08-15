@@ -9,6 +9,8 @@
 #include <cj50/CStr.h>
 #include <cj50/String.h>
 #include <cj50/gen/Result.h>
+#include <cj50/unicode.h>
+#include <cj50/instantiations/Result_String__UnicodeError.h>
 
 static
 int print_int(int n);
@@ -20,12 +22,16 @@ GENERATE_Result(String, SystemError);
 
 GENERATE_Result(CStr, SystemError);
 
+// ^ XX move both out; not actually used here! (But added generics
+// already, right?)
+
+
 /// Returns a copy of the contents of the file at the given `path` as
 /// a String, if possible (no system errors occurred).
 
 static UNUSED
-Result(String, SystemError) filecontents_String(cstr path) {
-    BEGIN_Result(String, SystemError);
+Result(String, UnicodeError) filecontents_String(cstr path) {
+    BEGIN_Result(String, UnicodeError);
 
     int fd = open(path, O_RDONLY);
     if (fd < 0) {
