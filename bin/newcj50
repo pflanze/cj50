@@ -40,6 +40,16 @@ cat >> "$file" <<END
 int main(int argc, char** argv) {
     
 }
+
+// -or- (replace String, or see examples/string_error.c):
+
+Result(Unit, String) run(slice(cstr) argv) {
+    BEGIN_Result(Unit, String);
+    
+    END_Result();
+}
+
+MAIN(run);
 END
 
 IFS=' '
