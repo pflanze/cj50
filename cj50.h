@@ -522,7 +522,9 @@ int print_debug_floats(const float* ary, size_t len) {
              , const CStr*: print_CStr                  \
              , CStr*: print_CStr                        \
              , CStr: print_move_CStr                    \
-             , String: print_String                     \
+             , String*: print_String                    \
+             , const String*: print_String              \
+             , String: print_move_String                \
              , char: putchar                            \
              , utf8char: print_move_utf8char            \
              , utf8char*: print_utf8char                \
@@ -547,7 +549,6 @@ int print_debug_floats(const float* ary, size_t len) {
 
 
 GENERATE_PRINTLN(cstr);
-GENERATE_PRINTLN(String);
 GENERATE_PRINTLN(char);
 GENERATE_PRINTLN(int);
 GENERATE_PRINTLN(uint);
@@ -565,12 +566,7 @@ GENERATE_PRINTLN(double);
         RESRET(print_move_cstr("\n"));          \
     cleanup:                                    \
         return ret;                             \
-    }
-FUTURE_GENERATE_PRINTLN(CStr);
-FUTURE_GENERATE_PRINTLN(utf8char);
-
-// XX and that should probably be part of FUTURE_GENERATE_PRINTLN
-#define FUTURE_GENERATE_PRINTLN_MOVE(T)         \
+    }                                           \
     static UNUSED                               \
     int XCAT(println_move_, T)(T v) {           \
         INIT_RESRET;                            \
@@ -579,7 +575,9 @@ FUTURE_GENERATE_PRINTLN(utf8char);
     cleanup:                                    \
         return ret;                             \
     }
-FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
+FUTURE_GENERATE_PRINTLN(String);
+FUTURE_GENERATE_PRINTLN(CStr);
+FUTURE_GENERATE_PRINTLN(utf8char);
 
 
 
@@ -591,7 +589,9 @@ FUTURE_GENERATE_PRINTLN_MOVE(utf8char);
              , char*: println_cstr                      \
              , cstr: println_cstr                       \
              , CStr*: println_CStr                      \
-             , String: println_String                   \
+             , String*: println_String                  \
+             , const String*: println_String            \
+             , String: println_move_String              \
              , char: println_char                       \
              , utf8char: println_move_utf8char          \
              , utf8char*: println_utf8char              \

@@ -40,13 +40,20 @@ bool equal_String(const String *a, const String *b) {
     return equal_Vec_char(&a->vec, &b->vec);
 }
 
-// XX change to borrow? But do it for all of `print`.
-int print_String(const String s) {
-    size_t len = s.vec.len;
-    size_t res = fwrite(s.vec.ptr, 1, len, stdout);
+static UNUSED
+int print_String(const String *s) {
+    size_t len = s->vec.len;
+    size_t res = fwrite(s->vec.ptr, 1, len, stdout);
     if (res < len) {
         return -1;
     }
+    return res;
+}
+
+static UNUSED
+int print_move_String(String s) {
+    int res = print_String(&s);
+    drop_String(s);
     return res;
 }
 
