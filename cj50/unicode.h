@@ -606,3 +606,11 @@ static UNUSED
 String new_String_from_cstr(cstr s) {
     return new_String_from_slice_char(new_slice_char(s, strlen(s)));
 }
+
+
+// Redefine new_from now that new_String_from_cstr exists... (horrible)
+#undef NEW_FROM_STAGE
+#define NEW_FROM_STAGE 2
+#undef NEW_FROM_h
+#include <cj50/gen/dispatch/new_from.h>
+
