@@ -512,3 +512,16 @@ cleanup1:
     END_Result();
 }
 
+
+/// Read all unicode codepoints into buf until `uchar("\n")` or EOF is
+/// reached. `strip_delimiter` and `max_len` have the same meaning as
+/// for `read_until_Vec_ucodepoint`.
+
+Result(size_t, UnicodeError) read_line_Vec_ucodepoint
+    (CFile *in,
+     Vec(ucodepoint) *buf,
+     bool strip_delimiter,
+     size_t max_len)
+{
+    return read_until_Vec_ucodepoint(in, uchar("\n"), buf, strip_delimiter, max_len);
+}

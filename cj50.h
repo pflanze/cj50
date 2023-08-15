@@ -1207,7 +1207,15 @@ cleanup:
 #define read_until(in, delimiter, buf, strip_delimiter, max_len) \
     _Generic((buf),                                              \
              , Vec(ucodepoint)*: read_until_Vec_ucodepoint       \
-        )(in, delimiter, buf, strip_delimiter, max_len)
+        )((in), (delimiter), (buf), (strip_delimiter), (max_len))
+
+/// Read items into buf until a newline character (`'\n'`) or EOF is
+/// reached.
+
+#define read_line(in, buf, strip_delimiter, max_len)             \
+    _Generic((buf),                                              \
+             , Vec(ucodepoint)*: read_line_Vec_ucodepoint        \
+        )((in), (buf), (strip_delimiter), (max_len))
 
 
 /// Read an ucodepoint from `in`.
