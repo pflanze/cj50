@@ -11,3 +11,4 @@ examples/filecontents
 examples/sizes
 examples/vec
 examples/unicode
+examples/string_error
