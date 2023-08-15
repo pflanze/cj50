@@ -58,6 +58,21 @@ int print_move_String(String s) {
 }
 
 static UNUSED
+int fprintln_String(FILE *out, const String *s) {
+    INIT_RESRET;
+    size_t len = s->vec.len;
+    size_t r = fwrite(s->vec.ptr, 1, len, out);
+    if (r < len) {
+        return -1;
+    }
+    ret = r; // XX safety
+    RESRET(fputc('\n', out));
+cleanup:
+    return ret;
+}
+
+
+static UNUSED
 int print_debug_String(const String *s) {
     INIT_RESRET;
     size_t len = s->vec.len;

@@ -1179,6 +1179,7 @@ cleanup:
 
 #define fprintln(out, v)                                        \
     _Generic((v)                                                \
+             , String*: fprintln_String                         \
              , ParseError*: fprintln_ParseError                 \
              , CStrError*: fprintln_CStrError                   \
              , VecError*: fprintln_VecError                     \
