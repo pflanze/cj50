@@ -1233,6 +1233,21 @@ cleanup:
              , SliceIterator(char)*: get_ucodepoint_unlocked_SliceIterator_char \
         )(in)
 
+/// Create a String from various types. (Ideally the same as
+/// `new_from(String, v)`, but that one has fewer entries.)
+
+#define new_String_from(v)                              \
+    _Generic((v)                                        \
+             , char*: new_String_from_cstr              \
+             , cstr: new_String_from_cstr               \
+             , CStr: new_String_from_CStr               \
+             , slice(char): new_String_from_slice_char  \
+        )(v)
+// XX Why call it new_, so tempting to call it String_from. Conflict
+// with type constructors or not? Also evil or not? Definitely evil,
+// but there are other non-new_ constructor macros. Really conflating
+// those anyway.
+
 
 /// `MAIN` takes the name of the function to run when the program
 /// starts. `mainfunction` receives a `slice` of `cstr` values which
