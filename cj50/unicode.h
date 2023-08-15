@@ -560,3 +560,21 @@ bool is_valid_utf8_slice_char(slice(char) s) {
         return false;
     } end_let_Ok;
 }
+
+
+/// Create a String from a CStr, consuming the latter.
+
+/// Asserts that CStr is in correct UTF-8 encoding, just aborts if not.
+
+static UNUSED
+String new_String_from_CStr(CStr s) {
+    size_t len = strlen(s.cstr);
+    assert(is_valid_utf8_slice_char(new_slice_char(s.cstr, len)));
+    return (String) {
+        .vec = (Vec(char)) {
+            .ptr = s.cstr,
+            .cap = len + 1,
+            .len = len
+        }       
+    };
+}

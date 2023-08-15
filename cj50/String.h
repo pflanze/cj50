@@ -103,21 +103,6 @@ String new_String() {
     };
 }
 
-/// Create a String from a CStr, consuming the latter.
-
-static UNUSED
-String new_String_from_CStr(CStr s) {
-    // XX todo: UTF-8 verification. (Or do that for CStr already?)
-    size_t len = strlen(s.cstr);
-    return (String) {
-        .vec = (Vec(char)) {
-            .ptr = s.cstr,
-            .cap = len + 1,
-            .len = len
-        }       
-    };
-}
-
 /// Create a String with the given `capacity` (but 0 current length).
 static UNUSED
 String with_capacity_String(size_t capacity) {
