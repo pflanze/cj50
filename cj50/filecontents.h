@@ -7,6 +7,7 @@
 
 #include <cj50/os.h>
 #include <cj50/CStr.h>
+#include <cj50/String.h>
 #include <cj50/gen/Result.h>
 
 static
@@ -15,50 +16,47 @@ int print_int(int n);
 
 // ------------------------------------------------------------------ 
 
-// XX for future when going 'back' to using String
 GENERATE_Result(String, SystemError);
 
 GENERATE_Result(CStr, SystemError);
 
-// XXX todo: use a string type with len so that \0 will not be lost
-
 /// Returns a copy of the contents of the file at the given `path` as
 /// a String, if possible (no system errors occurred).
 
-/// XXX Note: the String has a '\0' terminator character added. Any '\0'
-/// characters contained in the file will be part of the returned
-/// String and lead to it being interpreted as terminating there.
-
 static UNUSED
-Result(CStr, SystemError) filecontents_CStr(cstr path) {
+Result(String, SystemError) filecontents_String(cstr path) {
+    BEGIN_Result(String, SystemError);
+
     int fd = open(path, O_RDONLY);
     if (fd < 0) {
-        int e = errno;
-        return Err(CStr, SystemError)(systemError(SYSCALLINFO_open, e));
+        RETURN_Err(systemError(SYSCALLINFO_open, errno), cleanup0);
     }
     struct stat st;
     if (fstat(fd, &st) < 0) {
-        int e = errno;
-        close(fd);
-        return Err(CStr, SystemError)(systemError(SYSCALLINFO_fstat, e));
+        RETURN_Err(systemError(SYSCALLINFO_fstat, errno), cleanup1);
     }
     off_t len = st.st_size;
-    CStr s = new_CStr(len + 1); // + 1 for the \0 byte
-    ssize_t did = read(fd, s.cstr, len);
+
+    // XX todo: instead iteratively append to String s = new_String();
+    String buf = with_capacity_String(len + 1); // +1 spare for potential \0
+
+    ssize_t did = read(fd, buf.vec.ptr, buf.vec.cap);
     if (did < 0) {
-        int e = errno;
-        close(fd);
-        drop_CStr(s);
-        return Err(CStr, SystemError)(systemError(SYSCALLINFO_read, e));
+        RETURN_Err(systemError(SYSCALLINFO_read, errno), cleanup2);
     }
     // do we have to retry? probably. But, should also avoid stat.
     assert(did == len);
+    buf.vec.len = did;
+    RETURN_Ok(buf, cleanup1);
+
+cleanup2:
+    drop_String(buf);
+cleanup1:
     if (close(fd) < 0) {
-        int e = errno;
-        drop_CStr(s);
-        return Err(CStr, SystemError)(systemError(SYSCALLINFO_close, e));
+        RETURN_Err(systemError(SYSCALLINFO_close, errno), cleanup0);
     }
-    return Ok(CStr, SystemError)(s);
+cleanup0:
+    END_Result();
 }
 
 
