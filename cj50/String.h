@@ -127,6 +127,23 @@ void push_String(String *s, char c) {
 }
 
 
+/// Appends the given String `b` to the end of String `a`, emptying
+/// `b`.
+static UNUSED
+void append_String_String(String *a, String *b) {
+    append_Vec_char(&a->vec, &b->vec);
+}
+
+/// Appends the given String `b` to the end of String `a`, consuming
+/// `b`.
+static UNUSED
+void append_move_String_String(String *a, String b) {
+    append_Vec_char(&a->vec, &b.vec);
+    drop_String(b);
+}
+
+
+
 /// Get `s` as a C string, if possible--it's only possible if there
 /// are no embedded `'\0'` characters.
 
