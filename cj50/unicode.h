@@ -162,8 +162,8 @@ utf8char new_utf8char_from_cstr_unsafe(cstr s) {
 /// The length of the UTF-8 byte sequence making up the given unicode
 /// codepoint.
 static UNUSED
-size_t len_utf8char(utf8char c) {
-    return c.data[5];
+size_t len_utf8char(const utf8char *c) {
+    return c->data[5];
 }
 
 /// A cstr borrowed from the data in `c`.
@@ -177,8 +177,8 @@ void drop_utf8char(UNUSED utf8char c) {}
 
 static UNUSED
 bool equal_utf8char(const utf8char *a, const utf8char *b) {
-    return ((len_utf8char(*a) == len_utf8char(*b)) &&
-            memcmp(a->data, b->data, len_utf8char(*a)) == 0);
+    return ((len_utf8char(a) == len_utf8char(b)) &&
+            memcmp(a->data, b->data, len_utf8char(a)) == 0);
 }
 
 static UNUSED
@@ -239,7 +239,7 @@ static UNUSED
 int print_ucodepoint(const ucodepoint *a) {
     INIT_RESRET;
     utf8char uc = new_utf8char_from_ucodepoint(*a);
-    RESRET(fwrite(cstr_utf8char(&uc), 1, len_utf8char(uc), stdout));
+    RESRET(fwrite(cstr_utf8char(&uc), 1, len_utf8char(&uc), stdout));
 cleanup:
     return ret;
 }
@@ -394,7 +394,7 @@ void push_utf8char_String(String *s, utf8char c) {
     // (XX todo: there should be something in Vec to add multiple
     // items; slices of course)
     cstr cs = cstr_utf8char(&c);
-    size_t len = len_utf8char(c);
+    size_t len = len_utf8char(&c);
     for (size_t i = 0; i < len; i++) {
         push_Vec_char(&s->vec, cs[i]);
     }
@@ -421,7 +421,7 @@ Result(Unit, UnicodeError) push_cstr_String(String *s, cstr cs) {
     AUTO in = new_SliceIterator_char(slice);
     while_let_Some(cp, TRY(get_ucodepoint_unlocked_SliceIterator_char(&in), cleanup1)) {
         utf8char c = new_utf8char_from_ucodepoint(cp);
-        size_t len = len_utf8char(c);
+        size_t len = len_utf8char(&c);
         for (size_t i = 0; i < len; i++) {
             push_String(s, c.data[i]);
         }
