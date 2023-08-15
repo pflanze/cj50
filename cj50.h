@@ -48,10 +48,14 @@
 
 
 
-/// Read a CStr from `inp`, terminated by a newline (the newline is
-/// not included in the returned string). Returns none on end of file
-/// (or in the case of terminal input, when ctl-d is pressed). In case
-/// of errors, it dies with a message that shows the `filename`.
+// Read a CStr from `inp`, terminated by a newline (the newline is
+// not included in the returned string). Returns none on end of file
+// (or in the case of terminal input, when ctl-d is pressed). In case
+// of errors, it dies with a message that shows the `filename`.
+
+// -- do not document, does not make sense, would have to take a
+// -- filehandle to a tty and print to that, too! Also, has no max_len
+// -- protection.
 
 static
 Option(CStr) fget_CStr(FILE *inp, cstr filename) {
