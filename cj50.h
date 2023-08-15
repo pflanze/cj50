@@ -1162,6 +1162,37 @@ cleanup:
         )(in)
 
 
+/// `MAIN` takes the name of the function to run when the program
+/// starts. `mainfunction` receives a `slice` of `cstr` values which
+/// are holding the program name in position 0 (usually, but not
+/// actually guaranteed) and then the program arguments, and must
+/// return a Result. If it returns an Err, the program will exit with
+/// exit code 1, if it returns Ok, with exit code 0. (The Ok value
+/// itself is currently being ignored.)
+
+/// `MAIN` defines the function `main` (hence `mainfunction` cannot be
+/// called `main`).
+
+/// ```C
+/// Result(Unit, UnicodeError) run(slice(cstr) argv) {
+///     ...
+/// }
+/// 
+/// MAIN(run);
+/// ```
+
+#define MAIN(mainfunction)                                              \
+    int main(int argc, const char**argv) {                              \
+        if_let_Ok(UNUSED _, (mainfunction)(new_slice_cstr(argv, argc))) { \
+            return 0;                                                   \
+        } else_Err(e) {                                                 \
+            fprintln(stderr, &e);                                       \
+            drop(e);                                                    \
+            return 1;                                                    \
+        } end_let_Ok;                                                   \
+    }
+
+
 #undef GET_THING
 
 #include "cj50/plot.h"
