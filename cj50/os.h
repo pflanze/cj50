@@ -8,6 +8,7 @@
 
 #include <cj50/syscallinfo.h> /* rename to oscallinfo ? */
 #include <cj50/u8.h>
+#include <cj50/int.h>
 #include "cj50/resret.h"
 
 
@@ -61,7 +62,7 @@ int print_debug_SystemError(const SystemError *v) {
     RESRET(print_move_cstr("systemError("));
     RESRET(print_debug_SyscallInfo(syscallinfos[v->syscallinfo_id]));
     RESRET(print_move_cstr(", "));
-    RESRET(print_int(v->oserror.number)); // todo: look up constant names like ENOPERM etc.?
+    RESRET(print_move_int(v->oserror.number)); // todo: look up constant names like ENOPERM etc.?
     RESRET(print_move_cstr(")"));
 cleanup:
     return ret;

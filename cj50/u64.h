@@ -25,13 +25,23 @@ static UNUSED
 void drop_u64(const u64 UNUSED a) {}
 
 static UNUSED
-int print_u64(u64 n) {
-    return printf("%lu", n);
+int print_u64(const u64 *n) {
+    return printf("%lu", *n);
+}
+
+static UNUSED
+int print_move_u64(u64 n) {
+    return print_u64(&n);
 }
 
 static UNUSED
 int print_debug_u64(const u64 *n) {
-    return print_u64(*n);
+    return print_u64(n);
+}
+
+static UNUSED
+int print_debug_move_u64(u64 n) {
+    return print_debug_u64(&n);
 }
 
 GENERATE_Option(u64);

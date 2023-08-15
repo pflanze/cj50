@@ -1,12 +1,8 @@
 #pragma once
 
 #include <cj50/CStr.h>
+#include "cj50/int.h"
 #include "cj50/resret.h"
-
-
-static
-int print_int(int n);
-// /stupid
 
 
 typedef struct SyscallInfo {
@@ -19,9 +15,9 @@ static
 int print_debug_SyscallInfo(const SyscallInfo v) {
     INIT_RESRET;
     RESRET(print_move_cstr("(SyscallInfo){ .id = "));
-    RESRET(print_int(v.id));
+    RESRET(print_move_int(v.id));
     RESRET(print_move_cstr(", .manpage_section = "));
-    RESRET(print_int(v.manpage_section));
+    RESRET(print_move_int(v.manpage_section));
     RESRET(print_move_cstr(", .name = "));
     RESRET(print_debug_cstr(&v.name));
     RESRET(print_move_cstr(" }"));

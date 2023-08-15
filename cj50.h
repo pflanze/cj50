@@ -114,12 +114,6 @@ Option(String) get_String() {
 }
 
 
-static
-int print_int(int n) {
-    return printf("%i", n);
-}
-
-
 /// Values of this type (a number) describe the reason why a string
 /// does not contain text that properly represents a value that the
 /// used parse function should return.
@@ -140,7 +134,7 @@ bool equal_ParseError(const ParseError* a, const ParseError* b) {
 
 static
 int print_debug_ParseError(const ParseError *v) {
-    return print_int(*v);
+    return print_move_int(*v);
 }
 
 const ParseError E_not_in_int_range = 500;
@@ -514,51 +508,46 @@ int print_debug_floats(const float* ary, size_t len) {
 
 #define print(v)                                        \
     _Generic((v)                                        \
+             , char: putchar                            \
+             , int*: print_int                          \
+             , const int*: print_int                    \
+             , int: print_move_int                      \
+             , u8*: print_u8                            \
+             , const u8*: print_u8                      \
+             , u8: print_move_u8                        \
+             , u32*: print_u32                          \
+             , const u32*: print_u32                    \
+             , u32: print_move_u32                      \
+             , u64*: print_u64                          \
+             , const u64*: print_u64                    \
+             , u64: print_move_u64                      \
+             , float*: print_float                      \
+             , const float*: print_float                \
+             , float: print_move_float                  \
+             , double*: print_double                    \
+             , const double*: print_double              \
+             , double: print_move_double                \
              , char*: print_move_cstr                   \
              , cstr*: print_cstr                        \
+             , const cstr*: print_cstr                  \
              , cstr: print_move_cstr                    \
              , ucodepoint*: print_ucodepoint            \
+             , const ucodepoint*: print_ucodepoint      \
              , ucodepoint: print_move_ucodepoint        \
-             , const CStr*: print_CStr                  \
              , CStr*: print_CStr                        \
+             , const CStr*: print_CStr                  \
              , CStr: print_move_CStr                    \
              , String*: print_String                    \
              , const String*: print_String              \
              , String: print_move_String                \
-             , char: putchar                            \
-             , utf8char: print_move_utf8char            \
              , utf8char*: print_utf8char                \
              , const utf8char*: print_utf8char          \
-             , int: print_int                           \
-             , uint: print_uint                         \
-             , u8: print_u8                             \
-             , u64: print_u64                           \
-             , float: print_float                       \
-             , double: print_double                     \
+             , utf8char: print_move_utf8char            \
         )(v)
+// ^ uint is covered by either u32 or u64, depending on architecture.
+
 
 #define GENERATE_PRINTLN(T)                     \
-    static UNUSED                               \
-    int XCAT(println_, T)(T v) {                \
-        INIT_RESRET;                            \
-        RESRET(print(v));                       \
-        RESRET(print("\n"));                    \
-    cleanup:                                    \
-        return ret;                             \
-    }
-
-
-GENERATE_PRINTLN(cstr);
-GENERATE_PRINTLN(char);
-GENERATE_PRINTLN(int);
-GENERATE_PRINTLN(uint);
-GENERATE_PRINTLN(u8);
-GENERATE_PRINTLN(u64);
-GENERATE_PRINTLN(float);
-GENERATE_PRINTLN(double);
-
-// XX borrowing version as everything should be in the future
-#define FUTURE_GENERATE_PRINTLN(T)              \
     static UNUSED                               \
     int XCAT(println_, T)(const T *v) {         \
         INIT_RESRET;                            \
@@ -575,33 +564,60 @@ GENERATE_PRINTLN(double);
     cleanup:                                    \
         return ret;                             \
     }
-FUTURE_GENERATE_PRINTLN(String);
-FUTURE_GENERATE_PRINTLN(CStr);
-FUTURE_GENERATE_PRINTLN(utf8char);
+GENERATE_PRINTLN(cstr);
+GENERATE_PRINTLN(char);
+GENERATE_PRINTLN(int);
+GENERATE_PRINTLN(uint);
+GENERATE_PRINTLN(u8);
+GENERATE_PRINTLN(u32);
+GENERATE_PRINTLN(u64);
+GENERATE_PRINTLN(float);
+GENERATE_PRINTLN(double);
+GENERATE_PRINTLN(String);
+GENERATE_PRINTLN(CStr);
+GENERATE_PRINTLN(utf8char);
+GENERATE_PRINTLN(ucodepoint);
 
 
 
 /// Prints the given value for normal text use, followed by a newline
 /// (`"\n"`) for convenience.
 
-#define println(v)                                      \
-    _Generic((v)                                        \
-             , char*: println_cstr                      \
-             , cstr: println_cstr                       \
-             , CStr*: println_CStr                      \
-             , String*: println_String                  \
-             , const String*: println_String            \
-             , String: println_move_String              \
-             , char: println_char                       \
-             , utf8char: println_move_utf8char          \
-             , utf8char*: println_utf8char              \
-             , const utf8char*: println_utf8char        \
-             , int: println_int                         \
-             , uint: println_uint                       \
-             , u8: println_u8                           \
-             , u64: println_u64                         \
-             , float: println_float                     \
-             , double: println_double                   \
+#define println(v)                                        \
+    _Generic((v)                                          \
+             , char: println_move_char                    \
+             , int: println_int                           \
+             , u8*: println_u8                            \
+             , const u8*: println_u8                      \
+             , u8: println_move_u8                        \
+             , u32*: println_u32                          \
+             , const u32*: println_u32                    \
+             , u32: println_move_u32                      \
+             , u64*: println_u64                          \
+             , const u64*: println_u64                    \
+             , u64: println_move_u64                      \
+             , float*: println_float                      \
+             , const float*: println_float                \
+             , float: println_move_float                  \
+             , double*: println_double                    \
+             , const double*: println_double              \
+             , double: println_move_double                \
+             , char*: println_move_cstr                   \
+             , cstr*: println_cstr                        \
+             , const cstr*: println_cstr                  \
+             , cstr: println_move_cstr                    \
+             , ucodepoint*: println_ucodepoint            \
+             , const ucodepoint*: println_ucodepoint      \
+             , ucodepoint: println_move_ucodepoint        \
+             , CStr*: println_CStr                        \
+             , const CStr*: println_CStr                  \
+             , CStr: println_move_CStr                    \
+             , String*: println_String                    \
+             , const String*: println_String              \
+             , String: println_move_String                \
+             , utf8char*: println_utf8char                \
+             , const utf8char*: println_utf8char          \
+             , utf8char: println_move_utf8char            \
         )(v)
 
 /// Prints the given value in a programmer's view, for debugging

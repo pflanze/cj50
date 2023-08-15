@@ -13,9 +13,6 @@
 #include <cj50/unicode.h>
 #include <cj50/instantiations/Result_String__UnicodeError.h>
 
-static
-int print_int(int n);
-
 
 // ------------------------------------------------------------------ 
 

@@ -110,7 +110,7 @@ static UNUSED
 int print_debug_ucodepoint(const ucodepoint *a) {
     INIT_RESRET;
     RESRET(print_move_cstr("ucodepoint("));
-    RESRET(print_u32(a->u32));
+    RESRET(print_move_u32(a->u32));
     RESRET(print_move_cstr(")"));
 cleanup:
     return ret;
