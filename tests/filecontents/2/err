@@ -1,1 +1,1 @@
-system error: open(2): No such file or directory
+system error: fopen(3): No such file or directory

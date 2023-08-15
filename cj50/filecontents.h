@@ -9,6 +9,7 @@
 #include <cj50/CStr.h>
 #include <cj50/String.h>
 #include <cj50/gen/Result.h>
+#include <cj50/gen/Option.h>
 #include <cj50/unicode.h>
 #include <cj50/instantiations/Result_String__UnicodeError.h>
 
@@ -27,40 +28,31 @@ GENERATE_Result(CStr, SystemError);
 
 
 /// Returns a copy of the contents of the file at the given `path` as
-/// a String, if possible (no system errors occurred).
+/// a String, if possible (no system errors occurred). If the file
+/// contains more than `maxlen` unicode codepoints, an error with
+/// `.kind == UnicodeErrorKind_LimitExceededError` is returned.
 
 static UNUSED
-Result(String, UnicodeError) filecontents_String(cstr path) {
+Result(String, UnicodeError) filecontents_String(cstr path, size_t max_len) {
     BEGIN_Result(String, UnicodeError);
 
-    int fd = open(path, O_RDONLY);
-    if (fd < 0) {
-        RETURN_Err(systemError(SYSCALLINFO_open, errno), cleanup0);
-    }
-    struct stat st;
-    if (fstat(fd, &st) < 0) {
-        RETURN_Err(systemError(SYSCALLINFO_fstat, errno), cleanup1);
-    }
-    off_t len = st.st_size;
+    CFile in = TRY(open_CFile(path, "r"), cleanup0);
+    String s = new_String();
 
-    // XX todo: instead iteratively append to String s = new_String();
-    String buf = with_capacity_String(len + 1); // +1 spare for potential \0
-
-    ssize_t did = read(fd, buf.vec.ptr, buf.vec.cap);
-    if (did < 0) {
-        RETURN_Err(systemError(SYSCALLINFO_read, errno), cleanup2);
+    size_t nread = 0;
+    while_let_Some(cp, TRY(get_ucodepoint_unlocked_CFile(&in), cleanup1)) {
+        nread++;
+        if (nread < max_len) {
+            push_ucodepoint_String(&s, cp);
+        } else {
+            RETURN_Err(UnicodeError_LimitExceeded, cleanup1);
+        }
     }
-    // do we have to retry? probably. But, should also avoid stat.
-    assert(did == len);
-    buf.vec.len = did;
-    RETURN_Ok(buf, cleanup1);
+    RETURN_Ok(s, cleanup1);
 
-cleanup2:
-    drop_String(buf);
 cleanup1:
-    if (close(fd) < 0) {
-        RETURN_Err(systemError(SYSCALLINFO_close, errno), cleanup0);
-    }
+    TRY(close_CFile(&in), cleanup0);
+    drop_CFile(in);
 cleanup0:
     END_Result();
 }
