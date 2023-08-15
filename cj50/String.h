@@ -79,6 +79,15 @@ int print_debug_move_String(String s) {
 }
 
 
+/// Create a new empty String.
+
+static UNUSED
+String new_String() {
+    return (String) {
+        .vec = new_Vec_char()       
+    };
+}
+
 /// Create a String from a CStr, consuming the latter.
 
 static UNUSED
