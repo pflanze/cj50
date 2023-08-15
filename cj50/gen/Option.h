@@ -225,7 +225,8 @@
 
 /// `var` is introduced in the given scope `{ .. }`. Note that you
 /// don't need to specify a type for `var`, it is derived
-/// automatically.
+/// automatically. You can't specify `UNUSED`, although you can pass
+/// the variable to `drop` to silence the warning.
 
 /// ```C
 /// while_let_Some(v, pop(&vec)) {
