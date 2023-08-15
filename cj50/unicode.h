@@ -15,6 +15,7 @@
 #include <cj50/resret.h>
 #include <cj50/unicodeError.h>
 #include <cj50/instantiations/Result_Unit__UnicodeError.h>
+#include <cj50/xmem.h>
 
 
 static UNUSED
@@ -577,4 +578,31 @@ String new_String_from_CStr(CStr s) {
             .len = len
         }       
     };
+}
+
+/// Create a String from a char slice, copying the data in the slice.
+
+/// Asserts that the slice is in correct UTF-8 encoding, just aborts
+/// if not.
+
+static UNUSED
+String new_String_from_slice_char(slice(char) s) {
+    assert(is_valid_utf8_slice_char(s));
+    return (String) {
+        .vec = (Vec(char)) {
+            .ptr = xmemcpy(s.ptr, s.len + 1),
+            .cap = s.len + 1,
+            .len = s.len
+        }       
+    };
+}
+
+/// Create a String from a cstr, copying the data in the string.
+
+/// Asserts that the string is in correct UTF-8 encoding, just aborts
+/// if not.
+
+static UNUSED
+String new_String_from_cstr(cstr s) {
+    return new_String_from_slice_char(new_slice_char(s, strlen(s)));
 }
