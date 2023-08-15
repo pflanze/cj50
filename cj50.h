@@ -1242,6 +1242,8 @@ cleanup:
              , cstr: new_String_from_cstr               \
              , CStr: new_String_from_CStr               \
              , slice(char): new_String_from_slice_char  \
+             , int: new_String_from_move_int            \
+             , size_t: new_String_from_move_size_t      \
         )(v)
 // XX Why call it new_, so tempting to call it String_from. Conflict
 // with type constructors or not? Also evil or not? Definitely evil,

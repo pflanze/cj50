@@ -150,6 +150,18 @@ Option(cstr) cstr_String(String *s) {
 }
 
 
+#define T int
+#define FORMATSTRING "%i"
+#include <cj50/gen/template/new_String_from.h>
+#undef FORMATSTRING
+#undef T
+
+#define T size_t
+#define FORMATSTRING "%li"
+#include <cj50/gen/template/new_String_from.h>
+#undef FORMATSTRING
+#undef T
+
 
 GENERATE_Option(String);
 
