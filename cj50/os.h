@@ -83,6 +83,11 @@ cleanup:
 static UNUSED
 void drop_SystemError(UNUSED SystemError e) {}
 
+static UNUSED
+SystemError new_SystemError_from_SystemError(SystemError e) {
+    return e;
+}
+
 // ------------------------------------------------------------------ 
 
 /// An owned type holding a C library `FILE*` type. The contained
