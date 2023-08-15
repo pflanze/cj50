@@ -1,4 +1,4 @@
-DEBUG: v == {ucodepoint(8595), ucodepoint(8595), ucodepoint(8594), ucodepoint(339), ucodepoint(254), ucodepoint(64), ucodepoint(322), ucodepoint(8364)}
+DEBUG: &v == {ucodepoint(8595), ucodepoint(8595), ucodepoint(8594), ucodepoint(339), ucodepoint(254), ucodepoint(64), ucodepoint(322), ucodepoint(8364)}
 DEBUG: &v2 == {utf8char("↓"), utf8char("↓"), utf8char("→"), utf8char("œ"), utf8char("þ"), utf8char("@"), utf8char("ł"), utf8char("€")}
 €
 ł

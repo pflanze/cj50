@@ -25,7 +25,7 @@ Result(Unit, UnicodeError) run(slice(cstr) argv) {
     while_let_Some(c, TRY(get_ucodepoint_unlocked(&in), cleanup2)) {
         push(&v, c);
     }
-    DBG(v);
+    DBG(&v);
 
     AUTO v2 = TRY(new_Vec_utf8char_from_cstr(str), cleanup2);
     DBG(&v2);
@@ -38,6 +38,7 @@ Result(Unit, UnicodeError) run(slice(cstr) argv) {
 cleanup3:
     drop(v2);
 cleanup2:
+    drop(v);
     drop(in);
 cleanup1:
     END_Result();
