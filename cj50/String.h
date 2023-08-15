@@ -180,5 +180,11 @@ Option(cstr) cstr_String(String *s) {
 #undef T
 
 
+// for new_from
+static UNUSED
+String new_String_from_String(String s) {
+    return s;
+}
+
 GENERATE_Option(String);
 

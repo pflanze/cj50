@@ -44,6 +44,7 @@
                       , DecodingError: /*FAKE*/new_SystemError_from_SystemError \
                       , cstr: /*FAKE*/new_SystemError_from_SystemError  \
                       , char*: /*FAKE*/new_SystemError_from_SystemError \
+                      , String: /*FAKE*/new_String_from_String          \
                  )                                                      \
              , UnicodeError:                                            \
              _Generic(*((T1*)(NULL))                                    \
@@ -52,6 +53,7 @@
                       , SystemError: new_UnicodeError_from_SystemError  \
                       , cstr: /*FAKE*/new_SystemError_from_SystemError  \
                       , char*: /*FAKE*/new_SystemError_from_SystemError \
+                      , String: /*FAKE*/new_String_from_String          \
                  )                                                      \
              , String:                                                  \
              _Generic(*((T1*)(NULL))                                    \
@@ -60,6 +62,7 @@
                       , DecodingError: /*FAKE*/new_SystemError_from_SystemError \
                       , cstr: new_String_from_cstr                      \
                       , char*: new_String_from_cstr                     \
+                      , String: new_String_from_String                  \
                  )                                                      \
         )
 
