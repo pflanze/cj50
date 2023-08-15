@@ -55,7 +55,7 @@ int print_move_cstr(cstr s) {
 /// Print for program user.
 static UNUSED
 int fprintln_cstr(FILE *out, const cstr *s) {
-    return fprintf(out, "%s", *s);
+    return fprintf(out, "%s\n", *s);
 }
 
 static UNUSED
