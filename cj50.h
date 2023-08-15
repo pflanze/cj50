@@ -45,7 +45,7 @@
 #include "cj50/instantiations/Vec_ucodepoint.h"
 #include "cj50/instantiations/Vec_utf8char.h"
 #include <cj50/instantiations/Vec_char.h>
-
+#include <cj50/instantiations/Result_Unit__String.h>
 
 
 // Read a CStr from `inp`, terminated by a newline (the newline is
