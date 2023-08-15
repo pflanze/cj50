@@ -87,6 +87,14 @@ String new_String_from_CStr(CStr s) {
     };
 }
 
+/// Create a String with the given `capacity` (but 0 current length).
+static UNUSED
+String with_capacity_String(size_t capacity) {
+    return (String) {
+        .vec = with_capacity_Vec_char(capacity)
+    };
+}
+
 /// The length in *bytes*, not characters. This operation is fast (has
 /// a constant cost), unlike `strlen` for C strings.
 
