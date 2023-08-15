@@ -1142,8 +1142,10 @@ cleanup:
         )(coll1, coll2)
 
 
-/// Give the length of a given collection. For Vec (and String. XXX
-/// bytes or characters...?)
+/// Give the length of a given collection. It always reports the
+/// number of identically-sized storage locations, which means that
+/// for String, it reports the number of bytes (C char), not the
+/// number of unicode codepoints.
 #define len(coll)                                                 \
     _Generic((coll)                                               \
              , Vec(cstr)*: len_Vec_cstr                           \
