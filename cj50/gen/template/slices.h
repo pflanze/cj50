@@ -1,9 +1,9 @@
-// parameters: T, VEC, POSSIBLY_CONST
+// parameters: T, SLICE, POSSIBLY_CONST
 
 
 //! Operations on slices only 
 
-//! The `VEC` type is either `slice` or `mutslice`. It is called
+//! The `SLICE` type is either `slice` or `mutslice`. It is called
 //! "slice" from here onwards.
 
 
@@ -15,8 +15,8 @@
 /// Note that `slice(char)` isn't necessarily holding UTF-8 encoded
 /// data! (Todo: add a `str` wrapper which guarantees that.)
 static UNUSED
-VEC(T) XCAT(new_, VEC(T))(POSSIBLY_CONST T *ptr, size_t len) {
-    return (VEC(T)) {
+SLICE(T) XCAT(new_, SLICE(T))(POSSIBLY_CONST T *ptr, size_t len) {
+    return (SLICE(T)) {
         .ptr = ptr,
         .len = len
     };
@@ -24,5 +24,5 @@ VEC(T) XCAT(new_, VEC(T))(POSSIBLY_CONST T *ptr, size_t len) {
 
 
 static UNUSED
-void XCAT(drop_, VEC(T))(UNUSED VEC(T) self) { }
+void XCAT(drop_, SLICE(T))(UNUSED SLICE(T) self) { }
 

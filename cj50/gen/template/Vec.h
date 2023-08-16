@@ -14,13 +14,15 @@ typedef struct slice(T) {
 } slice(T);
 
 
-#define VEC slice
+#define SLICE slice
 #define POSSIBLY_CONST const
 #include <cj50/gen/template/slices.h>
-#include <cj50/gen/template/vectorlikes.h>
 #undef POSSIBLY_CONST 
-#undef VEC
+#undef SLICE
 
+#define VEC slice
+#include <cj50/gen/template/vectorlikes.h>
+#undef VEC
 
 
 /// A `mutslice` is like a `slice` but allows mutation of the items in
@@ -33,11 +35,14 @@ typedef struct mutslice(T) {
 } mutslice(T);
 
 
-#define VEC mutslice
-#define POSSIBLY_CONST 
+#define SLICE mutslice
+#define POSSIBLY_CONST
 #include <cj50/gen/template/slices.h>
-#include <cj50/gen/template/vectorlikes.h>
 #undef POSSIBLY_CONST 
+#undef SLICE
+
+#define VEC mutslice
+#include <cj50/gen/template/vectorlikes.h>
 #undef VEC
 
 
