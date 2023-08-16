@@ -69,8 +69,8 @@ void run_array() {
         print("Do you want to (e)dit, (r)esize, (c)ontinue? ");
         String ans = unwrap(get_String());
         // check the first character
-        utf8char ans0 = unwrap(get_utf8char(&ans, 0));
-        if (equal(ans0, utf8char("e"))) {
+        ucodepoint ans0 = unwrap(get_ucodepoint(&ans, 0));
+        if (equal(ans0, uchar("e"))) {
             print("Which test (1-based)? ");
             int i = unwrap(get_nat()) - 1;
             if (i < n) {
@@ -83,13 +83,13 @@ void run_array() {
                 print("]. Try again.\n");
             }
 
-        } else if (equal(ans0, utf8char("r"))) {
+        } else if (equal(ans0, uchar("r"))) {
             print("To which length? ");
             int newlen = unwrap(get_nat());
             grades = resize(grades, n, newlen);
             n = newlen;
 
-        } else if (equal(ans0, utf8char("c"))) {
+        } else if (equal(ans0, uchar("c"))) {
             cont = true;
         } else {
             print("Invalid answer.\n");
