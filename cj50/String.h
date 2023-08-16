@@ -174,7 +174,7 @@ Option(cstr) cstr_String(String *s) {
 /// should generally be used instead.)
 
 static UNUSED
-slice(char) slice_unsafe_String(const String *s, Range idx) {
+slice(char) unsafe_slice_of_String(const String *s, Range idx) {
     return slice_of_Vec_char(&s->vec, idx);
 }
 

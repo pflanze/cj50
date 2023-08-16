@@ -554,7 +554,7 @@ cleanup1:
 
 static UNUSED
 Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx) {
-    AUTO iter = new_SliceIterator_char(slice_unsafe_String(
+    AUTO iter = new_SliceIterator_char(unsafe_slice_of_String(
                                            s, range(idx, s->vec.len)));
     if_let_Ok(opt_cp, get_ucodepoint_unlocked_SliceIterator_char(&iter)) {
         return opt_cp;
