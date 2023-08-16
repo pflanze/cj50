@@ -111,6 +111,11 @@ bool equal_ucodepoint(const ucodepoint *a, const ucodepoint *b) {
 }
 
 static UNUSED
+bool equal_move_ucodepoint(ucodepoint a, ucodepoint b) {
+    return a.u32 == b.u32;
+}
+
+static UNUSED
 int print_debug_ucodepoint(const ucodepoint *a) {
     INIT_RESRET;
     RESRET(print_move_cstr("ucodepoint("));
