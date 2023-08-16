@@ -5,6 +5,8 @@
 //! The `VEC` type is either `Vec`, `slice` or `mutslice`. It is
 //! called "vectorlike" from here onwards.
 
+#include <cj50/Range.h>
+
 
 // COPY-PASTE from cj50.h  except INIT_RESRET removed from PRINT_ARRAY
 
@@ -79,6 +81,19 @@ int XCAT(print_debug_move_, VEC(T))(VEC(T) self) {
     XCAT(drop_, VEC(T))(self);
     return res;
 }
+
+
+/// Get a slice of the vectorlike. Aborts for invalid indices. (XX:
+/// Use get_slice_* for a variant that returns failures instead.)
+
+static UNUSED
+slice(T) XCAT(slice_, VEC(T))(const VEC(T) *self, Range idx) {
+    assert(idx.end >= idx.start);
+    assert(idx.end <= self->len);
+    return XCAT(new_slice_, T)(self->ptr + idx.start,
+                               idx.end - idx.start);
+}
+
 
 
 #undef VEC_PRINT_ARRAY
