@@ -116,6 +116,8 @@ To visually distinguish them from functions and types (so that you know somethin
 
 * [cj50/CStr.h](cj50/CStr.h.md)
 
+* [cj50/Range.h](cj50/Range.h.md)
+
 * [cj50/String.h](cj50/String.h.md)
 
 * [cj50/Unit.h](cj50/Unit.h.md)
@@ -178,6 +180,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [Line2](cj50/math.h.md#zero_LineQtwoE)
 * [mutslice](cj50/gen/template/Vec.h.md#zero_mutslice)
 * [OsError](cj50/os.h.md#zero_OsError)
+* [Range](cj50/Range.h.md#zero_Range)
 * [Rect2](cj50/math.h.md#zero_RectQtwoE)
 * [slice](cj50/gen/template/Vec.h.md#zero_slice)
 * [SliceIterator](cj50/gen/template/SliceIterator.h.md#zero_SliceIterator)
@@ -245,6 +248,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [get_nat](cj50.h.md#one_get_nat)
 * [get_nat0](cj50.h.md#one_get_natQzeroE)
 * [get_String](cj50.h.md#one_get_String)
+* [get_ucodepoint_String](cj50/unicode.h.md#one_get_ucodepoint_String)
 * [get_ucodepoint_unlocked_CFile](cj50/unicode.h.md#one_get_ucodepoint_unlocked_CFile)
 * [get_ucodepoint_unlocked_SliceIterator_char](cj50/unicode.h.md#one_get_ucodepoint_unlocked_SliceIterator_char)
 * [get_utf8char_String](cj50/unicode.h.md#one_get_utfQeightEchar_String)
@@ -263,6 +267,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [new_floats](cj50.h.md#one_new_floats)
 * [new_ints](cj50.h.md#one_new_ints)
 * [new_Option_Strings](cj50.h.md#one_new_Option_Strings)
+* [new_SLICE_$T](cj50/gen/template/slices.h.md#one_new_SLICE_QDT)
 * [new_String](cj50/String.h.md#one_new_String)
 * [new_String_from_CStr](cj50/unicode.h.md#one_new_String_from_CStr)
 * [new_String_from_cstr](cj50/unicode.h.md#one_new_String_from_cstr)
@@ -271,7 +276,6 @@ To visually distinguish them from functions and types (so that you know somethin
 * [new_utf8char_from_bytes_seqlen_unsafe](cj50/unicode.h.md#one_new_utfQeightEchar_from_bytes_seqlen_unsafe)
 * [new_utf8char_from_cstr_unsafe](cj50/unicode.h.md#one_new_utfQeightEchar_from_cstr_unsafe)
 * [new_utf8char_from_ucodepoint](cj50/unicode.h.md#one_new_utfQeightEchar_from_ucodepoint)
-* [new_VEC_$T](cj50/gen/template/slices.h.md#one_new_VEC_QDT)
 * [new_Vec_$T](cj50/gen/template/Vec.h.md#one_new_Vec_QDT)
 * [new_Vec_ucodepoint_from_cstr](cj50/unicode.h.md#one_new_Vec_ucodepoint_from_cstr)
 * [new_Vec_ucodepoint_from_slice_char](cj50/unicode.h.md#one_new_Vec_ucodepoint_from_slice_char)
@@ -312,6 +316,8 @@ To visually distinguish them from functions and types (so that you know somethin
 * [rect2](cj50/math.h.md#one_rectQtwoE)
 * [reserve_Vec_$T](cj50/gen/template/Vec.h.md#one_reserve_Vec_QDT)
 * [set_draw_color](cj50/sdlutil.h.md#one_set_draw_color)
+* [slice_unsafe_String](cj50/String.h.md#one_slice_unsafe_String)
+* [slice_VEC_$T](cj50/gen/template/vectorlikes.h.md#one_slice_VEC_QDT)
 * [string_from_ParseError](cj50.h.md#one_string_from_ParseError)
 * [sync_CFile](cj50/os.h.md#one_sync_CFile)
 * [ucodepoint_count_slice_char](cj50/unicode.h.md#one_ucodepoint_count_slice_char)
@@ -337,6 +343,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [equal](cj50.h.md#two_equal)
 * [equal_array](cj50.h.md#two_equal_array)
 * [fprintln](cj50.h.md#two_fprintln)
+* [get_ucodepoint](cj50.h.md#two_get_ucodepoint)
 * [get_ucodepoint_unlocked](cj50.h.md#two_get_ucodepoint_unlocked)
 * [get_utf8char](cj50.h.md#two_get_utfQeightEchar)
 * [len](cj50.h.md#two_len)

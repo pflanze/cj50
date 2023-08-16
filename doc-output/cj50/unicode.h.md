@@ -137,6 +137,8 @@ is at or behind the end of the string contents, or because it does
 not point to the beginning of a byte sequence for a UTF-8 encoded
 codepoint.
 
+DEPRECATED, use get_ucodepoint_String instead.
+
 ## new_Vec_ucodepoint_from_slice_char {#one_new_Vec_ucodepoint_from_slice_char}
 
 ```C
@@ -226,6 +228,18 @@ Result(ucodepoint, UnicodeError) ucodepoint_from_cstr(cstr s)
 Return the single ucodepoint in `s`, if possible, returning
 decoding errors as well when there are fewer or more than 1
 ucodepoint in `s`.
+
+## get_ucodepoint_String {#one_get_ucodepoint_String}
+
+```C
+Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx)
+```
+
+Get the character (unicode codepoint, to be precise) at byte
+position `idx` of `s`, if possible. Failures can be because `idx`
+is at or behind the end of the string contents, or because it does
+not point to the beginning of a byte sequence for a UTF-8 encoded
+codepoint.
 
 ## read_line_Vec_ucodepoint {#one_read_line_Vec_ucodepoint}
 

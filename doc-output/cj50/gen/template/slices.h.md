@@ -3,15 +3,15 @@
 
 Operations on slices only
 
-The `VEC` type is either `slice` or `mutslice`. It is called
+The `SLICE` type is either `slice` or `mutslice`. It is called
 "slice" from here onwards.
 
 # Normal functions
 
-## new_VEC_$T {#one_new_VEC_QDT}
+## new_SLICE_$T {#one_new_SLICE_QDT}
 
 ```C
-VEC(T) new_VEC_$T(POSSIBLY_CONST T *ptr, size_t len)
+SLICE(T) new_SLICE_$T(POSSIBLY_CONST T *ptr, size_t len)
 ```
 
 Create a new slice from pointer `ptr` and number of elements
