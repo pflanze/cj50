@@ -17,16 +17,45 @@ GENERATE_Option(slice(char));
 /// characters. It automatically resizes itself as needed to accept
 /// additional text that is added.
 
-/// It is implemented via a `Vec(char)`.
+/// It is implemented as a wrapper around `Vec(char)`. It adds the
+/// guarantee that the contents is in correct UTF-8 encoding.
 
 typedef struct String {
     Vec(char) vec;
 } String;
 
+/// `strslice` is a borrowed, immutable type that, just like `String`,
+/// holds a string of characters, more precisely, an array of bytes,
+/// that represents a text in UTF-8 encoding.
+
+/// It is implemented as a wrapper around `slice(char)`. It adds the
+/// guarantee that the contents is in correct UTF-8 encoding.
+
+typedef struct strslice {
+    slice(char) slice;
+} strslice;
+
+#define new_strslice(ptr, len)                      \
+    ((strslice) {                                   \
+        .slice = new_slice_char((ptr), (len))       \
+     })
+
+
 static UNUSED
 void drop_String(String s) {
     drop_Vec_char(s.vec);
 }
+
+static UNUSED
+void drop_strslice(UNUSED strslice s) {}
+
+
+/// Get the string slice of the whole String.
+static UNUSED
+strslice deref_String(const String *s) {
+    return new_strslice(s->vec.ptr, s->vec.len);
+}
+
 
 /// Clear the string, removing all characters.
 
@@ -44,13 +73,28 @@ bool equal_String(const String *a, const String *b) {
 }
 
 static UNUSED
-int print_String(const String *s) {
-    size_t len = s->vec.len;
-    size_t res = fwrite(s->vec.ptr, 1, len, stdout);
+bool equal_strslice(const strslice *a, const strslice *b) {
+    return equal_slice_char(&a->slice, &b->slice);
+}
+
+static UNUSED
+int print_strslice(const strslice *s) {
+    size_t len = s->slice.len;
+    size_t res = fwrite(s->slice.ptr, 1, len, stdout);
     if (res < len) {
         return -1;
     }
     return res;
+}
+
+static UNUSED
+int print_move_strslice(strslice s) {
+    return print_strslice(&s);
+}
+
+static UNUSED
+int print_String(const String *s) {
+    return print_move_strslice(deref_String(s));
 }
 
 static UNUSED
@@ -61,10 +105,10 @@ int print_move_String(String s) {
 }
 
 static UNUSED
-int fprintln_String(FILE *out, const String *s) {
+int fprintln_strslice(FILE *out, const strslice *s) {
     INIT_RESRET;
-    size_t len = s->vec.len;
-    size_t r = fwrite(s->vec.ptr, 1, len, out);
+    size_t len = s->slice.len;
+    size_t r = fwrite(s->slice.ptr, 1, len, out);
     if (r < len) {
         return -1;
     }
@@ -74,12 +118,21 @@ cleanup:
     return ret;
 }
 
+static UNUSED
+int fprintln_move_strslice(FILE *out, strslice s) {
+    return fprintln_strslice(out, &s);
+}
 
 static UNUSED
-int print_debug_String(const String *s) {
+int fprintln_String(FILE *out, const String *s) {
+    return fprintln_move_strslice(out, deref_String(s));
+}
+
+static UNUSED
+int print_debug_strslice(const strslice *s) {
     INIT_RESRET;
-    size_t len = s->vec.len;
-    char *ptr = s->vec.ptr;
+    size_t len = s->slice.len;
+    const char *ptr = s->slice.ptr;
     RESRET(putchar('"'));
     for (size_t i = 0; i < len; i++) {
         RESRET(_print_debug_char(ptr[i]));
@@ -87,6 +140,16 @@ int print_debug_String(const String *s) {
     RESRET(putchar('"'));
 cleanup:
     return ret;
+}
+
+static UNUSED
+int print_debug_move_strslice(strslice s) {
+    return print_debug_strslice(&s);
+}
+
+static UNUSED
+int print_debug_String(const String *s) {
+    return print_debug_move_strslice(deref_String(s));
 }
 
 static UNUSED
@@ -112,6 +175,14 @@ String with_capacity_String(size_t capacity) {
     return (String) {
         .vec = with_capacity_Vec_char(capacity)
     };
+}
+
+/// The length in *bytes*, not characters. This operation is fast (has
+/// a constant cost), unlike `strlen` for C strings.
+
+static UNUSED
+size_t len_strslice(const strslice *s) {
+    return s->slice.len;
 }
 
 /// The length in *bytes*, not characters. This operation is fast (has
@@ -145,6 +216,9 @@ void append_move_String_String(String *a, String b) {
     drop_String(b);
 }
 
+
+// Can't offer cstr_strslice except via copying (because of the need
+// to add a '\0'), so don't (for now).
 
 
 /// Get `s` as a C string, if possible--it's only possible if there
