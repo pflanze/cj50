@@ -1273,6 +1273,17 @@ cleanup:
 // those anyway.
 
 
+/// Create a slice of various collection types. A slice is borrowing
+/// a range of items from the original collection.
+
+#define slice_of(v, range)                              \
+    _Generic((v)                                        \
+             , slice(char)*: slice_of_slice_char        \
+             , mutslice(char)*: slice_of_mutslice_char  \
+             , Vec(char)*: slice_of_Vec_char            \
+        )((v), (range))
+
+
 /// `MAIN` takes the name of the function to run when the program
 /// starts. `mainfunction` receives a `slice` of `cstr` values which
 /// are holding the program name in position 0 (usually, but not
