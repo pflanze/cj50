@@ -43,7 +43,7 @@ typedef struct DecodingError {
 #define DecodingError_InvalidCodepoint(cp)              \
     ((DecodingError) {                                  \
         .kind = DecodingErrorKind_InvalidCodepoint,     \
-        .byte_number = (cp)                             \
+        .codepoint = (cp)                               \
     })
 
 
@@ -76,21 +76,21 @@ int print_debug_DecodingError(const DecodingError *e) {
     default: die_match_failure();
 
     case DecodingErrorKind_InvalidStartByte:
-        RESRET(printf("DecodingErrorKind_InvalidStartByte"));
+        RESRET(printf("DecodingError_InvalidStartByte()"));
         break;        
     case DecodingErrorKind_PrematureEof:
         // well, this is proper ADT approach but not proper C syntax!
         // Except if I make macros. todo?
-        RESRET(printf("DecodingErrorKind_PrematureEof(%i)",
+        RESRET(printf("DecodingError_PrematureEof(%i)",
                       e->byte_number));
         break;
     case DecodingErrorKind_InvalidContinuationByte:
-        RESRET(printf("DecodingErrorKind_InvalidContinuationByte(%i)",
+        RESRET(printf("DecodingError_InvalidContinuationByte(%i)",
                       e->byte_number));
         break;
     case DecodingErrorKind_InvalidCodepoint:
-        RESRET(printf("DecodingErrorKind_InvalidContinuationByte(%i)",
-                      e->byte_number));
+        RESRET(printf("DecodingError_InvalidCodepoint(%i)",
+                      e->codepoint));
         break;
     case DecodingErrorKind_OverlongEncoding:
         // XX will it have some info?
@@ -121,7 +121,7 @@ int fprintln_DecodingError(FILE* out, const DecodingError* e) {
                        e->byte_number));
         break;
     case DecodingErrorKind_InvalidCodepoint:
-        RESRET(fprintf(out, "invalid code point %ui",
+        RESRET(fprintf(out, "invalid code point %i",
                        e->codepoint));
         break;
     case DecodingErrorKind_OverlongEncoding:
