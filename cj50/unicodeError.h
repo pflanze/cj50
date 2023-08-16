@@ -6,9 +6,6 @@ enum DecodingErrorKind {
     DecodingErrorKind_PrematureEof,
     DecodingErrorKind_InvalidContinuationByte,
     DecodingErrorKind_InvalidCodepoint,
-    // XX todo:
-    // DecodingErrorKind_unexpected_continuation_byte, // same as DecodingErrorKind_InvalidStartByte?
-    // non-continuation byte before the end of the character -> DecodingErrorKind_InvalidContinuationByte ?
     DecodingErrorKind_OverlongEncoding,
 };
 
