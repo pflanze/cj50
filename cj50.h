@@ -866,8 +866,12 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(char): equal_move_Option_char                     \
              , Option(utf8char)*: equal_Option_utf8char                 \
              , Option(utf8char): equal_move_Option_utf8char             \
+             , Option(ucodepoint)*: equal_Option_ucodepoint             \
+             , Option(ucodepoint): equal_move_Option_ucodepoint         \
              , utf8char*: equal_utf8char                                \
              , utf8char: equal_move_utf8char                            \
+             , ucodepoint*: equal_ucodepoint                            \
+             , ucodepoint: equal_move_ucodepoint                        \
              , Result(int, ParseError)*: equal_Result_int__ParseError   \
              , Result(String, SystemError)*: equal_Result_String__SystemError \
              , cstr*: equal_cstr                                        \
