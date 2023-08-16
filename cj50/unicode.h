@@ -66,7 +66,7 @@ int encode_utf8(uint32_t cp, uint8_t *out) {
 /// byte, but a continuation byte or invalid.
 
 static UNUSED
-Option(u8) utf8_sequence_len(u8 b) {
+Option(u8) utf8_sequence_len_u8(u8 b) {
     if (b <= 0x7F) { return some_u8(1); }
     if ((b & 0b11100000) == 0b11000000) { return some_u8(2); }
     if ((b & 0b11110000) == 0b11100000) { return some_u8(3); }
@@ -311,7 +311,7 @@ Option(utf8char) get_utf8char_String(const String *s, size_t idx) {
     size_t len = s->vec.len;
     char *ptr = s->vec.ptr;
     if (idx < len) {
-        if_let_Some(seqlen, utf8_sequence_len(ptr[idx])) {
+        if_let_Some(seqlen, utf8_sequence_len_u8(ptr[idx])) {
             assert((idx + seqlen) <= len); // String guarantees UTF-8
             return some_utf8char(
                 new_utf8char_from_bytes_seqlen_unsafe(
@@ -494,7 +494,7 @@ Result(ucodepoint, UnicodeError) ucodepoint_from_cstr(cstr s) {
         // cstr can't represent \0, so it's the end of string
         RETURN_Err(UnicodeError_ExpectedOneCodepoint, cleanup1);
     }
-    if_let_Some(slen, utf8_sequence_len(s[0])) {
+    if_let_Some(slen, utf8_sequence_len_u8(s[0])) {
         size_t len = strlen(s);
         if (len == slen) {
             AUTO iter = new_SliceIterator_char(new_slice_char(s, len));
