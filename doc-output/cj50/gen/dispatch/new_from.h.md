@@ -13,8 +13,12 @@ Get the conversion function from type `T1` to type `T2`.
 Members:
 
 ```C
+DecodingError : /*FAKE*/new_SystemError_from_SystemError;
 DecodingError : UnicodeError new_UnicodeError_from_DecodingError(DecodingError e);
+SystemError   : ;
+SystemError   : SystemError new_SystemError_from_SystemError(SystemError e);
 SystemError   : UnicodeError new_UnicodeError_from_SystemError(SystemError e);
+UnicodeError  : /*FAKE*/new_SystemError_from_SystemError;
 UnicodeError  : ;
 UnicodeError  : UnicodeError new_UnicodeError_from_UnicodeError(UnicodeError e);
 ```

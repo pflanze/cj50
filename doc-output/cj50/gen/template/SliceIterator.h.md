@@ -2,16 +2,14 @@
 
 # Normal functions
 
-## filecontents_String {#one_filecontents_String}
+## next_SliceIterator_$T {#one_next_SliceIterator_QDT}
 
 ```C
-Result(String, UnicodeError) filecontents_String(cstr path, size_t max_len)
+Option(ref(T)) next_SliceIterator_$T(SliceIterator(T) *self)
 ```
 
-Returns a copy of the contents of the file at the given `path` as
-a String, if possible (no system errors occurred). If the file
-contains more than `maxlen` unicode codepoints, an error with
-`.kind == UnicodeErrorKind_LimitExceededError` is returned.
+Get a reference to the next element in the slice that this
+iterator is iterating over, or None if the end was reached.
 
 <hr>
 <p>&nbsp;</p>

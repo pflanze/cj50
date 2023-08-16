@@ -38,15 +38,25 @@ Encode a unicode code point as UTF-8 characters, writing it to
 is written afterwards. Returns -1 if `cp` is not a valid unicode
 codepoint, otherwise returns the number of bytes written.
 
-## utf8_sequence_len {#one_utfQeightE_sequence_len}
+## utf8_sequence_len_u8 {#one_utfQeightE_sequence_len_uQeightE}
 
 ```C
-Option(u8) utf8_sequence_len(u8 b)
+Option(u8) utf8_sequence_len_u8(u8 b)
 ```
 
 How many bytes the UTF-8 character sequence takes when `b` is its
 initial byte. None is returned if `b` is not ascii or an initial
-byte, but a continuation byte.
+byte, but a continuation byte or invalid.
+
+## utf8_sequence_len_ucodepoint {#one_utfQeightE_sequence_len_ucodepoint}
+
+```C
+int utf8_sequence_len_ucodepoint(ucodepoint cp)
+```
+
+How many bytes the UTF-8 character sequence for unicode codepoint
+`cp` takes (1..4). Since `ucodepoint` is guaranteed to be a
+unicode codepoint, no errors are possible.
 
 ## new_utf8char_from_bytes_seqlen_unsafe {#one_new_utfQeightEchar_from_bytes_seqlen_unsafe}
 
@@ -70,7 +80,7 @@ safety checks whatsoever are done.
 ## len_utf8char {#one_len_utfQeightEchar}
 
 ```C
-size_t len_utf8char(utf8char c)
+size_t len_utf8char(const utf8char *c)
 ```
 
 The length of the UTF-8 byte sequence making up the given unicode
@@ -92,14 +102,25 @@ utf8char new_utf8char_from_ucodepoint(ucodepoint cp)
 
 Convert a ucodepoint to a utf8char.
 
-## get_ucodepoint_unlocked {#one_get_ucodepoint_unlocked}
+## get_ucodepoint_unlocked_CFile {#one_get_ucodepoint_unlocked_CFile}
 
 ```C
-Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked(
-    CFile *in)
+Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked_CFile(CFile *in)
 ```
 
-Read a single Unicode code point from `in`.
+Read a single Unicode code point from the given `CFile`.
+
+This function is currently hard-coded to decode files in the UTF-8
+format.
+
+## get_ucodepoint_unlocked_SliceIterator_char {#one_get_ucodepoint_unlocked_SliceIterator_char}
+
+```C
+Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked_SliceIterator_char(
+    SliceIterator(char) *in)
+```
+
+Read a single Unicode code point from the given `CFile`.
 
 This function is currently hard-coded to decode files in the UTF-8
 format.
@@ -115,6 +136,15 @@ position `idx` of `s`, if possible. Failures can be because `idx`
 is at or behind the end of the string contents, or because it does
 not point to the beginning of a byte sequence for a UTF-8 encoded
 codepoint.
+
+## new_Vec_ucodepoint_from_slice_char {#one_new_Vec_ucodepoint_from_slice_char}
+
+```C
+Result(Vec(ucodepoint), UnicodeError) new_Vec_ucodepoint_from_slice_char(slice(char) s)
+```
+
+Convert a slice of characters into a vector of unicode codepoints, if possible.
+Conversion failures due to invalid UTF-8 are reported.
 
 ## new_Vec_ucodepoint_from_cstr {#one_new_Vec_ucodepoint_from_cstr}
 
@@ -152,6 +182,114 @@ void push_ucodepoint_String(String *s, ucodepoint c)
 Appends the given unicode codepoint to the end of this
 String.
 
+## push_cstr_String {#one_push_cstr_String}
+
+```C
+Result(Unit, UnicodeError) push_cstr_String(String *s, cstr cs)
+```
+
+Appends the given cstr `cs` to the end of this String. `cs` is
+checked for correct UTF-8 encoding.
+
+## read_until_Vec_ucodepoint {#one_read_until_Vec_ucodepoint}
+
+```C
+Result(size_t, UnicodeError) read_until_Vec_ucodepoint
+    (CFile *in,
+     ucodepoint delimiter,
+     Vec(ucodepoint) *buf,
+     bool strip_delimiter,
+     size_t max_len)
+```
+
+Read all unicode codepoints into buf until the delimiter character
+or EOF is reached.
+
+This function will read characters from the underlying stream
+until the delimiter or EOF is found. Once found, all characters up
+to, and, unless `strip_delimiter` is true, including, the
+delimiter (if found) will be appended to `buf`.
+
+If successful, this function will return the total number of
+characters read.
+
+`max_len` is the maximum number of characters that will be
+appended to `buf`. After this point, an error with `.kind ==
+UnicodeErrorKind_LimitExceededError` is returned.
+
+## ucodepoint_from_cstr {#one_ucodepoint_from_cstr}
+
+```C
+Result(ucodepoint, UnicodeError) ucodepoint_from_cstr(cstr s)
+```
+
+Return the single ucodepoint in `s`, if possible, returning
+decoding errors as well when there are fewer or more than 1
+ucodepoint in `s`.
+
+## read_line_Vec_ucodepoint {#one_read_line_Vec_ucodepoint}
+
+```C
+Result(size_t, UnicodeError) read_line_Vec_ucodepoint
+    (CFile *in,
+     Vec(ucodepoint) *buf,
+     bool strip_delimiter,
+     size_t max_len)
+```
+
+Read all unicode codepoints into buf until `uchar("\n")` or EOF is
+reached. `strip_delimiter` and `max_len` have the same meaning as
+for `read_until_Vec_ucodepoint`.
+
+## ucodepoint_count_slice_char {#one_ucodepoint_count_slice_char}
+
+```C
+Result(size_t, UnicodeError) ucodepoint_count_slice_char(slice(char) s)
+```
+
+The number of unicode code points in the given slice.
+
+## is_valid_utf8_slice_char {#one_is_valid_utfQeightE_slice_char}
+
+```C
+bool is_valid_utf8_slice_char(slice(char) s)
+```
+
+Whether the given slice represents valid and canonically UTF-8
+encoded unicode codepoints.
+
+## new_String_from_CStr {#one_new_String_from_CStr}
+
+```C
+String new_String_from_CStr(CStr s)
+```
+
+Create a String from a CStr, consuming the latter.
+
+Asserts that CStr is in correct UTF-8 encoding, just aborts if not.
+
+## new_String_from_slice_char {#one_new_String_from_slice_char}
+
+```C
+String new_String_from_slice_char(slice(char) s)
+```
+
+Create a String from a char slice, copying the data in the slice.
+
+Asserts that the slice is in correct UTF-8 encoding, just aborts
+if not.
+
+## new_String_from_cstr {#one_new_String_from_cstr}
+
+```C
+String new_String_from_cstr(cstr s)
+```
+
+Create a String from a cstr, copying the data in the string.
+
+Asserts that the string is in correct UTF-8 encoding, just aborts
+if not.
+
 # Macros
 
 ## ucodepoint {#three_ucodepoint}
@@ -160,7 +298,18 @@ String.
 ucodepoint(cp)
 ```
 
-Unsafe constructor, does not verify the code.
+Unsafe constructor, does not verify the code. Can be evaluated in
+the toplevel.
+
+## uchar {#three_uchar}
+
+```C
+uchar(str)
+```
+
+Safe constructor, does decode str and verify its validity and that
+there is only one codepoint and aborts (via unwrap) if not. Cannot
+be evaluated in the toplevel.
 
 ## utf8char {#three_utfQeightEchar}
 

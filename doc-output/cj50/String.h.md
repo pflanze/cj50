@@ -21,13 +21,32 @@ It is implemented via a `Vec(char)`.
 
 # Normal functions
 
-## new_String_from_CStr {#one_new_String_from_CStr}
+## clear_String {#one_clear_String}
 
 ```C
-String new_String_from_CStr(CStr s)
+void clear_String(String *s)
 ```
 
-Create a String from a CStr, consuming the latter.
+Clear the string, removing all characters.
+
+Note that this method has no effect on the allocated capacity of
+the String.
+
+## new_String {#one_new_String}
+
+```C
+String new_String()
+```
+
+Create a new empty String.
+
+## with_capacity_String {#one_with_capacity_String}
+
+```C
+String with_capacity_String(size_t capacity)
+```
+
+Create a String with the given `capacity` (but 0 current length).
 
 ## len_String {#one_len_String}
 
@@ -45,6 +64,24 @@ void push_String(String *s, char c)
 ```
 
 Appends the given char to the end of this String.
+
+## append_String_String {#one_append_String_String}
+
+```C
+void append_String_String(String *a, String *b)
+```
+
+Appends the given String `b` to the end of String `a`, emptying
+`b`.
+
+## append_move_String_String {#one_append_move_String_String}
+
+```C
+void append_move_String_String(String *a, String b)
+```
+
+Appends the given String `b` to the end of String `a`, consuming
+`b`.
 
 ## cstr_String {#one_cstr_String}
 

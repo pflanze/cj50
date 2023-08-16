@@ -34,14 +34,16 @@ void set_draw_color(SDL_Renderer* renderer, Color color)
 Set the drawing color that the `SDL_Renderer` should use for future
 drawing.
 
-## clear {#one_clear}
+## clear_SDL_Renderer {#one_clear_SDL_Renderer}
 
 ```C
-void clear(SDL_Renderer* renderer)
+void clear_SDL_Renderer(SDL_Renderer* renderer)
 ```
 
 Clear the rendering area, i.e. fill it with the current drawing
 color.
+
+Note that you can use the generic `clear` as a shortcut.
 
 ## draw_rect {#one_draw_rect}
 

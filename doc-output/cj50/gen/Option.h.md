@@ -55,10 +55,11 @@ Option(T) Option_$T
 This macro creates a type name for an `Option` specific for the
 given type name `T`.
 
-Implementation wise, it simply concatenates `Option_` and the
-given type name. For this reason, the type name `T` must not
-contain spaces, e.g. `unsigned int` would not work and a typedef
-like `uint` has to be used instead.
+Implementation wise, it simply concatenates `ref_` and the given
+type name. For this reason, the type name `T` must not contain
+spaces or `*`, e.g. `unsigned int` would not work and a typedef
+like `uint` has to be used instead. For handling references, see
+the `ref(T)` type generator.
 
 ## GENERATE_Option {#three_GENERATE_Option}
 
@@ -85,6 +86,39 @@ Option(float) x = NONE;
 
 It cannot be used in a function call like `f(NONE)`, instead
 `f(none(float))` has to be used.
+
+## Some {#three_Some}
+
+```C
+Some(T) some_$T
+```
+
+The constructor for some value of `T`. Example.
+
+```C
+    return Some(cstr)("foo")
+```
+
+NOTE: only works if T is known textually
+(e.g. `None(typeof(somevar))` does not work, while
+`none(typeof(somevar))` does).
+
+## None {#three_None}
+
+```C
+None(T)
+```
+
+```C
+    return None(cstr);
+```
+
+NOTE: only works if T is known textually
+(e.g. `None(typeof(somevar))` does not work, while
+`none(typeof(somevar))` does). The advantage over `none` is that
+the latter is a generic that currently must be updated manually
+and might be outdated or not in scope yet (within files of cj50
+itself).
 
 ## if_let_Some {#three_if_let_Some}
 
@@ -125,7 +159,8 @@ Convenient conditional loop macro.
 
 `var` is introduced in the given scope `{ .. }`. Note that you
 don't need to specify a type for `var`, it is derived
-automatically.
+automatically. You can't specify `UNUSED`, although you can pass
+the variable to `drop` to silence the warning.
 
 ```C
 while_let_Some(v, pop(&vec)) {

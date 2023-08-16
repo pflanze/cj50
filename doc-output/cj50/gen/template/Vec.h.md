@@ -2,6 +2,28 @@
 
 # Types
 
+## slice {#zero_slice}
+
+```C
+typedef struct slice(T)
+```
+
+A `slice` consists of two fields, a pointer to an array, and the
+current length used out of that array. A slice is borrowing the
+storage it is representing (either from the `Vec` it is taken from
+(meaning, you can't modify or move the `Vec` while any `slice` of
+it is in use), or from static storage).
+
+## mutslice {#zero_mutslice}
+
+```C
+typedef struct mutslice(T)
+```
+
+A `mutslice` is like a `slice` but allows mutation of the items in
+the slice. Only maximally one `mutslice` to the same storage
+should exist at any time to avoid the risk of concurrent mutation.
+
 ## Vec {#zero_Vec}
 
 ```C
@@ -16,6 +38,14 @@ Never mutate those fields directly, use accessor functions
 instead!
 
 # Normal functions
+
+## drop_Vec_$T {#one_drop_Vec_QDT}
+
+```C
+void drop_Vec_$T(Vec(T) self)
+```
+
+Remove from existence, along with the owned elements.
 
 ## new_Vec_$T {#one_new_Vec_QDT}
 
@@ -79,54 +109,16 @@ void append_Vec_$T(Vec(T) *self, Vec(T) *other)
 
 Moves all the elements of `other` into `self`, leaving `other` empty.
 
-## len_Vec_$T {#one_len_Vec_QDT}
+## clear_Vec_$T {#one_clear_Vec_QDT}
 
 ```C
-size_t len_Vec_$T(const Vec(T) *self)
+void clear_Vec_$T(Vec(T) *self)
 ```
 
-The number of elements the Vec is currently holding.
+Clears the vector, removing all values.
 
-## is_empty_Vec_$T {#one_is_empty_Vec_QDT}
-
-```C
-size_t is_empty_Vec_$T(const Vec(T) *self)
-```
-
-Whether the Vec has exactly 0 elements.
-
-## drop_Vec_$T {#one_drop_Vec_QDT}
-
-```C
-void drop_Vec_$T(Vec(T) self)
-```
-
-Remove from existence, along with the owned elements.
-
-## equal_Vec_$T {#one_equal_Vec_QDT}
-
-```C
-bool equal_Vec_$T(const Vec(T) *a, const Vec(T) *b)
-```
-
-Whether the two vectors have the same number of elements with
-equal elements in every position.
-
-## print_debug_Vec_$T {#one_print_debug_Vec_QDT}
-
-```C
-int print_debug_Vec_$T(const Vec(T) *self)
-```
-
-Print in C code syntax.
-
-## print_debug_move_Vec_$T {#one_print_debug_move_Vec_QDT}
-
-```C
-int print_debug_move_Vec_$T(Vec(T) self)
-```
-
-Print in C code syntax, consuming the argument.
+Note that this method has no effect on the allocated capacity of
+the vector.
 
 <hr>
 <p>&nbsp;</p>

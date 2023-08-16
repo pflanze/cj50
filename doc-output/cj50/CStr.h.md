@@ -88,6 +88,14 @@ Same as `print_cstr`, but move (rather, copy) the reference. Like
 print_cstr, still does not consume `s` since it's a borrowed type
 anyway.
 
+## fprintln_cstr {#one_fprintln_cstr}
+
+```C
+int fprintln_cstr(FILE *out, const cstr *s)
+```
+
+Print for program user.
+
 ## print_debug_cstr {#one_print_debug_cstr}
 
 ```C

@@ -2,16 +2,13 @@
 
 # Normal functions
 
-## filecontents_String {#one_filecontents_String}
+## new_String_from_move_$T {#one_new_String_from_move_QDT}
 
 ```C
-Result(String, UnicodeError) filecontents_String(cstr path, size_t max_len)
+String new_String_from_move_$T(T v)
 ```
 
-Returns a copy of the contents of the file at the given `path` as
-a String, if possible (no system errors occurred). If the file
-contains more than `maxlen` unicode codepoints, an error with
-`.kind == UnicodeErrorKind_LimitExceededError` is returned.
+Create a String from a number.
 
 <hr>
 <p>&nbsp;</p>
