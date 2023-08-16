@@ -703,7 +703,7 @@ my @itemss = map { [ filedocs($_) ] } @headerfiles;
             $subsection =~ s/^\d+(?:\.\d+)? +//;
             $doc .= "## $subsection\n\n";
             # ah and here we sort the symbol instead of go straight:
-            for my $sym (sort { lc($a) cmp lc($b) } keys %$items) {
+            for my $sym (sort { lc($a) cmp lc($b) or $a cmp $b } keys %$items) {
                 # only change from copy paste is here:
                 my $item = $items->{$sym};
                 my $path = $item->headerpath;
