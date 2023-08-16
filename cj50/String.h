@@ -170,12 +170,12 @@ Option(cstr) cstr_String(String *s) {
 /// Get a slice of the string. Note that the given range of indices
 /// must be in byte positions, not unicode codepoints. No check is
 /// done that the given positions are at UTF-8 boundaries. Aborts for
-/// invalid indices. (XX todo: `slice_String` or `get_slice_String`
+/// invalid indices. (XX todo: `slice_of_String` or `get_slice_of_String`
 /// should generally be used instead.)
 
 static UNUSED
 slice(char) slice_unsafe_String(const String *s, Range idx) {
-    return slice_Vec_char(&s->vec, idx);
+    return slice_of_Vec_char(&s->vec, idx);
 }
 
 
