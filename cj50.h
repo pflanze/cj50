@@ -1198,12 +1198,21 @@ cleanup:
              , UnicodeError*: fprintln_UnicodeError             \
         )((out), (v))
 
-/// Get a `utf8char` from a collection.
+/// Get a `utf8char` from a collection. DEPRECATED, use get_ucodepoint
+/// instead.
 
 #define get_utf8char(s, idx)                                    \
     _Generic((s)                                                \
              , String*: get_utf8char_String                     \
         )((s), (idx))
+
+/// Get a `ucodepoint` from a collection.
+
+#define get_ucodepoint(s, idx)                                  \
+    _Generic((s)                                                \
+             , String*: get_ucodepoint_String                   \
+        )((s), (idx))
+
 
 /// Clear a collection or similar thing (make it empty).
 

@@ -331,6 +331,8 @@ Result(Option(ucodepoint), UnicodeError) get_ucodepoint_unlocked_SliceIterator_c
 /// not point to the beginning of a byte sequence for a UTF-8 encoded
 /// codepoint.
 
+/// DEPRECATED, use get_ucodepoint_String instead.
+
 static UNUSED
 Option(utf8char) get_utf8char_String(const String *s, size_t idx) {
     size_t len = s->vec.len;
@@ -536,6 +538,24 @@ Result(ucodepoint, UnicodeError) ucodepoint_from_cstr(cstr s) {
 
 cleanup1:
     END_Result();
+}
+
+
+/// Get the character (unicode codepoint, to be precise) at byte
+/// position `idx` of `s`, if possible. Failures can be because `idx`
+/// is at or behind the end of the string contents, or because it does
+/// not point to the beginning of a byte sequence for a UTF-8 encoded
+/// codepoint.
+
+static UNUSED
+Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx) {
+    AUTO iter = new_SliceIterator_char(slice_unsafe_String(
+                                           s, range(idx, s->vec.len)));
+    if_let_Ok(opt_cp, get_ucodepoint_unlocked_SliceIterator_char(&iter)) {
+        return opt_cp;
+    } else_Err(UNUSED _) {
+        return none_ucodepoint();
+    } end_let_Ok;
 }
 
 
