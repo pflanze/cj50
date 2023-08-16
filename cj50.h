@@ -951,6 +951,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(String): unwrap_Option_String                     \
              , Option(char): unwrap_Option_char                         \
              , Option(utf8char): unwrap_Option_utf8char                 \
+             , Option(ucodepoint): unwrap_Option_ucodepoint             \
              , Option(int): unwrap_Option_int                           \
              , Option(u8): unwrap_Option_u8                             \
              , Option(u64): unwrap_Option_u64                           \
