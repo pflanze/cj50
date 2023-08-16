@@ -19,7 +19,7 @@
 
 
 static UNUSED
-void die_bug_unicode() {
+NORETURN die_bug_unicode() {
     DIE("bug in unicode.h");
 }
 
@@ -60,6 +60,9 @@ int encode_utf8(uint32_t cp, uint8_t *out) {
     return -1;
     // XX weren't there holes in validity, too?
 }
+
+// utf8_sequence_len_ucodepoint(ucodepoint cp) see further down.
+
 
 /// How many bytes the UTF-8 character sequence takes when `b` is its
 /// initial byte. None is returned if `b` is not ascii or an initial
@@ -123,6 +126,28 @@ int print_debug_move_ucodepoint(ucodepoint a) {
 }
 
 // print_ucodepoint, print_move_ucodepoint see further down
+
+
+/// How many bytes the UTF-8 character sequence for unicode codepoint
+/// `cp` takes (1..4). Since `ucodepoint` is guaranteed to be a
+/// unicode codepoint, no errors are possible.
+
+static UNUSED
+int utf8_sequence_len_ucodepoint(ucodepoint cp) {
+    if (cp.u32 <= 0x7F) {
+        return 1;
+    }
+    if (cp.u32 <= 0x7FF) {
+        return 2;
+    }
+    if (cp.u32 <= 0xFFFF) {
+        return 3;
+    }
+    if (cp.u32 <= 0x10FFFF) {
+        return 4;
+    }
+    die_bug_unicode();
+}
 
 // ------------------------------------------------------------------
 
