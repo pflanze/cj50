@@ -46,6 +46,12 @@ typedef struct DecodingError {
         .codepoint = (cp)                               \
     })
 
+#define DecodingError_OverlongEncoding(cp)              \
+    ((DecodingError) {                                  \
+        .kind = DecodingErrorKind_OverlongEncoding,     \
+        .byte_number = (cp)                             \
+    })
+
 
 // Sick, using bool here since even NORETURN wouldn't make gcc accept
 // the void function in boolean context.
@@ -93,8 +99,8 @@ int print_debug_DecodingError(const DecodingError *e) {
                       e->codepoint));
         break;
     case DecodingErrorKind_OverlongEncoding:
-        // XX will it have some info?
-        RESRET(printf("DecodingErrorKind_OverlongEncoding"));
+        RESRET(printf("DecodingError_OverlongEncoding(%i)",
+                      e->codepoint));
         break;
     }
     RESRET(printf(")"));
@@ -125,8 +131,8 @@ int fprintln_DecodingError(FILE* out, const DecodingError* e) {
                        e->codepoint));
         break;
     case DecodingErrorKind_OverlongEncoding:
-        // XX will this have additional info?
-        RESRET(fprintf(out, "overlong encoding"));
+        RESRET(fprintf(out, "overlong encoding of code point %i",
+                       e->codepoint));
         break;
     }
     RESRET(fprintf(out, "\n"));

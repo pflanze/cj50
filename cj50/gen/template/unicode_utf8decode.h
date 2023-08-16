@@ -18,11 +18,12 @@
         RETURN_Ok(none_ucodepoint(), cleanup);
     }
     char b1 = POSSIBLYDEREF(_b1);
+    int numbytes;
     if ((b1 & 128) == 0) {
         // codepoint encoded as a single byte
+        numbytes = 1;
         codepoint = b1;
     } else {
-        int numbytes;
         if        ((b1 & 0b11100000) == 0b11000000) {
             numbytes = 2;
             codepoint = b1 & 0b11111;
@@ -51,8 +52,15 @@
         }
     }
     if (codepoint <= 0x10FFFF) {
-        RETURN_Ok(some_ucodepoint(ucodepoint(codepoint)),
-                  cleanup);
+        AUTO cp = ucodepoint(codepoint);
+        int expected_numbytes = utf8_sequence_len_ucodepoint(cp);
+        if (expected_numbytes == numbytes) {
+            RETURN_Ok(some_ucodepoint(cp),
+                      cleanup);
+        } else {
+            RETURN_Err(DecodingError_OverlongEncoding(codepoint),
+                       cleanup);
+        }
     } else {
         RETURN_Err(DecodingError_InvalidCodepoint(codepoint),
                    cleanup);
