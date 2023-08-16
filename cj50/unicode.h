@@ -574,6 +574,8 @@ Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx) {
 /// that the given positions are at UTF-8 boundaries and not beyond
 /// the end of the string, otherwise None is returned.
 
+/// (Also see `unsafe_slice_of_String`.)
+
 static UNUSED
 Option(slice(char)) get_slice_of_String(const String *s, Range idx) {
     if (!(idx.start <= idx.end)) {
