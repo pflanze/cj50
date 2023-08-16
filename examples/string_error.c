@@ -6,11 +6,13 @@
 Result(Unit, String) run(slice(cstr) argv) {
     BEGIN_Result(Unit, String);
     if (argv.len > 2) {
-        String e = new_String_from("Too many arguments: expected 1 or less, got ");
+        String e = new_String_from("Too many arguments: expected one, got ");
         append_move(&e, new_String_from(argv.len - 1));
         RETURN_Err(e, cleanup0);
+    } else if (argv.len == 2) {
+        RETURN_Ok(Unit(), cleanup0);
     } else {
-        RETURN_Err("Error anyway", cleanup0);
+        RETURN_Err("Too few arguments", cleanup0);
     }
 cleanup0:
     END_Result();
