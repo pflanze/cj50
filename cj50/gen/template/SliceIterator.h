@@ -4,6 +4,11 @@
 //  - slice(T)
 //  - Option(ref(T)) (which needs ref(T), obviously)
 
+//! Used to iterate over a slice.
+
+
+/// SliceIterator(T) holds the slice, and the current position into it.
+
 typedef struct SliceIterator(T) {
     slice(T) slice;
     size_t pos;
