@@ -1273,14 +1273,25 @@ cleanup:
 // those anyway.
 
 
-/// Create a slice of various collection types. A slice is borrowing
-/// a range of items from the original collection.
+/// Create a slice of various collection types. A slice is borrowing a
+/// range of items from the original collection. Careful, these
+/// "always succeed": if the range is not applicable, they abort.
 
 #define slice_of(v, range)                              \
     _Generic((v)                                        \
              , slice(char)*: slice_of_slice_char        \
              , mutslice(char)*: slice_of_mutslice_char  \
              , Vec(char)*: slice_of_Vec_char            \
+        )((v), (range))
+
+
+/// Create a slice of various collection types. A slice is borrowing a
+/// range of items from the original collection. These return None if
+/// the given range is not applicable.
+
+#define get_slice_of(v, range)                          \
+    _Generic((v)                                        \
+             , String*: get_slice_of_String             \
         )((v), (range))
 
 

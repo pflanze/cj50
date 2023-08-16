@@ -7,6 +7,9 @@
 #include <cj50/resret.h>
 
 
+GENERATE_Option(slice(char));
+
+
 /// `String` is an owned, mutable type that holds a string of
 /// characters, more precisely, an array of bytes, that represents a
 /// text in UTF-8 encoding. Unlike C strings (see `CStr`), it does not

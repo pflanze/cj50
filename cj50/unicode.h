@@ -77,6 +77,11 @@ Option(u8) utf8_sequence_len_u8(u8 b) {
     return none_u8();
 }
 
+static UNUSED
+bool is_utf8_continuation_byte(u8 b) {
+    return (b & 0b11000000) == 0b10000000;
+}
+
 
 // ------------------------------------------------------------------
 
@@ -562,6 +567,33 @@ Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx) {
         return none_ucodepoint();
     } end_let_Ok;
 }
+
+
+/// Get a slice of the string. Note that the given range of indices
+/// must be in byte positions, not unicode codepoints. Checks are done
+/// that the given positions are at UTF-8 boundaries and not beyond
+/// the end of the string, otherwise None is returned.
+
+static UNUSED
+Option(slice(char)) get_slice_of_String(const String *s, Range idx) {
+    if (!(idx.start <= idx.end)) {
+        return none_slice_char();
+    }
+    size_t len = s->vec.len;
+    if (!(idx.end <= len)) {
+        return none_slice_char();
+    }
+    if (idx.end < len) {
+        if (is_utf8_continuation_byte(s->vec.ptr[idx.end])) {
+            return none_slice_char();
+        }
+    }
+    if (is_utf8_continuation_byte(s->vec.ptr[idx.start])) {
+        return none_slice_char();
+    }
+    return some_slice_char(unsafe_slice_of_String(s, idx));
+}
+
 
 
 /// Read all unicode codepoints into buf until `uchar("\n")` or EOF is
