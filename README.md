@@ -65,3 +65,8 @@ need to run `make gendoc` instead to update the markdown files, but
 that also requires the
 [FunctionalPerl](https://metacpan.org/pod/FunctionalPerl) Perl package
 to be installed.
+
+## Bugs and Todo
+
+See [BUGS](BUGS.md).
+
