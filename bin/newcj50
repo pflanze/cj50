@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
 // -or- (replace String, or see examples/string_error.c):
 
-Result(Unit, String) run(slice(cstr) argv) {
+Result(Unit, String) run(UNUSED slice(cstr) argv) {
     BEGIN_Result(Unit, String);
     
     RETURN_Ok(Unit(), cleanup);
