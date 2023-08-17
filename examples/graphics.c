@@ -24,6 +24,10 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
 }
 
 int main() {
+    if (getenv("NOGRAPHICS")) {
+        return 0;
+    }
+
     float t = 0;
     graphics_render("Graphics",
                     window_width, window_height, render_squares, &t);

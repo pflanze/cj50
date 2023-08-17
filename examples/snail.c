@@ -40,6 +40,10 @@ bool render_snail(SDL_Renderer *rdr, void *ctx) {
 Result(Unit, String) run(UNUSED slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
+    if (getenv("NOGRAPHICS")) {
+        RETURN_Ok(Unit(), cleanup);
+    }
+
     if (getenv("PLOT")) {
         plot_function_float(circle_y, rect2(vec2(-1.4, -1.1), vec2(2.8, 2.2)));
     } else {

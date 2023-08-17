@@ -9,6 +9,10 @@ Option(float) sine(float x) {
 }
 
 int main() {
+    if (getenv("NOGRAPHICS")) {
+        return 0;
+    }
+
     if (getenv("SINGLEFUNCTION")) {
         plot_function_float(sine, rect2(vec2(-2, -2), vec2(4, 4)));
     } else {
