@@ -893,6 +893,8 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , bool*: equal_bool                                        \
              , bool: equal_move_bool                                    \
              , char: equal_move_char                                    \
+             , Color*: equal_Color                                      \
+             , Color: equal_move_Color                                  \
         )((a), (b))
 
 /* /// Call `equal(&a, &b)` but works even if `a` or `b` are expressions */

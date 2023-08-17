@@ -127,6 +127,18 @@ Color color(uint8_t r, uint8_t g, uint8_t b) {
     return (Color) { r, g, b };
 }
 
+static UNUSED
+bool equal_Color(const Color *a, const Color *b) {
+    return ((a->r == b->r) &&
+            (a->g == b->g) &&
+            (a->b == b->b));
+}
+
+static UNUSED
+bool equal_move_Color(Color a, Color b) {
+    return equal_Color(&a, &b);
+}
+
 
 static UNUSED
 SDL_Rect to_sdl_Rect2(Rect2 r) {
