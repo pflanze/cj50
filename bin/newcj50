@@ -46,6 +46,8 @@ int main(int argc, char** argv) {
 Result(Unit, String) run(slice(cstr) argv) {
     BEGIN_Result(Unit, String);
     
+    RETURN_Ok(Unit(), cleanup);
+cleanup:
     END_Result();
 }
 
