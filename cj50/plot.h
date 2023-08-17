@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <cj50/sdlutil.h>
 #include <cj50/float.h>
+#include <cj50/gen/Vec.h>
 
 
 /// Combination of color and a function, for drawing multiple
@@ -12,9 +13,35 @@ typedef struct ColorFunction_float {
     Option(float)(*f)(float);
 } ColorFunction_float;
 
+static
+void drop_ColorFunction_float(UNUSED ColorFunction_float v) {}
+
+static
+bool equal_ColorFunction_float(const ColorFunction_float *a,
+                               const ColorFunction_float *b) {
+    return (equal_Color(&a->color, &b->color) &&
+            a->f == b->f);
+}
+
+static
+int print_debug_ColorFunction_float(const ColorFunction_float *v) {
+    INIT_RESRET;
+    RESRET(printf("ColorFunction_float("));
+    RESRET(print_debug_Color(&v->color));
+    RESRET(printf(", %p)", v->f));
+cleanup:
+    return ret;
+}
+
+GENERATE_Option(ColorFunction_float);
+
+#define T ColorFunction_float
+#include <cj50/gen/template/Vec.h>
+#undef T
+
+
 struct PlotrenderCtx {
-    size_t num_functions;
-    ColorFunction_float* functions;
+    slice(ColorFunction_float) functions;
     int width;
     int height;
     Rect2 viewport;
@@ -33,9 +60,9 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     float w = ctx->width;
     float h = ctx->height;
 
-    for (size_t j = 0; j < ctx->num_functions; j++) {
-        Color color = ctx->functions[j].color;
-        Option(float)(*f)(float) = ctx->functions[j].f;
+    for (size_t j = 0; j < ctx->functions.len; j++) {
+        Color color = ctx->functions.ptr[j].color;
+        Option(float)(*f)(float) = ctx->functions.ptr[j].f;
         
         assert_sdl(SDL_SetRenderDrawColor(renderer,
                                           color.r,
@@ -67,13 +94,13 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 /// functions, which expect a float and return an optional float
 /// when possible. `viewport` is the (initial) range of coordinates
 /// that is shown on the screen.
-int plot_functions_float(size_t num_fs, ColorFunction_float* fs,
+int plot_functions_float(slice(ColorFunction_float) fs,
                          Rect2 viewport) {
     const int width = 800;
     const int height = 600;
 
     struct PlotrenderCtx ctx = {
-        num_fs, fs, width, height, viewport
+        fs, width, height, viewport
     };
 
     graphics_render("Plot multiple functions",
@@ -91,18 +118,20 @@ int plot_function_float(Option(float)(*f)(float), Rect2 viewport) {
     const int width = 800;
     const int height = 600;
 
-#define NUMFS 1
-    ColorFunction_float fs[NUMFS] = {
-        { color(240, 220, 0), f }
-    };
+    DEF_SLICE(ColorFunction_float, fs,
+              {
+                  { color(240, 220, 0), f }
+              });
 
     struct PlotrenderCtx ctx = {
-        NUMFS, fs, width, height, viewport
+        fs,
+        width,
+        height,
+        viewport
     };
 
     graphics_render("Plot single function", width, height, plot_render, &ctx);
 
     return 0;
-#undef NUMFS
 }
 
