@@ -139,6 +139,15 @@ bool equal_move_Color(Color a, Color b) {
     return equal_Color(&a, &b);
 }
 
+static UNUSED
+int print_debug_Color(const Color *v) {
+    return printf("color(%i, %i, %i)", v->r, v->g, v->b);
+}
+
+static UNUSED
+int print_debug_move_Color(Color v) {
+    return print_debug_Color(&v);
+}
 
 static UNUSED
 SDL_Rect to_sdl_Rect2(Rect2 r) {

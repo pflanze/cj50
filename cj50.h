@@ -705,6 +705,8 @@ GENERATE_PRINTLN(ucodepoint);
              , Result(String, SystemError): print_debug_move_Result_String__SystemError \
              , SystemError: print_debug_SystemError                     \
              , UnicodeError*: print_debug_UnicodeError                  \
+             , Color*: print_debug_Color                                \
+             , Color: print_debug_move_Color                            \
         )(v)
 
 
