@@ -45,7 +45,11 @@ Result(Unit, String) run(UNUSED slice(cstr) argv) {
     }
 
     if (getenv("PLOT")) {
-        plot_function_float(circle_y, rect2(vec2(-1.4, -1.1), vec2(2.8, 2.2)));
+        DEF_SLICE(ColorFunction_float, fs, {
+                { color(255, 0, 0), circle_y },
+                { color(0, 255, 0), snail_y },
+            });
+        plot_functions_float(fs, rect2(vec2(-1.4, -1.1), vec2(2.8, 2.2)));
     } else {
         float t = 0.0;
         graphics_render("Snail", 640, 480, render_snail, &t);
