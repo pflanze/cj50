@@ -14,14 +14,18 @@ bool equal_bool(const bool *a, const bool *b) {
 }
 
 static UNUSED
-bool equal_move_bool(const bool a, const bool b) {
+bool equal_move_bool(bool a, bool b) {
     return (!!a) == (!!b);
 }
 
 static UNUSED
-int print_debug_bool(bool v) {
+int print_debug_bool(const bool *v) {
     return printf("%s", v ? "true" : "false");
 }
 
+static UNUSED
+int print_debug_move_bool(bool v) {
+    return print_debug_bool(&v);
+}
 
 GENERATE_Option(bool);

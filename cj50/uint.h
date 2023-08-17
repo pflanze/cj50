@@ -17,10 +17,8 @@
 
 typedef unsigned int uint;
 
-int print_uint(uint n) {
-    return printf("%u", n);
-}
-
+static UNUSED
+void drop_uint(const uint UNUSED a) {}
 
 static UNUSED
 bool equal_uint(const uint *a, const uint *b) {
@@ -33,11 +31,23 @@ bool equal_move_uint(const uint a, const uint b) {
 }
 
 static UNUSED
-void drop_uint(const uint UNUSED a) {}
+int print_uint(const uint *n) {
+    return printf("%u", *n);
+}
+
+static UNUSED
+int print_move_uint(uint n) {
+    return print_uint(&n);
+}
 
 static UNUSED
 uint print_debug_uint(const uint *n) {
-    return printf("%i", *n);
+    return print_uint(n);
+}
+
+static UNUSED
+uint print_debug_move_uint(uint n) {
+    return print_debug_uint(&n);
 }
 
 GENERATE_Option(uint);

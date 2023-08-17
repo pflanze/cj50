@@ -646,12 +646,18 @@ GENERATE_PRINTLN(ucodepoint);
              , String: print_debug_move_String                          \
              , bool: print_debug_bool                                   \
              , char: print_debug_char                                   \
-             , int: print_int                                           \
-             , uint: print_uint                                         \
-             , u8: print_u8                                             \
-             , u64: print_u64                                           \
-             , float: print_float                                       \
-             , double: print_double                                     \
+             , int*: print_int                                          \
+             , int: print_move_int                                      \
+             , u8*: print_u8                                            \
+             , u8: print_move_u8                                        \
+             , u32*: print_u32                                          \
+             , u32: print_move_u32                                      \
+             , u64*: print_u64                                          \
+             , u64: print_move_u64                                      \
+             , float*: print_float                                      \
+             , float: print_move_float                                  \
+             , double*: print_double                                    \
+             , double: print_move_double                                \
              , utf8char*: print_debug_utf8char                          \
              , utf8char: print_debug_move_utf8char                      \
              , ucodepoint*: print_debug_ucodepoint                      \
