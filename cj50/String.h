@@ -244,6 +244,9 @@ Option(cstr) cstr_String(String *s) {
 }
 
 
+GENERATE_Option(strslice);
+
+
 /// Get a slice of the string. Note that the given range of indices
 /// must be in byte positions, not unicode codepoints. No check is
 /// done that the given positions are at UTF-8 boundaries. Aborts for
@@ -251,8 +254,10 @@ Option(cstr) cstr_String(String *s) {
 /// use `get_slice_of_String`.)
 
 static UNUSED
-slice(char) unsafe_slice_of_String(const String *s, Range idx) {
-    return slice_of_Vec_char(&s->vec, idx);
+strslice unsafe_slice_of_String(const String *s, Range idx) {
+    return (strslice) {
+        .slice = slice_of_Vec_char(&s->vec, idx)
+    };
 }
 
 

@@ -560,7 +560,7 @@ cleanup1:
 static UNUSED
 Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx) {
     AUTO iter = new_SliceIterator_char(unsafe_slice_of_String(
-                                           s, range(idx, s->vec.len)));
+                                           s, range(idx, s->vec.len)).slice);
     if_let_Ok(opt_cp, get_ucodepoint_unlocked_SliceIterator_char(&iter)) {
         return opt_cp;
     } else_Err(UNUSED _) {
@@ -577,23 +577,23 @@ Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx) {
 /// (Also see `unsafe_slice_of_String`.)
 
 static UNUSED
-Option(slice(char)) get_slice_of_String(const String *s, Range idx) {
+Option(strslice) get_slice_of_String(const String *s, Range idx) {
     if (!(idx.start <= idx.end)) {
-        return none_slice_char();
+        return none_strslice();
     }
     size_t len = s->vec.len;
     if (!(idx.end <= len)) {
-        return none_slice_char();
+        return none_strslice();
     }
     if (idx.end < len) {
         if (is_utf8_continuation_byte(s->vec.ptr[idx.end])) {
-            return none_slice_char();
+            return none_strslice();
         }
     }
     if (is_utf8_continuation_byte(s->vec.ptr[idx.start])) {
-        return none_slice_char();
+        return none_strslice();
     }
-    return some_slice_char(unsafe_slice_of_String(s, idx));
+    return some_strslice(unsafe_slice_of_String(s, idx));
 }
 
 
