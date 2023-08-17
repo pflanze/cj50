@@ -42,6 +42,59 @@
 
 #define mutslice(T) XCAT(mutslice_,T)
 
+/// Create a slice with its storage on the stack.
+
+/// Example:
+/// 
+/// ```C
+/// DEF_SLICE(ColorFunction_float, sl, {
+///     { color(255, 0, 0), f },
+///     { color(0, 255, 0), g }
+/// });
+/// ```
+
+#define DEF_SLICE(T, var, ...)                                          \
+    T HYGIENIC(val)[] = __VA_ARGS__;                                    \
+    AUTO var = XCAT(new_slice_, T)(HYGIENIC(val),                       \
+                                  sizeof(HYGIENIC(val)) / sizeof(T));   \
+
+
+/// Create a slice from an array variable with static size.
+
+/// NOTE: requires up to date `new_slice` generic.
+
+/// Example:
+/// 
+/// ```C
+/// ColorFunction_float fs[] = {
+///     { color(240, 220, 0), f }
+/// };
+
+/// foo(SLICE_FROM_ARRAY(fs));
+/// ```
+
+#define SLICE_FROM_ARRAY(var)                   \
+    new_slice(var, sizeof(var) / sizeof(var[0]))
+
+
+/// Create a slice from an array variable with static size.
+
+/// (Does not require `new_slice` generic, but needs type name
+/// argument.)
+
+/// Example:
+/// 
+/// ```C
+/// ColorFunction_float fs[] = {
+///     { color(240, 220, 0), f }
+/// };
+
+/// foo(SLICE_FROM_ARRAY_OF_T(ColorFunction_float, fs));
+/// ```
+
+#define SLICE_FROM_ARRAY_OF_T(T, var)                   \
+    XCAT(new_slice_, T)(var, sizeof(var) / sizeof(T))
+
 
 // XX Bummer, why necessary, circular dependencies?
 typedef const char* cstr;
