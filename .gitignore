@@ -13,3 +13,4 @@ examples/vec
 examples/unicode
 examples/string_error
 examples/snail
+examples/mutex
