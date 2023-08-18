@@ -17,9 +17,9 @@ int main() {
     Mutex(int) ms = new_Mutex_int(0);
 
     Thread t1 = unwrap_Result_Thread__SystemError(
-        spawn_thread(thread_run, &ms, new_String()));
+        spawn_thread(thread_run, &ms, String("t1")));
     Thread t2 = unwrap_Result_Thread__SystemError(
-        spawn_thread(thread_run, &ms, new_String()));
+        spawn_thread(thread_run, &ms, String("t2")));
 
     unwrap_Result_ref_void__SystemError(join_Thread(t1));
     unwrap_Result_ref_void__SystemError(join_Thread(t2));

@@ -698,3 +698,10 @@ String new_String_from_cstr(cstr s) {
 #undef NEW_FROM_h
 #include <cj50/gen/dispatch/new_from.h>
 
+
+/// Create a `String` easily; this is just an alias for
+/// `new_from(String, val)`.
+
+#define String(val)                             \
+    new_from(String, val)
+
