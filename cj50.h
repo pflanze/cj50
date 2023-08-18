@@ -721,6 +721,43 @@ GENERATE_PRINTLN(ucodepoint);
              , UnicodeError*: print_debug_UnicodeError                  \
              , Color*: print_debug_Color                                \
              , Color: print_debug_move_Color                            \
+             , const cstr*: print_debug_cstr                                  \
+             , const CStr*: print_debug_CStr                                  \
+             , const String*: print_debug_String                              \
+             , const int*: print_int                                          \
+             , const u8*: print_u8                                            \
+             , const u32*: print_u32                                          \
+             , const u64*: print_u64                                          \
+             , const float*: print_float                                      \
+             , const double*: print_double                                    \
+             , const utf8char*: print_debug_utf8char                          \
+             , const ucodepoint*: print_debug_ucodepoint                      \
+             , const Vec(cstr)*: print_debug_Vec_cstr                         \
+             , const Vec(CStr)*: print_debug_Vec_CStr                         \
+             , const Vec(ucodepoint)*: print_debug_Vec_ucodepoint             \
+             , const Vec(utf8char)*: print_debug_Vec_utf8char                 \
+             , const Vec(char)*: print_debug_Vec_char                         \
+             , const Vec(int)*: print_debug_Vec_int                           \
+             , const mutslice(cstr)*: print_debug_mutslice_cstr               \
+             , const mutslice(CStr)*: print_debug_mutslice_CStr               \
+             , const mutslice(ucodepoint)*: print_debug_mutslice_ucodepoint   \
+             , const mutslice(utf8char)*: print_debug_mutslice_utf8char       \
+             , const mutslice(char)*: print_debug_mutslice_char               \
+             , const mutslice(int)*: print_debug_mutslice_int                 \
+             , const slice(cstr)*: print_debug_slice_cstr                     \
+             , const slice(CStr)*: print_debug_slice_CStr                     \
+             , const slice(ucodepoint)*: print_debug_slice_ucodepoint         \
+             , const slice(utf8char)*: print_debug_slice_utf8char             \
+             , const slice(char)*: print_debug_slice_char                     \
+             , const slice(int)*: print_debug_slice_int                       \
+             , const Option(cstr)*: print_debug_Option_cstr                   \
+             , const Option(CStr)*: print_debug_Option_CStr                   \
+             , const Option(String)*: print_debug_Option_String               \
+             , const Option(int)*: print_debug_Option_int                     \
+             , const Option(float)*: print_debug_Option_float                 \
+             , const Result(int, ParseError)*: print_debug_Result_int__ParseError \
+             , const UnicodeError*: print_debug_UnicodeError                  \
+             , const Color*: print_debug_Color                                \
         )(v)
 
 
@@ -919,6 +956,31 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Vec(utf8char)*: equal_Vec_utf8char                       \
              , Vec(char)*: equal_Vec_utf8char                           \
              , Vec(int)*: equal_Vec_utf8char                            \
+             , const Option(cstr)*: equal_Option_cstr                         \
+             , const Option(String)*: equal_Option_String                     \
+             , const Option(int)*: equal_Option_int                           \
+             , const Option(float)*: equal_Option_float                       \
+             , const Option(char)*: equal_Option_char                         \
+             , const Option(utf8char)*: equal_Option_utf8char                 \
+             , const Option(ucodepoint)*: equal_Option_ucodepoint             \
+             , const utf8char*: equal_utf8char                                \
+             , const ucodepoint*: equal_ucodepoint                            \
+             , const Result(int, ParseError)*: equal_Result_int__ParseError   \
+             , const Result(String, SystemError)*: equal_Result_String__SystemError \
+             , const cstr*: equal_cstr                                        \
+             , const CStr*: equal_CStr                                        \
+             , const String*: equal_String                                    \
+             , const int*: equal_int                                          \
+             , const float*: equal_float                                      \
+             , const double*: equal_double                                    \
+             , const bool*: equal_bool                                        \
+             , const Color*: equal_Color                                      \
+             , const Vec(cstr)*: equal_Vec_cstr                               \
+             , const Vec(CStr)*: equal_Vec_CStr                               \
+             , const Vec(ucodepoint)*: equal_Vec_ucodepoint                   \
+             , const Vec(utf8char)*: equal_Vec_utf8char                       \
+             , const Vec(char)*: equal_Vec_utf8char                           \
+             , const Vec(int)*: equal_Vec_utf8char                            \
         )((a), (b))
 
 /* /// Call `equal(&a, &b)` but works even if `a` or `b` are expressions */
@@ -1220,6 +1282,25 @@ cleanup:
              , mutslice(int)*: len_mutslice_int                   \
              , slice(int)*: len_slice_int                         \
              , String*: len_String                                \
+             , const Vec(cstr)*: len_Vec_cstr                           \
+             , const mutslice(cstr)*: len_mutslice_cstr                 \
+             , const slice(cstr)*: len_slice_cstr                       \
+             , const Vec(CStr)*: len_Vec_CStr                           \
+             , const mutslice(CStr)*: len_mutslice_CStr                 \
+             , const slice(CStr)*: len_slice_CStr                       \
+             , const Vec(ucodepoint)*: len_Vec_ucodepoint               \
+             , const mutslice(ucodepoint)*: len_mutslice_ucodepoint     \
+             , const slice(ucodepoint)*: len_slice_ucodepoint           \
+             , const Vec(utf8char)*: len_Vec_utf8char                   \
+             , const mutslice(utf8char)*: len_mutslice_utf8char         \
+             , const slice(utf8char)*: len_slice_utf8char               \
+             , const Vec(char)*: len_Vec_char                           \
+             , const mutslice(char)*: len_mutslice_char                 \
+             , const slice(char)*: len_slice_char                       \
+             , const Vec(int)*: len_Vec_int                             \
+             , const mutslice(int)*: len_mutslice_int                   \
+             , const slice(int)*: len_slice_int                         \
+             , const String*: len_String                                \
         )(coll)
 
 /// Give a cstr to the given character collection. Note that this may
@@ -1333,6 +1414,12 @@ cleanup:
              , slice(int)*: at_slice_int                \
              , mutslice(int)*: at_mutslice_int          \
              , Vec(int)*: at_Vec_int                    \
+             , const slice(char)*: at_slice_char              \
+             , const mutslice(char)*: at_mutslice_char        \
+             , const Vec(char)*: at_Vec_char                  \
+             , const slice(int)*: at_slice_int                \
+             , const mutslice(int)*: at_mutslice_int          \
+             , const Vec(int)*: at_Vec_int                    \
         )((v), (idx))
 
 
@@ -1348,6 +1435,12 @@ cleanup:
              , slice(int)*: slice_of_slice_int          \
              , mutslice(int)*: slice_of_mutslice_int    \
              , Vec(int)*: slice_of_Vec_int              \
+             , const slice(char)*: slice_of_slice_char        \
+             , const mutslice(char)*: slice_of_mutslice_char  \
+             , const Vec(char)*: slice_of_Vec_char            \
+             , const slice(int)*: slice_of_slice_int          \
+             , const mutslice(int)*: slice_of_mutslice_int    \
+             , const Vec(int)*: slice_of_Vec_int              \
         )((v), (range))
 
 
@@ -1358,6 +1451,7 @@ cleanup:
 #define get_slice_of(v, range)                          \
     _Generic((v)                                        \
              , String*: get_slice_of_String             \
+             , const String*: get_slice_of_String       \
         )((v), (range))
 
 
