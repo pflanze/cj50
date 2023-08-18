@@ -244,7 +244,7 @@ codepoint.
 ## get_slice_of_String {#one_get_slice_of_String}
 
 ```C
-Option(strslice) get_slice_of_String(const String *s, Range idx)
+Option(strslice) get_slice_of_String(const String *s, Range range)
 ```
 
 Get a slice of the string. Note that the given range of indices

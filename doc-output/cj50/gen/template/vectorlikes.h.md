@@ -49,13 +49,23 @@ int print_debug_move_VEC_$T(VEC(T) self)
 
 Print in C code syntax, consuming the argument.
 
+## at_VEC_$T {#one_at_VEC_QDT}
+
+```C
+const T* at_VEC_$T(const VEC(T) *self, size_t idx)
+```
+
+Get a reference to the element at position `i`. Aborts if `i` is
+behind the end of the vectorlike. (XX todo: If you are not sure if
+`i` is valid, use `get` instead.)
+
 ## slice_of_VEC_$T {#one_slice_of_VEC_QDT}
 
 ```C
-slice(T) slice_of_VEC_$T(const VEC(T) *self, Range idx)
+slice(T) slice_of_VEC_$T(const VEC(T) *self, Range range)
 ```
 
-Get a slice of the vectorlike. Aborts for invalid indices. (XX:
+Get a slice of the vectorlike. Aborts for invalid indices. (XX todo:
 Use get_slice_* for a variant that returns failures instead.)
 
 <hr>

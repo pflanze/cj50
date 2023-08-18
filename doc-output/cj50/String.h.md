@@ -131,7 +131,7 @@ The returned `cstr` is borrowed and shares storage with `s`, so
 ## unsafe_slice_of_String {#one_unsafe_slice_of_String}
 
 ```C
-strslice unsafe_slice_of_String(const String *s, Range idx)
+strslice unsafe_slice_of_String(const String *s, Range range)
 ```
 
 Get a slice of the string. Note that the given range of indices
