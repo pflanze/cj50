@@ -254,9 +254,9 @@ GENERATE_Option(strslice);
 /// use `get_slice_of_String`.)
 
 static UNUSED
-strslice unsafe_slice_of_String(const String *s, Range idx) {
+strslice unsafe_slice_of_String(const String *s, Range range) {
     return (strslice) {
-        .slice = slice_of_Vec_char(&s->vec, idx)
+        .slice = slice_of_Vec_char(&s->vec, range)
     };
 }
 

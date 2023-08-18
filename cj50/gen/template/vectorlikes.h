@@ -83,15 +83,15 @@ int XCAT(print_debug_move_, VEC(T))(VEC(T) self) {
 }
 
 
-/// Get a slice of the vectorlike. Aborts for invalid indices. (XX:
+/// Get a slice of the vectorlike. Aborts for invalid indices. (XX todo:
 /// Use get_slice_* for a variant that returns failures instead.)
 
 static UNUSED
-slice(T) XCAT(slice_of_, VEC(T))(const VEC(T) *self, Range idx) {
-    assert(idx.end >= idx.start);
-    assert(idx.end <= self->len);
-    return XCAT(new_slice_, T)(self->ptr + idx.start,
-                               idx.end - idx.start);
+slice(T) XCAT(slice_of_, VEC(T))(const VEC(T) *self, Range range) {
+    assert(range.end >= range.start);
+    assert(range.end <= self->len);
+    return XCAT(new_slice_, T)(self->ptr + range.start,
+                               range.end - range.start);
 }
 
 

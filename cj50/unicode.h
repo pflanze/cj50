@@ -577,23 +577,23 @@ Option(ucodepoint) get_ucodepoint_String(const String *s, size_t idx) {
 /// (Also see `unsafe_slice_of_String`.)
 
 static UNUSED
-Option(strslice) get_slice_of_String(const String *s, Range idx) {
-    if (!(idx.start <= idx.end)) {
+Option(strslice) get_slice_of_String(const String *s, Range range) {
+    if (!(range.start <= range.end)) {
         return none_strslice();
     }
     size_t len = s->vec.len;
-    if (!(idx.end <= len)) {
+    if (!(range.end <= len)) {
         return none_strslice();
     }
-    if (idx.end < len) {
-        if (is_utf8_continuation_byte(s->vec.ptr[idx.end])) {
+    if (range.end < len) {
+        if (is_utf8_continuation_byte(s->vec.ptr[range.end])) {
             return none_strslice();
         }
     }
-    if (is_utf8_continuation_byte(s->vec.ptr[idx.start])) {
+    if (is_utf8_continuation_byte(s->vec.ptr[range.start])) {
         return none_strslice();
     }
-    return some_strslice(unsafe_slice_of_String(s, idx));
+    return some_strslice(unsafe_slice_of_String(s, range));
 }
 
 
