@@ -70,6 +70,66 @@ size_t max_size_t(size_t a, size_t b)
 
 Return the larger of the two arguments.
 
+# Macros
+
+## DEF_SLICE {#three_DEF_SLICE}
+
+```C
+DEF_SLICE(T, var, ...)
+```
+
+Create a slice with its storage on the stack.
+
+Example:
+
+```C
+DEF_SLICE(ColorFunction_float, sl, {
+    { color(255, 0, 0), f },
+    { color(0, 255, 0), g }
+});
+```
+
+## SLICE_FROM_ARRAY {#three_SLICE_FROM_ARRAY}
+
+```C
+SLICE_FROM_ARRAY(var)
+```
+
+Create a slice from an array variable with static size.
+
+NOTE: requires up to date `new_slice` generic.
+
+Example:
+
+```C
+ColorFunction_float fs[] = {
+    { color(240, 220, 0), f }
+};
+
+foo(SLICE_FROM_ARRAY(fs));
+```
+
+## SLICE_FROM_ARRAY_OF_T {#three_SLICE_FROM_ARRAY_OF_T}
+
+```C
+SLICE_FROM_ARRAY_OF_T(T, var)
+```
+
+Create a slice from an array variable with static size.
+
+(Does not require `new_slice` generic, but needs type name
+argument.)
+
+Example:
+
+```C
+ColorFunction_float fs[] = {
+    { color(240, 220, 0), f }
+};
+
+foo(SLICE_FROM_ARRAY_OF_T(ColorFunction_float, fs));
+```
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

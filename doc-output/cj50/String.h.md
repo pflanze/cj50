@@ -17,9 +17,33 @@ use a '\0' terminator, and can represent embedded '\0'
 characters. It automatically resizes itself as needed to accept
 additional text that is added.
 
-It is implemented via a `Vec(char)`.
+It is implemented as a wrapper around `Vec(char)`. It adds the
+guarantee that the contents is in correct UTF-8 encoding.
+
+## strslice {#zero_strslice}
+
+```C
+typedef struct strslice {
+    slice(char) slice;
+} strslice
+```
+
+`strslice` is a borrowed, immutable type that, just like `String`,
+holds a string of characters, more precisely, an array of bytes,
+that represents a text in UTF-8 encoding.
+
+It is implemented as a wrapper around `slice(char)`. It adds the
+guarantee that the contents is in correct UTF-8 encoding.
 
 # Normal functions
+
+## deref_String {#one_deref_String}
+
+```C
+strslice deref_String(const String *s)
+```
+
+Get the string slice of the whole String.
 
 ## clear_String {#one_clear_String}
 
@@ -47,6 +71,15 @@ String with_capacity_String(size_t capacity)
 ```
 
 Create a String with the given `capacity` (but 0 current length).
+
+## len_strslice {#one_len_strslice}
+
+```C
+size_t len_strslice(const strslice *s)
+```
+
+The length in *bytes*, not characters. This operation is fast (has
+a constant cost), unlike `strlen` for C strings.
 
 ## len_String {#one_len_String}
 
@@ -95,17 +128,17 @@ are no embedded `'\0'` characters.
 The returned `cstr` is borrowed and shares storage with `s`, so
 `s` may not be mutated while the `cstr` is in use.
 
-## slice_unsafe_String {#one_slice_unsafe_String}
+## unsafe_slice_of_String {#one_unsafe_slice_of_String}
 
 ```C
-slice(char) slice_unsafe_String(const String *s, Range idx)
+strslice unsafe_slice_of_String(const String *s, Range idx)
 ```
 
 Get a slice of the string. Note that the given range of indices
 must be in byte positions, not unicode codepoints. No check is
 done that the given positions are at UTF-8 boundaries. Aborts for
-invalid indices. (XX todo: `slice_String` or `get_slice_String`
-should generally be used instead.)
+invalid indices. (Only use if sure about the indices, otherwise
+use `get_slice_of_String`.)
 
 <hr>
 <p>&nbsp;</p>

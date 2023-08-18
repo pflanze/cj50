@@ -241,6 +241,19 @@ is at or behind the end of the string contents, or because it does
 not point to the beginning of a byte sequence for a UTF-8 encoded
 codepoint.
 
+## get_slice_of_String {#one_get_slice_of_String}
+
+```C
+Option(strslice) get_slice_of_String(const String *s, Range idx)
+```
+
+Get a slice of the string. Note that the given range of indices
+must be in byte positions, not unicode codepoints. Checks are done
+that the given positions are at UTF-8 boundaries and not beyond
+the end of the string, otherwise None is returned.
+
+(Also see `unsafe_slice_of_String`.)
+
 ## read_line_Vec_ucodepoint {#one_read_line_Vec_ucodepoint}
 
 ```C
@@ -333,6 +346,15 @@ utf8char(str)
 
 Careful, currently unsafe, assumes that the str is a string
 constant and carefully entered!
+
+## String {#three_String}
+
+```C
+String(val)
+```
+
+Create a `String` easily; this is just an alias for
+`new_from(String, val)`.
 
 <hr>
 <p>&nbsp;</p>

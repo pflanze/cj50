@@ -49,10 +49,10 @@ int print_debug_move_VEC_$T(VEC(T) self)
 
 Print in C code syntax, consuming the argument.
 
-## slice_VEC_$T {#one_slice_VEC_QDT}
+## slice_of_VEC_$T {#one_slice_of_VEC_QDT}
 
 ```C
-slice(T) slice_VEC_$T(const VEC(T) *self, Range idx)
+slice(T) slice_of_VEC_$T(const VEC(T) *self, Range idx)
 ```
 
 Get a slice of the vectorlike. Aborts for invalid indices. (XX:

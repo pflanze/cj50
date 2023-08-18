@@ -19,7 +19,7 @@ functions in the same plot via `plot_functions_float`.
 ## plot_functions_float {#one_plot_functions_float}
 
 ```C
-int plot_functions_float(size_t num_fs, ColorFunction_float* fs,
+int plot_functions_float(slice(ColorFunction_float) fs,
                          Rect2 viewport)
 ```
 
