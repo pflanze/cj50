@@ -83,6 +83,17 @@ int XCAT(print_debug_move_, VEC(T))(VEC(T) self) {
 }
 
 
+/// Get a reference to the element at position `i`. Aborts if `i` is
+/// behind the end of the vectorlike. (XX todo: If you are not sure if
+/// `i` is valid, use `get` instead.)
+
+static UNUSED
+const T* XCAT(at_, VEC(T))(const VEC(T) *self, size_t idx) {
+    assert(idx < self->len);
+    return &self->ptr[idx];
+}
+
+
 /// Get a slice of the vectorlike. Aborts for invalid indices. (XX todo:
 /// Use get_slice_* for a variant that returns failures instead.)
 

@@ -1321,6 +1321,21 @@ cleanup:
 // those anyway.
 
 
+/// Get a reference to the element at position `i`. Aborts if `i` is
+/// behind the end of the collection. (XX todo: If you are not sure if
+/// `i` is valid, use `get` instead.)
+
+#define at(v, idx)                                      \
+    _Generic((v)                                        \
+             , slice(char)*: at_slice_char              \
+             , mutslice(char)*: at_mutslice_char        \
+             , Vec(char)*: at_Vec_char                  \
+             , slice(int)*: at_slice_int                \
+             , mutslice(int)*: at_mutslice_int          \
+             , Vec(int)*: at_Vec_int                    \
+        )((v), (idx))
+
+
 /// Create a slice of various collection types. A slice is borrowing a
 /// range of items from the original collection. Careful, these
 /// "always succeed": if the range is not applicable, they abort.
