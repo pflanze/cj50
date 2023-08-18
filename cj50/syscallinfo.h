@@ -38,6 +38,8 @@ const SyscallInfo syscallinfos[] = {
     { 9, 2, "fsync" },
     { 10, 2, "fdatasync" },
     { 11, 3, "fmemopen" },
+    { 12, 3, "pthread_create" }, // POSIX threads but it's in section 3 ??
+    { 13, 3, "pthread_join" },
 };
 
 // `syscallInfoId_t` identifies a SyscallInfo instance
@@ -55,6 +57,6 @@ typedef uint16_t syscallInfoId_t;
 #define SYSCALLINFO_fsync (syscallinfos[9])
 #define SYSCALLINFO_fdatasync (syscallinfos[10])
 #define SYSCALLINFO_fmemopen (syscallinfos[11])
-
-
+#define SYSCALLINFO_pthread_create (syscallinfos[12])
+#define SYSCALLINFO_pthread_join (syscallinfos[13])
 
