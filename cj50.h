@@ -47,6 +47,7 @@
 #include <cj50/instantiations/Vec_char.h>
 #include <cj50/instantiations/Result_Unit__String.h>
 #include <cj50/os_thread.h>
+#include <cj50/gen/Mutex.h>
 
 
 // Read a CStr from `inp`, terminated by a newline (the newline is
@@ -1306,6 +1307,26 @@ cleanup:
         )((v), (range))
 
 
+/// Return true if the environment variable with the given name is set
+/// to a string that is not "0"
+
+static UNUSED
+bool env_is_true(cstr varname) {
+    cstr val = getenv(varname);
+    if (val) {
+        if (val[0] == '\0') {
+            return false;
+        }
+        if ((val[0] == '0') && (val[1] == '\0')) {
+            return false;
+        }
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 /// `MAIN` takes the name of the function to run when the program
 /// starts. `mainfunction` receives a `slice` of `cstr` values which
 /// are holding the program name in position 0 (usually, but not
@@ -1327,6 +1348,7 @@ cleanup:
 
 #define MAIN(mainfunction)                                              \
     int main(int argc, const char**argv) {                              \
+        __CJ50_Mutex_debug = env_is_true("CJ50_DEBUG");                 \
         if_let_Ok(UNUSED _, (mainfunction)(new_slice_cstr(argv, argc))) { \
             return 0;                                                   \
         } else_Err(e) {                                                 \
