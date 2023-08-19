@@ -45,7 +45,7 @@ typedef struct VecError {
 
 A type indicating an error handling Vec. The instances are:
 
-    VecError_out_of_capacity
+    VecError_OutOfCapacity
 
 # Normal functions
 

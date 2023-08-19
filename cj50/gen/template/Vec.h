@@ -108,7 +108,7 @@ Vec(T) XCAT(with_capacity_, Vec(T))(size_t cap) {
 
 /// Appends an element to the back of the vector if there's still
 /// capacity left for it, otherwise returns a
-/// `VecError_out_of_capacity` error. I.e. never allocates additional
+/// `VecError_OutOfCapacity` error. I.e. never allocates additional
 /// memory.
 static UNUSED
 Result(Unit, VecError) XCAT(push_within_capacity_, Vec(T))(
@@ -121,7 +121,7 @@ Result(Unit, VecError) XCAT(push_within_capacity_, Vec(T))(
         self->len = len + 1;
         return Ok(Unit, VecError)(Unit());
     } else {
-        return Err(Unit, VecError)(VecError_out_of_capacity);
+        return Err(Unit, VecError)(VecError_OutOfCapacity);
     }
 }
 

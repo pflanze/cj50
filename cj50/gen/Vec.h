@@ -118,7 +118,7 @@ int print_move_cstr(cstr s);
 
 /// A type indicating an error handling Vec. The instances are:
 
-///     VecError_out_of_capacity
+///     VecError_OutOfCapacity
 
 typedef struct VecError {
     uint8_t code;
@@ -134,10 +134,10 @@ bool equal_VecError(const VecError *a, const VecError *b) {
 
 #define DEF_VecError(code, name) const VecError name = VecError(code)
 
-DEF_VecError(0, VecError_out_of_capacity);
+DEF_VecError(0, VecError_OutOfCapacity);
 
 const struct constant_name_and_message constant_name_and_message_from_VecError_code[] = {
-    { "VecError_out_of_capacity", "Vec is out of capacity to push more items" },
+    { "VecError_OutOfCapacity", "Vec is out of capacity to push more items" },
 };
 #define constant_name_and_message_from_VecError_code_len        \
     (sizeof(constant_name_and_message_from_VecError_code)       \

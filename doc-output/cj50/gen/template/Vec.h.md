@@ -76,7 +76,7 @@ Result(Unit, VecError) push_within_capacity_Vec_$T(
 
 Appends an element to the back of the vector if there's still
 capacity left for it, otherwise returns a
-`VecError_out_of_capacity` error. I.e. never allocates additional
+`VecError_OutOfCapacity` error. I.e. never allocates additional
 memory.
 
 ## reserve_Vec_\$T {#one_reserve_Vec_QordninetwoEQDT}
