@@ -56,7 +56,7 @@ Draw the given rectangle with the current colors.
 ## draw_circle {#one_draw_circle}
 
 ```C
-void draw_circle(SDL_Renderer* renderer, Vec2 pos, int radius)
+void draw_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius)
 ```
 
 Draw the given circle with the current colors.
@@ -64,10 +64,26 @@ Draw the given circle with the current colors.
 ## draw_fill_circle {#one_draw_fill_circle}
 
 ```C
-void draw_fill_circle(SDL_Renderer* renderer, Vec2 pos, int radius)
+void draw_fill_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius)
 ```
 
 Draw the given circle with the current colors.
+
+## draw_points_int {#one_draw_points_int}
+
+```C
+void draw_points_int(SDL_Renderer* renderer, slice(Vec2(int)) points)
+```
+
+Draw the given points.
+
+## draw_points_float {#one_draw_points_float}
+
+```C
+void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points)
+```
+
+Draw the given points.
 
 # Generic functions
 

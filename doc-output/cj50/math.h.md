@@ -5,35 +5,12 @@ This provides mathematical types: vectors and shapes.
 
 # Types
 
-## Vec2 {#zero_VecQtwoE}
-
-```C
-typedef struct Vec2 {
-    float x;
-    float y;
-} Vec2
-```
-
-A 2-dimentional vector.
-
-## Vec3 {#zero_VecQthreeE}
-
-```C
-typedef struct Vec3 {
-    float x;
-    float y;
-    float z;
-} Vec3
-```
-
-A 3-dimentional vector.
-
 ## Line2 {#zero_LineQtwoE}
 
 ```C
 typedef struct Line2 {
-    Vec2 start;
-    Vec2 extent;
+    Vec2(float) start;
+    Vec2(float) extent;
 } Line2
 ```
 
@@ -43,24 +20,12 @@ A line. The end point is at add(start, extent).
 
 ```C
 typedef struct Rect2 {
-    Vec2 start;
-    Vec2 extent;
+    Vec2(float) start;
+    Vec2(float) extent;
 } Rect2
 ```
 
 A rectangle. The opposite corner is at add(start, extent).
-
-## Color {#zero_Color}
-
-```C
-typedef struct Color {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-} Color
-```
-
-A standard 8-bit RGB color representation.
 
 # Constants
 
@@ -84,26 +49,10 @@ The math constant e (Euler's number).
 
 # Normal functions
 
-## vec2 {#one_vecQtwoE}
-
-```C
-Vec2 vec2(float x, float y)
-```
-
-Construct a Vec2.
-
-## vec3 {#one_vecQthreeE}
-
-```C
-Vec3 vec3(float x, float y, float z)
-```
-
-Construct a Vec3.
-
 ## line2 {#one_lineQtwoE}
 
 ```C
-Line2 line2(Vec2 start, Vec2 extent)
+Line2 line2(Vec2(float) start, Vec2(float) extent)
 ```
 
 Construct a Line2
@@ -111,126 +60,10 @@ Construct a Line2
 ## rect2 {#one_rectQtwoE}
 
 ```C
-Rect2 rect2(Vec2 start, Vec2 extent)
+Rect2 rect2(Vec2(float) start, Vec2(float) extent)
 ```
 
 Construct a Rect2
-
-## color {#one_color}
-
-```C
-Color color(uint8_t r, uint8_t g, uint8_t b)
-```
-
-Constructing a color
-
-# Generic functions
-
-## to_sdl {#two_to_sdl}
-
-```C
-to_sdl(v)
-```
-
-Convert a value of a type from cjmath.h into a type from SDL.h
-
-Members:
-
-```C
-Rect2 : SDL_Rect to_sdl_Rect2(Rect2 r);
-```
-
-## add {#two_add}
-
-```C
-add(a, b)
-```
-
-Add together two values, for which `+` is not defined, e.g. Vec2
-or Vec3. Both values need to be of the same type.
-
-Example:
-
-```C
-DBG(add(vec2(10, -3), vec2(3, 5)))  /* prints vec2(13, 2) */
-```
-
-Members:
-
-```C
-Vec2 : Vec2 add_Vec2(Vec2 a, Vec2 b);
-Vec3 : Vec3 add_Vec3(Vec3 a, Vec3 b);
-```
-
-## sub {#two_sub}
-
-```C
-sub(a, b)
-```
-
-Subtraction of two values for which `-` is not defined, e.g. Vec2
-or Vec3. Both values need to be of the same type.
-
-Example:
-
-```C
-DBG(sub(vec2(10, -3), vec2(3, 5)))  /* prints vec2(7, -8) */
-```
-
-Members:
-
-```C
-Vec2 : Vec2 sub_Vec2(Vec2 a, Vec2 b);
-Vec3 : Vec3 sub_Vec3(Vec3 a, Vec3 b);
-```
-
-## neg {#two_neg}
-
-```C
-neg(a)
-```
-
-Negate a value for which `-` is not defined, e.g. Vec2 or Vec3.
-
-Example:
-
-```C
-DBG(neg(vec2(10, -3)))  /* prints vec2(-10, 3) */
-```
-
-Members:
-
-```C
-Vec2 : Vec2 neg_Vec2(Vec2 a);
-Vec3 : Vec3 neg_Vec3(Vec3 a);
-```
-
-## mul {#two_mul}
-
-```C
-mul(a, b)
-```
-
-Multiply two values for which `*` is not defined, e.g. Vec2 or
-Vec3. NOTE: the name of this operation might change! Currently
-only `float` is supported for the second argument.
-
-Example:
-
-```C
-DBG(mul(vec2(10, -3), 2))  /* prints vec2(20, -6) */
-```
-
-Members:
-
-```C
-double : Vec2 mul_Vec2_float(Vec2 a, float b);
-double : Vec3 mul_Vec3_float(Vec3 a, float b);
-float  : Vec2 mul_Vec2_float(Vec2 a, float b);
-float  : Vec3 mul_Vec3_float(Vec3 a, float b);
-int    : Vec2 mul_Vec2_float(Vec2 a, float b);
-int    : Vec3 mul_Vec3_float(Vec3 a, float b);
-```
 
 <hr>
 <p>&nbsp;</p>

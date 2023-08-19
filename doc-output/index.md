@@ -116,6 +116,8 @@ To visually distinguish them from functions and types (so that you know somethin
 
 * [cj50/CStr.h](cj50/CStr.h.md)
 
+* [cj50/Color.h](cj50/Color.h.md)
+
 * [cj50/Range.h](cj50/Range.h.md)
 
 * [cj50/String.h](cj50/String.h.md)
@@ -134,6 +136,8 @@ To visually distinguish them from functions and types (so that you know somethin
 
 * [cj50/gen/Vec.h](cj50/gen/Vec.h.md)
 
+* [cj50/gen/dispatch/math.h](cj50/gen/dispatch/math.h.md)
+
 * [cj50/gen/dispatch/new_from.h](cj50/gen/dispatch/new_from.h.md)
 
 * [cj50/gen/equal_array.h](cj50/gen/equal_array.h.md)
@@ -145,6 +149,10 @@ To visually distinguish them from functions and types (so that you know somethin
 * [cj50/gen/template/SliceIterator.h](cj50/gen/template/SliceIterator.h.md)
 
 * [cj50/gen/template/Vec.h](cj50/gen/template/Vec.h.md)
+
+* [cj50/gen/template/Vec2.h](cj50/gen/template/Vec2.h.md)
+
+* [cj50/gen/template/Vec3.h](cj50/gen/template/Vec3.h.md)
 
 * [cj50/gen/template/mutvectorlikes.h](cj50/gen/template/mutvectorlikes.h.md)
 
@@ -179,7 +187,7 @@ To visually distinguish them from functions and types (so that you know somethin
 ## Types
 
 * [CFile](cj50/os.h.md#zero_CFile)
-* [Color](cj50/math.h.md#zero_Color)
+* [Color](cj50/Color.h.md#zero_Color)
 * [ColorFunction_float](cj50/plot.h.md#zero_ColorFunction_float)
 * [CStr](cj50/CStr.h.md#zero_CStr)
 * [CStrError](cj50/CStr.h.md#zero_CStrError)
@@ -198,8 +206,8 @@ To visually distinguish them from functions and types (so that you know somethin
 * [Unit](cj50/Unit.h.md#zero_Unit)
 * [utf8char](cj50/unicode.h.md#zero_utfQeightEchar)
 * [Vec](cj50/gen/template/Vec.h.md#zero_Vec)
-* [Vec2](cj50/math.h.md#zero_VecQtwoE)
-* [Vec3](cj50/math.h.md#zero_VecQthreeE)
+* [Vec2](cj50/gen/template/Vec2.h.md#zero_VecQtwoE)
+* [Vec3](cj50/gen/template/Vec3.h.md#zero_VecQthreeE)
 * [VecError](cj50/gen/Vec.h.md#zero_VecError)
 
 ## Type aliases
@@ -226,7 +234,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [clear_String](cj50/String.h.md#one_clear_String)
 * [clear_Vec_\$T](cj50/gen/template/Vec.h.md#one_clear_Vec_QDT)
 * [close_CFile](cj50/os.h.md#one_close_CFile)
-* [color](cj50/math.h.md#one_color)
+* [color](cj50/Color.h.md#one_color)
 * [cstr_CStr](cj50/CStr.h.md#one_cstr_CStr)
 * [cStr_from_cstr](cj50/CStr.h.md#one_cStr_from_cstr)
 * [cstr_String](cj50/String.h.md#one_cstr_String)
@@ -237,6 +245,8 @@ To visually distinguish them from functions and types (so that you know somethin
 * [deref_String](cj50/String.h.md#one_deref_String)
 * [draw_circle](cj50/sdlutil.h.md#one_draw_circle)
 * [draw_fill_circle](cj50/sdlutil.h.md#one_draw_fill_circle)
+* [draw_points_float](cj50/sdlutil.h.md#one_draw_points_float)
+* [draw_points_int](cj50/sdlutil.h.md#one_draw_points_int)
 * [draw_rect](cj50/sdlutil.h.md#one_draw_rect)
 * [drop_CFile](cj50/os.h.md#one_drop_CFile)
 * [drop_CStr](cj50/CStr.h.md#one_drop_CStr)
@@ -343,14 +353,14 @@ To visually distinguish them from functions and types (so that you know somethin
 * [unsafe_slice_of_String](cj50/String.h.md#one_unsafe_slice_of_String)
 * [utf8_sequence_len_u8](cj50/unicode.h.md#one_utfQeightE_sequence_len_uQeightE)
 * [utf8_sequence_len_ucodepoint](cj50/unicode.h.md#one_utfQeightE_sequence_len_ucodepoint)
-* [vec2](cj50/math.h.md#one_vecQtwoE)
-* [vec3](cj50/math.h.md#one_vecQthreeE)
+* [vec2_\$T](cj50/gen/template/Vec2.h.md#one_vecQtwoE_QDT)
+* [vec3_\$T](cj50/gen/template/Vec3.h.md#one_vecQthreeE_QDT)
 * [with_capacity_String](cj50/String.h.md#one_with_capacity_String)
 * [with_capacity_Vec_\$T](cj50/gen/template/Vec.h.md#one_with_capacity_Vec_QDT)
 
 ## Generic functions
 
-* [add](cj50/math.h.md#two_add)
+* [add](cj50/gen/dispatch/math.h.md#two_add)
 * [append](cj50.h.md#two_append)
 * [append_move](cj50.h.md#two_append_move)
 * [assert_sdl](cj50/sdlutil.h.md#two_assert_sdl)
@@ -368,9 +378,9 @@ To visually distinguish them from functions and types (so that you know somethin
 * [get_ucodepoint_unlocked](cj50.h.md#two_get_ucodepoint_unlocked)
 * [get_utf8char](cj50.h.md#two_get_utfQeightEchar)
 * [len](cj50.h.md#two_len)
-* [mul](cj50/math.h.md#two_mul)
+* [mul](cj50/gen/dispatch/math.h.md#two_mul)
 * [mutslice_of](cj50.h.md#two_mutslice_of)
-* [neg](cj50/math.h.md#two_neg)
+* [neg](cj50/gen/dispatch/math.h.md#two_neg)
 * [new_from_](cj50/gen/dispatch/new_from.h.md#two_new_from_)
 * [new_String_from](cj50.h.md#two_new_String_from)
 * [none](cj50.h.md#two_none)
@@ -386,8 +396,8 @@ To visually distinguish them from functions and types (so that you know somethin
 * [set](cj50.h.md#two_set)
 * [slice_of](cj50.h.md#two_slice_of)
 * [some](cj50.h.md#two_some)
-* [sub](cj50/math.h.md#two_sub)
-* [to_sdl](cj50/math.h.md#two_to_sdl)
+* [sub](cj50/gen/dispatch/math.h.md#two_sub)
+* [to_sdl](cj50/gen/dispatch/math.h.md#two_to_sdl)
 * [type_name](cj50.h.md#two_type_name)
 * [unwrap](cj50.h.md#two_unwrap)
 
