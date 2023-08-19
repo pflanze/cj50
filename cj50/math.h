@@ -23,6 +23,26 @@ Vec2 vec2(float x, float y) {
 static UNUSED
 void drop_Vec2(UNUSED Vec2 v) {}
 
+static UNUSED
+bool equal_Vec2(const Vec2 *a, const Vec2 *b) {
+    return (a->x == b->x) && (a->y == b->y);
+}
+
+static UNUSED
+bool equal_move_Vec2(Vec2 a, Vec2 b) {
+    return equal_Vec2(&a, &b);
+}
+
+static UNUSED
+int print_debug_move_Vec2(Vec2 a) {
+    return printf("vec2(%g, %g)", a.x, a.y);
+}
+static UNUSED
+int print_debug_Vec2(const Vec2 *a) {
+    return print_debug_move_Vec2(*a);
+}
+
+
 /// A 3-dimentional vector.
 typedef struct Vec3 {
     float x;
@@ -74,25 +94,6 @@ Vec2 mul_Vec2_float(Vec2 a, float b) {
 static UNUSED
 Vec3 mul_Vec3_float(Vec3 a, float b) {
     return vec3(a.x * b, a.y * b, a.z * b);
-}
-
-static UNUSED
-bool equal_Vec2(const Vec2 *a, const Vec2 *b) {
-    return (a->x == b->x) && (a->y == b->y);
-}
-
-static UNUSED
-bool equal_move_Vec2(Vec2 a, Vec2 b) {
-    return equal_Vec2(&a, &b);
-}
-
-static UNUSED
-int print_debug_move_Vec2(Vec2 a) {
-    return printf("vec2(%g, %g)", a.x, a.y);
-}
-static UNUSED
-int print_debug_Vec2(const Vec2 *a) {
-    return print_debug_move_Vec2(*a);
 }
 
 static UNUSED
