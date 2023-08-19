@@ -181,3 +181,11 @@ void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
                                      (const SDL_FPoint *)points.ptr,
                                      points.len));
 }
+
+/// Draw a line from `from`, to `to`.
+
+static UNUSED
+void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to) {
+    assert_sdl(SDL_RenderDrawLineF(rdr, from.x, from.y, to.x, to.y));
+}
+
