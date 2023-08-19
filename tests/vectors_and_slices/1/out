@@ -1,0 +1,13 @@
+DEBUG: &parsed_numbers == {2, 3, 7, 10, 13, 99}
+DEBUG: &sl == {7, 10, 13, 99}
+DEBUG: len(&sl) == 4
+DEBUG: sl2 == {10, 13}
+DEBUG: len(&sl2) == 2
+DEBUG: at(&sl2, 1) == 13
+DEBUG: *at(&sl2, 1) == n == 0
+DEBUG: sl == {7, 10, 123, 99}
+DEBUG: sl2 == {10, 123}
+DEBUG: sl2b == {10, 123}
+DEBUG: msl2 == {456, 123}
+DEBUG: sl == {7, 456, 123, 99}
+DEBUG: &parsed_numbers == {2, 3, 7, 456, 123, 99}
