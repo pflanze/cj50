@@ -146,6 +146,8 @@ To visually distinguish them from functions and types (so that you know somethin
 
 * [cj50/gen/template/Vec.h](cj50/gen/template/Vec.h.md)
 
+* [cj50/gen/template/mutvectorlikes.h](cj50/gen/template/mutvectorlikes.h.md)
+
 * [cj50/gen/template/new_String_from.h](cj50/gen/template/new_String_from.h.md)
 
 * [cj50/gen/template/slices.h](cj50/gen/template/slices.h.md)
@@ -275,6 +277,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [lock_Mutex_\$T](cj50/gen/template/Mutex.h.md#one_lock_Mutex_QDT)
 * [max_size_t](cj50/gen/Vec.h.md#one_max_size_t)
 * [memopen_CFile](cj50/os.h.md#one_memopen_CFile)
+* [mutslice_of_\$VEC_\$T](cj50/gen/template/mutvectorlikes.h.md#one_mutslice_of_QDVEC_QDT)
 * [new_\$SLICE_\$T](cj50/gen/template/slices.h.md#one_new_QDSLICE_QDT)
 * [new_chars](cj50.h.md#one_new_chars)
 * [new_CStr](cj50/CStr.h.md#one_new_CStr)
@@ -330,6 +333,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [read_until_Vec_ucodepoint](cj50/unicode.h.md#one_read_until_Vec_ucodepoint)
 * [rect2](cj50/math.h.md#one_rectQtwoE)
 * [reserve_Vec_\$T](cj50/gen/template/Vec.h.md#one_reserve_Vec_QDT)
+* [set_\$VEC_\$T](cj50/gen/template/mutvectorlikes.h.md#one_set_QDVEC_QDT)
 * [set_draw_color](cj50/sdlutil.h.md#one_set_draw_color)
 * [slice_of_\$VEC_\$T](cj50/gen/template/vectorlikes.h.md#one_slice_of_QDVEC_QDT)
 * [string_from_ParseError](cj50.h.md#one_string_from_ParseError)
@@ -365,6 +369,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [get_utf8char](cj50.h.md#two_get_utfQeightEchar)
 * [len](cj50.h.md#two_len)
 * [mul](cj50/math.h.md#two_mul)
+* [mutslice_of](cj50.h.md#two_mutslice_of)
 * [neg](cj50/math.h.md#two_neg)
 * [new_from_](cj50/gen/dispatch/new_from.h.md#two_new_from_)
 * [new_String_from](cj50.h.md#two_new_String_from)
@@ -378,6 +383,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [read_line](cj50.h.md#two_read_line)
 * [read_until](cj50.h.md#two_read_until)
 * [resize](cj50.h.md#two_resize)
+* [set](cj50.h.md#two_set)
 * [slice_of](cj50.h.md#two_slice_of)
 * [some](cj50.h.md#two_some)
 * [sub](cj50/math.h.md#two_sub)

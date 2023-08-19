@@ -66,9 +66,9 @@ bool equal_move_cstr(cstr a, cstr b)
 ```
 
 Check equivalence, "consuming" the references, although consuming
-references is a NOOP (those are Copy, and the referenced value is
-not dropped). Offered to satisfy the expectation that one can
-compare reference types without using `&`.
+references is a NOOP (they are Copy, and `drop` does nothing).
+Offered to satisfy the expectation that one can compare reference
+types without using `&`.
 
 ## print_cstr {#one_print_cstr}
 
