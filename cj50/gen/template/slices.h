@@ -1,7 +1,6 @@
 // parameters: T, SLICE, POSSIBLY_CONST
 
-
-//! Operations on slices only 
+//! Part of the [`cj50/gen/Vec.h`](../Vec.h.md) library: Operations on slices only.
 
 //! The `SLICE` type is either `slice` or `mutslice`. It is called
 //! "slice" from here onwards.

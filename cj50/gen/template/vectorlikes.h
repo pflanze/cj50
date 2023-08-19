@@ -1,6 +1,7 @@
 // parameters: T, VEC
 
-//! Operations on slices and `Vec`s.
+//! Part of the [`cj50/gen/Vec.h`](../Vec.h.md) library: Operations on
+//! slices and `Vec`s.
 
 //! The `VEC` type is either `Vec`, `slice` or `mutslice`. It is
 //! called "vectorlike" from here onwards.

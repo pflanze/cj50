@@ -1,5 +1,7 @@
-// This is a template include file. It expects `T` to be defined.
+// parameters: T
 
+//! Part of the [`cj50/gen/Vec.h`](../Vec.h.md) library: the parts
+//! instantiated only once per Vec parametrization.
 
 
 /// A `slice` consists of two fields, a pointer to an array, and the
