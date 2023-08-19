@@ -668,8 +668,10 @@ GENERATE_PRINTLN(ucodepoint);
              , utf8char: print_debug_move_utf8char                      \
              , ucodepoint*: print_debug_ucodepoint                      \
              , ucodepoint: print_debug_move_ucodepoint                  \
-             , Vec2: print_debug_Vec2                                   \
-             , Vec3: print_debug_Vec3                                   \
+             , Vec2: print_debug_move_Vec2                                   \
+             , Vec3: print_debug_move_Vec3                                   \
+             , Vec2*: print_debug_Vec2                                   \
+             , Vec3*: print_debug_Vec3                                   \
              , Vec(cstr): print_debug_move_Vec_cstr                     \
              , Vec(cstr)*: print_debug_Vec_cstr                         \
              , Vec(CStr): print_debug_move_Vec_CStr                     \
@@ -726,8 +728,10 @@ GENERATE_PRINTLN(ucodepoint);
              , Option(int): print_debug_move_Option_int                 \
              , Option(float)*: print_debug_Option_float                 \
              , Option(float): print_debug_move_Option_float             \
-             , Line2: print_debug_Line2                                 \
-             , Rect2: print_debug_Rect2                                 \
+             , Line2*: print_debug_Line2                                 \
+             , Line2: print_debug_move_Line2                                 \
+             , Rect2*: print_debug_Rect2                                 \
+             , Rect2: print_debug_move_Rect2                                 \
              , Result(int, ParseError)*: print_debug_Result_int__ParseError \
              , Result(int, ParseError): print_debug_move_Result_int__ParseError \
              , Result(String, SystemError): print_debug_move_Result_String__SystemError \

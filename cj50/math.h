@@ -70,12 +70,21 @@ Vec3 mul_Vec3_float(Vec3 a, float b) {
 }
 
 static UNUSED
-int print_debug_Vec2(Vec2 a) {
+int print_debug_move_Vec2(Vec2 a) {
     return printf("vec2(%g, %g)", a.x, a.y);
 }
 static UNUSED
-int print_debug_Vec3(Vec3 a) {
+int print_debug_Vec2(const Vec2 *a) {
+    return print_debug_move_Vec2(*a);
+}
+
+static UNUSED
+int print_debug_move_Vec3(Vec3 a) {
     return printf("vec3(%g, %g, %g)", a.x, a.y, a.z);
+}
+static UNUSED
+int print_debug_Vec3(const Vec3 *a) {
+    return print_debug_move_Vec3(*a);
 }
 
 
@@ -92,15 +101,19 @@ Line2 line2(Vec2 start, Vec2 extent) {
 }
 
 static UNUSED
-int print_debug_Line2(Line2 s) {
+int print_debug_Line2(const Line2 *s) {
     INIT_RESRET;
     RESRET(printf("Line2("));
-    RESRET(print_debug_Vec2(s.start));
+    RESRET(print_debug_move_Vec2(s->start));
     RESRET(printf(", "));
-    RESRET(print_debug_Vec2(s.extent));
+    RESRET(print_debug_move_Vec2(s->extent));
     RESRET(printf(")"));
 cleanup:
     return ret;
+}
+static UNUSED
+int print_debug_move_Line2(Line2 s) {
+    return print_debug_Line2(&s);
 }
 
 // Really a copy-paste of Line2, huh!
@@ -119,17 +132,21 @@ Rect2 rect2(Vec2 start, Vec2 extent) {
 }
 
 static UNUSED
-int print_debug_Rect2(Rect2 s) {
+int print_debug_Rect2(const Rect2 *s) {
     INIT_RESRET;
     RESRET(printf("Rect2("));
-    RESRET(print_debug_Vec2(s.start));
+    RESRET(print_debug_move_Vec2(s->start));
     RESRET(printf(", "));
-    RESRET(print_debug_Vec2(s.extent));
+    RESRET(print_debug_move_Vec2(s->extent));
     RESRET(printf(")"));
 cleanup:
     return ret;
 }
-
+static UNUSED
+int print_debug_move_Rect2(Rect2 s) {
+    return print_debug_Rect2(&s);
+    
+}
 
 /// A standard 8-bit RGB color representation.
 typedef struct Color {
