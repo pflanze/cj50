@@ -29,9 +29,9 @@ typedef struct CStrError {
 
 A type indicating an error handling C strings. The instances are:
 
-    CSE_missing_terminator
-    CSE_contains_nul
-    CSE_size_0
+    CStrError_MissingTerminator
+    CStrError_ContainsNul
+    CStrError_Size0
 
 # Type aliases
 

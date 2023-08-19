@@ -145,9 +145,9 @@ GENERATE_Option(CStr);
 
 /// A type indicating an error handling C strings. The instances are:
 
-///     CSE_missing_terminator
-///     CSE_contains_nul
-///     CSE_size_0
+///     CStrError_MissingTerminator
+///     CStrError_ContainsNul
+///     CStrError_Size0
 
 typedef struct CStrError {
     uint8_t code;
@@ -166,15 +166,15 @@ bool equal_CStrError(const CStrError *a, const CStrError *b) {
 
 // Duplication: also see the docstring for struct CStrError
 
-DEF_CStrError(1, CSE_missing_terminator);
-DEF_CStrError(2, CSE_contains_nul);
-DEF_CStrError(3, CSE_size_0);
+DEF_CStrError(1, CStrError_MissingTerminator);
+DEF_CStrError(2, CStrError_ContainsNul);
+DEF_CStrError(3, CStrError_Size0);
 
 const struct constant_name_and_message _CSE_and_message_from_CStrError_code[] = {
     { NULL, NULL},
-    { "CSE_missing_terminator", "char array is missing '\\0' terminator" },
-    { "CSE_contains_nul", "C string contains '\\0' before the end" },
-    { "CSE_size_0", "char array of size 0 cannot be a C string" },
+    { "CStrError_MissingTerminator", "char array is missing '\\0' terminator" },
+    { "CStrError_ContainsNul", "C string contains '\\0' before the end" },
+    { "CStrError_Size0", "char array of size 0 cannot be a C string" },
 };
 #define _CSE_and_message_from_CStrError_code_len        \
     (sizeof(_CSE_and_message_from_CStrError_code)       \
@@ -216,14 +216,14 @@ GENERATE_Result(CStr, CStrError);
 static UNUSED
 Result(CStr, CStrError) cStr_from_cstr(char *s, size_t siz) {
     if (siz == 0) {
-        return Err(CStr, CStrError)(CSE_size_0);
+        return Err(CStr, CStrError)(CStrError_Size0);
     }
     if (s[siz - 1] != '\0') {
-        return Err(CStr, CStrError)(CSE_missing_terminator);
+        return Err(CStr, CStrError)(CStrError_MissingTerminator);
     }
     for (size_t i = 0; i < siz - 1; i++) {
         if (s[i] == '\0') {
-            return Err(CStr, CStrError)(CSE_contains_nul);
+            return Err(CStr, CStrError)(CStrError_ContainsNul);
         }
     }
     return Ok(CStr, CStrError)(CStr_from_cstr_unsafe(s));
