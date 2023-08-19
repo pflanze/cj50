@@ -45,6 +45,7 @@ typedef struct mutslice(T) {
 
 #define VEC mutslice
 #include <cj50/gen/template/vectorlikes.h>
+#include <cj50/gen/template/mutvectorlikes.h>
 #undef VEC
 
 
@@ -81,6 +82,7 @@ void XCAT(drop_, Vec(T))(Vec(T) self) {
 
 #define VEC Vec
 #include <cj50/gen/template/vectorlikes.h>
+#include <cj50/gen/template/mutvectorlikes.h>
 #undef VEC
 
 

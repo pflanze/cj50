@@ -23,6 +23,7 @@
 //! * [`cj50/gen/template/Vec.h`](template/Vec.h.md) (parameterized parts instantiated once per Vec)
 //! * [`cj50/gen/template/slices.h`](template/slices.h.md) (parameterized parts instantiated  for slice, mutslice)
 //! * [`cj50/gen/template/vectorlikes.h`](template/vectorlikes.h.md) (parameterized parts instantiated for Vec, slice, mutslice)
+//! * [`cj50/gen/template/mutvectorlikes.h`](template/mutvectorlikes.h.md) (parameterized parts instantiated for Vec, mutslice)
 
 //! Vectors and slices are related: a `Vec` is an owned data structure
 //! (it must reside in exactly one place at any time), whereas both
