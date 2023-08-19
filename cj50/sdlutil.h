@@ -5,6 +5,10 @@
 #include <SDL2/SDL.h>
 #include <cj50/basic-util.h>
 #include <cj50/CStr.h>
+#include <cj50/math.h>
+#include <cj50/instantiations/Vec_Vec2_int.h>
+#include <cj50/instantiations/Vec_Vec2_float.h>
+
 
 static UNUSED
 int assert_sdl_int(int code) {
@@ -160,3 +164,20 @@ void draw_fill_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius) {
     assert_sdl(SDL_RenderFillCircle(renderer, pos.x, pos.y, radius));
 }
 
+/// Draw the given points.
+static UNUSED
+void draw_points_int(SDL_Renderer* renderer, slice(Vec2(int)) points) {
+    assert_sdl(SDL_RenderDrawPoints(renderer,
+                                    // pray
+                                    (const SDL_Point *)points.ptr,
+                                    points.len));
+}
+
+/// Draw the given points.
+static UNUSED
+void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
+    assert_sdl(SDL_RenderDrawPointsF(renderer,
+                                     // pray
+                                     (const SDL_FPoint *)points.ptr,
+                                     points.len));
+}
