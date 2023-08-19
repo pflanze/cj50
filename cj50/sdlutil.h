@@ -6,6 +6,7 @@
 #include <cj50/basic-util.h>
 #include <cj50/CStr.h>
 
+static UNUSED
 int assert_sdl_int(int code) {
     if (code < 0) {
         DIE_("SDL error: %s", SDL_GetError());
@@ -35,6 +36,7 @@ int assert_sdl_int(int code) {
 /// `renderframe` is called again 1/60 seconds later. If it returns
 /// `false`, the drawing stops and `graphics_render` returns.
 
+static UNUSED
 void graphics_render(cstr title,
                      int window_width,
                      int window_height,
@@ -121,6 +123,7 @@ void graphics_render(cstr title,
 
 /// Set the drawing color that the `SDL_Renderer` should use for future
 /// drawing.
+static UNUSED
 void set_draw_color(SDL_Renderer* renderer, Color color) {
     assert_sdl(SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b,
                                       128 /* what is this? */));
@@ -131,11 +134,13 @@ void set_draw_color(SDL_Renderer* renderer, Color color) {
 
 /// Note that you can use the generic `clear` as a shortcut.
 
+static UNUSED
 void clear_SDL_Renderer(SDL_Renderer* renderer) {
     assert_sdl(SDL_RenderClear(renderer));
 }
 
 /// Draw the given rectangle with the current colors.
+static UNUSED
 void draw_rect(SDL_Renderer* renderer, Rect2 r) {
     SDL_Rect sr = to_sdl(r);
     assert_sdl(SDL_RenderDrawRect(renderer, &sr));
@@ -144,11 +149,13 @@ void draw_rect(SDL_Renderer* renderer, Rect2 r) {
 #include "sdlutil_circle.h"
 
 /// Draw the given circle with the current colors.
+static UNUSED
 void draw_circle(SDL_Renderer* renderer, Vec2 pos, int radius) {
     assert_sdl(SDL_RenderDrawCircle(renderer, pos.x, pos.y, radius));
 }
 
 /// Draw the given circle with the current colors.
+static UNUSED
 void draw_fill_circle(SDL_Renderer* renderer, Vec2 pos, int radius) {
     assert_sdl(SDL_RenderFillCircle(renderer, pos.x, pos.y, radius));
 }
