@@ -730,7 +730,8 @@ sub main() {
                 my $path = $item->headerpath;
                 $documented_headerfiles{$path}++;
                 my $id = sym_to_id($key, $sym);
-                $doc .= "* [$sym]($path.md#$id)\n";
+                my $escaped_sym = tex_escape($sym);
+                $doc .= "* [$escaped_sym]($path.md#$id)\n";
             }
             $doc .= "\n";
         }
