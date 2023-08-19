@@ -106,7 +106,7 @@ Construct a Vec3.
 Line2 line2(Vec2 start, Vec2 extent)
 ```
 
-Construct a Rect2
+Construct a Line2
 
 ## rect2 {#one_rectQtwoE}
 
