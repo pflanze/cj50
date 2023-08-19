@@ -15,6 +15,7 @@ typedef struct Vec2 {
 } Vec2;
 
 /// Construct a Vec2.
+static UNUSED
 Vec2 vec2(float x, float y) {
     return (Vec2) { x, y };
 }
@@ -27,41 +28,52 @@ typedef struct Vec3 {
 } Vec3;
 
 /// Construct a Vec3.
+static UNUSED
 Vec3 vec3(float x, float y, float z) {
     return (Vec3) { x, y, z };
 }
 
+static UNUSED
 Vec2 add_Vec2(Vec2 a, Vec2 b) {
     return vec2(a.x + b.x, a.y + b.y);
 }
+static UNUSED
 Vec2 sub_Vec2(Vec2 a, Vec2 b) {
     return vec2(a.x - b.x, a.y - b.y);
 }
+static UNUSED
 Vec2 neg_Vec2(Vec2 a) {
     return vec2(-a.x, -a.y);
 }
 
+static UNUSED
 Vec3 add_Vec3(Vec3 a, Vec3 b) {
     return vec3(a.x + b.x, a.y + b.y, a.z + b.z);
 }
+static UNUSED
 Vec3 sub_Vec3(Vec3 a, Vec3 b) {
     return vec3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
+static UNUSED
 Vec3 neg_Vec3(Vec3 a) {
     return vec3(-a.x, -a.y, -a.z);
 }
 
 
+static UNUSED
 Vec2 mul_Vec2_float(Vec2 a, float b) {
     return vec2(a.x * b, a.y * b);
 }
+static UNUSED
 Vec3 mul_Vec3_float(Vec3 a, float b) {
     return vec3(a.x * b, a.y * b, a.z * b);
 }
 
+static UNUSED
 int print_debug_Vec2(Vec2 a) {
     return printf("vec2(%g, %g)", a.x, a.y);
 }
+static UNUSED
 int print_debug_Vec3(Vec3 a) {
     return printf("vec3(%g, %g, %g)", a.x, a.y, a.z);
 }
@@ -73,11 +85,13 @@ typedef struct Line2 {
     Vec2 extent;
 } Line2;
 
-/// Construct a Rect2
+/// Construct a Line2
+static UNUSED
 Line2 line2(Vec2 start, Vec2 extent) {
     return (Line2) { start, extent };
 }
 
+static UNUSED
 int print_debug_Line2(Line2 s) {
     INIT_RESRET;
     RESRET(printf("Line2("));
@@ -99,10 +113,12 @@ typedef struct Rect2 {
 
 
 /// Construct a Rect2
+static UNUSED
 Rect2 rect2(Vec2 start, Vec2 extent) {
     return (Rect2) { start, extent };
 }
 
+static UNUSED
 int print_debug_Rect2(Rect2 s) {
     INIT_RESRET;
     RESRET(printf("Rect2("));
@@ -123,6 +139,7 @@ typedef struct Color {
 } Color;
 
 /// Constructing a color
+static UNUSED
 Color color(uint8_t r, uint8_t g, uint8_t b) {
     return (Color) { r, g, b };
 }
