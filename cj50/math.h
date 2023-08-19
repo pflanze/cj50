@@ -20,6 +20,9 @@ Vec2 vec2(float x, float y) {
     return (Vec2) { x, y };
 }
 
+static UNUSED
+void drop_Vec2(UNUSED Vec2 v) {}
+
 /// A 3-dimentional vector.
 typedef struct Vec3 {
     float x;
@@ -32,6 +35,10 @@ static UNUSED
 Vec3 vec3(float x, float y, float z) {
     return (Vec3) { x, y, z };
 }
+
+static UNUSED
+void drop_Vec3(UNUSED Vec3 v) {}
+
 
 static UNUSED
 Vec2 add_Vec2(Vec2 a, Vec2 b) {
@@ -70,6 +77,16 @@ Vec3 mul_Vec3_float(Vec3 a, float b) {
 }
 
 static UNUSED
+bool equal_Vec2(const Vec2 *a, const Vec2 *b) {
+    return (a->x == b->x) && (a->y == b->y);
+}
+
+static UNUSED
+bool equal_move_Vec2(Vec2 a, Vec2 b) {
+    return equal_Vec2(&a, &b);
+}
+
+static UNUSED
 int print_debug_move_Vec2(Vec2 a) {
     return printf("vec2(%g, %g)", a.x, a.y);
 }
@@ -99,6 +116,9 @@ static UNUSED
 Line2 line2(Vec2 start, Vec2 extent) {
     return (Line2) { start, extent };
 }
+
+static UNUSED
+void drop_Line2(UNUSED Line2 v) {}
 
 static UNUSED
 int print_debug_Line2(const Line2 *s) {
@@ -160,6 +180,9 @@ static UNUSED
 Color color(uint8_t r, uint8_t g, uint8_t b) {
     return (Color) { r, g, b };
 }
+
+static UNUSED
+void drop_Color(UNUSED Color v) {}
 
 static UNUSED
 bool equal_Color(const Color *a, const Color *b) {
