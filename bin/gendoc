@@ -120,6 +120,17 @@ TEST { sym_to_id '', 'new_Vec_<T>' } '_new_Vec_QordsixzeroETQordsixtwoE';
 # ------------------------------------------------------------------
 package TypedNameExpression {
     use FP::Struct ["name"]=> qw(FP::Struct::Show);
+
+    sub symbolname($self) {
+        my $name = $self->name;
+        if ($name =~ /^[A-Z]+$/) {
+            # free type variable
+            '$'.$name
+        } else {
+            $name
+        }
+    }
+    
     _END_
 }
 
@@ -131,15 +142,6 @@ package BareExpression {
         0
     }
 
-    sub symbolname($self) {
-        my $name = $self->name;
-        if ($name =~ /^[A-Z]$/) {
-            # free type variable
-            '$'.$name
-        } else {
-            $name
-        }
-    }
     _END_ "main"
 }
 
@@ -159,7 +161,7 @@ package ParameterizedExpression {
                  } @{$self->arguments})
         } else {
             (
-             $self->name .
+             $self->SUPER::symbolname .
              "_" .
              join("__",
                   map {
@@ -332,6 +334,7 @@ sub perhaps_xcat_symbol($s) {
 
 TEST { [ perhaps_xcat_symbol 'XCAT(new_, Vec(T))...' ] } [ 'new_Vec_$T' ];
 TEST { [ perhaps_xcat_symbol 'XCAT(new_, Vec(T, C))...' ] } [ 'new_Vec_$T__$C' ];
+TEST { [ perhaps_xcat_symbol 'XCAT(new_, VEC(T, C))...' ] } [ 'new_$VEC_$T__$C' ];
 TEST { [ perhaps_xcat_symbol 'XCAT(new_, T)...' ] } [ 'new_$T' ];
 TEST { [ perhaps_xcat_symbol 'XCAT(new_, XCAT(foo_, T))...' ] } [ 'new_foo_$T' ];
 TEST { [ perhaps_xcat_symbol '(new_, XCAT(foo_, T))...' ] } [  ];
@@ -368,6 +371,7 @@ TEST { expand_xcat_in_prototype 'size_t is_empty_Vec(T)(const Vec(T) *self)' } '
 TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, Vec(T))XCAT(const Vec(T)) *self)' } 'size_t is_empty_Vec_$TXCAT(const Vec(T)) *self)';
 TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, Vec(T))XCAT(const, Vec(T)) *self)' } 'size_t is_empty_Vec_$TconstVec_$T *self)';
 TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, Vec(T)) XCAT(const, Vec(T)) *self)' } 'size_t is_empty_Vec_$T constVec_$T *self)';
+TEST { expand_xcat_in_prototype 'size_t XCAT(is_empty_, VEC(T))(VEC(T) *self)' } 'size_t is_empty_$VEC_$T(VEC(T) *self)';
 
 # use FP::Repl; repl;
 # __END__

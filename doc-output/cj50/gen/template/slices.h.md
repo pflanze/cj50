@@ -8,10 +8,10 @@ The `SLICE` type is either `slice` or `mutslice`. It is called
 
 # Normal functions
 
-## new_SLICE_$T {#one_new_SLICE_QDT}
+## new_$SLICE_$T {#one_new_QDSLICE_QDT}
 
 ```C
-SLICE(T) new_SLICE_$T(POSSIBLY_CONST T *ptr, size_t len)
+SLICE(T) new_$SLICE_$T(POSSIBLY_CONST T *ptr, size_t len)
 ```
 
 Create a new slice from pointer `ptr` and number of elements

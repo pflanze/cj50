@@ -8,61 +8,61 @@ called "vectorlike" from here onwards.
 
 # Normal functions
 
-## len_VEC_$T {#one_len_VEC_QDT}
+## len_$VEC_$T {#one_len_QDVEC_QDT}
 
 ```C
-size_t len_VEC_$T(const VEC(T) *self)
+size_t len_$VEC_$T(const VEC(T) *self)
 ```
 
 The number of elements the vectorlike is currently holding.
 
-## is_empty_VEC_$T {#one_is_empty_VEC_QDT}
+## is_empty_$VEC_$T {#one_is_empty_QDVEC_QDT}
 
 ```C
-size_t is_empty_VEC_$T(const VEC(T) *self)
+size_t is_empty_$VEC_$T(const VEC(T) *self)
 ```
 
 Whether the vectorlike has exactly 0 elements.
 
-## equal_VEC_$T {#one_equal_VEC_QDT}
+## equal_$VEC_$T {#one_equal_QDVEC_QDT}
 
 ```C
-bool equal_VEC_$T(const VEC(T) *a, const VEC(T) *b)
+bool equal_$VEC_$T(const VEC(T) *a, const VEC(T) *b)
 ```
 
 Whether the two vectorlikes have the same number of elements with equal
 elements in every position.
 
-## print_debug_VEC_$T {#one_print_debug_VEC_QDT}
+## print_debug_$VEC_$T {#one_print_debug_QDVEC_QDT}
 
 ```C
-int print_debug_VEC_$T(const VEC(T) *self)
+int print_debug_$VEC_$T(const VEC(T) *self)
 ```
 
 Print in C code syntax.
 
-## print_debug_move_VEC_$T {#one_print_debug_move_VEC_QDT}
+## print_debug_move_$VEC_$T {#one_print_debug_move_QDVEC_QDT}
 
 ```C
-int print_debug_move_VEC_$T(VEC(T) self)
+int print_debug_move_$VEC_$T(VEC(T) self)
 ```
 
 Print in C code syntax, consuming the argument.
 
-## at_VEC_$T {#one_at_VEC_QDT}
+## at_$VEC_$T {#one_at_QDVEC_QDT}
 
 ```C
-const T* at_VEC_$T(const VEC(T) *self, size_t idx)
+const T* at_$VEC_$T(const VEC(T) *self, size_t idx)
 ```
 
 Get a reference to the element at position `i`. Aborts if `i` is
 behind the end of the vectorlike. (XX todo: If you are not sure if
 `i` is valid, use `get` instead.)
 
-## slice_of_VEC_$T {#one_slice_of_VEC_QDT}
+## slice_of_$VEC_$T {#one_slice_of_QDVEC_QDT}
 
 ```C
-slice(T) slice_of_VEC_$T(const VEC(T) *self, Range range)
+slice(T) slice_of_$VEC_$T(const VEC(T) *self, Range range)
 ```
 
 Get a slice of the vectorlike. Aborts for invalid indices. (XX todo:
