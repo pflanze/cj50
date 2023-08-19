@@ -20,9 +20,9 @@ bool render_snail(SDL_Renderer *rdr, void *ctx) {
     float *t = ctx;
     *t += 0.04;
 
-    set_draw_color(rdr, color(0, 156, 0));
+    set_draw_color(rdr, color(100, 140, 246));
     clear(rdr);
-    set_draw_color(rdr, color(210, 200, 100));
+    set_draw_color(rdr, color(110, 100, 50));
 
     float x = -1.01;
     for (int i = 0; i < 480; i++) {
