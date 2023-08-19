@@ -8,7 +8,7 @@ called "vectorlike" from here onwards.
 
 # Normal functions
 
-## len_$VEC_$T {#one_len_QDVEC_QDT}
+## len_\$VEC_\$T {#one_len_QordninetwoEQDVEC_QordninetwoEQDT}
 
 ```C
 size_t len_$VEC_$T(const VEC(T) *self)
@@ -16,7 +16,7 @@ size_t len_$VEC_$T(const VEC(T) *self)
 
 The number of elements the vectorlike is currently holding.
 
-## is_empty_$VEC_$T {#one_is_empty_QDVEC_QDT}
+## is_empty_\$VEC_\$T {#one_is_empty_QordninetwoEQDVEC_QordninetwoEQDT}
 
 ```C
 size_t is_empty_$VEC_$T(const VEC(T) *self)
@@ -24,7 +24,7 @@ size_t is_empty_$VEC_$T(const VEC(T) *self)
 
 Whether the vectorlike has exactly 0 elements.
 
-## equal_$VEC_$T {#one_equal_QDVEC_QDT}
+## equal_\$VEC_\$T {#one_equal_QordninetwoEQDVEC_QordninetwoEQDT}
 
 ```C
 bool equal_$VEC_$T(const VEC(T) *a, const VEC(T) *b)
@@ -33,7 +33,7 @@ bool equal_$VEC_$T(const VEC(T) *a, const VEC(T) *b)
 Whether the two vectorlikes have the same number of elements with equal
 elements in every position.
 
-## print_debug_$VEC_$T {#one_print_debug_QDVEC_QDT}
+## print_debug_\$VEC_\$T {#one_print_debug_QordninetwoEQDVEC_QordninetwoEQDT}
 
 ```C
 int print_debug_$VEC_$T(const VEC(T) *self)
@@ -41,7 +41,7 @@ int print_debug_$VEC_$T(const VEC(T) *self)
 
 Print in C code syntax.
 
-## print_debug_move_$VEC_$T {#one_print_debug_move_QDVEC_QDT}
+## print_debug_move_\$VEC_\$T {#one_print_debug_move_QordninetwoEQDVEC_QordninetwoEQDT}
 
 ```C
 int print_debug_move_$VEC_$T(VEC(T) self)
@@ -49,7 +49,7 @@ int print_debug_move_$VEC_$T(VEC(T) self)
 
 Print in C code syntax, consuming the argument.
 
-## at_$VEC_$T {#one_at_QDVEC_QDT}
+## at_\$VEC_\$T {#one_at_QordninetwoEQDVEC_QordninetwoEQDT}
 
 ```C
 const T* at_$VEC_$T(const VEC(T) *self, size_t idx)
@@ -59,7 +59,7 @@ Get a reference to the element at position `i`. Aborts if `i` is
 behind the end of the vectorlike. (XX todo: If you are not sure if
 `i` is valid, use `get` instead.)
 
-## slice_of_$VEC_$T {#one_slice_of_QDVEC_QDT}
+## slice_of_\$VEC_\$T {#one_slice_of_QordninetwoEQDVEC_QordninetwoEQDT}
 
 ```C
 slice(T) slice_of_$VEC_$T(const VEC(T) *self, Range range)

@@ -115,6 +115,17 @@ TEST { sym_to_id '1 foo', 'new_vec' } 'one_new_vec';
 TEST { sym_to_id '', 'XCAT' } '_XCAT';
 TEST { sym_to_id '', 'new_Vec_<T>' } '_new_Vec_QordsixzeroETQordsixtwoE';
 
+
+sub tex_escape($str) {
+    # $str=~ s/([&%\$\#_\{\}])/\\$1/sg;
+    # no, _ has its own meaning in Markdown, though.
+    # For now, just:
+    $str=~ s/([\$])/\\$1/sg;
+    $str
+}
+
+TEST { tex_escape 'id_$VEC_$T' } 'id_\\$VEC_\\$T';
+
 # use FP::Repl; repl;
 # __END__
 # ------------------------------------------------------------------
@@ -534,7 +545,7 @@ package DocEntry {
                  )
                 )
         } : "";
-        my $sym = $self->symbol;
+        my $sym = main::tex_escape($self->symbol);
         my $id = main::sym_to_id($self->kind, $sym);
         join("",
              (

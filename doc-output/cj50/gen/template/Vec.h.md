@@ -39,7 +39,7 @@ instead!
 
 # Normal functions
 
-## drop_Vec_$T {#one_drop_Vec_QDT}
+## drop_Vec_\$T {#one_drop_Vec_QordninetwoEQDT}
 
 ```C
 void drop_Vec_$T(Vec(T) self)
@@ -47,7 +47,7 @@ void drop_Vec_$T(Vec(T) self)
 
 Remove from existence, along with the owned elements.
 
-## new_Vec_$T {#one_new_Vec_QDT}
+## new_Vec_\$T {#one_new_Vec_QordninetwoEQDT}
 
 ```C
 Vec(T) new_Vec_$T()
@@ -55,7 +55,7 @@ Vec(T) new_Vec_$T()
 
 Construct a new, empty vector
 
-## with_capacity_Vec_$T {#one_with_capacity_Vec_QDT}
+## with_capacity_Vec_\$T {#one_with_capacity_Vec_QordninetwoEQDT}
 
 ```C
 Vec(T) with_capacity_Vec_$T(size_t cap)
@@ -63,7 +63,7 @@ Vec(T) with_capacity_Vec_$T(size_t cap)
 
 Construct a new, empty vector with at least the specified capacity.
 
-## push_within_capacity_Vec_$T {#one_push_within_capacity_Vec_QDT}
+## push_within_capacity_Vec_\$T {#one_push_within_capacity_Vec_QordninetwoEQDT}
 
 ```C
 Result(Unit, VecError) push_within_capacity_Vec_$T(
@@ -75,7 +75,7 @@ capacity left for it, otherwise returns a
 `VecError_out_of_capacity` error. I.e. never allocates additional
 memory.
 
-## reserve_Vec_$T {#one_reserve_Vec_QDT}
+## reserve_Vec_\$T {#one_reserve_Vec_QordninetwoEQDT}
 
 ```C
 void reserve_Vec_$T(Vec(T) *self, size_t additional)
@@ -84,7 +84,7 @@ void reserve_Vec_$T(Vec(T) *self, size_t additional)
 Reserve space for `additional` more elements on top of the current
 capacity (not len).
 
-## push_Vec_$T {#one_push_Vec_QDT}
+## push_Vec_\$T {#one_push_Vec_QordninetwoEQDT}
 
 ```C
 void push_Vec_$T(Vec(T) *self, T value)
@@ -92,7 +92,7 @@ void push_Vec_$T(Vec(T) *self, T value)
 
 Appends an element to the back of the vector.
 
-## pop_Vec_$T {#one_pop_Vec_QDT}
+## pop_Vec_\$T {#one_pop_Vec_QordninetwoEQDT}
 
 ```C
 Option(T) pop_Vec_$T(Vec(T) *self)
@@ -101,7 +101,7 @@ Option(T) pop_Vec_$T(Vec(T) *self)
 Removes the last element from a vector and returns it, or None if
 it is empty.
 
-## append_Vec_$T {#one_append_Vec_QDT}
+## append_Vec_\$T {#one_append_Vec_QordninetwoEQDT}
 
 ```C
 void append_Vec_$T(Vec(T) *self, Vec(T) *other)
@@ -109,7 +109,7 @@ void append_Vec_$T(Vec(T) *self, Vec(T) *other)
 
 Moves all the elements of `other` into `self`, leaving `other` empty.
 
-## clear_Vec_$T {#one_clear_Vec_QDT}
+## clear_Vec_\$T {#one_clear_Vec_QordninetwoEQDT}
 
 ```C
 void clear_Vec_$T(Vec(T) *self)

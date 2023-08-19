@@ -2,7 +2,7 @@
 
 # Normal functions
 
-## new_String_from_move_$T {#one_new_String_from_move_QDT}
+## new_String_from_move_\$T {#one_new_String_from_move_QordninetwoEQDT}
 
 ```C
 String new_String_from_move_$T(T v)

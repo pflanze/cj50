@@ -49,7 +49,7 @@ int main() {
 
 # Normal functions
 
-## new_Mutex_$T {#one_new_Mutex_QDT}
+## new_Mutex_\$T {#one_new_Mutex_QordninetwoEQDT}
 
 ```C
 Mutex(T) new_Mutex_$T(T val)
@@ -60,7 +60,7 @@ type, to be owned by the `Mutex`, so that it can only be accessed
 via `lock` (and then `deref` or `deref_mut`), to prevent
 accidental modification without holding the lock.
 
-## lock_Mutex_$T {#one_lock_Mutex_QDT}
+## lock_Mutex_\$T {#one_lock_Mutex_QordninetwoEQDT}
 
 ```C
 MutexGuard(T) lock_Mutex_$T(Mutex(T) *self)
@@ -81,7 +81,7 @@ fact.
 The `MutexGuard` is only valid as long as the `Mutex` it is based on
 exists.
 
-## deref_MutexGuard_$T {#one_deref_MutexGuard_QDT}
+## deref_MutexGuard_\$T {#one_deref_MutexGuard_QordninetwoEQDT}
 
 ```C
 const T* deref_MutexGuard_$T(const MutexGuard(T) *self)
@@ -91,7 +91,7 @@ Get read-only access to the data that is protected by the `Mutex`
 that the `MutexGuard` is based on. The returned reference is only
 valid as long as the `MutexGuard` is not dropped.
 
-## deref_mut_MutexGuard_$T {#one_deref_mut_MutexGuard_QDT}
+## deref_mut_MutexGuard_\$T {#one_deref_mut_MutexGuard_QordninetwoEQDT}
 
 ```C
 T* deref_mut_MutexGuard_$T(const MutexGuard(T) *self)

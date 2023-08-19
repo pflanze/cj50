@@ -15,7 +15,7 @@ SliceIterator(T) holds the slice, and the current position into it.
 
 # Normal functions
 
-## next_SliceIterator_$T {#one_next_SliceIterator_QDT}
+## next_SliceIterator_\$T {#one_next_SliceIterator_QordninetwoEQDT}
 
 ```C
 Option(ref(T)) next_SliceIterator_$T(SliceIterator(T) *self)
