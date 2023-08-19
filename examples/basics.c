@@ -116,11 +116,11 @@ void run_names() {
 }
 
 void run_math() {
-    Vec2 a = { 30, 44.3 };
+    Vec2(float) a = { 30, 44.3 };
     DBG(a);
-    Vec2 b = vec2(-7.1, 10);
+    Vec2(float) b = vec2_float(-7.1, 10);
     DBG(b);
-    Vec2 c = add(a, b);
+    Vec2(float) c = add(a, b);
     DBG(c);
     DBG(mul(c, 3));
     DBG(neg(c));

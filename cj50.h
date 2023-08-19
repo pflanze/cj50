@@ -49,7 +49,9 @@
 #include <cj50/os_thread.h>
 #include <cj50/gen/Mutex.h>
 #include <cj50/instantiations/Vec_int.h>
-#include <cj50/instantiations/Vec_Vec2.h>
+#include <cj50/instantiations/Vec_Vec2_int.h>
+#include <cj50/instantiations/Vec_Vec2_float.h>
+#include <cj50/instantiations/Vec_Vec2_double.h>
 #include <cj50/instantiations/Vec_double.h>
 #include <cj50/instantiations/Vec_float.h>
 
@@ -668,10 +670,18 @@ GENERATE_PRINTLN(ucodepoint);
              , utf8char: print_debug_move_utf8char                      \
              , ucodepoint*: print_debug_ucodepoint                      \
              , ucodepoint: print_debug_move_ucodepoint                  \
-             , Vec2: print_debug_move_Vec2                                   \
-             , Vec3: print_debug_move_Vec3                                   \
-             , Vec2*: print_debug_Vec2                                   \
-             , Vec3*: print_debug_Vec3                                   \
+             , Vec2(int): print_debug_move_Vec2_int               \
+             , Vec3(int): print_debug_move_Vec3_int               \
+             , Vec2(int)*: print_debug_Vec2_int                   \
+             , Vec3(int)*: print_debug_Vec3_int                   \
+             , Vec2(float): print_debug_move_Vec2_float               \
+             , Vec3(float): print_debug_move_Vec3_float               \
+             , Vec2(float)*: print_debug_Vec2_float                   \
+             , Vec3(float)*: print_debug_Vec3_float                   \
+             , Vec2(double): print_debug_move_Vec2_double               \
+             , Vec3(double): print_debug_move_Vec3_double               \
+             , Vec2(double)*: print_debug_Vec2_double                   \
+             , Vec3(double)*: print_debug_Vec3_double                   \
              , Vec(cstr): print_debug_move_Vec_cstr                     \
              , Vec(cstr)*: print_debug_Vec_cstr                         \
              , Vec(CStr): print_debug_move_Vec_CStr                     \
@@ -684,8 +694,8 @@ GENERATE_PRINTLN(ucodepoint);
              , Vec(char)*: print_debug_Vec_char                         \
              , Vec(int): print_debug_move_Vec_int                       \
              , Vec(int)*: print_debug_Vec_int                           \
-             , Vec(Vec2): print_debug_move_Vec_Vec2                    \
-             , Vec(Vec2)*: print_debug_Vec_Vec2                        \
+             , Vec(Vec2(int)): print_debug_move_Vec_Vec2_int            \
+             , Vec(Vec2(int))*: print_debug_Vec_Vec2_int                \
              , Vec(float): print_debug_move_Vec_float                 \
              , Vec(float)*: print_debug_Vec_float                     \
              , Vec(double): print_debug_move_Vec_double              \
@@ -702,8 +712,8 @@ GENERATE_PRINTLN(ucodepoint);
              , mutslice(char)*: print_debug_mutslice_char               \
              , mutslice(int): print_debug_move_mutslice_int             \
              , mutslice(int)*: print_debug_mutslice_int                 \
-             , mutslice(Vec2): print_debug_move_mutslice_Vec2          \
-             , mutslice(Vec2)*: print_debug_mutslice_Vec2              \
+             , mutslice(Vec2(int)): print_debug_move_mutslice_Vec2_int      \
+             , mutslice(Vec2(int))*: print_debug_mutslice_Vec2_int          \
              , slice(cstr): print_debug_move_slice_cstr                 \
              , slice(cstr)*: print_debug_slice_cstr                     \
              , slice(CStr): print_debug_move_slice_CStr                 \
@@ -716,8 +726,8 @@ GENERATE_PRINTLN(ucodepoint);
              , slice(char)*: print_debug_slice_char                     \
              , slice(int): print_debug_move_slice_int                   \
              , slice(int)*: print_debug_slice_int                       \
-             , slice(Vec2): print_debug_move_slice_Vec2                \
-             , slice(Vec2)*: print_debug_slice_Vec2                    \
+             , slice(Vec2(int)): print_debug_move_slice_Vec2_int            \
+             , slice(Vec2(int))*: print_debug_slice_Vec2_int                    \
              , Option(cstr)*: print_debug_Option_cstr                   \
              , Option(cstr): print_debug_move_Option_cstr               \
              , Option(CStr)*: print_debug_Option_CStr                   \
@@ -756,7 +766,6 @@ GENERATE_PRINTLN(ucodepoint);
              , const Vec(utf8char)*: print_debug_Vec_utf8char                 \
              , const Vec(char)*: print_debug_Vec_char                         \
              , const Vec(int)*: print_debug_Vec_int                           \
-             , const Vec(Vec2)*: print_debug_Vec_Vec2                        \
              , const Vec(float)*: print_debug_Vec_float               \
              , const Vec(double)*: print_debug_Vec_double            \
              , const mutslice(cstr)*: print_debug_mutslice_cstr               \
@@ -765,14 +774,12 @@ GENERATE_PRINTLN(ucodepoint);
              , const mutslice(utf8char)*: print_debug_mutslice_utf8char       \
              , const mutslice(char)*: print_debug_mutslice_char               \
              , const mutslice(int)*: print_debug_mutslice_int                 \
-             , const mutslice(Vec2)*: print_debug_mutslice_Vec2              \
              , const slice(cstr)*: print_debug_slice_cstr                     \
              , const slice(CStr)*: print_debug_slice_CStr                     \
              , const slice(ucodepoint)*: print_debug_slice_ucodepoint         \
              , const slice(utf8char)*: print_debug_slice_utf8char             \
              , const slice(char)*: print_debug_slice_char                     \
              , const slice(int)*: print_debug_slice_int                       \
-             , const slice(Vec2)*: print_debug_slice_Vec2                    \
              , const Option(cstr)*: print_debug_Option_cstr                   \
              , const Option(CStr)*: print_debug_Option_CStr                   \
              , const Option(String)*: print_debug_Option_String               \
@@ -820,8 +827,12 @@ GENERATE_PRINTLN(ucodepoint);
              , char*: drop_cstr                                  \
              , int*: free                                        \
              , float*: free                                      \
-             , Vec2*: free                                       \
-             , Vec3*: free                                       \
+             , Vec2(int)*: free                               \
+             , Vec3(int)*: free                                       \
+             , Vec2(float)*: free                               \
+             , Vec3(float)*: free                                       \
+             , Vec2(double)*: free                               \
+             , Vec3(double)*: free                                       \
              , ucodepoint: drop_ucodepoint                       \
              , Vec(cstr): drop_Vec_cstr                          \
              , Vec(CStr): drop_Vec_CStr                          \
@@ -829,7 +840,7 @@ GENERATE_PRINTLN(ucodepoint);
              , Vec(utf8char): drop_Vec_utf8char                  \
              , Vec(char): drop_Vec_char                          \
              , Vec(int): drop_Vec_int                            \
-             , Vec(Vec2): drop_Vec_Vec2                          \
+             , Vec(Vec2(int)): drop_Vec_Vec2_int                         \
              , Vec(float): drop_Vec_float                            \
              , Vec(double): drop_Vec_double                          \
              , mutslice(cstr): drop_mutslice_cstr                \
@@ -982,7 +993,9 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Vec(utf8char)*: equal_Vec_utf8char                       \
              , Vec(char)*: equal_Vec_char                               \
              , Vec(int)*: equal_Vec_int                                 \
-             , Vec(Vec2)*: equal_Vec_Vec2                               \
+             , Vec(Vec2(int))*: equal_Vec_Vec2_int                       \
+             , Vec(Vec2(float))*: equal_Vec_Vec2_float                       \
+             , Vec(Vec2(double))*: equal_Vec_Vec2_double                       \
              , Vec(float)*: equal_Vec_float                             \
              , Vec(double)*: equal_Vec_double                           \
              , const Option(cstr)*: equal_Option_cstr                         \
@@ -1010,7 +1023,6 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , const Vec(utf8char)*: equal_Vec_utf8char                       \
              , const Vec(char)*: equal_Vec_char                         \
              , const Vec(int)*: equal_Vec_int                           \
-             , const Vec(Vec2)*: equal_Vec_Vec2                         \
              , const Vec(float)*: equal_Vec_float                         \
              , const Vec(double)*: equal_Vec_double                         \
         )((a), (b))
@@ -1138,7 +1150,6 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Vec(utf8char): "Vec(utf8char)"                           \
              , Vec(char): "Vec(char)"                                   \
              , Vec(int): "Vec(int)"                                     \
-             , Vec(Vec2): "Vec(Vec2)"                                   \
              , Vec(float): "Vec(float)"                                   \
              , Vec(double): "Vec(double)"                                   \
              , mutslice(cstr): "mutslice(cstr)"                         \
@@ -1149,8 +1160,6 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , slice(CStr): "slice(CStr)"                               \
              , slice(ucodepoint): "slice(ucodepoint)"                   \
              , slice(utf8char): "slice(utf8char)"                       \
-             , Vec2: "Vec2"                                             \
-             , Vec3: "Vec3"                                             \
              , Rect2: "Rect2"                                           \
              , Line2: "Line2"                                           \
              , Result(int, ParseError): "Result(int, ParseError)"       \
@@ -1256,7 +1265,9 @@ cleanup:
              , Vec(utf8char)*: push_Vec_utf8char        \
              , Vec(char)*: push_Vec_char                \
              , Vec(int)*: push_Vec_int                  \
-             , Vec(Vec2)*: push_Vec_Vec2                \
+             , Vec(Vec2(int))*: push_Vec_Vec2_int          \
+             , Vec(Vec2(float))*: push_Vec_Vec2_float          \
+             , Vec(Vec2(double))*: push_Vec_Vec2_double          \
              , Vec(float)*: push_Vec_float                \
              , Vec(double)*: push_Vec_double                \
         )(coll, val)
@@ -1271,7 +1282,9 @@ cleanup:
              , Vec(utf8char)*: pop_Vec_utf8char         \
              , Vec(char)*: pop_Vec_char                 \
              , Vec(int)*: pop_Vec_int                   \
-             , Vec(Vec2)*: pop_Vec_Vec2                 \
+             , Vec(Vec2(int))*: pop_Vec_Vec2_int           \
+             , Vec(Vec2(float))*: pop_Vec_Vec2_float           \
+             , Vec(Vec2(double))*: pop_Vec_Vec2_double           \
              , Vec(float)*: pop_Vec_float                 \
              , Vec(double)*: pop_Vec_double                 \
         )(coll)
@@ -1287,7 +1300,9 @@ cleanup:
              , Vec(utf8char)*: append_Vec_utf8char      \
              , Vec(char)*: append_Vec_char              \
              , Vec(int)*: append_Vec_int                \
-             , Vec(Vec2)*: append_Vec_Vec2              \
+             , Vec(Vec2(int))*: append_Vec_Vec2_int        \
+             , Vec(Vec2(float))*: append_Vec_Vec2_float        \
+             , Vec(Vec2(double))*: append_Vec_Vec2_double        \
              , Vec(float)*: append_Vec_float              \
              , Vec(double)*: append_Vec_double              \
              , String*: append_String_String            \
@@ -1323,7 +1338,9 @@ cleanup:
              , mutslice(char)*: len_mutslice_char                 \
              , slice(char)*: len_slice_char                       \
              , Vec(int)*: len_Vec_int                             \
-             , Vec(Vec2)*: len_Vec_Vec2                           \
+             , Vec(Vec2(int))*: len_Vec_Vec2_int                     \
+             , Vec(Vec2(float))*: len_Vec_Vec2_float                     \
+             , Vec(Vec2(double))*: len_Vec_Vec2_double                     \
              , Vec(float)*: len_Vec_float                           \
              , Vec(double)*: len_Vec_double                           \
              , mutslice(int)*: len_mutslice_int                   \
@@ -1345,7 +1362,6 @@ cleanup:
              , const mutslice(char)*: len_mutslice_char                 \
              , const slice(char)*: len_slice_char                       \
              , const Vec(int)*: len_Vec_int                             \
-             , const Vec(Vec2)*: len_Vec_Vec2                           \
              , const Vec(float)*: len_Vec_float                           \
              , const Vec(double)*: len_Vec_double                           \
              , const mutslice(int)*: len_mutslice_int                   \
@@ -1405,11 +1421,13 @@ cleanup:
              , Vec(CStr)*: clear_Vec_CStr                       \
              , Vec(ucodepoint)*: clear_Vec_ucodepoint           \
              , Vec(utf8char)*: clear_Vec_utf8char               \
-             , Vec(char)*: clear_Vec_utf8char                   \
-             , Vec(int)*: clear_Vec_utf8char                    \
-             , Vec(Vec2)*: clear_Vec_utf8char                   \
-             , Vec(float)*: clear_Vec_utf8char                   \
-             , Vec(double)*: clear_Vec_utf8char                   \
+             , Vec(char)*: clear_Vec_char                   \
+             , Vec(int)*: clear_Vec_int                    \
+             , Vec(Vec2(int))*: clear_Vec_Vec2_int            \
+             , Vec(Vec2(float))*: clear_Vec_Vec2_float            \
+             , Vec(Vec2(double))*: clear_Vec_Vec2_double            \
+             , Vec(float)*: clear_Vec_float                   \
+             , Vec(double)*: clear_Vec_double                   \
              , String*: clear_String                            \
         )(s)
 
@@ -1467,7 +1485,9 @@ cleanup:
              , slice(int)*: at_slice_int                      \
              , mutslice(int)*: at_mutslice_int                \
              , Vec(int)*: at_Vec_int                          \
-             , Vec(Vec2)*: at_Vec_Vec2                        \
+             , Vec(Vec2(int))*: at_Vec_Vec2_int                    \
+             , Vec(Vec2(float))*: at_Vec_Vec2_float                    \
+             , Vec(Vec2(double))*: at_Vec_Vec2_double                    \
              , Vec(float)*: at_Vec_float                          \
              , Vec(double)*: at_Vec_double                        \
              , const slice(char)*: at_slice_char              \
@@ -1476,7 +1496,6 @@ cleanup:
              , const slice(int)*: at_slice_int                \
              , const mutslice(int)*: at_mutslice_int          \
              , const Vec(int)*: at_Vec_int                    \
-             , const Vec(Vec2)*: at_Vec_Vec2                  \
              , const Vec(float)*: at_Vec_float                  \
              , const Vec(double)*: at_Vec_double                  \
         )((v), (idx))
@@ -1492,14 +1511,15 @@ cleanup:
              , Vec(char)*: set_Vec_char                       \
              , mutslice(int)*: set_mutslice_int               \
              , Vec(int)*: set_Vec_int                         \
-             , Vec(Vec2)*: set_Vec_Vec2                       \
+             , Vec(Vec2(int))*: set_Vec_Vec2_int                 \
+             , Vec(Vec2(float))*: set_Vec_Vec2_float                 \
+             , Vec(Vec2(double))*: set_Vec_Vec2_double                 \
              , Vec(float)*: set_Vec_float                       \
              , Vec(double)*: set_Vec_double                       \
              , const mutslice(char)*: set_mutslice_char       \
              , const Vec(char)*: set_Vec_char                 \
              , const mutslice(int)*: set_mutslice_int         \
              , const Vec(int)*: set_Vec_int                   \
-             , const Vec(Vec2)*: set_Vec_Vec2                 \
              , const Vec(float)*: set_Vec_float                 \
              , const Vec(double)*: set_Vec_double                 \
         )((v), (idx), (val))
@@ -1517,7 +1537,9 @@ cleanup:
              , slice(int)*: slice_of_slice_int                \
              , mutslice(int)*: slice_of_mutslice_int          \
              , Vec(int)*: slice_of_Vec_int                    \
-             , Vec(Vec2)*: slice_of_Vec_Vec2                  \
+             , Vec(Vec2(int))*: slice_of_Vec_Vec2_int            \
+             , Vec(Vec2(float))*: slice_of_Vec_Vec2_float            \
+             , Vec(Vec2(double))*: slice_of_Vec_Vec2_double            \
              , Vec(float)*: slice_of_Vec_float                  \
              , Vec(double)*: slice_of_Vec_double                  \
              , const slice(char)*: slice_of_slice_char        \
@@ -1526,7 +1548,6 @@ cleanup:
              , const slice(int)*: slice_of_slice_int          \
              , const mutslice(int)*: slice_of_mutslice_int    \
              , const Vec(int)*: slice_of_Vec_int              \
-             , const Vec(Vec2)*: slice_of_Vec_Vec2            \
              , const Vec(float)*: slice_of_Vec_float            \
              , const Vec(double)*: slice_of_Vec_double            \
         )((v), (range))
@@ -1541,14 +1562,15 @@ cleanup:
              , Vec(char)*: mutslice_of_Vec_char                  \
              , mutslice(int)*: mutslice_of_mutslice_int          \
              , Vec(int)*: mutslice_of_Vec_int                    \
-             , Vec(Vec2)*: mutslice_of_Vec_Vec2                  \
+             , Vec(Vec2(int))*: mutslice_of_Vec_Vec2_int            \
+             , Vec(Vec2(float))*: mutslice_of_Vec_Vec2_float            \
+             , Vec(Vec2(double))*: mutslice_of_Vec_Vec2_double            \
              , Vec(float)*: mutslice_of_Vec_float                  \
              , Vec(double)*: mutslice_of_Vec_double                  \
              , const mutslice(char)*: mutslice_of_mutslice_char  \
              , const Vec(char)*: mutslice_of_Vec_char            \
              , const mutslice(int)*: mutslice_of_mutslice_int    \
              , const Vec(int)*: mutslice_of_Vec_int              \
-             , const Vec(Vec2)*: mutslice_of_Vec_Vec2            \
              , const Vec(float)*: mutslice_of_Vec_float            \
              , const Vec(double)*: mutslice_of_Vec_double            \
         )((v), (range))

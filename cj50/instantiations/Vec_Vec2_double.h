@@ -3,7 +3,7 @@
 #include <cj50/gen/Vec.h>
 #include <cj50/math.h>
 
-#define T Vec2
+#define T Vec2(double)
 #include <cj50/gen/template/Vec.h>
 #undef T
 

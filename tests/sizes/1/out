@@ -1,5 +1,5 @@
-Vec2	8
-Vec3	12
+Vec2(float)	8
+Vec3(float)	12
 Line2	16
 Rect2	16
 Color	3

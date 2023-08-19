@@ -14,7 +14,8 @@ int main() {
     }
 
     if (getenv("SINGLEFUNCTION")) {
-        plot_function_float(sine, rect2(vec2(-2, -2), vec2(4, 4)));
+        plot_function_float(sine, rect2(vec2_float(-2, -2),
+                                        vec2_float(4, 4)));
     } else {
 
         DEF_SLICE(ColorFunction_float, fs,
@@ -23,6 +24,7 @@ int main() {
                       { color(0, 120, 240), sine },
                   });
 
-        plot_functions_float(fs, rect2(vec2(-2, -2), vec2(4, 4)));
+        plot_functions_float(fs, rect2(vec2_float(-2, -2),
+                                       vec2_float(4, 4)));
     }
 }

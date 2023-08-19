@@ -29,8 +29,8 @@ bool render_snail(SDL_Renderer *rdr, void *ctx) {
         if_let_Some(y, snail_y(x)) {
             // adding waves
             float yi = y * (200 + sinf(-*t + x * 40) * 5.);
-            draw_rect(rdr, rect2(vec2(100. + i, 240. + yi),
-                                 vec2(1, -yi * 2.)));
+            draw_rect(rdr, rect2(vec2_float(100. + i, 240. + yi),
+                                 vec2_float(1, -yi * 2.)));
         } else_None;
         x += 2./400.;
     }                      
@@ -49,7 +49,8 @@ Result(Unit, String) run(UNUSED slice(cstr) argv) {
                 { color(255, 0, 0), circle_y },
                 { color(0, 255, 0), snail_y },
             });
-        plot_functions_float(fs, rect2(vec2(-1.4, -1.1), vec2(2.8, 2.2)));
+        plot_functions_float(fs, rect2(vec2_float(-1.4, -1.1),
+                                       vec2_float(2.8, 2.2)));
     } else {
         float t = 0.0;
         graphics_render("Snail", 640, 480, render_snail, &t);

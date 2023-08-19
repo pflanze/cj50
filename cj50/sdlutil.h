@@ -142,21 +142,21 @@ void clear_SDL_Renderer(SDL_Renderer* renderer) {
 /// Draw the given rectangle with the current colors.
 static UNUSED
 void draw_rect(SDL_Renderer* renderer, Rect2 r) {
-    SDL_Rect sr = to_sdl(r);
-    assert_sdl(SDL_RenderDrawRect(renderer, &sr));
+    SDL_FRect sr = to_sdl(r);
+    assert_sdl(SDL_RenderDrawRectF(renderer, &sr));
 }
 
 #include "sdlutil_circle.h"
 
 /// Draw the given circle with the current colors.
 static UNUSED
-void draw_circle(SDL_Renderer* renderer, Vec2 pos, int radius) {
+void draw_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius) {
     assert_sdl(SDL_RenderDrawCircle(renderer, pos.x, pos.y, radius));
 }
 
 /// Draw the given circle with the current colors.
 static UNUSED
-void draw_fill_circle(SDL_Renderer* renderer, Vec2 pos, int radius) {
+void draw_fill_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius) {
     assert_sdl(SDL_RenderFillCircle(renderer, pos.x, pos.y, radius));
 }
 

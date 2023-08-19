@@ -50,13 +50,13 @@ struct PlotrenderCtx {
 bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     struct PlotrenderCtx* ctx = _ctx;
     Rect2* viewport = &ctx->viewport;
-    Vec2 start = viewport->start;
-    Vec2 extent = viewport->extent;
+    Vec2(float) start = viewport->start;
+    Vec2(float) extent = viewport->extent;
 
     assert_sdl(SDL_SetRenderDrawColor(renderer, 0,0,0, 128));
     assert_sdl(SDL_RenderClear(renderer));
 
-    Vec2 diagonal = { 2, 2 };
+    Vec2(float) diagonal = { 2, 2 };
     float w = ctx->width;
     float h = ctx->height;
 
@@ -76,11 +76,11 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
             if (y.is_some) {
                 /* DBG(vec2(x, y.value)); */
                 int yint = (y.value - start.y) / extent.y * h;
-                Vec2 pos = { i, ctx->height - yint };
+                Vec2(float) pos = { i, ctx->height - yint };
                 /* DBG(pos); */
                 Rect2 r = { pos, diagonal };
-                SDL_Rect sr = to_sdl(r);
-                assert_sdl(SDL_RenderDrawRect(renderer, &sr));
+                SDL_FRect sr = to_sdl(r);
+                assert_sdl(SDL_RenderDrawRectF(renderer, &sr));
             }
         }
     }
