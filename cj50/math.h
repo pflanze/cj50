@@ -42,6 +42,8 @@ int print_debug_Vec2(const Vec2 *a) {
     return print_debug_move_Vec2(*a);
 }
 
+GENERATE_Option(Vec2);
+
 
 /// A 3-dimentional vector.
 typedef struct Vec3 {
