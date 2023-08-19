@@ -1423,6 +1423,23 @@ cleanup:
         )((v), (idx))
 
 
+/// Move the given `val` into the slot with the given `idx`,
+/// replacing the value that was there previously. Aborts if the index
+/// isn't smaller than the current `len` of the vector.
+
+#define set(v, idx, val)                                      \
+    _Generic((v)                                              \
+             , mutslice(char)*: set_mutslice_char             \
+             , Vec(char)*: set_Vec_char                       \
+             , mutslice(int)*: set_mutslice_int               \
+             , Vec(int)*: set_Vec_int                         \
+             , const mutslice(char)*: set_mutslice_char       \
+             , const Vec(char)*: set_Vec_char                 \
+             , const mutslice(int)*: set_mutslice_int         \
+             , const Vec(int)*: set_Vec_int                   \
+        )((v), (idx), (val))
+
+
 /// Create a slice of various collection types. A slice is borrowing a
 /// range of items from the original collection. Careful, these
 /// "always succeed": if the range is not applicable, they abort.
@@ -1442,6 +1459,24 @@ cleanup:
              , const mutslice(int)*: slice_of_mutslice_int    \
              , const Vec(int)*: slice_of_Vec_int              \
         )((v), (range))
+
+/// Create a mutable slice of various collection types. A slice is borrowing a
+/// range of items from the original collection. Careful, these
+/// "always succeed": if the range is not applicable, they abort.
+
+#define mutslice_of(v, range)                                    \
+    _Generic((v)                                                 \
+             , mutslice(char)*: mutslice_of_mutslice_char        \
+             , Vec(char)*: mutslice_of_Vec_char                  \
+             , mutslice(int)*: mutslice_of_mutslice_int          \
+             , Vec(int)*: mutslice_of_Vec_int                    \
+             , const mutslice(char)*: mutslice_of_mutslice_char  \
+             , const Vec(char)*: mutslice_of_Vec_char            \
+             , const mutslice(int)*: mutslice_of_mutslice_int    \
+             , const Vec(int)*: mutslice_of_Vec_int              \
+        )((v), (range))
+// ^ adding const variants only because that should give better
+// compiler error messages.
 
 
 /// Create a slice of various collection types. A slice is borrowing a
