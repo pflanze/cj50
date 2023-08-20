@@ -56,8 +56,8 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     Vec2(float) start = viewport->start;
     Vec2(float) extent = viewport->extent;
 
-    assert_sdl(SDL_SetRenderDrawColor(renderer, 0,0,0, 128));
-    assert_sdl(SDL_RenderClear(renderer));
+    asserting_sdl(SDL_SetRenderDrawColor(renderer, 0,0,0, 128));
+    asserting_sdl(SDL_RenderClear(renderer));
 
     float width = ctx->width;
     float height = ctx->height;
@@ -66,11 +66,11 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
         Color color = ctx->functions.ptr[j].color;
         Option(float)(*f)(float) = ctx->functions.ptr[j].f;
 
-        assert_sdl(SDL_SetRenderDrawColor(renderer,
-                                          color.r,
-                                          color.g,
-                                          color.b,
-                                          128));
+        asserting_sdl(SDL_SetRenderDrawColor(renderer,
+                                             color.r,
+                                             color.g,
+                                             color.b,
+                                             128));
 
         clear_Vec_Vec2_float(points);
 

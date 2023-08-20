@@ -24,7 +24,7 @@ int asserting_sdl_int(int code) {
 /// does not represent an error. If it is an error, print the SDL
 /// error message and abort. Otherwise, return the value.
 
-#define assert_sdl(v)                           \
+#define asserting_sdl(v)                           \
     _Generic((v)                                \
              , int: asserting_sdl_int              \
         )(v)
@@ -129,7 +129,7 @@ void graphics_render(cstr title,
 /// drawing.
 static UNUSED
 void set_draw_color(SDL_Renderer* renderer, Color color) {
-    assert_sdl(SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b,
+    asserting_sdl(SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b,
                                       128 /* what is this? */));
 }
 
@@ -140,14 +140,14 @@ void set_draw_color(SDL_Renderer* renderer, Color color) {
 
 static UNUSED
 void clear_SDL_Renderer(SDL_Renderer* renderer) {
-    assert_sdl(SDL_RenderClear(renderer));
+    asserting_sdl(SDL_RenderClear(renderer));
 }
 
 /// Draw the given rectangle with the current colors.
 static UNUSED
 void draw_rect(SDL_Renderer* renderer, Rect2 r) {
     SDL_FRect sr = to_sdl(r);
-    assert_sdl(SDL_RenderDrawRectF(renderer, &sr));
+    asserting_sdl(SDL_RenderDrawRectF(renderer, &sr));
 }
 
 #include "sdlutil_circle.h"
@@ -155,19 +155,19 @@ void draw_rect(SDL_Renderer* renderer, Rect2 r) {
 /// Draw the given circle with the current colors.
 static UNUSED
 void draw_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius) {
-    assert_sdl(SDL_RenderDrawCircle(renderer, pos.x, pos.y, radius));
+    asserting_sdl(SDL_RenderDrawCircle(renderer, pos.x, pos.y, radius));
 }
 
 /// Draw the given circle with the current colors.
 static UNUSED
 void draw_fill_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius) {
-    assert_sdl(SDL_RenderFillCircle(renderer, pos.x, pos.y, radius));
+    asserting_sdl(SDL_RenderFillCircle(renderer, pos.x, pos.y, radius));
 }
 
 /// Draw the given points.
 static UNUSED
 void draw_points_int(SDL_Renderer* renderer, slice(Vec2(int)) points) {
-    assert_sdl(SDL_RenderDrawPoints(renderer,
+    asserting_sdl(SDL_RenderDrawPoints(renderer,
                                     // pray
                                     (const SDL_Point *)points.ptr,
                                     points.len));
@@ -176,7 +176,7 @@ void draw_points_int(SDL_Renderer* renderer, slice(Vec2(int)) points) {
 /// Draw the given points.
 static UNUSED
 void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
-    assert_sdl(SDL_RenderDrawPointsF(renderer,
+    asserting_sdl(SDL_RenderDrawPointsF(renderer,
                                      // pray
                                      (const SDL_FPoint *)points.ptr,
                                      points.len));
@@ -186,7 +186,7 @@ void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
 
 static UNUSED
 void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to) {
-    assert_sdl(SDL_RenderDrawLineF(rdr, from.x, from.y, to.x, to.y));
+    asserting_sdl(SDL_RenderDrawLineF(rdr, from.x, from.y, to.x, to.y));
 }
 
 /// Draw a series of connected lines on the current rendering target
@@ -194,7 +194,7 @@ void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to) {
 
 static UNUSED
 void draw_lines(SDL_Renderer *renderer, slice(Vec2(float)) lines) {
-    assert_sdl(SDL_RenderDrawLinesF(renderer,
+    asserting_sdl(SDL_RenderDrawLinesF(renderer,
                                     // pray
                                     (const SDL_FPoint *)lines.ptr,
                                     lines.len));
