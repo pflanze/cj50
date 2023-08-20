@@ -45,10 +45,12 @@ struct PlotrenderCtx {
     int width;
     int height;
     Rect2 viewport;
+    Vec(Vec2(float)) points;
 };
 
 bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     struct PlotrenderCtx* ctx = _ctx;
+    Vec(Vec2(float)) *points = &ctx->points;
     Rect2* viewport = &ctx->viewport;
     Vec2(float) start = viewport->start;
     Vec2(float) extent = viewport->extent;
@@ -58,8 +60,6 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 
     float width = ctx->width;
     float height = ctx->height;
-
-    Vec(Vec2(float)) points = new_Vec_Vec2_float();
 
     for (size_t j = 0; j < ctx->functions.len; j++) {
         Color color = ctx->functions.ptr[j].color;
@@ -71,7 +71,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
                                           color.b,
                                           128));
 
-        clear_Vec_Vec2_float(&points);
+        clear_Vec_Vec2_float(points);
 
         for (int i = 0; i < ctx->width; i++) {
             float x = start.x + extent.x / width * i;
@@ -79,20 +79,18 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
                 float xscreen = i;
                 float yscreen = (y - start.y) / extent.y * height;
                 Vec2(float) point = { xscreen, height - yscreen };
-                push_Vec_Vec2_float(&points, point);
+                push_Vec_Vec2_float(points, point);
             } else_None {
-                if (points.len > 0) {
-                    draw_lines(renderer, deref_Vec_Vec2_float(&points));
-                    clear_Vec_Vec2_float(&points);
+                if (points->len > 0) {
+                    draw_lines(renderer, deref_Vec_Vec2_float(points));
+                    clear_Vec_Vec2_float(points);
                 }
             }
         }
-        if (points.len > 0) {
-            draw_lines(renderer, deref_Vec_Vec2_float(&points));
+        if (points->len > 0) {
+            draw_lines(renderer, deref_Vec_Vec2_float(points));
         }
     }
-
-    drop(points);
 
     return true;
 }
@@ -109,12 +107,13 @@ int plot_functions_float(slice(ColorFunction_float) fs,
     const int height = 600;
 
     struct PlotrenderCtx ctx = {
-        fs, width, height, viewport
+        fs, width, height, viewport, new_Vec_Vec2_float()
     };
 
     graphics_render("Plot functions",
                     width, height, plot_render, &ctx);
 
+    drop(ctx.points);
     return 0;
 }
 
@@ -133,14 +132,12 @@ int plot_function_float(Option(float)(*f)(float), Rect2 viewport) {
               });
 
     struct PlotrenderCtx ctx = {
-        fs,
-        width,
-        height,
-        viewport
+        fs, width, height, viewport, new_Vec_Vec2_float()
     };
 
     graphics_render("Plot function", width, height, plot_render, &ctx);
 
+    drop(ctx.points);
     return 0;
 }
 
