@@ -103,7 +103,7 @@ int plot_functions_float(slice(ColorFunction_float) fs,
         fs, width, height, viewport
     };
 
-    graphics_render("Plot multiple functions",
+    graphics_render("Plot functions",
                     width, height, plot_render, &ctx);
 
     return 0;
@@ -130,7 +130,7 @@ int plot_function_float(Option(float)(*f)(float), Rect2 viewport) {
         viewport
     };
 
-    graphics_render("Plot single function", width, height, plot_render, &ctx);
+    graphics_render("Plot function", width, height, plot_render, &ctx);
 
     return 0;
 }
