@@ -1122,6 +1122,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 #define deref(v)                                                        \
     _Generic((v)                                                        \
              , CStr*: deref_CStr                                        \
+             , Vec(Vec2(float))*: deref_Vec_Vec2_float                  \
         )(v)
 
 

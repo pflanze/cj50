@@ -106,6 +106,14 @@ slice(T) XCAT(slice_of_, VEC(T))(const VEC(T) *self, Range range) {
                                range.end - range.start);
 }
 
+/// Get a slice of the whole vectorlike.
+
+static UNUSED
+slice(T) XCAT(deref_, VEC(T))(const VEC(T) *self) {
+    return XCAT(new_slice_, T)(self->ptr,
+                               self->len);
+}
+
 
 
 #undef VEC_PRINT_ARRAY
