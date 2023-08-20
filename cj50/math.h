@@ -116,4 +116,12 @@ const double math_e_float = 2.71828182845904523536028747f;
 // verified algorithmically: 2.71828182845905
 
 
+/// The square function, generic for all number types for which `*` is
+/// defined.
+#define square(expr)                            \
+    ({                                          \
+    typeof(expr) HYGIENIC(var) = (expr);        \
+    HYGIENIC(var) * HYGIENIC(var);              \
+    })
+
 #include <cj50/gen/dispatch/math.h>
