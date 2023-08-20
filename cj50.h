@@ -841,6 +841,8 @@ GENERATE_PRINTLN(ucodepoint);
              , Vec(char): drop_Vec_char                          \
              , Vec(int): drop_Vec_int                            \
              , Vec(Vec2(int)): drop_Vec_Vec2_int                         \
+             , Vec(Vec2(float)): drop_Vec_Vec2_float                         \
+             , Vec(Vec2(double)): drop_Vec_Vec2_double                         \
              , Vec(float): drop_Vec_float                            \
              , Vec(double): drop_Vec_double                          \
              , mutslice(cstr): drop_mutslice_cstr                \
