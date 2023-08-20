@@ -13,17 +13,17 @@ typedef struct ColorFunction_float {
     Option(float)(*f)(float);
 } ColorFunction_float;
 
-static
+static UNUSED
 void drop_ColorFunction_float(UNUSED ColorFunction_float v) {}
 
-static
+static UNUSED
 bool equal_ColorFunction_float(const ColorFunction_float *a,
                                const ColorFunction_float *b) {
     return (equal_Color(&a->color, &b->color) &&
             a->f == b->f);
 }
 
-static
+static UNUSED
 int print_debug_ColorFunction_float(const ColorFunction_float *v) {
     INIT_RESRET;
     RESRET(printf("ColorFunction_float("));
@@ -48,6 +48,7 @@ struct PlotrenderCtx {
     Vec(Vec2(float)) points;
 };
 
+static UNUSED
 bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     struct PlotrenderCtx* ctx = _ctx;
     Vec(Vec2(float)) *points = &ctx->points;
@@ -101,6 +102,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 /// functions, which expect a float and return an optional float
 /// when possible. `viewport` is the (initial) range of coordinates
 /// that is shown on the screen.
+static UNUSED
 int plot_functions_float(slice(ColorFunction_float) fs,
                          Rect2 viewport) {
     const int width = 800;
@@ -122,6 +124,7 @@ int plot_functions_float(slice(ColorFunction_float) fs,
 /// expects a float and returns an optional float when
 /// possible. `viewport` is the (initial) range of coordinates that is
 /// shown on the screen.
+static UNUSED
 int plot_function_float(Option(float)(*f)(float), Rect2 viewport) {
     const int width = 800;
     const int height = 600;
