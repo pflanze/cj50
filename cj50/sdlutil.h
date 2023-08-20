@@ -11,7 +11,7 @@
 
 
 static UNUSED
-int assert_sdl_int(int code) {
+int asserting_sdl_int(int code) {
     if (code < 0) {
         DIE_("SDL error: %s", SDL_GetError());
     } else {
@@ -26,7 +26,7 @@ int assert_sdl_int(int code) {
 
 #define assert_sdl(v)                           \
     _Generic((v)                                \
-             , int: assert_sdl_int              \
+             , int: asserting_sdl_int              \
         )(v)
 
 
