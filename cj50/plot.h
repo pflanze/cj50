@@ -56,35 +56,44 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     assert_sdl(SDL_SetRenderDrawColor(renderer, 0,0,0, 128));
     assert_sdl(SDL_RenderClear(renderer));
 
-    Vec2(float) diagonal = { 2, 2 };
-    float w = ctx->width;
-    float h = ctx->height;
+    float width = ctx->width;
+    float height = ctx->height;
+
+    Vec(Vec2(float)) points = new_Vec_Vec2_float();
 
     for (size_t j = 0; j < ctx->functions.len; j++) {
         Color color = ctx->functions.ptr[j].color;
         Option(float)(*f)(float) = ctx->functions.ptr[j].f;
-        
+
         assert_sdl(SDL_SetRenderDrawColor(renderer,
                                           color.r,
                                           color.g,
                                           color.b,
                                           128));
 
+        clear_Vec_Vec2_float(&points);
+
         for (int i = 0; i < ctx->width; i++) {
-            float x = start.x + extent.x / w * i;
-            Option(float) y = f(x);
-            if (y.is_some) {
-                /* DBG(vec2(x, y.value)); */
-                int yint = (y.value - start.y) / extent.y * h;
-                Vec2(float) pos = { i, ctx->height - yint };
-                /* DBG(pos); */
-                Rect2 r = { pos, diagonal };
-                SDL_FRect sr = to_sdl(r);
-                assert_sdl(SDL_RenderDrawRectF(renderer, &sr));
+            float x = start.x + extent.x / width * i;
+            if_let_Some(y, f(x)) {
+                float xscreen = i;
+                float yscreen = (y - start.y) / extent.y * height;
+                Vec2(float) point = { xscreen, height - yscreen };
+                push_Vec_Vec2_float(&points, point);
+            } else_None {
+                if (points.len > 0) {
+                    draw_lines(renderer, deref_Vec_Vec2_float(&points));
+                    clear_Vec_Vec2_float(&points);
+                }
             }
         }
+        if (points.len > 0) {
+            draw_lines(renderer, deref_Vec_Vec2_float(&points));
+        }
     }
-    
+
+    drop(points);
+
     return true;
 }
 
