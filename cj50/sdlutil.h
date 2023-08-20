@@ -189,3 +189,14 @@ void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to) {
     assert_sdl(SDL_RenderDrawLineF(rdr, from.x, from.y, to.x, to.y));
 }
 
+/// Draw a series of connected lines on the current rendering target
+/// at subpixel precision.
+
+static UNUSED
+void draw_lines(SDL_Renderer *renderer, slice(Vec2(float)) lines) {
+    assert_sdl(SDL_RenderDrawLinesF(renderer,
+                                    // pray
+                                    (const SDL_FPoint *)lines.ptr,
+                                    lines.len));
+}
+
