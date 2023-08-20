@@ -19,14 +19,30 @@ int asserting_sdl_int(int code) {
     }
 }
 
+static UNUSED
+void _assert_sdl_pointer(void *p) {
+    if (!p) {
+        DIE_("SDL error: %s", SDL_GetError());
+    }
+}
+
+#define DEF_ASSERTING_SDL_POINTER(T)                            \
+    static UNUSED                                               \
+    T* XCAT(asserting_sdl_pointer_, T)(T* p) {                  \
+        _assert_sdl_pointer(p);                                 \
+        return p;                                               \
+    }
+
+DEF_ASSERTING_SDL_POINTER(SDL_Surface);
 
 /// Assert that the return value of a function from the SDL2 libray
 /// does not represent an error. If it is an error, print the SDL
 /// error message and abort. Otherwise, return the value.
 
-#define asserting_sdl(v)                           \
-    _Generic((v)                                \
-             , int: asserting_sdl_int              \
+#define asserting_sdl(v)                                        \
+    _Generic((v)                                                \
+             , int: asserting_sdl_int                           \
+             , SDL_Surface *: asserting_sdl_pointer_SDL_Surface \
         )(v)
 
 
