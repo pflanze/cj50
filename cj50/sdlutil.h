@@ -122,7 +122,7 @@ void graphics_render(cstr title,
     SDL_DestroyRenderer(renderer); //XX drop
 
     SDL_DestroyWindow(window);
-    SDL_Quit();
+    // SDL_Quit();
 }
 
 /// Set the drawing color that the `SDL_Renderer` should use for future
