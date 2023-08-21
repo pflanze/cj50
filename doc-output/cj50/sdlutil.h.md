@@ -48,7 +48,7 @@ Note that you can use the generic `clear` as a shortcut.
 ## draw_rect {#one_draw_rect}
 
 ```C
-void draw_rect(SDL_Renderer* renderer, Rect2 r)
+void draw_rect(SDL_Renderer* renderer, Rect2(float) r)
 ```
 
 Draw the given rectangle with the current colors.
@@ -85,12 +85,113 @@ void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points)
 
 Draw the given points.
 
-# Generic functions
-
-## assert_sdl {#two_assert_sdl}
+## draw_line {#one_draw_line}
 
 ```C
-assert_sdl(v)
+void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to)
+```
+
+Draw a line from `from`, to `to`.
+
+## draw_lines {#one_draw_lines}
+
+```C
+void draw_lines(SDL_Renderer *renderer, slice(Vec2(float)) lines)
+```
+
+Draw a series of connected lines on the current rendering target
+at subpixel precision.
+
+## get_Surface_from_Window {#one_get_Surface_from_Window}
+
+```C
+SDL_Surface* get_Surface_from_Window(SDL_Window *window)
+```
+
+Original docs:
+
+Returns the surface associated with the window.
+
+A new surface will be created with the optimal format for the
+window, if necessary. This surface will be freed when the window
+is destroyed. Do not free this surface.
+
+You may not combine this with 3D or the rendering API on this
+window.
+
+## new_Texture_from_Surface {#one_new_Texture_from_Surface}
+
+```C
+Texture new_Texture_from_Surface(SDL_Renderer * renderer,
+                                 SDL_Surface * surface)
+```
+
+Original docs:
+
+Create a texture from an existing surface.
+
+The surface is not modified or freed by this function.
+
+The SDL_TextureAccess hint for the created texture is
+SDL_TEXTUREACCESS_STATIC.
+
+The pixel format of the created texture may be different from the
+pixel format of the surface. Use SDL_QueryTexture() to query the
+pixel format of the texture.
+
+## create_Texture {#one_create_Texture}
+
+```C
+Texture create_Texture(SDL_Renderer * renderer,
+                       Uint32 format,
+                       int access,
+                       Vec2(u32) dimensions)
+```
+
+Create a texture for a rendering context.
+
+format: 	one of the enumerated values in SDL_PixelFormatEnum
+
+access: 	one of the enumerated values in SDL_TextureAccess
+
+Aborts with an error message if no rendering context was active,
+the format was unsupported, or the width or height were out of
+range.
+
+## update_Texture {#one_update_Texture}
+
+```C
+void update_Texture(Texture *self,
+                    Option(Rect2(int)) rect,
+                    const void *pixels, // ugh
+                    // why is pitch not in configuration? OK, pixels
+                    // specific
+                    int pitch)
+```
+
+Update the given texture rectangle with new pixel data.
+
+rect: 	an SDL_Rect structure representing the area to update, or NULL to update the entire texture
+pixels: 	the raw pixel data in the format of the texture
+pitch: 	the number of bytes in a row of pixel data, including padding between lines
+
+## render_Texture {#one_render_Texture}
+
+```C
+void render_Texture(SDL_Renderer *renderer,
+                    Texture *texture,
+                    Option(Rect2(int)) src,
+                    Option(Rect2(int)) dst)
+```
+
+Copy a portion of the texture to the current rendering target.
+
+# Generic functions
+
+## asserting_sdl {#two_asserting_sdl}
+
+```C
+asserting_sdl(v)
 ```
 
 Assert that the return value of a function from the SDL2 libray
@@ -100,7 +201,9 @@ error message and abort. Otherwise, return the value.
 Members:
 
 ```C
-int : int assert_sdl_int(int code);
+SDL_Surface * : SDL_Surface* asserting_sdl_pointer_SDL_Surface(SDL_Surface* p);
+SDL_Texture * : SDL_Texture* asserting_sdl_pointer_SDL_Texture(SDL_Texture* p);
+int           : int asserting_sdl_int(int code);
 ```
 
 <hr>

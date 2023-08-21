@@ -69,6 +69,14 @@ slice(T) slice_of_$VEC_$T(const VEC(T) *self, Range range)
 Get a slice of the vectorlike. Aborts for invalid indices. (XX todo:
 Use get_slice_* for a variant that returns failures instead.)
 
+## deref_\$VEC_\$T {#one_deref_QordninetwoEQDVEC_QordninetwoEQDT}
+
+```C
+slice(T) deref_$VEC_$T(const VEC(T) *self)
+```
+
+Get a slice of the whole vectorlike.
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

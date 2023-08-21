@@ -20,7 +20,7 @@ functions in the same plot via `plot_functions_float`.
 
 ```C
 int plot_functions_float(slice(ColorFunction_float) fs,
-                         Rect2 viewport)
+                         Rect2(float) viewport)
 ```
 
 Show a window with a 2-dimensional plot of the `num_fs` given
@@ -31,7 +31,7 @@ that is shown on the screen.
 ## plot_function_float {#one_plot_function_float}
 
 ```C
-int plot_function_float(Option(float)(*f)(float), Rect2 viewport)
+int plot_function_float(Option(float)(*f)(float), Rect2(float) viewport)
 ```
 
 Show a window with a 2-dimensional plot of the function `f`, which

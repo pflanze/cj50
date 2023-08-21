@@ -129,7 +129,8 @@ Convert a value of a type from cjmath.h into a type from SDL.h
 Members:
 
 ```C
-Rect2 : SDL_FRect to_sdl_Rect2(Rect2 r);
+Rect2(float) : SDL_FRect to_sdl_Rect2_float(Rect2(float) r);
+Rect2(int)   : SDL_Rect to_sdl_Rect2_int(Rect2_int r);
 ```
 
 <hr>
