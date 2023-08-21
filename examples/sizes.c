@@ -19,7 +19,7 @@ GENERATE_Result(String, ParseError);
 int main() {
     S(Vec2(float));
     S(Vec3(float));
-    S(Rect2);
+    S(Rect2(float));
     S(Color);
 
     S(SyscallInfo);

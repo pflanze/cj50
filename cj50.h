@@ -738,8 +738,12 @@ GENERATE_PRINTLN(ucodepoint);
              , Option(int): print_debug_move_Option_int                 \
              , Option(float)*: print_debug_Option_float                 \
              , Option(float): print_debug_move_Option_float             \
-             , Rect2*: print_debug_Rect2                                 \
-             , Rect2: print_debug_move_Rect2                                 \
+             , Rect2(int)*: print_debug_Rect2_int                       \
+             , Rect2(int): print_debug_move_Rect2_int                   \
+             , Rect2(float)*: print_debug_Rect2_float                   \
+             , Rect2(float): print_debug_move_Rect2_float               \
+             , Rect2(double)*: print_debug_Rect2_double                 \
+             , Rect2(double): print_debug_move_Rect2_double             \
              , Result(int, ParseError)*: print_debug_Result_int__ParseError \
              , Result(int, ParseError): print_debug_move_Result_int__ParseError \
              , Result(String, SystemError): print_debug_move_Result_String__SystemError \
@@ -1161,7 +1165,9 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , slice(CStr): "slice(CStr)"                               \
              , slice(ucodepoint): "slice(ucodepoint)"                   \
              , slice(utf8char): "slice(utf8char)"                       \
-             , Rect2: "Rect2"                                           \
+             , Rect2(int): "Rect2(int)"                                 \
+             , Rect2(float): "Rect2(float)"                             \
+             , Rect2(double): "Rect2(double)"                           \
              , Result(int, ParseError): "Result(int, ParseError)"       \
              , Result(String, SystemError): "Result(String, SystemError)" \
         )
@@ -1587,6 +1593,16 @@ cleanup:
              , String*: get_slice_of_String             \
              , const String*: get_slice_of_String       \
         )((v), (range))
+
+
+/// Create a Rect2 (see [cj50/gen/Rect2.h](cj50/gen/Rect2.h.md)).
+
+#define rect2(start, extent)                        \
+    _Generic((start)                                \
+             , Vec2(int): rect2_int                 \
+             , Vec2(float): rect2_float             \
+             , Vec2(double): rect2_double           \
+        )((start), (extent))
 
 
 /// Return true if the environment variable with the given name is set

@@ -101,9 +101,10 @@
 
 
 /// Convert a value of a type from cjmath.h into a type from SDL.h
-#define to_sdl(v)                               \
-    _Generic((v)                                \
-             , Rect2: to_sdl_Rect2              \
+#define to_sdl(v)                                  \
+    _Generic((v)                                   \
+             , Rect2(int): to_sdl_Rect2_int        \
+             , Rect2(float): to_sdl_Rect2_float    \
         )(v)
 
 

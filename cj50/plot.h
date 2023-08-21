@@ -44,7 +44,7 @@ struct PlotrenderCtx {
     slice(ColorFunction_float) functions;
     int width;
     int height;
-    Rect2 viewport;
+    Rect2(float) viewport;
     Vec(Vec2(float)) points;
 };
 
@@ -52,7 +52,7 @@ static UNUSED
 bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     struct PlotrenderCtx* ctx = _ctx;
     Vec(Vec2(float)) *points = &ctx->points;
-    Rect2* viewport = &ctx->viewport;
+    Rect2(float)* viewport = &ctx->viewport;
     Vec2(float) start = viewport->start;
     Vec2(float) extent = viewport->extent;
 
@@ -104,7 +104,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 /// that is shown on the screen.
 static UNUSED
 int plot_functions_float(slice(ColorFunction_float) fs,
-                         Rect2 viewport) {
+                         Rect2(float) viewport) {
     const int width = 800;
     const int height = 600;
 
@@ -125,7 +125,7 @@ int plot_functions_float(slice(ColorFunction_float) fs,
 /// possible. `viewport` is the (initial) range of coordinates that is
 /// shown on the screen.
 static UNUSED
-int plot_function_float(Option(float)(*f)(float), Rect2 viewport) {
+int plot_function_float(Option(float)(*f)(float), Rect2(float) viewport) {
     const int width = 800;
     const int height = 600;
 

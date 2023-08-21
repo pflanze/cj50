@@ -8,6 +8,7 @@
 #include <cj50/Color.h>
 #include <cj50/gen/Vec2.h>
 #include <cj50/gen/Vec3.h>
+#include <cj50/gen/Rect2.h>
 #include <cj50/float.h>
 #include <cj50/double.h>
 #include <cj50/int.h>
@@ -17,52 +18,30 @@
 #define T int
 #include <cj50/gen/template/Vec2.h>
 #include <cj50/gen/template/Vec3.h>
+#include <cj50/gen/template/Rect2.h>
 #undef T
 
 #define T float
 #include <cj50/gen/template/Vec2.h>
 #include <cj50/gen/template/Vec3.h>
+#include <cj50/gen/template/Rect2.h>
 #undef T
 
 #define T double
 #include <cj50/gen/template/Vec2.h>
 #include <cj50/gen/template/Vec3.h>
+#include <cj50/gen/template/Rect2.h>
 #undef T
 
 
-/// A rectangle. The opposite corner is at add(start, extent).
-typedef struct Rect2 {
-    Vec2(float) start;
-    Vec2(float) extent;
-} Rect2;
 
-
-/// Construct a Rect2
 static UNUSED
-Rect2 rect2(Vec2(float) start, Vec2(float) extent) {
-    return (Rect2) { start, extent };
+SDL_Rect to_sdl_Rect2_int(Rect2(int) r) {
+    return (SDL_Rect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
 }
 
 static UNUSED
-int print_debug_Rect2(const Rect2 *s) {
-    INIT_RESRET;
-    RESRET(printf("Rect2("));
-    RESRET(print_debug_move_Vec2_float(s->start));
-    RESRET(printf(", "));
-    RESRET(print_debug_move_Vec2_float(s->extent));
-    RESRET(printf(")"));
-cleanup:
-    return ret;
-}
-static UNUSED
-int print_debug_move_Rect2(Rect2 s) {
-    return print_debug_Rect2(&s);
-    
-}
-
-
-static UNUSED
-SDL_FRect to_sdl_Rect2(Rect2 r) {
+SDL_FRect to_sdl_Rect2_float(Rect2(float) r) {
     return (SDL_FRect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
 }
 

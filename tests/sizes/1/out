@@ -1,6 +1,6 @@
 Vec2(float)	8
 Vec3(float)	12
-Rect2	16
+Rect2(float)	16
 Color	3
 SyscallInfo	16
 SystemError	8

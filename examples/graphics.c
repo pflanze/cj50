@@ -16,7 +16,7 @@ bool render_squares(SDL_Renderer* renderer, void* context) {
     Vec2(float) diagonal = { 5, 5 };
     for (int i = 0; i < 70; i++) {
         Vec2(float) topleft = { 300 + i * factor * 4, i * 6 };
-        Rect2 r = { topleft, diagonal };
+        Rect2(float) r = { topleft, diagonal };
         draw_rect(renderer, r);
     }
 

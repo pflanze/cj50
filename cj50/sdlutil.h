@@ -161,7 +161,7 @@ void clear_SDL_Renderer(SDL_Renderer* renderer) {
 
 /// Draw the given rectangle with the current colors.
 static UNUSED
-void draw_rect(SDL_Renderer* renderer, Rect2 r) {
+void draw_rect(SDL_Renderer* renderer, Rect2(float) r) {
     SDL_FRect sr = to_sdl(r);
     asserting_sdl(SDL_RenderDrawRectF(renderer, &sr));
 }
