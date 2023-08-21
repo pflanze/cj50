@@ -9,6 +9,7 @@
 #include <cj50/instantiations/Vec_Vec2_int.h>
 #include <cj50/instantiations/Vec_Vec2_float.h>
 #include <cj50/instantiations/Vec2_u32.h>
+#include <cj50/resret.h>
 
 
 static UNUSED
@@ -245,6 +246,21 @@ static UNUSED
 void drop_Texture(Texture self) {
     SDL_DestroyTexture(self.ptr);
 }
+
+static UNUSED
+bool equal_Texture(const Texture *a, const Texture *b) {
+    return a->ptr == b->ptr;
+}
+
+static UNUSED
+int print_debug_Texture(const Texture *self) {
+    INIT_RESRET;
+    RESRET(printf("Texture(%p)", self->ptr));
+cleanup:
+    return ret;
+}
+
+GENERATE_Option(Texture);
 
 /// Original docs:
 
