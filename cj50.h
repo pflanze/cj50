@@ -54,6 +54,8 @@
 #include <cj50/instantiations/Vec_Vec2_double.h>
 #include <cj50/instantiations/Vec_double.h>
 #include <cj50/instantiations/Vec_float.h>
+#include <cj50/instantiations/Vec2_u32.h>
+#include <cj50/instantiations/Vec3_u32.h>
 
 
 // Read a CStr from `inp`, terminated by a newline (the newline is
@@ -682,6 +684,10 @@ GENERATE_PRINTLN(ucodepoint);
              , Vec3(double): print_debug_move_Vec3_double               \
              , Vec2(double)*: print_debug_Vec2_double                   \
              , Vec3(double)*: print_debug_Vec3_double                   \
+             , Vec2(u32): print_debug_move_Vec2_u32               \
+             , Vec3(u32): print_debug_move_Vec3_u32               \
+             , Vec2(u32)*: print_debug_Vec2_u32                   \
+             , Vec3(u32)*: print_debug_Vec3_u32                   \
              , Vec(cstr): print_debug_move_Vec_cstr                     \
              , Vec(cstr)*: print_debug_Vec_cstr                         \
              , Vec(CStr): print_debug_move_Vec_CStr                     \
@@ -1126,7 +1132,9 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 #define deref(v)                                                        \
     _Generic((v)                                                        \
              , CStr*: deref_CStr                                        \
+             , Vec(Vec2(int))*: deref_Vec_Vec2_int                  \
              , Vec(Vec2(float))*: deref_Vec_Vec2_float                  \
+             , Vec(Vec2(double))*: deref_Vec_Vec2_double                  \
         )(v)
 
 
