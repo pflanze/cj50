@@ -8,6 +8,7 @@
 #include <cj50/math.h>
 #include <cj50/instantiations/Vec_Vec2_int.h>
 #include <cj50/instantiations/Vec_Vec2_float.h>
+#include <cj50/instantiations/Vec2_u32.h>
 
 
 static UNUSED
@@ -34,6 +35,7 @@ void _assert_sdl_pointer(void *p) {
     }
 
 DEF_ASSERTING_SDL_POINTER(SDL_Surface);
+DEF_ASSERTING_SDL_POINTER(SDL_Texture);
 
 /// Assert that the return value of a function from the SDL2 libray
 /// does not represent an error. If it is an error, print the SDL
@@ -43,6 +45,7 @@ DEF_ASSERTING_SDL_POINTER(SDL_Surface);
     _Generic((v)                                                \
              , int: asserting_sdl_int                           \
              , SDL_Surface *: asserting_sdl_pointer_SDL_Surface \
+             , SDL_Texture *: asserting_sdl_pointer_SDL_Texture \
         )(v)
 
 
@@ -214,5 +217,115 @@ void draw_lines(SDL_Renderer *renderer, slice(Vec2(float)) lines) {
                                     // pray
                                     (const SDL_FPoint *)lines.ptr,
                                     lines.len));
+}
+
+
+/// Original docs:
+
+/// Returns the surface associated with the window.
+
+/// A new surface will be created with the optimal format for the
+/// window, if necessary. This surface will be freed when the window
+/// is destroyed. Do not free this surface.
+
+/// You may not combine this with 3D or the rendering API on this
+/// window.
+
+static UNUSED
+SDL_Surface* get_Surface_from_Window(SDL_Window *window) {
+    return asserting_sdl(SDL_GetWindowSurface(window));
+}
+
+
+typedef struct Texture {
+    SDL_Texture *ptr;
+} Texture;
+
+static UNUSED
+void drop_Texture(Texture self) {
+    SDL_DestroyTexture(self.ptr);
+}
+
+/// Original docs:
+
+/// Create a texture from an existing surface.
+
+/// The surface is not modified or freed by this function.
+
+/// The SDL_TextureAccess hint for the created texture is
+/// SDL_TEXTUREACCESS_STATIC.
+
+/// The pixel format of the created texture may be different from the
+/// pixel format of the surface. Use SDL_QueryTexture() to query the
+/// pixel format of the texture.
+
+static UNUSED
+Texture new_Texture_from_Surface(SDL_Renderer * renderer,
+                                 SDL_Surface * surface) {
+    return (Texture) {
+        .ptr = asserting_sdl(
+            SDL_CreateTextureFromSurface(renderer, surface))
+    };
+}
+
+/// Create a texture for a rendering context.
+
+/// format: 	one of the enumerated values in SDL_PixelFormatEnum
+
+/// access: 	one of the enumerated values in SDL_TextureAccess
+
+/// Aborts with an error message if no rendering context was active,
+/// the format was unsupported, or the width or height were out of
+/// range.
+
+static UNUSED
+Texture create_Texture(SDL_Renderer * renderer,
+                       Uint32 format,
+                       int access,
+                       Vec2(u32) dimensions) {
+    return (Texture) {
+        .ptr = asserting_sdl(
+            SDL_CreateTexture(renderer,
+                              format,
+                              access,
+                              dimensions.x,
+                              dimensions.y))
+    };
+}
+
+#define BORROW_from_Option_Rect2(T, rect2)       \
+    rect2.is_some ? (T*)&rect2.value : NULL
+
+/// Update the given texture rectangle with new pixel data.
+/// 
+/// rect: 	an SDL_Rect structure representing the area to update, or NULL to update the entire texture
+/// pixels: 	the raw pixel data in the format of the texture
+/// pitch: 	the number of bytes in a row of pixel data, including padding between lines
+
+static UNUSED
+void update_Texture(Texture *self,
+                    Option(Rect2(int)) rect,
+                    const void *pixels, // ugh
+                    // why is pitch not in configuration? OK, pixels
+                    // specific
+                    int pitch) {
+    asserting_sdl(SDL_UpdateTexture(
+                      self->ptr,
+                      BORROW_from_Option_Rect2(SDL_Rect, rect),
+                      pixels,
+                      pitch));
+}
+
+/// Copy a portion of the texture to the current rendering target.
+
+static UNUSED
+void render_Texture(SDL_Renderer *renderer,
+                    Texture *texture,
+                    Option(Rect2(int)) src,
+                    Option(Rect2(int)) dst) {
+    asserting_sdl(SDL_RenderCopy(renderer,
+                                 texture->ptr,
+                                 BORROW_from_Option_Rect2(SDL_Rect, src),
+                                 BORROW_from_Option_Rect2(SDL_Rect, dst)));
 }
 
