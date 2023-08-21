@@ -19,7 +19,6 @@ GENERATE_Result(String, ParseError);
 int main() {
     S(Vec2(float));
     S(Vec3(float));
-    S(Line2);
     S(Rect2);
     S(Color);
 

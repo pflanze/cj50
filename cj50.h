@@ -738,8 +738,6 @@ GENERATE_PRINTLN(ucodepoint);
              , Option(int): print_debug_move_Option_int                 \
              , Option(float)*: print_debug_Option_float                 \
              , Option(float): print_debug_move_Option_float             \
-             , Line2*: print_debug_Line2                                 \
-             , Line2: print_debug_move_Line2                                 \
              , Rect2*: print_debug_Rect2                                 \
              , Rect2: print_debug_move_Rect2                                 \
              , Result(int, ParseError)*: print_debug_Result_int__ParseError \
@@ -1164,7 +1162,6 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , slice(ucodepoint): "slice(ucodepoint)"                   \
              , slice(utf8char): "slice(utf8char)"                       \
              , Rect2: "Rect2"                                           \
-             , Line2: "Line2"                                           \
              , Result(int, ParseError): "Result(int, ParseError)"       \
              , Result(String, SystemError): "Result(String, SystemError)" \
         )

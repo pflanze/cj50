@@ -30,40 +30,6 @@
 #undef T
 
 
-
-/// A line. The end point is at add(start, extent).
-typedef struct Line2 {
-    Vec2(float) start;
-    Vec2(float) extent;
-} Line2;
-
-/// Construct a Line2
-static UNUSED
-Line2 line2(Vec2(float) start, Vec2(float) extent) {
-    return (Line2) { start, extent };
-}
-
-static UNUSED
-void drop_Line2(UNUSED Line2 v) {}
-
-static UNUSED
-int print_debug_Line2(const Line2 *s) {
-    INIT_RESRET;
-    RESRET(printf("Line2("));
-    RESRET(print_debug_move_Vec2_float(s->start));
-    RESRET(printf(", "));
-    RESRET(print_debug_move_Vec2_float(s->extent));
-    RESRET(printf(")"));
-cleanup:
-    return ret;
-}
-static UNUSED
-int print_debug_move_Line2(Line2 s) {
-    return print_debug_Line2(&s);
-}
-
-// Really a copy-paste of Line2, huh!
-
 /// A rectangle. The opposite corner is at add(start, extent).
 typedef struct Rect2 {
     Vec2(float) start;
