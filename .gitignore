@@ -12,6 +12,6 @@ examples/sizes
 examples/vec
 examples/unicode
 examples/string_error
-examples/snail
+examples/not-a-snail
 examples/mutex
 examples/vectors_and_slices
