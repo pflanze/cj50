@@ -63,7 +63,7 @@ When such a value is not needed any longer, it must be moved into `drop()`. If y
 
 > Rule 1: Values of types that start with an uppercase initial must only ever exist in a single place at the same time, although they can be moved around. In the end, they must be moved into the `drop()` function.
 
-Exempt from this rule are values of types with a lowercase initial, like `int`, `cstr`, `ucodepoint` and more. They can be copied directly without needing to do this explicitly via the `clone()` function.
+Exempt from this rule are values of types with a lowercase initial, like `int`, `cstr`, `ucodepoint` and more. They can be copied directly without needing to do this explicitly via the `clone()` function. (Some types with uppercase initials, like `Vec2` or `Vec3`, can be copied, too, if their element type can.)
 
 *NOTE*: currently `clone` is not defined yet, it will be added in the future.
 
