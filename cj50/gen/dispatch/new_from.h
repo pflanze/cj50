@@ -35,6 +35,21 @@
 
 #elif NEW_FROM_STAGE == 2
 
+// XX todo move to better place
+static UNUSED
+String new_String_from_SystemError(SystemError e) {
+    // XX finally provide a macro to do this or something
+    char *str = NULL;
+    UNUSED size_t strlen = 0;
+    FILE *fh = open_memstream(&str, &strlen);
+    assert(fprintln_SystemError(fh, &e) >= 0);
+    fclose(fh);
+    String s = new_String_from_cstr(str);
+    free(str);
+    return s;
+}
+
+
 #define new_from_(T2, T1)                                               \
     _Generic(*((T2*)(NULL))                                             \
              , SystemError:                                             \
@@ -57,7 +72,7 @@
                  )                                                      \
              , String:                                                  \
              _Generic(*((T1*)(NULL))                                    \
-                      , SystemError: /*FAKE*/new_SystemError_from_SystemError \
+                      , SystemError: new_String_from_SystemError \
                       , UnicodeError: new_String_from_UnicodeError \
                       , DecodingError: /*FAKE*/new_SystemError_from_SystemError \
                       , cstr: new_String_from_cstr                      \
