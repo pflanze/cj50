@@ -24,6 +24,15 @@ Vec3(T) XCAT(vec3_, T)(T x, T y, T z) {
 static UNUSED
 void XCAT(drop_, Vec3(T))(UNUSED Vec3(T) v) {}
 
+static UNUSED
+bool XCAT(equal_, Vec3(T))(const Vec3(T) *a, const Vec3(T) *b) {
+    return (a->x == b->x) && (a->y == b->y) && (a->z == b->z);
+}
+
+static UNUSED
+bool XCAT(equal_move_, Vec3(T))(Vec3(T) a, Vec3(T) b) {
+    return XCAT(equal_, Vec3(T))(&a, &b);
+}
 
 static UNUSED
 int XCAT(print_debug_, Vec3(T))(const Vec3(T) *a) {
