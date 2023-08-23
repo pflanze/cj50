@@ -510,6 +510,9 @@ Result(size_t, UnicodeError) read_until_Vec_ucodepoint
                 RETURN_Err(UnicodeError_LimitExceeded, cleanup1);
             }
         }
+        if (is_end) {
+            break;
+        }
     }
     RETURN_Ok(nread, cleanup1);
     
