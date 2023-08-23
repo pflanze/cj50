@@ -52,6 +52,7 @@ int XCAT(print_debug_move_, Vec3(T))(Vec3(T) a) {
     return XCAT(print_debug_, Vec3(T))(&a);
 }
 
+GENERATE_Option(Vec3(T));
 
 static UNUSED
 Vec3(T) XCAT(add_, Vec3(T))(Vec3(T) a, Vec3(T) b) {
