@@ -14,6 +14,16 @@
 
 
 static UNUSED
+SDL_Point to_sdl_Vec2_int(Vec2(int) self) {
+    return (SDL_Point) { self.x, self.y };
+}
+
+static UNUSED
+SDL_FPoint to_sdl_Vec2_float(Vec2(float) self) {
+    return (SDL_FPoint) { self.x, self.y };
+}
+
+static UNUSED
 SDL_Rect to_sdl_Rect2_int(Rect2(int) r) {
     return (SDL_Rect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
 }
@@ -27,6 +37,8 @@ SDL_FRect to_sdl_Rect2_float(Rect2(float) r) {
 /// Convert a value of a type from cjmath.h into a type from SDL.h
 #define to_sdl(v)                                  \
     _Generic((v)                                   \
+             , Vec2(int): to_sdl_Vec2_int          \
+             , Vec2(float): to_sdl_Vec2_float      \
              , Rect2(int): to_sdl_Rect2_int        \
              , Rect2(float): to_sdl_Rect2_float    \
         )(v)
