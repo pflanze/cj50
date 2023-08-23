@@ -3,6 +3,38 @@
 
 Utilities for working with the SDL2 library.
 
+# Types
+
+## Vertex {#zero_Vertex}
+
+```C
+typedef struct Vertex {
+    Vec2(float) position;
+    SDL_Color color;
+    Vec2(float) texture_position;
+} Vertex
+```
+
+A `Vertex` is a float-based position on the screen, color at that
+point, and (optionally, can be set to {0, 0}) offset into a
+texture, used for `VertexRenderer` based drawing.
+
+It is memory-layout compatible with `SDL_Vertex`.
+
+## VertexRenderer {#zero_VertexRenderer}
+
+```C
+typedef struct VertexRenderer {
+    Vec(Vertex) vertices;
+    Vec(Vec3(int)) indices;
+} VertexRenderer
+```
+
+A `VertexRenderer` collects vertices, and triples of indices into
+the vertices vector representing triangles. The collected
+triangles information can then be shown via the
+`render_VertexRenderer` function.
+
 # Normal functions
 
 ## graphics_render {#one_graphics_render}
@@ -119,6 +151,76 @@ is destroyed. Do not free this surface.
 You may not combine this with 3D or the rendering API on this
 window.
 
+## vertex_3 {#one_vertex_QthreeE}
+
+```C
+Vertex vertex_3(Vec2(float) position, SDL_Color color, Vec2(float) texture_position)
+```
+
+Constructor for a Vertex with full information.
+
+## vertex_2 {#one_vertex_QtwoE}
+
+```C
+Vertex vertex_2(Vec2(float) position, SDL_Color color)
+```
+
+Constructor for a SDL_Vertex with texture position set to (0,0)
+(e.g. for when not using textures).
+
+## new_VertexRenderer {#one_new_VertexRenderer}
+
+```C
+VertexRenderer new_VertexRenderer()
+```
+
+Create a new `VertexRenderer`.
+
+## drop_VertexRenderer {#one_drop_VertexRenderer}
+
+```C
+void drop_VertexRenderer(VertexRenderer self)
+```
+
+Drop a `VertexRenderer`.
+
+## push_vertex {#one_push_vertex}
+
+```C
+int push_vertex(VertexRenderer *rdr, Vertex v)
+```
+
+Push one new vertex to the `VertexRenderer`, without registering
+the vertex for rendering. Returns the index to the newly pushed
+vertex; to register it for rendering, pass that index as a triple
+of indices to `push_triangle`.
+
+## push_triangle {#one_push_triangle}
+
+```C
+void push_triangle(VertexRenderer *rdr, Vec3(int) indices)
+```
+
+Push a triangle to the `VertexRenderer`, consisting of the indices
+to vertices that were pushed before using `push_vertex`.
+
+## render_VertexRenderer {#one_render_VertexRenderer}
+
+```C
+void render_VertexRenderer(SDL_Renderer *renderer, VertexRenderer *rdr)
+```
+
+Render the `VertexRenderer` to the given `SDL_Renderer`. The
+`VertexRenderer` is not consumed or cleared.
+
+## clear_VertexRenderer {#one_clear_VertexRenderer}
+
+```C
+void clear_VertexRenderer(VertexRenderer *rdr)
+```
+
+Clear the `VertexRenderer`, so that it can be re-used.
+
 ## new_Texture_from_Surface {#one_new_Texture_from_Surface}
 
 ```C
@@ -188,6 +290,23 @@ Copy a portion of the texture to the current rendering target.
 
 # Generic functions
 
+## to_sdl {#two_to_sdl}
+
+```C
+to_sdl(v)
+```
+
+Convert a value of a type from cjmath.h into a type from SDL.h
+
+Members:
+
+```C
+Rect2(float) : SDL_FRect to_sdl_Rect2_float(Rect2(float) r);
+Rect2(int)   : SDL_Rect to_sdl_Rect2_int(Rect2(int) r);
+Vec2(float)  : SDL_FPoint to_sdl_Vec2_float(Vec2(float) self);
+Vec2(int)    : SDL_Point to_sdl_Vec2_int(Vec2_int self);
+```
+
 ## asserting_sdl {#two_asserting_sdl}
 
 ```C
@@ -205,6 +324,16 @@ SDL_Surface * : SDL_Surface* asserting_sdl_pointer_SDL_Surface(SDL_Surface* p);
 SDL_Texture * : SDL_Texture* asserting_sdl_pointer_SDL_Texture(SDL_Texture* p);
 int           : int asserting_sdl_int(int code);
 ```
+
+# Macros
+
+## ColorA {#three_ColorA}
+
+```C
+ColorA(red, green, blue, strength)
+```
+
+Create a `SDL_Color`
 
 <hr>
 <p>&nbsp;</p>

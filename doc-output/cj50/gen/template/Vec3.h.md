@@ -8,7 +8,12 @@
 typedef struct Vec3(T)
 ```
 
-A 3-dimentional vector.
+A 3-dimensional vector.
+
+Because it can contain anything, it is not a Copy type in general
+and thus its type name starts with an uppercase letter. Most uses
+will be with number types, though, which are Copy types, and in
+those cases the Vec3 will be Copy as well.
 
 # Normal functions
 

@@ -118,21 +118,6 @@ int    : Vec3_float mul_Vec3_float_float(Vec3_float a, float b);
 int    : Vec3_int mul_Vec3_int_float(Vec3_int a, float b);
 ```
 
-## to_sdl {#two_to_sdl}
-
-```C
-to_sdl(v)
-```
-
-Convert a value of a type from cjmath.h into a type from SDL.h
-
-Members:
-
-```C
-Rect2(float) : SDL_FRect to_sdl_Rect2_float(Rect2(float) r);
-Rect2(int)   : SDL_Rect to_sdl_Rect2_int(Rect2_int r);
-```
-
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

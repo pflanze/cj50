@@ -23,9 +23,9 @@ Here's an overview of the programming principles used when programming with cj50
 
 ## Cleaning up
 
-Programming with C requires you in general to explicitly encode in your program when you are done with a particular piece of data. Using cj50, you do this by calling the function `drop`. (You may have heard that the C programming language has the function `free`. cj50 uses `free` under the hoods, but offers `drop` instead as `drop` does more than `free` (it also frees up other resources than memory, and frees up contained ), and, unlike `free`, generally works on all kinds of data, so it's easier to use.)
+Programming with C requires you in general to explicitly encode in your program when you are done with a particular piece of data. Using cj50, you do this by calling the function `drop`. (You may have heard that the C programming language has the function `free`. cj50 uses `free` under the hoods, but offers `drop` instead as `drop` does more than `free` (it also frees up other resources than memory, and frees up any contained data structures, too), and, unlike `free`, `drop` is generally available for all kinds of data even if it does nothing, so it's easier to use.)
 
-Some kinds of values, for example number types like `int` or `float`, as well as reference types (see next section), do not require cleaning up. They are so-called "Copy" types, they are small and can be copied everywhere and then will just be let go without needing to care about anything. Those are excempt from needing to be passed to `drop` (and in fact `drop` may not accept some of those).
+Some kinds of values, for example number types like `int` or `float`, as well as reference types (see next section), do not require cleaning up. They are so-called "Copy" types, they are small and can be copied everywhere and then will just be let go without needing to care about anything. Those are excempt from needing to be passed to `drop` (and in fact `drop` may not accept some of those, although that would be out of laziness on behalf of the cj50 author rather than out of principle).
 
 ## References
 
@@ -66,7 +66,7 @@ When such a value is not needed any longer, it must be moved into `drop()`. If y
 
 > Rule 1: Values of types that start with an uppercase initial must only ever exist in a single place at the same time, although they can be moved around. In the end, they must be moved into the `drop()` function.
 
-Exempt from this rule are values of types with a lowercase initial, like `int`, `cstr`, `ucodepoint` and more. They can be copied directly without needing to do this explicitly via the `clone()` function.
+Exempt from this rule are values of types with a lowercase initial, like `int`, `cstr`, `ucodepoint` and more. They can be copied directly without needing to do this explicitly via the `clone()` function. (Some types with uppercase initials, like `Vec2` or `Vec3`, can be copied, too, if their element type can.)
 
 *NOTE*: currently `clone` is not defined yet, it will be added in the future.
 
@@ -210,6 +210,8 @@ To visually distinguish them from functions and types (so that you know somethin
 * [Vec2](cj50/gen/template/Vec2.h.md#zero_VecQtwoE)
 * [Vec3](cj50/gen/template/Vec3.h.md#zero_VecQthreeE)
 * [VecError](cj50/gen/Vec.h.md#zero_VecError)
+* [Vertex](cj50/sdlutil.h.md#zero_Vertex)
+* [VertexRenderer](cj50/sdlutil.h.md#zero_VertexRenderer)
 
 ## Type aliases
 
@@ -234,6 +236,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [clear_SDL_Renderer](cj50/sdlutil.h.md#one_clear_SDL_Renderer)
 * [clear_String](cj50/String.h.md#one_clear_String)
 * [clear_Vec_\$T](cj50/gen/template/Vec.h.md#one_clear_Vec_QDT)
+* [clear_VertexRenderer](cj50/sdlutil.h.md#one_clear_VertexRenderer)
 * [close_CFile](cj50/os.h.md#one_close_CFile)
 * [color](cj50/Color.h.md#one_color)
 * [create_Texture](cj50/sdlutil.h.md#one_create_Texture)
@@ -256,6 +259,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [drop_CFile](cj50/os.h.md#one_drop_CFile)
 * [drop_CStr](cj50/CStr.h.md#one_drop_CStr)
 * [drop_Vec_\$T](cj50/gen/template/Vec.h.md#one_drop_Vec_QDT)
+* [drop_VertexRenderer](cj50/sdlutil.h.md#one_drop_VertexRenderer)
 * [encode_utf8](cj50/unicode.h.md#one_encode_utfQeightE)
 * [env_is_true](cj50.h.md#one_env_is_true)
 * [equal_\$VEC_\$T](cj50/gen/template/vectorlikes.h.md#one_equal_QDVEC_QDT)
@@ -314,6 +318,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [new_Vec_ucodepoint_from_cstr](cj50/unicode.h.md#one_new_Vec_ucodepoint_from_cstr)
 * [new_Vec_ucodepoint_from_slice_char](cj50/unicode.h.md#one_new_Vec_ucodepoint_from_slice_char)
 * [new_Vec_utf8char_from_cstr](cj50/unicode.h.md#one_new_Vec_utfQeightEchar_from_cstr)
+* [new_VertexRenderer](cj50/sdlutil.h.md#one_new_VertexRenderer)
 * [next_SliceIterator_\$T](cj50/gen/template/SliceIterator.h.md#one_next_SliceIterator_QDT)
 * [open_CFile](cj50/os.h.md#one_open_CFile)
 * [os_getc_unlocked](cj50/os.h.md#one_os_getc_unlocked)
@@ -338,9 +343,11 @@ To visually distinguish them from functions and types (so that you know somethin
 * [print_move_cstr](cj50/CStr.h.md#one_print_move_cstr)
 * [push_cstr_String](cj50/unicode.h.md#one_push_cstr_String)
 * [push_String](cj50/String.h.md#one_push_String)
+* [push_triangle](cj50/sdlutil.h.md#one_push_triangle)
 * [push_ucodepoint_String](cj50/unicode.h.md#one_push_ucodepoint_String)
 * [push_utf8char_String](cj50/unicode.h.md#one_push_utfQeightEchar_String)
 * [push_Vec_\$T](cj50/gen/template/Vec.h.md#one_push_Vec_QDT)
+* [push_vertex](cj50/sdlutil.h.md#one_push_vertex)
 * [push_within_capacity_Vec_\$T](cj50/gen/template/Vec.h.md#one_push_within_capacity_Vec_QDT)
 * [random_double](cj50/random.h.md#one_random_double)
 * [random_float](cj50/random.h.md#one_random_float)
@@ -349,6 +356,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [read_until_Vec_ucodepoint](cj50/unicode.h.md#one_read_until_Vec_ucodepoint)
 * [rect2_\$T](cj50/gen/template/Rect2.h.md#one_rectQtwoE_QDT)
 * [render_Texture](cj50/sdlutil.h.md#one_render_Texture)
+* [render_VertexRenderer](cj50/sdlutil.h.md#one_render_VertexRenderer)
 * [reserve_Vec_\$T](cj50/gen/template/Vec.h.md#one_reserve_Vec_QDT)
 * [set_\$VEC_\$T](cj50/gen/template/mutvectorlikes.h.md#one_set_QDVEC_QDT)
 * [set_draw_color](cj50/sdlutil.h.md#one_set_draw_color)
@@ -363,6 +371,8 @@ To visually distinguish them from functions and types (so that you know somethin
 * [utf8_sequence_len_ucodepoint](cj50/unicode.h.md#one_utfQeightE_sequence_len_ucodepoint)
 * [vec2_\$T](cj50/gen/template/Vec2.h.md#one_vecQtwoE_QDT)
 * [vec3_\$T](cj50/gen/template/Vec3.h.md#one_vecQthreeE_QDT)
+* [vertex_2](cj50/sdlutil.h.md#one_vertex_QtwoE)
+* [vertex_3](cj50/sdlutil.h.md#one_vertex_QthreeE)
 * [with_capacity_String](cj50/String.h.md#one_with_capacity_String)
 * [with_capacity_Vec_\$T](cj50/gen/template/Vec.h.md#one_with_capacity_Vec_QDT)
 
@@ -406,13 +416,14 @@ To visually distinguish them from functions and types (so that you know somethin
 * [slice_of](cj50.h.md#two_slice_of)
 * [some](cj50.h.md#two_some)
 * [sub](cj50/gen/dispatch/math.h.md#two_sub)
-* [to_sdl](cj50/gen/dispatch/math.h.md#two_to_sdl)
+* [to_sdl](cj50/sdlutil.h.md#two_to_sdl)
 * [type_name](cj50.h.md#two_type_name)
 * [unwrap](cj50.h.md#two_unwrap)
 
 ## Macros
 
 * [BEGIN_Result](cj50/gen/Result.h.md#three_BEGIN_Result)
+* [ColorA](cj50/sdlutil.h.md#three_ColorA)
 * [CStr_from_cstr_unsafe](cj50/CStr.h.md#three_CStr_from_cstr_unsafe)
 * [DBG](cj50.h.md#three_DBG)
 * [DBGA](cj50.h.md#three_DBGA)
