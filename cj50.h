@@ -1504,6 +1504,7 @@ cleanup:
              , Vec(Vec2(double))*: at_Vec_Vec2_double                    \
              , Vec(float)*: at_Vec_float                          \
              , Vec(double)*: at_Vec_double                        \
+             , Vec(ucodepoint)*: at_Vec_ucodepoint                        \
              , const slice(char)*: at_slice_char              \
              , const mutslice(char)*: at_mutslice_char        \
              , const Vec(char)*: at_Vec_char                  \
@@ -1512,6 +1513,7 @@ cleanup:
              , const Vec(int)*: at_Vec_int                    \
              , const Vec(float)*: at_Vec_float                  \
              , const Vec(double)*: at_Vec_double                  \
+             , const Vec(ucodepoint)*: at_Vec_ucodepoint                        \
         )((v), (idx))
 
 
