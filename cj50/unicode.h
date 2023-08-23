@@ -691,6 +691,19 @@ String new_String_from_cstr(cstr s) {
     return new_String_from_slice_char(new_slice_char(s, strlen(s)));
 }
 
+// Convert a UnicodeError to a String.
+static UNUSED
+String new_String_from_UnicodeError(UnicodeError e) {
+    // XX finally provide a macro to do this or something
+    char *str = NULL;
+    UNUSED size_t strlen = 0;
+    FILE *fh = open_memstream(&str, &strlen);
+    assert(fprintln_UnicodeError(fh, &e) >= 0);
+    fclose(fh);
+    String s = new_String_from_cstr(str);
+    free(str);
+    return s;
+}
 
 // Redefine new_from now that new_String_from_cstr exists... (horrible)
 #undef NEW_FROM_STAGE
@@ -704,4 +717,5 @@ String new_String_from_cstr(cstr s) {
 
 #define String(val)                             \
     new_from(String, val)
+
 

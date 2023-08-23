@@ -58,7 +58,7 @@
              , String:                                                  \
              _Generic(*((T1*)(NULL))                                    \
                       , SystemError: /*FAKE*/new_SystemError_from_SystemError \
-                      , UnicodeError: /*FAKE*/new_SystemError_from_SystemError \
+                      , UnicodeError: new_String_from_UnicodeError \
                       , DecodingError: /*FAKE*/new_SystemError_from_SystemError \
                       , cstr: new_String_from_cstr                      \
                       , char*: new_String_from_cstr                     \
