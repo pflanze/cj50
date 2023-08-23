@@ -35,17 +35,6 @@
 
 
 
-static UNUSED
-SDL_Rect to_sdl_Rect2_int(Rect2(int) r) {
-    return (SDL_Rect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
-}
-
-static UNUSED
-SDL_FRect to_sdl_Rect2_float(Rect2(float) r) {
-    return (SDL_FRect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
-}
-
-
 /// The math constant pi.
 
 /// (This may also be available as `M_PI` from <math.h>.)

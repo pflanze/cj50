@@ -12,6 +12,29 @@
 #include <cj50/resret.h>
 
 
+
+static UNUSED
+SDL_Rect to_sdl_Rect2_int(Rect2(int) r) {
+    return (SDL_Rect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
+}
+
+static UNUSED
+SDL_FRect to_sdl_Rect2_float(Rect2(float) r) {
+    return (SDL_FRect) { r.start.x, r.start.y, r.extent.x, r.extent.y };
+}
+
+
+/// Convert a value of a type from cjmath.h into a type from SDL.h
+#define to_sdl(v)                                  \
+    _Generic((v)                                   \
+             , Rect2(int): to_sdl_Rect2_int        \
+             , Rect2(float): to_sdl_Rect2_float    \
+        )(v)
+
+
+
+
+
 static UNUSED
 int asserting_sdl_int(int code) {
     if (code < 0) {
