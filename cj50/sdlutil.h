@@ -8,7 +8,9 @@
 #include <cj50/math.h>
 #include <cj50/instantiations/Vec_Vec2_int.h>
 #include <cj50/instantiations/Vec_Vec2_float.h>
+#include <cj50/instantiations/Vec_Vec3_int.h>
 #include <cj50/instantiations/Vec2_u32.h>
+#include <cj50/gen/Vec.h>
 #include <cj50/resret.h>
 
 
@@ -295,7 +297,188 @@ cleanup:
     return ret;
 }
 
-GENERATE_Option(Texture);
+GENERATE_ref(Texture);
+
+// XX Grr should auto-generate these from GENERATE_ref? But then T needs it *everywhere*.
+static UNUSED
+void drop_ref_Texture(UNUSED ref(Texture) self) {}
+static UNUSED
+bool equal_ref_Texture(const ref(Texture) *a, const ref(Texture) *b) {
+    return equal_Texture(*a, *b);
+}
+static UNUSED
+int print_debug_ref_Texture(const ref(Texture) *self) {
+    return print_debug_Texture(*self);
+}
+// ^ in other words, equal and debug should use deref
+
+
+GENERATE_Option(ref(Texture));
+
+// ------------------------------------------------------------------
+// Vertex renderer based drawing system.
+
+
+/// Create a `SDL_Color`
+#define ColorA(red, green, blue, strength)                      \
+    ((SDL_Color) {                                              \
+        .r = (red), .g = (green), .b = (blue), .a = (strength)  \
+    })
+
+static UNUSED
+bool equal_SDL_Color(const SDL_Color *a, const SDL_Color *b) {
+    return a->r == b->r
+        && a->g == b->g
+        && a->b == b->b
+        && a->a == b->a;
+}
+
+static UNUSED
+int print_debug_SDL_Color(const SDL_Color *self) {
+    INIT_RESRET;
+    RESRET(print_move_cstr("ColorA("));
+    RESRET(print_debug_u8(&self->r));
+    RESRET(print_move_cstr(","));
+    RESRET(print_debug_u8(&self->g));
+    RESRET(print_move_cstr(","));
+    RESRET(print_debug_u8(&self->b));
+    RESRET(print_move_cstr(","));
+    RESRET(print_debug_u8(&self->a));
+    RESRET(print_move_cstr(")"));
+cleanup:
+    return ret;
+}
+
+
+// / Simplify the type name for our purposes.
+// typedef SDL_Vertex Vertex;
+
+/// A `Vertex` is a float-based position on the screen, color at that
+/// point, and (optionally, can be set to {0, 0}) offset into a
+/// texture, used for `VertexRenderer` based drawing.
+
+/// It is memory-layout compatible with `SDL_Vertex`.
+
+typedef struct Vertex {
+    Vec2(float) position;
+    SDL_Color color;
+    Vec2(float) texture_position;
+} Vertex;
+
+static UNUSED
+void drop_Vertex(UNUSED Vertex self) {}
+
+static UNUSED
+bool equal_Vertex(const Vertex *a, const Vertex *b) {
+    return equal_Vec2_float(&a->position, &b->position)
+        && equal_SDL_Color(&a->color, &b->color)
+        && equal_Vec2_float(&a->texture_position, &b->texture_position);
+}
+
+static UNUSED
+int print_debug_Vertex(const Vertex *self) {
+    INIT_RESRET;
+    RESRET(print_move_cstr("Vertex("));
+    RESRET(print_debug_Vec2_float(&self->position));
+    RESRET(print_move_cstr(","));
+    RESRET(print_debug_SDL_Color(&self->color));
+    RESRET(print_move_cstr(","));
+    RESRET(print_debug_Vec2_float(&self->texture_position));
+    RESRET(print_move_cstr(")"));
+cleanup:
+    return ret;
+}
+
+GENERATE_Option(Vertex);
+
+#define T Vertex
+#include <cj50/gen/template/Vec.h>
+#undef T
+
+
+/// Constructor for a Vertex with full information.
+static UNUSED
+Vertex vertex_3(Vec2(float) position, SDL_Color color, Vec2(float) texture_position) {
+        return (Vertex) { position, color, texture_position };
+}
+
+/// Constructor for a SDL_Vertex with texture position set to (0,0)
+/// (e.g. for when not using textures).
+static UNUSED
+Vertex vertex_2(Vec2(float) position, SDL_Color color) {
+    return (Vertex) { position, color, { 0, 0} };
+}
+
+/// A `VertexRenderer` collects vertices, and triples of indices into
+/// the vertices vector representing triangles. The collected
+/// triangles information can then be shown via the
+/// `render_VertexRenderer` function.
+typedef struct VertexRenderer {
+    Vec(Vertex) vertices;
+    Vec(Vec3(int)) indices;
+} VertexRenderer;
+
+
+/// Create a new `VertexRenderer`.
+static UNUSED
+VertexRenderer new_VertexRenderer() {
+    assert(sizeof(Vertex) == sizeof(SDL_Vertex));
+    return (VertexRenderer) {
+        .vertices = new_Vec_Vertex(),
+        .indices = new_Vec_Vec3_int(),
+    };
+}
+
+/// Drop a `VertexRenderer`.
+static UNUSED
+void drop_VertexRenderer(VertexRenderer self) {
+    drop_Vec_Vec3_int(self.indices);
+    drop_Vec_Vertex(self.vertices);
+}
+
+
+/// Push one new vertex to the `VertexRenderer`, without registering
+/// the vertex for rendering. Returns the index to the newly pushed
+/// vertex; to register it for rendering, pass that index as a triple
+/// of indices to `push_triangle`.
+
+static UNUSED
+int push_vertex(VertexRenderer *rdr, Vertex v) {
+    push_Vec_Vertex(&rdr->vertices, v);
+    size_t index = rdr->vertices.len - 1;
+    assert(index <= INT_MAX);
+    return index;
+}
+
+/// Push a triangle to the `VertexRenderer`, consisting of the indices
+/// to vertices that were pushed before using `push_vertex`.
+
+static UNUSED
+void push_triangle(VertexRenderer *rdr, Vec3(int) indices) {
+    push_Vec_Vec3_int(&rdr->indices, indices);
+}
+
+/// Render the `VertexRenderer` to the given `SDL_Renderer`. The
+/// `VertexRenderer` is not consumed or cleared.
+static UNUSED
+void render_VertexRenderer(SDL_Renderer *renderer, VertexRenderer *rdr) {
+    asserting_sdl(
+        SDL_RenderGeometry(renderer,
+                           NULL, // SDL_Texture *texture,
+                           (SDL_Vertex *)rdr->vertices.ptr, rdr->vertices.len,
+                           (int *)rdr->indices.ptr, rdr->indices.len * 3));
+}
+
+/// Clear the `VertexRenderer`, so that it can be re-used.
+static UNUSED
+void clear_VertexRenderer(VertexRenderer *rdr) {
+    clear_Vec_Vertex(&rdr->vertices);
+    clear_Vec_Vec3_int(&rdr->indices);
+}
+
+
+// ------------------------------------------------------------------
+
 
 /// Original docs:
 
@@ -379,4 +562,5 @@ void render_Texture(SDL_Renderer *renderer,
                                  BORROW_from_Option_Rect2(SDL_Rect, src),
                                  BORROW_from_Option_Rect2(SDL_Rect, dst)));
 }
+
 
