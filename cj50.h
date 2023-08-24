@@ -1117,6 +1117,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Result(size_t, UnicodeError): unwrap_Result_size_t__UnicodeError \
              , Result(Vec(utf8char), UnicodeError): unwrap_Result_Vec_utf8char__UnicodeError \
              , Result(Vec(ucodepoint), UnicodeError): unwrap_Result_Vec_ucodepoint__UnicodeError \
+             , Result(String, UnicodeError): unwrap_Result_String__UnicodeError \
         )(v)
 
 /// Dereferencing a wrapper type ('smart pointer') to the simpler
