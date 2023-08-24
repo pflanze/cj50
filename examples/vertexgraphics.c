@@ -22,6 +22,10 @@ bool render(SDL_Renderer* renderer, void* _ctx) {
     int v2 = push_vertex(&ctx->rdr, vertex_2(vec2_float(380, 200), c));
     int v3 = push_vertex(&ctx->rdr, vertex_2(vec2_float(180, 300), c));
     push_triangle(&ctx->rdr, vec3_int(v1, v2, v3));
+    SDL_Color c2 = ColorA(220, 50, 180, 255);
+    int v4 = push_vertex(&ctx->rdr, vertex_2(vec2_float(500, 380), c2));
+    push_triangle(&ctx->rdr, vec3_int(v2, v3, v4));
+    
     render_VertexRenderer(renderer, &ctx->rdr);
     
     ctx->t += 1./60.;
