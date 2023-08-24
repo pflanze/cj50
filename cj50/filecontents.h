@@ -38,16 +38,18 @@ Result(String, UnicodeError) filecontents_String(cstr path, size_t max_len) {
     String s = new_String();
 
     size_t nread = 0;
-    while_let_Some(cp, TRY(get_ucodepoint_unlocked_CFile(&in), cleanup1)) {
+    while_let_Some(cp, TRY(get_ucodepoint_unlocked_CFile(&in), cleanup2)) {
         nread++;
         if (nread < max_len) {
             push_ucodepoint_String(&s, cp);
         } else {
-            RETURN_Err(UnicodeError_LimitExceeded, cleanup1);
+            RETURN_Err(UnicodeError_LimitExceeded, cleanup2);
         }
     }
     RETURN_Ok(s, cleanup1);
 
+cleanup2:
+    drop_String(s);
 cleanup1:
     TRY(close_CFile(&in), cleanup0);
     drop_CFile(in);
