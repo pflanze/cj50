@@ -108,6 +108,10 @@ void graphics_render(cstr title,
         DIE_("SDL could not initialize! SDL_Error: %s",
              SDL_GetError());
     }
+
+    asserting_sdl(SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1));
+    asserting_sdl(SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8));
+
     SDL_Window* window = SDL_CreateWindow(
         title,
         SDL_WINDOWPOS_UNDEFINED,
