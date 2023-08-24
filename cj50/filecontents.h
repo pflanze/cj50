@@ -24,10 +24,11 @@ GENERATE_Result(CStr, SystemError);
 // already, right?)
 
 
-/// Returns a copy of the contents of the file at the given `path` as
-/// a String, if possible (no system errors occurred). If the file
-/// contains more than `maxlen` unicode codepoints, an error with
-/// `.kind == UnicodeErrorKind_LimitExceededError` is returned.
+/// Returns a copy of the contents, which must be in UTF-8 encoding,
+/// of the file at the given `path` as a String, if possible (no
+/// system error, UTF-8 decoding error or limit excess occurred). If
+/// the file contains more than `maxlen` unicode codepoints, an error
+/// with `.kind == UnicodeErrorKind_LimitExceededError` is returned.
 
 static UNUSED
 Result(String, UnicodeError) filecontents_String(cstr path, size_t max_len) {
