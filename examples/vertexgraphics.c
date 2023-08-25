@@ -112,7 +112,9 @@ bool render(SDL_Renderer* renderer, void* _ctx) {
                              vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
                              90, -2.4,
                              ColorA(0, 200, 30, 120));
+
     clear(renderer);
+    asserting_sdl(SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND));
     render_VertexRenderer(renderer, &ctx->rdr);
     
     ctx->t += 1./60.;
