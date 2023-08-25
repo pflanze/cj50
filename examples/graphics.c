@@ -11,9 +11,16 @@ bool render_squares(SDL_Renderer* renderer, void* context,
     clear(renderer);
     set_draw_color(renderer, color(0, 156, 0));
 
-    Vec2(float) diagonal = { 5, 5 };
-    for (int i = 0; i < 70; i++) {
-        Vec2(float) topleft = { 300 + i * factor * 4, i * 6 };
+    const int num_squares = 70;
+    int dy_per_square = window_dimensions.y * 0.9 / (float)num_squares;
+    int square_side_len = dy_per_square * 0.8;
+    Vec2(float) diagonal = { square_side_len, square_side_len };
+    for (int i = 0; i < num_squares; i++) {
+        Vec2(float) topleft = {
+            (window_dimensions.x / 2 +
+             factor * window_dimensions.x * 0.4 * i / num_squares),
+            i * dy_per_square
+        };
         Rect2(float) r = { topleft, diagonal };
         draw_rect(renderer, r);
     }
