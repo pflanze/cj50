@@ -384,9 +384,9 @@ int print_debug_Vertex(const Vertex *self) {
     INIT_RESRET;
     RESRET(print_move_cstr("Vertex("));
     RESRET(print_debug_Vec2_float(&self->position));
-    RESRET(print_move_cstr(","));
+    RESRET(print_move_cstr(", "));
     RESRET(print_debug_SDL_Color(&self->color));
-    RESRET(print_move_cstr(","));
+    RESRET(print_move_cstr(", "));
     RESRET(print_debug_Vec2_float(&self->texture_position));
     RESRET(print_move_cstr(")"));
 cleanup:
