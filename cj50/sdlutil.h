@@ -149,6 +149,13 @@ void graphics_render(cstr title,
     bool quit = false;
     bool is_fullscreen = 0;
     while (!quit) {
+        // Copy current window size on every frame, because the window
+        // can be resized by the window manager (Alt-F11 to force it
+        // out of full-screen mode).
+        SDL_GetWindowSize(window,
+                          &current_window_dimensions.x,
+                          &current_window_dimensions.y);
+
         if (renderframe(renderer, context, current_window_dimensions)) {
             SDL_RenderPresent(renderer);
         } else {
@@ -178,9 +185,6 @@ void graphics_render(cstr title,
                                       is_fullscreen ? 0
                                       : SDL_WINDOW_FULLSCREEN_DESKTOP));
                     is_fullscreen = ! is_fullscreen;
-                    SDL_GetWindowSize(window,
-                                      &current_window_dimensions.x,
-                                      &current_window_dimensions.y);
                 }
             }
         }
