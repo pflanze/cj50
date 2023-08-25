@@ -342,11 +342,11 @@ int print_debug_SDL_Color(const SDL_Color *self) {
     INIT_RESRET;
     RESRET(print_move_cstr("ColorA("));
     RESRET(print_debug_u8(&self->r));
-    RESRET(print_move_cstr(","));
+    RESRET(print_move_cstr(", "));
     RESRET(print_debug_u8(&self->g));
-    RESRET(print_move_cstr(","));
+    RESRET(print_move_cstr(", "));
     RESRET(print_debug_u8(&self->b));
-    RESRET(print_move_cstr(","));
+    RESRET(print_move_cstr(", "));
     RESRET(print_debug_u8(&self->a));
     RESRET(print_move_cstr(")"));
 cleanup:
