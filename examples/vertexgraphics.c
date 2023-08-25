@@ -31,6 +31,31 @@ int wave(float t, Vec2(float) f1, Vec2(float) f2, int low, int high) {
     return res;
 }
 
+void render_floating_triangle(VertexRenderer *rdr, float t,
+                              Vec2(float) fx1, Vec2(float) fx2,
+                              Vec2(float) fy1, Vec2(float) fy2,
+                              float size, float rotation_speed,
+                              SDL_Color color) {
+    Vec2(float) center = vec2_float(
+        wavef(t, fx1, fx2, -size, window_width + size),
+        wavef(t, fy1, fy2, -size, window_height + size));
+    float angle = t * rotation_speed;
+    int p1 = push_vertex(rdr,
+                         vertex_2(add(center, vec2_float(size * sinf(angle),
+                                                         size * cosf(angle))),
+                                  color));
+    angle += math_pi * 2. / 3.;
+    int p2 = push_vertex(rdr,
+                         vertex_2(add(center, vec2_float(size * sinf(angle),
+                                                         size * cosf(angle))),
+                                  color));
+    angle += math_pi * 2. / 3.;
+    int p3 = push_vertex(rdr,
+                         vertex_2(add(center, vec2_float(size * sinf(angle),
+                                                         size * cosf(angle))),
+                                  color));
+    push_triangle(rdr, vec3_int(p1, p2, p3));
+}
 
 bool render(SDL_Renderer* renderer, void* _ctx) {
     Ctx* ctx = _ctx;
@@ -38,6 +63,8 @@ bool render(SDL_Renderer* renderer, void* _ctx) {
     clear_VertexRenderer(&ctx->rdr);
 
     float t = ctx->t;
+
+    // Diamond shape
     SDL_Color c1 = ColorA(
         wave(t, vec2_float(3., 1.), vec2_float(2.9, 0.99), 0, 255),
         wave(t, vec2_float(4.13, 0.5), vec2_float(5.11, 0.7), 90, 255),
@@ -73,6 +100,18 @@ bool render(SDL_Renderer* renderer, void* _ctx) {
     int v4 = push_vertex(&ctx->rdr, vertex_2(vec2_float(500, 380), c3));
     push_triangle(&ctx->rdr, vec3_int(v2, v3, v4));
 
+    // Floating triangles:
+    render_floating_triangle(&ctx->rdr, t,
+                             vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
+                             vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
+                             100, 3.6,
+                             ColorA(200, 20, 10, 150));
+    render_floating_triangle(&ctx->rdr, t - 4.0,
+                             // XX change these
+                             vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
+                             vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
+                             90, -2.4,
+                             ColorA(0, 200, 30, 120));
     clear(renderer);
     render_VertexRenderer(renderer, &ctx->rdr);
     
