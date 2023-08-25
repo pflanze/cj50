@@ -757,6 +757,7 @@ GENERATE_PRINTLN(ucodepoint);
              , UnicodeError*: print_debug_UnicodeError                  \
              , Color*: print_debug_Color                                \
              , Color: print_debug_move_Color                            \
+             , VertexRenderer*: print_debug_VertexRenderer               \
              , const cstr*: print_debug_cstr                                  \
              , const CStr*: print_debug_CStr                                  \
              , const String*: print_debug_String                              \

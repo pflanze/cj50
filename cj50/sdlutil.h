@@ -440,6 +440,19 @@ void drop_VertexRenderer(VertexRenderer self) {
     drop_Vec_Vertex(self.vertices);
 }
 
+static UNUSED
+int print_debug_VertexRenderer(const VertexRenderer *self) {
+    INIT_RESRET;
+    RESRET(print_move_cstr("(VertexRenderer) {\n"));
+    RESRET(print_move_cstr("  .vertices = "));
+    RESRET(print_debug_Vec_Vertex(&self->vertices));
+    RESRET(print_move_cstr("\n  .indices = "));
+    RESRET(print_debug_Vec_Vec3_int(&self->indices));
+    RESRET(print_move_cstr("\n}"));
+cleanup:
+    return ret;
+}
+
 
 /// Push one new vertex to the `VertexRenderer`, without registering
 /// the vertex for rendering. Returns the index to the newly pushed
