@@ -123,6 +123,7 @@ void graphics_render(cstr title,
         DIE_("Window could not be created! SDL_Error: %s",
              SDL_GetError());
     }
+    SDL_SetWindowResizable(window, SDL_TRUE);
 
     /*
     SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
