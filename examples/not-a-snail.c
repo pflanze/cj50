@@ -16,7 +16,7 @@ Option(float) snail_y(float x) {
     }
 }
 
-bool render_snail(SDL_Renderer *rdr, void *ctx) {
+bool render_snail(SDL_Renderer *rdr, void *ctx, Vec2(int) window_dimensions) {
     float *t = ctx;
     *t += 0.04;
 
@@ -53,7 +53,7 @@ Result(Unit, String) run(UNUSED slice(cstr) argv) {
                                        vec2_float(2.8, 2.2)));
     } else {
         float t = 0.0;
-        graphics_render("Snail", 640, 480, render_snail, &t);
+        graphics_render("Snail", vec2_int(640, 480), render_snail, &t);
     }
 
     RETURN_Ok(Unit(), cleanup);

@@ -99,9 +99,8 @@ DEF_ASSERTING_SDL_POINTER(SDL_Texture);
 
 static UNUSED
 void graphics_render(cstr title,
-                     int window_width,
-                     int window_height,
-                     bool (*renderframe)(SDL_Renderer*, void*),
+                     Vec2(int) window_dimensions,
+                     bool (*renderframe)(SDL_Renderer*, void*, Vec2(int)),
                      void* context)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -112,12 +111,13 @@ void graphics_render(cstr title,
     asserting_sdl(SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1));
     asserting_sdl(SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8));
 
+    Vec2(int) current_window_dimensions = window_dimensions;
     SDL_Window* window = SDL_CreateWindow(
         title,
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        window_width,
-        window_height,
+        window_dimensions.x,
+        window_dimensions.y,
         SDL_WINDOW_SHOWN);
     if (!window) {
         DIE_("Window could not be created! SDL_Error: %s",
@@ -147,8 +147,9 @@ void graphics_render(cstr title,
     
     SDL_Event e;
     bool quit = false;
+    bool is_fullscreen = 0;
     while (!quit) {
-        if (renderframe(renderer, context)) {
+        if (renderframe(renderer, context, current_window_dimensions)) {
             SDL_RenderPresent(renderer);
         } else {
             quit = true;
@@ -171,6 +172,15 @@ void graphics_render(cstr title,
                 SDL_Keycode c = e.key.keysym.sym;
                 if ((c == SDLK_ESCAPE) || (c == SDLK_q)) {
                     quit = true;
+                } else if ((c == SDLK_F11) || (c == SDLK_f)) {
+                    asserting_sdl(SDL_SetWindowFullscreen(
+                                      window,
+                                      is_fullscreen ? 0
+                                      : SDL_WINDOW_FULLSCREEN_DESKTOP));
+                    is_fullscreen = ! is_fullscreen;
+                    SDL_GetWindowSize(window,
+                                      &current_window_dimensions.x,
+                                      &current_window_dimensions.y);
                 }
             }
         }

@@ -42,14 +42,12 @@ GENERATE_Option(ColorFunction_float);
 
 struct PlotrenderCtx {
     slice(ColorFunction_float) functions;
-    int width;
-    int height;
     Rect2(float) viewport;
     Vec(Vec2(float)) points;
 };
 
 static UNUSED
-bool plot_render(SDL_Renderer* renderer, void* _ctx) {
+bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions) {
     struct PlotrenderCtx* ctx = _ctx;
     Vec(Vec2(float)) *points = &ctx->points;
     Rect2(float)* viewport = &ctx->viewport;
@@ -59,8 +57,8 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
     asserting_sdl(SDL_SetRenderDrawColor(renderer, 0,0,0, 128));
     asserting_sdl(SDL_RenderClear(renderer));
 
-    float width = ctx->width;
-    float height = ctx->height;
+    float width = window_dimensions.x;
+    float height = window_dimensions.y;
 
     for (size_t j = 0; j < ctx->functions.len; j++) {
         Color color = ctx->functions.ptr[j].color;
@@ -74,7 +72,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 
         clear_Vec_Vec2_float(points);
 
-        for (int i = 0; i < ctx->width; i++) {
+        for (int i = 0; i < window_dimensions.x; i++) {
             float x = start.x + extent.x / width * i;
             if_let_Some(y, f(x)) {
                 float xscreen = i;
@@ -105,15 +103,13 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx) {
 static UNUSED
 int plot_functions_float(slice(ColorFunction_float) fs,
                          Rect2(float) viewport) {
-    const int width = 800;
-    const int height = 600;
 
     struct PlotrenderCtx ctx = {
-        fs, width, height, viewport, new_Vec_Vec2_float()
+        fs, viewport, new_Vec_Vec2_float()
     };
 
     graphics_render("Plot functions",
-                    width, height, plot_render, &ctx);
+                    vec2_int(800, 600), plot_render, &ctx);
 
     drop(ctx.points);
     return 0;
@@ -126,8 +122,6 @@ int plot_functions_float(slice(ColorFunction_float) fs,
 /// shown on the screen.
 static UNUSED
 int plot_function_float(Option(float)(*f)(float), Rect2(float) viewport) {
-    const int width = 800;
-    const int height = 600;
 
     DEF_SLICE(ColorFunction_float, fs,
               {
@@ -135,10 +129,11 @@ int plot_function_float(Option(float)(*f)(float), Rect2(float) viewport) {
               });
 
     struct PlotrenderCtx ctx = {
-        fs, width, height, viewport, new_Vec_Vec2_float()
+        fs, viewport, new_Vec_Vec2_float()
     };
 
-    graphics_render("Plot function", width, height, plot_render, &ctx);
+    graphics_render("Plot function",
+                    vec2_int(800, 600), plot_render, &ctx);
 
     drop(ctx.points);
     return 0;

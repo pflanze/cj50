@@ -1,9 +1,7 @@
 #include <cj50.h>
 
-const int window_width = 640;
-const int window_height = 480;
-
-bool render_squares(SDL_Renderer* renderer, void* context) {
+bool render_squares(SDL_Renderer* renderer, void* context,
+                    Vec2(int) window_dimensions) {
     float* t = context; // The time in seconds
 
     *t += 1./60.;
@@ -30,5 +28,5 @@ int main() {
 
     float t = 0;
     graphics_render("Graphics",
-                    window_width, window_height, render_squares, &t);
+                    vec2_int(640, 480), render_squares, &t);
 }
