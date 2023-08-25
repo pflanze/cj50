@@ -418,7 +418,7 @@ GENERATE_Option(Vertex);
 /// Constructor for a Vertex with full information.
 static UNUSED
 Vertex vertex_3(Vec2(float) position, SDL_Color color, Vec2(float) texture_position) {
-        return (Vertex) { position, color, texture_position };
+    return (Vertex) { position, color, texture_position };
 }
 
 /// Constructor for a SDL_Vertex with texture position set to (0,0)
