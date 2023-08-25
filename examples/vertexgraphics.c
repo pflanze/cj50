@@ -105,13 +105,19 @@ bool render(SDL_Renderer* renderer, void* _ctx) {
                              vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
                              vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
                              100, 3.6,
-                             ColorA(200, 20, 10, 150));
+                             ColorA(255, 20, 10, 150));
     render_floating_triangle(&ctx->rdr, t - 4.0,
                              // XX change these
                              vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
                              vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
                              90, -2.4,
-                             ColorA(0, 200, 30, 120));
+                             ColorA(0, 255, 30, 120));
+    render_floating_triangle(&ctx->rdr, t - 2.0,
+                             // XX change these
+                             vec2_float(3.6, 1.0), vec2_float(1.6, 0.4),
+                             vec2_float(8.6, 1.0), vec2_float(0.8, 0.4),
+                             105, -2.8,
+                             ColorA(0, 30, 255, 140));
 
     clear(renderer);
     asserting_sdl(SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND));
