@@ -32,30 +32,37 @@ int wave(float t, Vec2(float) f1, Vec2(float) f2, int low, int high) {
 }
 
 static
-void render_floating_triangle(VertexRenderer *rdr, Vec2(int) window_dimensions, float t,
-                              Vec2(float) fx1, Vec2(float) fx2,
-                              Vec2(float) fy1, Vec2(float) fy2,
-                              float size, float rotation_speed,
-                              SDL_Color color) {
-    Vec2(float) center = vec2_float(
-        wavef(t, fx1, fx2, -size, window_dimensions.x + size),
-        wavef(t, fy1, fy2, -size, window_dimensions.y + size));
-    float angle = t * rotation_speed;
-    int p1 = push_vertex(rdr,
-                         vertex_2(add(center, vec2_float(size * sinf(angle),
-                                                         size * cosf(angle))),
-                                  color));
-    angle += math_pi * 2. / 3.;
-    int p2 = push_vertex(rdr,
-                         vertex_2(add(center, vec2_float(size * sinf(angle),
-                                                         size * cosf(angle))),
-                                  color));
-    angle += math_pi * 2. / 3.;
-    int p3 = push_vertex(rdr,
-                         vertex_2(add(center, vec2_float(size * sinf(angle),
-                                                         size * cosf(angle))),
-                                  color));
-    push_triangle(rdr, vec3_int(p1, p2, p3));
+void render_floating_triangles(VertexRenderer *rdr, Vec2(int) window_dimensions, float t,
+                               Vec2(float) fx1, Vec2(float) fx2,
+                               Vec2(float) fy1, Vec2(float) fy2,
+                               float size, float rotation_speed,
+                               SDL_Color color) {
+    // draw a whole series of them, at different time points
+    for (int i = 0; i < 22; i++) {
+        Vec2(float) center = vec2_float(
+            wavef(t, fx1, fx2, -size, window_dimensions.x + size),
+            wavef(t, fy1, fy2, -size, window_dimensions.y + size));
+        float angle = t * rotation_speed;
+        int p1 = push_vertex(rdr,
+                             vertex_2(add(center, vec2_float(size * sinf(angle),
+                                                             size * cosf(angle))),
+                                      color));
+        angle += math_pi * 2. / 3.;
+        int p2 = push_vertex(rdr,
+                             vertex_2(add(center, vec2_float(size * sinf(angle),
+                                                             size * cosf(angle))),
+                                      color));
+        angle += math_pi * 2. / 3.;
+        int p3 = push_vertex(rdr,
+                             vertex_2(add(center, vec2_float(size * sinf(angle),
+                                                             size * cosf(angle))),
+                                      color));
+        push_triangle(rdr, vec3_int(p1, p2, p3));
+
+        // next child is smaller and further behind in time:
+        size *= 0.81f;
+        t -= 0.1f;
+    }
 }
 
 bool render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions) {
@@ -123,23 +130,23 @@ bool render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions) {
     push_triangle(&ctx->rdr, vec3_int(v2, v3, v4));
 
     // Floating triangles:
-    render_floating_triangle(&ctx->rdr, window_dimensions, t,
-                             vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
-                             vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
-                             100, 3.6,
-                             ColorA(255, 20, 10, 150));
-    render_floating_triangle(&ctx->rdr, window_dimensions, t - 4.0,
-                             // XX change these
-                             vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
-                             vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
-                             90, -2.4,
-                             ColorA(0, 255, 30, 120));
-    render_floating_triangle(&ctx->rdr, window_dimensions, t - 2.0,
-                             // XX change these
-                             vec2_float(3.6, 1.0), vec2_float(1.6, 0.4),
-                             vec2_float(8.6, 1.0), vec2_float(0.8, 0.4),
-                             105, -2.8,
-                             ColorA(0, 30, 255, 140));
+    render_floating_triangles(&ctx->rdr, window_dimensions, t,
+                              vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
+                              vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
+                              100, 3.6,
+                              ColorA(255, 20, 10, 120));
+    render_floating_triangles(&ctx->rdr, window_dimensions, t - 4.0,
+                              // XX change these
+                              vec2_float(4.6, 1.0), vec2_float(0.6, 0.4),
+                              vec2_float(7.6, 1.0), vec2_float(0.7, 0.4),
+                              90, -2.4,
+                             ColorA(0, 255, 30, 110));
+    render_floating_triangles(&ctx->rdr, window_dimensions, t - 2.0,
+                              // XX change these
+                              vec2_float(3.6, 1.0), vec2_float(1.6, 0.4),
+                              vec2_float(8.6, 1.0), vec2_float(0.8, 0.4),
+                              105, -2.8,
+                              ColorA(0, 30, 255, 110));
 
     clear(renderer);
     asserting_sdl(SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND));
