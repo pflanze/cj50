@@ -184,6 +184,13 @@ void XCAT(append_, Vec(T))(Vec(T) *self, Vec(T) *other) {
     other->len = 0;
 }
 
+/// Moves all the elements of `other` into `self`, consuming `other`.
+static UNUSED
+void XCAT(append_move_, Vec(T))(Vec(T) *self, Vec(T) other) {
+    XCAT(append_, Vec(T))(self, &other);
+    XCAT(drop_, Vec(T))(other);
+}
+
 /// Clears the vector, removing all values.
 
 /// Note that this method has no effect on the allocated capacity of
