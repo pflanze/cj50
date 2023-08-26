@@ -1329,6 +1329,12 @@ cleanup:
 #define append_move(coll1, coll2)                       \
     _Generic((coll1)                                    \
              , String*: append_move_String_String       \
+             , Vec(cstr)*: append_move_Vec_cstr         \
+             , Vec(CStr)*: append_move_Vec_CStr         \
+             , Vec(int)*: append_move_Vec_int         \
+             , Vec(float)*: append_move_Vec_float         \
+             , Vec(double)*: append_move_Vec_double         \
+             , Vec(ucodepoint)*: append_move_Vec_ucodepoint         \
         )(coll1, coll2)
 
 
