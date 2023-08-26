@@ -128,55 +128,66 @@ Option(String) get_String() {
 }
 
 
-/// Values of this type (a number) describe the reason why a string
-/// does not contain text that properly represents a value that the
-/// used parse function should return.
+/// Values of this type describe the reason why a string does not
+/// contain text that properly represents a value that the used parse
+/// function should return.
 
-/// Currently, numbers in the range 1..255 represent errors defined by
-/// the operating system (errno), numbers in the range 500..29999 are
+/// Currently, codes in the range 1..255 represent errors defined by
+/// the operating system (errno), codes in the range 500..29999 are
 /// specific to cj50.h. But do *not* rely on any details of this type,
 /// they may change, values of this type should just be passed to one
 /// of the functions that accept it (`string_from_ParseError` and
 /// `print_ParseError`).
 
-typedef uint16_t ParseError;
+typedef struct ParseError {
+    uint16_t code;
+} ParseError;
+
+typedef uint16_t ParseError__code_t;
+
+#define ParseError(e) ((ParseError) { .code = (e) })
 
 static
 bool equal_ParseError(const ParseError* a, const ParseError* b) {
-    return *a == *b;
+    return a->code == b->code;
 }
 
 static
-int print_debug_ParseError(const ParseError *v) {
-    return print_move_int(*v);
+int print_debug_ParseError(const ParseError *self) {
+    INIT_RESRET;
+    RESRET(print_move_cstr("ParseError("));
+    RESRET(print_move_int(self->code));
+    RESRET(print_move_cstr(")"));
+cleanup:
+    return ret;
 }
 
-const ParseError E_not_in_int_range = 500;
-const ParseError E_invalid_text_after_number = 501;
-const ParseError E_not_greater_than_zero = 502;
-const ParseError E_negative = 503;
-const ParseError E_not_a_number = 504;
+const ParseError__code_t E_not_in_int_range = 500;
+const ParseError__code_t E_invalid_text_after_number = 501;
+const ParseError__code_t E_not_greater_than_zero = 502;
+const ParseError__code_t E_negative = 503;
+const ParseError__code_t E_not_a_number = 504;
 
 
 /// Convert a `ParseError` value into a `CStr` for display.
 static
 CStr string_from_ParseError(const ParseError *e) {
-    if (*e == E_not_in_int_range) {
+    if (e->code == E_not_in_int_range) {
         return CStr_from_cstr_unsafe(
             xstrdup("is not within the range of numbers of the `int` type"));
-    } else if (*e == E_invalid_text_after_number) {
+    } else if (e->code == E_invalid_text_after_number) {
         return CStr_from_cstr_unsafe(
             xstrdup("has invalid text after the number"));
-    } else if (*e == E_not_greater_than_zero) {
+    } else if (e->code == E_not_greater_than_zero) {
         return CStr_from_cstr_unsafe(
             xstrdup("is not greater than zero"));
-    } else if (*e == E_negative) {
+    } else if (e->code == E_negative) {
         return CStr_from_cstr_unsafe(
             xstrdup("is negative"));
-    } else if (*e == E_not_a_number) {
+    } else if (e->code == E_not_a_number) {
         return CStr_from_cstr_unsafe(
             xstrdup("is not a number"));
-    } else if (*e < 256) {
+    } else if (e->code < 256) {
 #define SIZ_ 200
         CStr s = new_CStr(SIZ_);
         assert(snprintf(s.cstr, SIZ_,
@@ -233,16 +244,16 @@ Result(int, ParseError) parse_int(cstr s) {
             if (n >= INT_MIN && n <= INT_MAX) {
                 return Ok(int, ParseError)(n);
             } else {
-                return Err(int, ParseError)(E_not_in_int_range);
+                return Err(int, ParseError)(ParseError(E_not_in_int_range));
             }
         } else {
-            return Err(int, ParseError)(
-                tail == s ? E_not_a_number :
-                E_invalid_text_after_number);
+            return Err(int, ParseError)(ParseError(
+                                            tail == s ? E_not_a_number :
+                                            E_invalid_text_after_number));
         }
     } else {
         // return err_ParseResult(E_not_in_int_range);
-        return Err(int, ParseError)(errno);
+        return Err(int, ParseError)(ParseError(errno));
     }
 }
 
@@ -282,7 +293,7 @@ Result(int, ParseError) parse_nat(cstr s) {
         if (rn.ok > 0) {
             return rn; // ok
         } else {
-            return Err(int, ParseError)(E_not_greater_than_zero);
+            return Err(int, ParseError)(ParseError(E_not_greater_than_zero));
         }
     } else {
         return rn; // err
@@ -316,7 +327,7 @@ Result(int, ParseError) parse_nat0(cstr s) {
         if (rn.ok >= 0) {
             return rn; // ok
         } else {
-            return Err(int, ParseError)(E_negative);
+            return Err(int, ParseError)(ParseError(E_negative));
         }
     } else {
         return rn; // err
@@ -356,12 +367,12 @@ Result(float, ParseError) parse_float(cstr s) {
         if (*tail == '\0') {
             return Ok(float, ParseError)(x);
         } else {
-            return Err(float, ParseError)(
-                tail == s ? E_not_a_number :
-                E_invalid_text_after_number);
+            return Err(float, ParseError)(ParseError(
+                                              tail == s ? E_not_a_number :
+                                              E_invalid_text_after_number));
         }
     } else {
-        return Err(float, ParseError)(errno);
+        return Err(float, ParseError)(ParseError(errno));
     }
 }
 
