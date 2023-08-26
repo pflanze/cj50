@@ -60,6 +60,7 @@ Mutex(T) XCAT(new_, Mutex(T))(T val) {
     m.__private_data = val;
     pthread_mutexattr_t att;
     pthread_mutexattr_init(&att);
+    // comment out following line for ~30% faster, but less safe mutexes
     assert(pthread_mutexattr_settype(&att, PTHREAD_MUTEX_RECURSIVE_NP) == 0);
     pthread_mutexattr_destroy(&att); // noop in linux glibc
     pthread_mutex_init(&m.__private_sys_mutex, &att);
