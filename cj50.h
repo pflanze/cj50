@@ -1501,12 +1501,18 @@ cleanup:
 
 #define at(v, idx)                                            \
     _Generic((v)                                              \
+             , Vec(char)*: at_Vec_char                        \
              , slice(char)*: at_slice_char                    \
              , mutslice(char)*: at_mutslice_char              \
-             , Vec(char)*: at_Vec_char                        \
+             , Vec(int)*: at_Vec_int                          \
              , slice(int)*: at_slice_int                      \
              , mutslice(int)*: at_mutslice_int                \
-             , Vec(int)*: at_Vec_int                          \
+             , Vec(cstr)*: at_Vec_cstr                          \
+             , slice(cstr)*: at_slice_cstr                      \
+             , mutslice(cstr)*: at_mutslice_cstr                \
+             , Vec(CStr)*: at_Vec_CStr                          \
+             , slice(CStr)*: at_slice_CStr                      \
+             , mutslice(CStr)*: at_mutslice_CStr                \
              , Vec(Vec2(int))*: at_Vec_Vec2_int                    \
              , Vec(Vec2(float))*: at_Vec_Vec2_float                    \
              , Vec(Vec2(double))*: at_Vec_Vec2_double                    \
