@@ -690,9 +690,21 @@ String new_String_from_slice_char(slice(char) s) {
 /// if not.
 
 static UNUSED
-String new_String_from_cstr(cstr s) {
-    return new_String_from_slice_char(new_slice_char(s, strlen(s)));
+String new_String_from_cstr(const cstr *s) {
+    return new_String_from_slice_char(new_slice_char(*s, strlen(*s)));
 }
+
+/// Same as `new_String_from_cstr` but takes a `cstr` directly. Even
+/// though it is named with `move`, that just moves the reference
+/// which is Copy, cstr is always borrowing, drop-ing it is a
+/// noop. (This function only exists for convenience via generics.)
+
+static UNUSED
+String new_String_from_move_cstr(cstr s) {
+    return new_String_from_cstr(&s);
+}
+
+
 
 // Convert a UnicodeError to a String.
 static UNUSED
@@ -703,12 +715,12 @@ String new_String_from_UnicodeError(UnicodeError e) {
     FILE *fh = open_memstream(&str, &strlen);
     assert(fprintln_UnicodeError(fh, &e) >= 0);
     fclose(fh);
-    String s = new_String_from_cstr(str);
+    String s = new_String_from_move_cstr(str);
     free(str);
     return s;
 }
 
-// Redefine new_from now that new_String_from_cstr exists... (horrible)
+// Redefine new_from now that new_String_from_move_cstr exists... (horrible)
 #undef NEW_FROM_STAGE
 #define NEW_FROM_STAGE 2
 #undef NEW_FROM_h

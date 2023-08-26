@@ -1482,8 +1482,8 @@ cleanup:
 
 #define new_String_from(v)                              \
     _Generic((v)                                        \
-             , char*: new_String_from_cstr              \
-             , cstr: new_String_from_cstr               \
+             , char*: new_String_from_move_cstr              \
+             , cstr: new_String_from_move_cstr               \
              , CStr: new_String_from_CStr               \
              , slice(char): new_String_from_slice_char  \
              , int: new_String_from_move_int            \

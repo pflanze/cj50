@@ -44,7 +44,7 @@ String new_String_from_SystemError(SystemError e) {
     FILE *fh = open_memstream(&str, &strlen);
     assert(fprintln_SystemError(fh, &e) >= 0);
     fclose(fh);
-    String s = new_String_from_cstr(str);
+    String s = new_String_from_move_cstr(str);
     free(str);
     return s;
 }
@@ -58,7 +58,7 @@ String new_String_from_DecodingError(DecodingError e) {
     FILE *fh = open_memstream(&str, &strlen);
     assert(fprintln_DecodingError(fh, &e) >= 0);
     fclose(fh);
-    String s = new_String_from_cstr(str);
+    String s = new_String_from_move_cstr(str);
     free(str);
     return s;
 }
@@ -72,6 +72,8 @@ String new_String_from_DecodingError(DecodingError e) {
                       , UnicodeError: /*FAKE*/new_SystemError_from_SystemError \
                       , DecodingError: /*FAKE*/new_SystemError_from_SystemError \
                       , cstr: /*FAKE*/new_SystemError_from_SystemError  \
+                      , cstr*: /*FAKE*/new_SystemError_from_SystemError  \
+                      , const cstr*: /*FAKE*/new_SystemError_from_SystemError  \
                       , char*: /*FAKE*/new_SystemError_from_SystemError \
                       , String: /*FAKE*/new_String_from_String          \
                  )                                                      \
@@ -81,6 +83,8 @@ String new_String_from_DecodingError(DecodingError e) {
                       , DecodingError: new_UnicodeError_from_DecodingError \
                       , SystemError: new_UnicodeError_from_SystemError  \
                       , cstr: /*FAKE*/new_SystemError_from_SystemError  \
+                      , cstr*: /*FAKE*/new_SystemError_from_SystemError  \
+                      , const cstr*: /*FAKE*/new_SystemError_from_SystemError  \
                       , char*: /*FAKE*/new_SystemError_from_SystemError \
                       , String: /*FAKE*/new_String_from_String          \
                  )                                                      \
@@ -89,8 +93,10 @@ String new_String_from_DecodingError(DecodingError e) {
                       , SystemError: new_String_from_SystemError \
                       , UnicodeError: new_String_from_UnicodeError \
                       , DecodingError: new_String_from_DecodingError \
-                      , cstr: new_String_from_cstr                      \
-                      , char*: new_String_from_cstr                     \
+                      , cstr: new_String_from_move_cstr                      \
+                      , cstr*: new_String_from_cstr                      \
+                      , const cstr*: new_String_from_cstr                      \
+                      , char*: new_String_from_move_cstr                     \
                       , String: new_String_from_String                  \
                  )                                                      \
         )
