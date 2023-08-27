@@ -174,15 +174,22 @@ void drop_PlotrenderCtx(PlotrenderCtx self) {
 }
 
 
-static UNUSED
+static
 u8 u8_from_float(float x, float max) {
     if (x <= 0.f) {
         return 0;
     } else if (x >= max) {
         return 255;
     } else {
-        return x *  255.f / max; //X XX
+        // 'linear': return x * 255.f / max;
+        // better show darks:
+        return 255 * sqrt(x) / sqrt(max);
     }
+}
+
+static
+float squared_color_float_from_u8(u8 col) {
+    return square(col);
 }
 
 const bool showdebug = false;
@@ -219,9 +226,9 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
 
     for (size_t j = 0; j < ctx->functions.len; j++) {
         Color color = ctx->functions.ptr[j].color;
-        Vec3(float) colorf = vec3_float(color.r,
-                                        color.g,
-                                        color.b);
+        Vec3(float) colorf = vec3_float(squared_color_float_from_u8(color.r),
+                                        squared_color_float_from_u8(color.g),
+                                        squared_color_float_from_u8(color.b));
         Option(float)(*f)(float) = ctx->functions.ptr[j].f;
 
         const int oversampling = 16;
