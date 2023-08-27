@@ -120,7 +120,7 @@ void draw_point_Pixels_float(Pixels_float *pixels,
                     float xf = x;
                     float yf = y;
                     float attenuation = 1.f / MAX(
-                        0.5f, // maybe 0.25f ?
+                        0.32f, // smaller -> skinnier lines
                         square(xf - point.x) + square(yf - point.y));
                     Vec3(float) lumplus =
                         mul_Vec3_float_float(color, attenuation);
@@ -224,10 +224,13 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
                                         color.b);
         Option(float)(*f)(float) = ctx->functions.ptr[j].f;
 
-        for (int i = 0; i < window_dimensions.x; i++) {
-            float x = start.x + extent.x * i / width;
+        const int oversampling = 16;
+        // Is dx approach still OK with float and oversampling?
+        const float dx = extent.x / (width * oversampling);
+        float x = start.x;
+        for (int i = 0; i < window_dimensions.x * oversampling; i++) {
             if_let_Some(y, f(x)) {
-                float xscreen = i;
+                float xscreen = i / oversampling;
                 float yscreen = (y - start.y) / extent.y * height;
                 Vec2(float) point = { xscreen, height - yscreen };
                 draw_point_Pixels_float(&ctx->pixels,
@@ -235,6 +238,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
                                         colorf,
                                         &max_color_lum);
             } else_None;
+            x += dx;
         }
     }
 
