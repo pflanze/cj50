@@ -302,6 +302,11 @@ typedef struct Texture {
     SDL_Texture *ptr;
 } Texture;
 
+/// Create a Texture from an existing SDL_Texture pointer, taking
+/// ownership.
+#define Texture(sdltexture)                     \
+    ((Texture) { .ptr = (sdltexture) })
+
 static UNUSED
 void drop_Texture(Texture self) {
     SDL_DestroyTexture(self.ptr);
@@ -515,10 +520,8 @@ void clear_VertexRenderer(VertexRenderer *rdr) {
 static UNUSED
 Texture new_Texture_from_Surface(SDL_Renderer * renderer,
                                  SDL_Surface * surface) {
-    return (Texture) {
-        .ptr = asserting_sdl(
-            SDL_CreateTextureFromSurface(renderer, surface))
-    };
+    return Texture(asserting_sdl(
+                       SDL_CreateTextureFromSurface(renderer, surface)));
 }
 
 /// Create a texture for a rendering context.
@@ -536,14 +539,12 @@ Texture create_Texture(SDL_Renderer * renderer,
                        Uint32 format,
                        int access,
                        Vec2(u32) dimensions) {
-    return (Texture) {
-        .ptr = asserting_sdl(
-            SDL_CreateTexture(renderer,
-                              format,
-                              access,
-                              dimensions.x,
-                              dimensions.y))
-    };
+    return Texture(asserting_sdl(
+                       SDL_CreateTexture(renderer,
+                                         format,
+                                         access,
+                                         dimensions.x,
+                                         dimensions.y)));
 }
 
 #define BORROW_from_Option_Rect2(T, rect2)       \
