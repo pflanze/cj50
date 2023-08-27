@@ -563,6 +563,11 @@ Texture create_Texture(SDL_Renderer * renderer,
 /// pixels: 	the raw pixel data in the format of the texture
 /// pitch: 	the number of bytes in a row of pixel data, including padding between lines
 
+/// NOTE that pitch is in bytes, not pixels! This function is unsafe
+/// because it has to handle various pixel formats.
+
+/// (Todo: could it calculate pitch from metainformation, though?)
+
 static UNUSED
 void update_Texture(Texture *self,
                     Option(Rect2(int)) rect,
