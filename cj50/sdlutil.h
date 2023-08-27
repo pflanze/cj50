@@ -244,18 +244,18 @@ void draw_fill_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius) {
 static UNUSED
 void draw_points_int(SDL_Renderer* renderer, slice(Vec2(int)) points) {
     asserting_sdl(SDL_RenderDrawPoints(renderer,
-                                    // pray
-                                    (const SDL_Point *)points.ptr,
-                                    points.len));
+                                       // pray
+                                       (const SDL_Point *)points.ptr,
+                                       points.len));
 }
 
 /// Draw the given points.
 static UNUSED
 void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
     asserting_sdl(SDL_RenderDrawPointsF(renderer,
-                                     // pray
-                                     (const SDL_FPoint *)points.ptr,
-                                     points.len));
+                                        // pray
+                                        (const SDL_FPoint *)points.ptr,
+                                        points.len));
 }
 
 /// Draw a line from `from`, to `to`.
