@@ -325,6 +325,7 @@ cleanup:
     return ret;
 }
 
+GENERATE_Option(Texture);
 
 // ------------------------------------------------------------------
 // Vertex renderer based drawing system.
