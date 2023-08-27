@@ -10,9 +10,7 @@
 #include <errno.h>
 
 
-/// Values of this type describe the reason why a string does not
-/// contain text that properly represents a value that the used parse
-/// function should return.
+/// The type for error codes in `ParseError`.
 
 /// Currently, codes in the range 1..255 represent errors defined by
 /// the operating system (errno), codes in the range 500..29999 are
@@ -21,11 +19,24 @@
 /// of the functions that accept it (`string_from_ParseError` and
 /// `print_ParseError`).
 
+typedef uint16_t ParseError__code_t;
+
+/// Values of this type describe the reason why a string does not
+/// contain text that properly represents a value that the used parse
+/// function should return.
+
 typedef struct ParseError {
-    uint16_t code;
+    ParseError__code_t code;
 } ParseError;
 
-typedef uint16_t ParseError__code_t;
+// The stylistic reason for not using `enum` is that the type is used
+// for other values, too.
+const ParseError__code_t E_not_in_int_range = 500;
+const ParseError__code_t E_invalid_text_after_number = 501;
+const ParseError__code_t E_not_greater_than_zero = 502;
+const ParseError__code_t E_negative = 503;
+const ParseError__code_t E_not_a_number = 504;
+
 
 #define ParseError(e) ((ParseError) { .code = (e) })
 
@@ -43,12 +54,6 @@ int print_debug_ParseError(const ParseError *self) {
 cleanup:
     return ret;
 }
-
-const ParseError__code_t E_not_in_int_range = 500;
-const ParseError__code_t E_invalid_text_after_number = 501;
-const ParseError__code_t E_not_greater_than_zero = 502;
-const ParseError__code_t E_negative = 503;
-const ParseError__code_t E_not_a_number = 504;
 
 
 /// Convert a `ParseError` value into a `CStr` for display.
