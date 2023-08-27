@@ -115,8 +115,10 @@ void draw_point_Pixels_float(Pixels_float *pixels,
     // Add light to 9 positions at and around this point.
     for (int y = _y - 1; y <= _y + 1; y++) {
         if ((y >= 0) && (y < pixels->geometry.y)) {
-            for (int x = _x - 1; x <= _x + 1; x++) {
-                if ((x >= 0) && (x < pixels->geometry.x)) {
+            int xbase = _x - 1;
+            if ((xbase >= 0) && ((xbase + 2) < pixels->geometry.x)) {
+                for (int xadd = 0; xadd < 3; xadd++) {
+                    int x = xbase + xadd;
                     float xf = x;
                     float yf = y;
                     float attenuation = 1.f / MAX(
@@ -127,7 +129,7 @@ void draw_point_Pixels_float(Pixels_float *pixels,
                     Vec3(float)* lumtot =
                         at_Pixels_float(pixels, vec2_int(x, y));
                     Vec3(float) lumtotnew = add_Vec3_float(*lumtot, lumplus);
-#define UPDATE_MAX(field)                               \
+#define UPDATE_MAX(field)                                           \
                     if (lumtotnew.field > *max_color_lum) {     \
                         *max_color_lum = lumtotnew.field;       \
                     }
@@ -136,6 +138,31 @@ void draw_point_Pixels_float(Pixels_float *pixels,
                     UPDATE_MAX(z);
 #undef UPDATE_MAX
                     *lumtot = lumtotnew;
+                }
+            } else {
+                // slow fallback
+                for (int x = _x - 1; x <= _x + 1; x++) {
+                    if ((x >= 0) && (x < pixels->geometry.x)) {
+                        float xf = x;
+                        float yf = y;
+                        float attenuation = 1.f / MAX(
+                            0.32f, // smaller -> skinnier lines
+                            square(xf - point.x) + square(yf - point.y));
+                        Vec3(float) lumplus =
+                            mul_Vec3_float_float(color, attenuation);
+                        Vec3(float)* lumtot =
+                            at_Pixels_float(pixels, vec2_int(x, y));
+                        Vec3(float) lumtotnew = add_Vec3_float(*lumtot, lumplus);
+#define UPDATE_MAX(field)                                           \
+                        if (lumtotnew.field > *max_color_lum) {     \
+                            *max_color_lum = lumtotnew.field;       \
+                        }
+                        UPDATE_MAX(x);
+                        UPDATE_MAX(y);
+                        UPDATE_MAX(z);
+#undef UPDATE_MAX
+                        *lumtot = lumtotnew;
+                    }
                 }
             }
         }
