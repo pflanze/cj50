@@ -535,11 +535,17 @@ Texture new_Texture_from_Surface(SDL_Renderer * renderer,
 /// the format was unsupported, or the width or height were out of
 /// range.
 
+/// Also aborts if `dimensions` contains negative values.
+
 static UNUSED
 Texture create_Texture(SDL_Renderer * renderer,
                        Uint32 format,
                        int access,
-                       Vec2(u32) dimensions) {
+                       Vec2(int) dimensions) {
+    // XX: Are these checks good or does SDL work with negative values
+    // (mirroring?)?
+    assert(dimensions.x >= 0);
+    assert(dimensions.y >= 0);
     return Texture(asserting_sdl(
                        SDL_CreateTexture(renderer,
                                          format,
