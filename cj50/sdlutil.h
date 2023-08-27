@@ -294,6 +294,10 @@ SDL_Surface* get_Surface_from_Window(SDL_Window *window) {
 }
 
 
+// ------------------------------------------------------------------
+
+/// Managing an owned SDL_Texture.
+
 typedef struct Texture {
     SDL_Texture *ptr;
 } Texture;
