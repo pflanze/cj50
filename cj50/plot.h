@@ -175,13 +175,13 @@ void drop_PlotrenderCtx(PlotrenderCtx self) {
 
 
 static UNUSED
-u8 u8_from_float(float x) {
-    if (x < 0.f) {
+u8 u8_from_float(float x, float max) {
+    if (x <= 0.f) {
         return 0;
-    } else if (x > 255.f) {
+    } else if (x >= max) {
         return 255;
     } else {
-        return x;
+        return x *  255.f / max; //X XX
     }
 }
 
@@ -245,7 +245,6 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
     Vec3(float) *pixels = ctx->pixels.pixels; // vec3(R, G, B) [x + y*width]
     ARGB8888 *pixels2 = ctx->pixels.pixels2;
     size_t numpixels = window_dimensions.x * window_dimensions.y;
-    float scale = 255.f / max_color_lum;
     for (size_t i = 0; i < numpixels; i++) {
         Vec3(float) p = pixels[i];
         ARGB8888 p2 = new_ARGB8888(
@@ -253,9 +252,9 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
             /* i % ctx->pixels.geometry.x, */
             /* i % ctx->pixels.geometry.x, // width  = float, */
             /* 120 */
-            u8_from_float(scale * p.x),
-            u8_from_float(scale * p.y),
-            u8_from_float(scale * p.z)
+            u8_from_float(p.x, max_color_lum),
+            u8_from_float(p.y, max_color_lum),
+            u8_from_float(p.z, max_color_lum)
             /* 0., */
             /* 200., */
             /* 255. */
