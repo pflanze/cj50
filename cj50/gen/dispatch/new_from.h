@@ -63,6 +63,7 @@ String new_String_from_DecodingError(DecodingError e) {
     return s;
 }
 
+#include <cj50/parseError.h>
 
 #define new_from_(T2, T1)                                               \
     _Generic(*((T2*)(NULL))                                             \
@@ -75,6 +76,7 @@ String new_String_from_DecodingError(DecodingError e) {
                       , cstr*: /*FAKE*/new_SystemError_from_SystemError  \
                       , const cstr*: /*FAKE*/new_SystemError_from_SystemError  \
                       , char*: /*FAKE*/new_SystemError_from_SystemError \
+                      , ParseError: /*FAKE*/new_String_from_ParseError          \
                       , String: /*FAKE*/new_String_from_String          \
                  )                                                      \
              , UnicodeError:                                            \
@@ -86,6 +88,7 @@ String new_String_from_DecodingError(DecodingError e) {
                       , cstr*: /*FAKE*/new_SystemError_from_SystemError  \
                       , const cstr*: /*FAKE*/new_SystemError_from_SystemError  \
                       , char*: /*FAKE*/new_SystemError_from_SystemError \
+                      , ParseError: /*FAKE*/new_String_from_ParseError          \
                       , String: /*FAKE*/new_String_from_String          \
                  )                                                      \
              , String:                                                  \
@@ -97,6 +100,7 @@ String new_String_from_DecodingError(DecodingError e) {
                       , cstr*: new_String_from_cstr                      \
                       , const cstr*: new_String_from_cstr                      \
                       , char*: new_String_from_move_cstr                     \
+                      , ParseError: new_String_from_ParseError          \
                       , String: new_String_from_String                  \
                  )                                                      \
         )

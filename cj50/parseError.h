@@ -3,12 +3,13 @@
 #include <cj50/CStr.h>
 #include <cj50/int.h>
 #include <cj50/gen/Result.h>
+#include <cj50/String.h>
 #include <cj50/resret.h>
+#include <cj50/basic-util.h>
 #include <cj50/xmem.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-
 
 /// The type for error codes in `ParseError`.
 
@@ -106,6 +107,19 @@ int fprintln_ParseError(FILE* out, const ParseError *e) {
 cleanup:
     drop_CStr(s);
     return ret;
+}
+
+static UNUSED
+String new_String_from_ParseError(ParseError e) {
+    // XX finally provide a macro to do this or something
+    char *str = NULL;
+    UNUSED size_t strlen = 0;
+    FILE *fh = open_memstream(&str, &strlen);
+    assert(fprintln_ParseError(fh, &e) >= 0);
+    fclose(fh);
+    String s = new_String_from_move_cstr(str);
+    free(str);
+    return s;
 }
 
 static UNUSED
