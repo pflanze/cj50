@@ -1,6 +1,6 @@
 #include <cj50.h>
 
-typedef float floatingpoint_t;
+typedef double floatingpoint_t;
 
 typedef struct Ctx {
     float t; // time in seconds
