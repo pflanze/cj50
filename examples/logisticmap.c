@@ -1,0 +1,76 @@
+#include <cj50.h>
+
+typedef float floatingpoint_t;
+
+typedef struct Ctx {
+    float t; // time in seconds
+    floatingpoint_t r;
+    Vec(Vec2(float)) points;
+} Ctx;
+
+static
+void drop_Ctx(Ctx self) {
+    drop(self.points);
+}
+
+static
+floatingpoint_t logistic_growth(floatingpoint_t y1, floatingpoint_t r) {
+    return r*y1*(1 - y1);
+}
+
+
+bool render(SDL_Renderer* renderer, void* _ctx,
+            Vec2(int) window_dimensions) {
+    Ctx* ctx = _ctx;
+
+    AUTO points = &ctx->points;
+    clear(points);
+    
+    floatingpoint_t r = ctx->r;
+    DBG(r);
+    floatingpoint_t y = 0.01;
+    float yscreen = window_dimensions.y;
+    for (int x = 0; x < window_dimensions.x; x++) {
+        /* DBG(y); */
+        push(points, vec2_float(x, (1. - y) * yscreen));
+        y = logistic_growth(y, r);
+    }
+
+    set_draw_color(renderer, color(0, 0, 0));
+    clear(renderer);
+    set_draw_color(renderer, color(255, 255, 255));
+    draw_points_float(renderer, deref(points));
+
+    ctx->r += 0.000; //
+
+    return true;
+}
+
+Result(Unit, String) run(UNUSED slice(cstr) argv) {
+    BEGIN_Result(Unit, String);
+
+    if (len(&argv) != 2) {
+        AUTO s = String("Usage: ");
+        append_move(&s, String(at(&argv, 0)));
+        append_move(&s, String(" r"));
+        RETURN_Err(s, end);
+    }
+
+    AUTO r = TRY(parse_float(*at(&argv, 1)), end);
+
+    Ctx ctx = {
+        0,
+        r,
+        new_Vec_Vec2_float(),
+    };
+    
+    graphics_render("Logistic map",
+                    vec2_int(800, 600), render, &ctx);
+    drop_Ctx(ctx);
+    
+    RETURN_Ok(Unit(), end);
+end:
+    END_Result();
+}
+
+MAIN(run);
