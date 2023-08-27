@@ -320,23 +320,6 @@ cleanup:
     return ret;
 }
 
-GENERATE_ref(Texture);
-
-// XX Grr should auto-generate these from GENERATE_ref? But then T needs it *everywhere*.
-static UNUSED
-void drop_ref_Texture(UNUSED ref(Texture) self) {}
-static UNUSED
-bool equal_ref_Texture(const ref(Texture) *a, const ref(Texture) *b) {
-    return equal_Texture(*a, *b);
-}
-static UNUSED
-int print_debug_ref_Texture(const ref(Texture) *self) {
-    return print_debug_Texture(*self);
-}
-// ^ in other words, equal and debug should use deref
-
-
-GENERATE_Option(ref(Texture));
 
 // ------------------------------------------------------------------
 // Vertex renderer based drawing system.
