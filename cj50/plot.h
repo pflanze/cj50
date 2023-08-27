@@ -101,7 +101,6 @@ static
 Vec3(float)* at_Pixels_float(Pixels_float *pixels, Vec2(int) point) {
     assert(point.x < pixels->geometry.x);
     assert(point.y < pixels->geometry.y);
-    DBG(&point);
     return &pixels->pixels[point.x + point.y * pixels->geometry.x];
 }
 
@@ -113,8 +112,6 @@ void draw_point_Pixels_float(Pixels_float *pixels,
                              float *max_color_lum) {
     int _x = point.x + 0.5f;
     int _y = point.y + 0.5f;
-    DBG(point);
-    /* DBG(vec2_int(_x, _y)); */
     // Add light to 9 positions at and around this point.
     for (int y = _y - 1; y <= _y + 1; y++) {
         if ((y >= 0) && (y < pixels->geometry.y)) {
@@ -130,7 +127,6 @@ void draw_point_Pixels_float(Pixels_float *pixels,
                     Vec3(float)* lumtot =
                         at_Pixels_float(pixels, vec2_int(x, y));
                     Vec3(float) lumtotnew = add_Vec3_float(*lumtot, lumplus);
-                    DBG(attenuation);
 #define UPDATE_MAX(field)                               \
                     if (lumtotnew.field > *max_color_lum) {     \
                         *max_color_lum = lumtotnew.field;       \
@@ -242,12 +238,9 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
         }
     }
 
-    /* DBG(max_color_lum); */
-
     Vec3(float) *pixels = ctx->pixels.pixels; // vec3(R, G, B) [x + y*width]
     ARGB8888 *pixels2 = ctx->pixels.pixels2;
     size_t numpixels = window_dimensions.x * window_dimensions.y;
-    assert(sizeof(ARGB8888) == 4); //XX
     float scale = 255.f / max_color_lum;
     for (size_t i = 0; i < numpixels; i++) {
         Vec3(float) p = pixels[i];
