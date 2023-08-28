@@ -129,6 +129,7 @@ void draw_point_Pixels_float(Pixels_float * RESTRICT pixels,
                     Vec3(float)* RESTRICT lumtot =
                         at_Pixels_float(pixels, vec2_int(x, y));
                     Vec3(float) lumtotnew = add_Vec3_float(*lumtot, lumplus);
+                    *lumtot = lumtotnew;
 #define UPDATE_MAX(field)                                           \
                     if (lumtotnew.field > *max_color_lum) {     \
                         *max_color_lum = lumtotnew.field;       \
@@ -137,7 +138,6 @@ void draw_point_Pixels_float(Pixels_float * RESTRICT pixels,
                     UPDATE_MAX(y);
                     UPDATE_MAX(z);
 #undef UPDATE_MAX
-                    *lumtot = lumtotnew;
                 }
             } else {
                 // slow fallback
@@ -153,6 +153,7 @@ void draw_point_Pixels_float(Pixels_float * RESTRICT pixels,
                         Vec3(float)* RESTRICT lumtot =
                             at_Pixels_float(pixels, vec2_int(x, y));
                         Vec3(float) lumtotnew = add_Vec3_float(*lumtot, lumplus);
+                        *lumtot = lumtotnew;
 #define UPDATE_MAX(field)                                           \
                         if (lumtotnew.field > *max_color_lum) {     \
                             *max_color_lum = lumtotnew.field;       \
@@ -161,7 +162,6 @@ void draw_point_Pixels_float(Pixels_float * RESTRICT pixels,
                         UPDATE_MAX(y);
                         UPDATE_MAX(z);
 #undef UPDATE_MAX
-                        *lumtot = lumtotnew;
                     }
                 }
             }
