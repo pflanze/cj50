@@ -3,8 +3,8 @@
 typedef double floatingpoint_t;
 
 typedef struct Ctx {
-    float t; // time in seconds
     floatingpoint_t r;
+    floatingpoint_t dr;
     Vec(Vec2(float)) points;
 } Ctx;
 
@@ -41,7 +41,7 @@ bool render(SDL_Renderer* renderer, void* _ctx,
     set_draw_color(renderer, color(255, 255, 255));
     draw_points_float(renderer, deref(points));
 
-    ctx->r += 0.000; //
+    ctx->r += ctx->dr;
 
     return true;
 }
@@ -49,18 +49,24 @@ bool render(SDL_Renderer* renderer, void* _ctx,
 Result(Unit, String) run(UNUSED slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
-    if (len(&argv) != 2) {
+    if (len(&argv) != 3) {
         AUTO s = String("Usage: ");
         append_move(&s, String(at(&argv, 0)));
-        append_move(&s, String(" r"));
+        append_move(
+            &s,
+            String(
+                " r dr\n"
+                "  Show the logistic function with growth parameter `r` and\n"
+                "  change of `r` per frame of `dr` (could be 0), both floats."));
         RETURN_Err(s, end);
     }
 
     AUTO r = TRY(parse_float(*at(&argv, 1)), end);
+    AUTO dr = TRY(parse_float(*at(&argv, 2)), end);
 
     Ctx ctx = {
-        0,
         r,
+        dr,
         new_Vec_Vec2_float(),
     };
     

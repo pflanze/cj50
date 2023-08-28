@@ -1,1 +1,3 @@
-Usage: examples/logisticmap_opt r
+Usage: examples/logisticmap_opt r dr
+  Show the logistic function with growth parameter `r` and
+  change of `r` per frame of `dr` (could be 0), both floats.
