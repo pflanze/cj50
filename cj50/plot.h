@@ -262,14 +262,12 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
             if ((p.x == 0.f) && (p.y == 0.f) && (p.z == 0.f)) {
                 // noop (most of the pixels)
             } else {
-                asserting_sdl(
-                    SDL_SetRenderDrawColor(renderer,
-                                           u8_from_float(p.x, max_color_lum),
-                                           u8_from_float(p.y, max_color_lum),
-                                           u8_from_float(p.z, max_color_lum),
-                                           255));
-                asserting_sdl(
-                    SDL_RenderDrawPoint(renderer, x, y));
+                SDL_SetRenderDrawColor(renderer,
+                                       u8_from_float(p.x, max_color_lum),
+                                       u8_from_float(p.y, max_color_lum),
+                                       u8_from_float(p.z, max_color_lum),
+                                       255);
+                SDL_RenderDrawPoint(renderer, x, y);
             }
         }
     }
