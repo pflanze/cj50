@@ -1,5 +1,6 @@
 examples/*_opt
 examples/*_max
+examples/*_profile
 *.html
 
 examples/basics
