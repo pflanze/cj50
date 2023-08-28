@@ -27,7 +27,8 @@ bool render(SDL_Renderer* renderer, void* _ctx,
     clear(points);
     
     floatingpoint_t r = ctx->r;
-    DBG(r);
+    if (! getenv("SILENT"))
+        DBG(r);
     floatingpoint_t y = 0.01;
     float yscreen = window_dimensions.y;
     for (int x = 0; x < window_dimensions.x; x++) {
@@ -63,6 +64,9 @@ Result(Unit, String) run(UNUSED slice(cstr) argv) {
 
     AUTO r = TRY(parse_float(*at(&argv, 1)), end);
     AUTO dr = TRY(parse_float(*at(&argv, 2)), end);
+
+    if (getenv("NOGRAPHICS")) 
+        RETURN_Ok(Unit(), end);
 
     Ctx ctx = {
         r,
