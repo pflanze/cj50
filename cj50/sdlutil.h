@@ -235,6 +235,9 @@ void graphics_render(cstr title,
         free(err1);
         need_sleep = true;
     }
+    if (need_sleep && ! getenv("SILENT")) {
+        print_move_cstr("Note: using slower fallback software renderer.\n");
+    }
 
     struct timespec last_t;
     GETTIME(&last_t);

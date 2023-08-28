@@ -14,6 +14,9 @@ make -j4 $binaries
 out=$(mktemp)
 err=$(mktemp)
 
+# Silence software renderer fallback
+export SILENT=
+
 for binary in $binaries; do
     echo "Testing $binary :"
     name=$(basename $binary _opt)
