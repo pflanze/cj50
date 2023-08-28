@@ -248,9 +248,8 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
             if_let_Some(y, f(x)) {
                 float xscreen = i / oversampling;
                 float yscreen = (y - start.y) / extent.y * height;
-                Vec2(float) point = { xscreen, height - yscreen };
                 draw_point_Pixels_float(&ctx->pixels,
-                                        point,
+                                        vec2_float(xscreen, height - yscreen),
                                         colorf,
                                         &max_color_lum);
             } else_None;
