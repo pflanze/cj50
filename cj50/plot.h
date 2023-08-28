@@ -172,6 +172,7 @@ typedef struct PlotrenderCtx {
     slice(ColorFunction_float) functions;
     Rect2(float) viewport;
     Pixels_float pixels;
+    VertexRenderer rdr;
 } PlotrenderCtx;
 
 static UNUSED
@@ -184,12 +185,14 @@ PlotrenderCtx new_PlotrenderCtx(
     return (PlotrenderCtx) {
         functions,
         viewport,
-        new_Pixels_float(geometry)
+        new_Pixels_float(geometry),
+        new_VertexRenderer()
     };
 }
 
 static UNUSED
 void drop_PlotrenderCtx(PlotrenderCtx self) {
+    drop_VertexRenderer(self.rdr);
     drop_Pixels_float(self.pixels);
 }
 
@@ -255,6 +258,9 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
         }
     }
 
+    VertexRenderer *rdr = &ctx->rdr;
+    clear_VertexRenderer(rdr);
+
     Vec3(float) * RESTRICT pixels = ctx->pixels.pixels; // vec3(R, G, B) [x + y*width]
     for (int y = 0; y < window_dimensions.y; y++) {
         for (int x = 0; x < window_dimensions.x; x++) {
@@ -262,15 +268,22 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
             if ((p.x == 0.f) && (p.y == 0.f) && (p.z == 0.f)) {
                 // noop (most of the pixels)
             } else {
-                SDL_SetRenderDrawColor(renderer,
-                                       u8_from_float(p.x, max_color_lum),
-                                       u8_from_float(p.y, max_color_lum),
-                                       u8_from_float(p.z, max_color_lum),
-                                       255);
-                SDL_RenderDrawPoint(renderer, x, y);
+                AUTO col = ColorA(u8_from_float(p.x, max_color_lum),
+                                  u8_from_float(p.y, max_color_lum),
+                                  u8_from_float(p.z, max_color_lum),
+                                  255);
+                int p1 = push_vertex(rdr, vertex_2(vec2_float(x, y), col));
+                int p2 = push_vertex(rdr, vertex_2(vec2_float(x+1, y), col));
+                int p3 = push_vertex(rdr, vertex_2(vec2_float(x, y+1), col));
+                int p4 = push_vertex(rdr, vertex_2(vec2_float(x+1, y+1), col));
+                push_triangle(rdr, vec3_int(p1, p2, p3));
+                push_triangle(rdr, vec3_int(p2, p3, p4));
             }
         }
     }
+
+    render_VertexRenderer(renderer, rdr);
+
     return true;
 }
 
