@@ -66,7 +66,6 @@ int print_debug_move_ARGB8888(ARGB8888 self) {
 typedef struct Pixels_float {
     Vec2(int) geometry;
     Vec3(float) *pixels; // vec3(R, G, B) [x + y*width]
-    ARGB8888 *pixels2;
 } Pixels_float;
 
 static
@@ -79,13 +78,11 @@ Pixels_float new_Pixels_float(Vec2(int) geometry) {
     return (Pixels_float) {
         .geometry = geometry,
         .pixels = xmalloc(_pixels_size_for_Pixels_float(geometry, sizeof(Vec3(float)))),
-        .pixels2 = xmalloc(_pixels_size_for_Pixels_float(geometry, sizeof(ARGB8888))),
     };
 }
 
 static
 void drop_Pixels_float(Pixels_float self) {
-    free(self.pixels2);
     free(self.pixels);
 }
 
@@ -175,8 +172,6 @@ typedef struct PlotrenderCtx {
     slice(ColorFunction_float) functions;
     Rect2(float) viewport;
     Pixels_float pixels;
-    Option(Texture) texture; // initialized from the render function,
-                             // ugly.
 } PlotrenderCtx;
 
 static UNUSED
@@ -189,15 +184,13 @@ PlotrenderCtx new_PlotrenderCtx(
     return (PlotrenderCtx) {
         functions,
         viewport,
-        new_Pixels_float(geometry),
-        NONE
+        new_Pixels_float(geometry)
     };
 }
 
 static UNUSED
 void drop_PlotrenderCtx(PlotrenderCtx self) {
     drop_Pixels_float(self.pixels);
-    drop_Option_Texture(self.texture);
 }
 
 
@@ -224,20 +217,6 @@ const bool showdebug = false;
 static UNUSED
 bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_dimensions) {
     PlotrenderCtx* RESTRICT ctx = _ctx;
-    Texture texture;
-    if_let_Some(t, ctx->texture) {
-        texture = t; // Copy
-    } else_None {
-        // Create the Texture now that we have access to the renderer;
-        // ugly.
-        /* WARN("init Option(Texture)"); */
-        texture = create_Texture(renderer,
-                                 SDL_PIXELFORMAT_BGRA32, // SDL_PIXELFORMAT_ARGB32, // SDL_PIXELFORMAT_ARGB8888,
-                                 SDL_TEXTUREACCESS_STREAMING,
-                                 ctx->pixels.geometry);
-        ctx->texture = Some(Texture)(texture);
-    }
-    /* print_debug_Texture(&texture); */
     Rect2(float)* RESTRICT viewport = &ctx->viewport;
     Vec2(float) start = viewport->start;
     Vec2(float) extent = viewport->extent;
@@ -277,47 +256,24 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
     }
 
     Vec3(float) * RESTRICT pixels = ctx->pixels.pixels; // vec3(R, G, B) [x + y*width]
-    ARGB8888 *pixels2 = ctx->pixels.pixels2;
-    size_t numpixels = window_dimensions.x * window_dimensions.y;
-    for (size_t i = 0; i < numpixels; i++) {
-        Vec3(float) p = pixels[i];
-        if ((p.x == 0.f) && (p.y == 0.f) && (p.z == 0.f)) {
-            pixels2[i] = new_ARGB8888(0,0,0,0);
-        } else {
-            ARGB8888 p2 = new_ARGB8888(
-                255,
-                /* i % ctx->pixels.geometry.x, */
-                /* i % ctx->pixels.geometry.x, // width  = float, */
-                /* 120 */
-                u8_from_float(p.x, max_color_lum),
-                u8_from_float(p.y, max_color_lum),
-                u8_from_float(p.z, max_color_lum)
-                /* 0., */
-                /* 200., */
-                /* 255. */
-                );
-            pixels2[i] = p2;
+    for (int y = 0; y < window_dimensions.y; y++) {
+        for (int x = 0; x < window_dimensions.x; x++) {
+            Vec3(float) p = pixels[x + y * window_dimensions.x]; // XX vs at_Pixels_float ?
+            if ((p.x == 0.f) && (p.y == 0.f) && (p.z == 0.f)) {
+                // noop (most of the pixels)
+            } else {
+                asserting_sdl(
+                    SDL_SetRenderDrawColor(renderer,
+                                           u8_from_float(p.x, max_color_lum),
+                                           u8_from_float(p.y, max_color_lum),
+                                           u8_from_float(p.z, max_color_lum),
+                                           255));
+                asserting_sdl(
+                    SDL_RenderDrawPoint(renderer, x, y));
+            }
         }
     }
-    if (showdebug) {
-        for (size_t i = 0; i < numpixels; i++) {
-            print_debug_Vec3_float(&pixels[i]);
-            print_move_cstr(" = ");
-            print_debug_move_ARGB8888(pixels2[i]);
-            print_move_cstr("\n");
-        }
-    }
-
-    update_Texture(&texture,
-                   None(Rect2(int)),
-                   pixels2,
-                   window_dimensions.x * sizeof(ARGB8888));
-
-    render_Texture(renderer,
-                   &texture,
-                   None(Rect2(int)),
-                   None(Rect2(int)));
-    return !showdebug;
+    return true;
 }
 
 
