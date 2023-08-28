@@ -24,9 +24,26 @@ for binary in $binaries; do
     name=$(basename $binary "$OPT")
     for test in tests/$name/*; do
         echo -n "  Test $test: "
-        bin/expect-exit $test/exit $test/args $test/env $binary < $test/in > "$out" 2> "$err"
-        diff -u $test/err "$err"
-        diff -u $test/out "$out"
-        echo "OK."
+
+        skippath="$test"/skip_except_for_OPT
+        skip=
+        if [ -e $skippath ]; then
+            skipval=$(cat $skippath)
+            if [ "$skipval" = "$OPT" ]; then
+                skip=0
+            else
+                skip=1
+            fi
+        else
+            skip=0
+        fi
+        if [ "$skip" = 1 ]; then
+            echo "  skipping due to file $skippath"
+        else
+            bin/expect-exit $test/exit $test/args $test/env $binary < $test/in > "$out" 2> "$err"
+            diff -u $test/err "$err"
+            diff -u $test/out "$out"
+            echo "OK."
+        fi
     done
 done
