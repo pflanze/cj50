@@ -12,6 +12,10 @@ If you want to read a book about the C programming language, here are some:
 
 * [Modern C](https://inria.hal.science/hal-02383654/file/ModernC.pdf) is a free book that seems good but is more detailed than we need for this course.
 
+Websites:
+
+* [C reference (cppreference.com)](https://en.cppreference.com/w/c)
+
 Note: this library is going beyond and departing from standard C programming idioms. The primary aim is not to teach how to use the C programming language in a typical way, but to teach programming in general, and in particular for making simple video games. The style of programming is intentionally kept very close to the principles and libraries of the [Rust](https://en.wikipedia.org/wiki/Rust_(programming_language)) programming language. The aim is to make it easier for a cj50 library user to move on to learning Rust should they so desire.
 
 In particular, cj50 is a header-only library and makes liberal use of struct copying (modern compilers optimize this well), metaprogramming (generating code from templates), and is reporting optional values via `Option` and errors via `Result`, whereas standard C programming practise is to separates header files from implementation files, to use boxing (`void*` pointers and casting) or intrusive data structures, and to use special values for representing optional cases (e.g. `-1`, `NULL`), and error codes combined with "return arguments" (pointer to storage where to put the result) to report errors. The emphasis in cj50 is more on abstraction and less on lowlevel details, although it is always possible to follow the lowlevel details by reading the cj50 source code (the `-E` compiler flag may be useful to let you read the generated code<!-- XX -E without system header includes -->).
