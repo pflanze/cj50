@@ -237,6 +237,7 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx,
     PlotrenderCtx* RESTRICT ctx = _ctx;
     Rect2(float)* RESTRICT viewport = &ctx->viewport;
     Vec2(float) start = viewport->start;
+    ctx->viewport.start.x += 0.001;
     Vec2(float) extent = viewport->extent;
     possibly_resize_Pixels_float(&ctx->pixels, window_dimensions);
 
