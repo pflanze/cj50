@@ -53,7 +53,7 @@ Result(Unit, String) run(UNUSED slice(cstr) argv) {
                                        vec2_float(2.8, 2.2)));
     } else {
         float t = 0.0;
-        graphics_render("Snail", vec2_int(640, 480), render_snail, &t);
+        graphics_render("Not a snail", vec2_int(640, 480), render_snail, &t);
     }
 
     RETURN_Ok(Unit(), cleanup);
