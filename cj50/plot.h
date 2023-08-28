@@ -98,18 +98,18 @@ void clear_Pixels_float(Pixels_float *pixels) {
 }
 
 static
-Vec3(float)* at_Pixels_float(Pixels_float *pixels, Vec2(int) point) {
+Vec3(float)* at_Pixels_float(Pixels_float * RESTRICT pixels, Vec2(int) point) {
     assert(point.x < pixels->geometry.x);
     assert(point.y < pixels->geometry.y);
     return &pixels->pixels[point.x + point.y * pixels->geometry.x];
 }
 
 static
-void draw_point_Pixels_float(Pixels_float *pixels,
+void draw_point_Pixels_float(Pixels_float * RESTRICT pixels,
                              Vec2(float) point,
                              Vec3(float) color,
                              // The maximum brightness seen of any color:
-                             float *max_color_lum) {
+                             float * RESTRICT max_color_lum) {
     int _x = point.x + 0.5f;
     int _y = point.y + 0.5f;
     // Add light to 9 positions at and around this point.
@@ -126,7 +126,7 @@ void draw_point_Pixels_float(Pixels_float *pixels,
                         square(xf - point.x) + square(yf - point.y));
                     Vec3(float) lumplus =
                         mul_Vec3_float_float(color, attenuation);
-                    Vec3(float)* lumtot =
+                    Vec3(float)* RESTRICT lumtot =
                         at_Pixels_float(pixels, vec2_int(x, y));
                     Vec3(float) lumtotnew = add_Vec3_float(*lumtot, lumplus);
 #define UPDATE_MAX(field)                                           \
@@ -150,7 +150,7 @@ void draw_point_Pixels_float(Pixels_float *pixels,
                             square(xf - point.x) + square(yf - point.y));
                         Vec3(float) lumplus =
                             mul_Vec3_float_float(color, attenuation);
-                        Vec3(float)* lumtot =
+                        Vec3(float)* RESTRICT lumtot =
                             at_Pixels_float(pixels, vec2_int(x, y));
                         Vec3(float) lumtotnew = add_Vec3_float(*lumtot, lumplus);
 #define UPDATE_MAX(field)                                           \
@@ -222,8 +222,8 @@ float squared_color_float_from_u8(u8 col) {
 const bool showdebug = false;
 
 static UNUSED
-bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions) {
-    PlotrenderCtx* ctx = _ctx;
+bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_dimensions) {
+    PlotrenderCtx* RESTRICT ctx = _ctx;
     Texture texture;
     if_let_Some(t, ctx->texture) {
         texture = t; // Copy
@@ -238,7 +238,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
         ctx->texture = Some(Texture)(texture);
     }
     /* print_debug_Texture(&texture); */
-    Rect2(float)* viewport = &ctx->viewport;
+    Rect2(float)* RESTRICT viewport = &ctx->viewport;
     Vec2(float) start = viewport->start;
     Vec2(float) extent = viewport->extent;
 
@@ -276,7 +276,7 @@ bool plot_render(SDL_Renderer* renderer, void* _ctx, Vec2(int) window_dimensions
         }
     }
 
-    Vec3(float) *pixels = ctx->pixels.pixels; // vec3(R, G, B) [x + y*width]
+    Vec3(float) * RESTRICT pixels = ctx->pixels.pixels; // vec3(R, G, B) [x + y*width]
     ARGB8888 *pixels2 = ctx->pixels.pixels2;
     size_t numpixels = window_dimensions.x * window_dimensions.y;
     for (size_t i = 0; i < numpixels; i++) {

@@ -14,6 +14,8 @@
 
 #define NORETURN __attribute__((__noreturn__)) void
 
+#define RESTRICT restrict
+
 #define MAX2(a, b)                              \
     ((a) < (b) ? (b) : (a))
 
