@@ -271,9 +271,11 @@
 /// run cleanup actions.
 
 #define RETURN_Ok(val, label)                   \
-    __propagate_return_val.is_ok = true;        \
-    __propagate_return_val.ok = (val);          \
-    goto label;
+    do {                                        \
+        __propagate_return_val.is_ok = true;    \
+        __propagate_return_val.ok = (val);      \
+        goto label;                             \
+    } while(0)
 
 /// Requires a `BEGIN_Result` in its scope.
 
@@ -290,11 +292,14 @@
 /// the file `cj50/gen/dispatch/new_from.h`.
 
 #define RETURN_Err(errval, label)                    \
-    __propagate_return_val.is_ok = false;            \
-    __propagate_return_val.err = new_from(           \
-        typeof(__propagate_return_val.err),          \
-        errval);                                     \
-    goto label;
+    do {                                             \
+        __propagate_return_val.is_ok = false;        \
+        __propagate_return_val.err = new_from(       \
+            typeof(__propagate_return_val.err),      \
+            errval);                                 \
+        goto label;                                  \
+    } while(0)
+
 
 /// Requires a `BEGIN_Result` in its scope.
 
