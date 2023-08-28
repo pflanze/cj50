@@ -282,7 +282,7 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
     for (size_t i = 0; i < numpixels; i++) {
         Vec3(float) p = pixels[i];
         if ((p.x == 0.f) && (p.y == 0.f) && (p.z == 0.f)) {
-            // noop
+            pixels2[i] = new_ARGB8888(0,0,0,0);
         } else {
             ARGB8888 p2 = new_ARGB8888(
                 255,
