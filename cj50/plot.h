@@ -74,11 +74,21 @@ size_t _pixels_size_for_Pixels_float(Vec2(int) geometry, size_t siz) {
 }
 
 static
+void clear_Pixels_float(Pixels_float *pixels) {
+    // OK for float 0.0?
+    memset(pixels->pixels,
+           0,
+           _pixels_size_for_Pixels_float(pixels->geometry, sizeof(Vec3(float))));
+}
+
+static
 Pixels_float new_Pixels_float(Vec2(int) geometry) {
-    return (Pixels_float) {
+    AUTO pixels = (Pixels_float) {
         .geometry = geometry,
         .pixels = xmalloc(_pixels_size_for_Pixels_float(geometry, sizeof(Vec3(float)))),
     };
+    clear_Pixels_float(&pixels);
+    return pixels;
 }
 
 static
@@ -86,13 +96,6 @@ void drop_Pixels_float(Pixels_float self) {
     free(self.pixels);
 }
 
-static
-void clear_Pixels_float(Pixels_float *pixels) {
-    // OK for float 0.0?
-    memset(pixels->pixels,
-           0,
-           _pixels_size_for_Pixels_float(pixels->geometry, sizeof(Vec3(float))));
-}
 
 static
 Vec3(float)* at_Pixels_float(Pixels_float * RESTRICT pixels, Vec2(int) point) {
@@ -230,7 +233,7 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
     float width = window_dimensions.x;
     float height = window_dimensions.y;
 
-    clear_Pixels_float(&ctx->pixels);
+    // clear_Pixels_float(&ctx->pixels); -- now it's cleared below from previous frame already
     float max_color_lum = 0;
 
     for (size_t j = 0; j < ctx->functions.len; j++) {
@@ -277,6 +280,8 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
                 int p4 = push_vertex(rdr, vertex_2(vec2_float(x+1, y+1), col));
                 push_triangle(rdr, vec3_int(p1, p2, p3));
                 push_triangle(rdr, vec3_int(p2, p3, p4));
+                // Clear pixel for next frame, already, cheaper than memset ?:
+                pixels[x + y * window_dimensions.x] = vec3_float(0.f, 0.f, 0.f);
             }
         }
     }
