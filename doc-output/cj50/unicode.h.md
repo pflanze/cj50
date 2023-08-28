@@ -309,13 +309,24 @@ if not.
 ## new_String_from_cstr {#one_new_String_from_cstr}
 
 ```C
-String new_String_from_cstr(cstr s)
+String new_String_from_cstr(const cstr *s)
 ```
 
 Create a String from a cstr, copying the data in the string.
 
 Asserts that the string is in correct UTF-8 encoding, just aborts
 if not.
+
+## new_String_from_move_cstr {#one_new_String_from_move_cstr}
+
+```C
+String new_String_from_move_cstr(cstr s)
+```
+
+Same as `new_String_from_cstr` but takes a `cstr` directly. Even
+though it is named with `move`, that just moves the reference
+which is Copy, cstr is always borrowing, drop-ing it is a
+noop. (This function only exists for convenience via generics.)
 
 # Macros
 

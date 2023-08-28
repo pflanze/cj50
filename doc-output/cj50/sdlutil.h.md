@@ -5,6 +5,16 @@ Utilities for working with the SDL2 library.
 
 # Types
 
+## Texture {#zero_Texture}
+
+```C
+typedef struct Texture {
+    SDL_Texture *ptr;
+} Texture
+```
+
+Managing an owned SDL_Texture.
+
 ## Vertex {#zero_Vertex}
 
 ```C
@@ -41,9 +51,8 @@ triangles information can then be shown via the
 
 ```C
 void graphics_render(cstr title,
-                     int window_width,
-                     int window_height,
-                     bool (*renderframe)(SDL_Renderer*, void*),
+                     Vec2(int) window_dimensions,
+                     bool (*renderframe)(SDL_Renderer*, void*, Vec2(int)),
                      void* context)
 ```
 
@@ -247,7 +256,7 @@ pixel format of the texture.
 Texture create_Texture(SDL_Renderer * renderer,
                        Uint32 format,
                        int access,
-                       Vec2(u32) dimensions)
+                       Vec2(int) dimensions)
 ```
 
 Create a texture for a rendering context.
@@ -259,6 +268,8 @@ access: 	one of the enumerated values in SDL_TextureAccess
 Aborts with an error message if no rendering context was active,
 the format was unsupported, or the width or height were out of
 range.
+
+Also aborts if `dimensions` contains negative values.
 
 ## update_Texture {#one_update_Texture}
 
@@ -276,6 +287,11 @@ Update the given texture rectangle with new pixel data.
 rect: 	an SDL_Rect structure representing the area to update, or NULL to update the entire texture
 pixels: 	the raw pixel data in the format of the texture
 pitch: 	the number of bytes in a row of pixel data, including padding between lines
+
+NOTE that pitch is in bytes, not pixels! This function is unsafe
+because it has to handle various pixel formats.
+
+(Todo: could it calculate pitch from metainformation, though?)
 
 ## render_Texture {#one_render_Texture}
 
@@ -326,6 +342,15 @@ int           : int asserting_sdl_int(int code);
 ```
 
 # Macros
+
+## Texture {#three_Texture}
+
+```C
+Texture(sdltexture)
+```
+
+Create a Texture from an existing SDL_Texture pointer, taking
+ownership.
 
 ## ColorA {#three_ColorA}
 

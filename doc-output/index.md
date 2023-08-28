@@ -15,6 +15,10 @@ If you want to read a book about the C programming language, here are some:
 
 * [Modern C](https://inria.hal.science/hal-02383654/file/ModernC.pdf) is a free book that seems good but is more detailed than we need for this course.
 
+Websites:
+
+* [C reference (cppreference.com)](https://en.cppreference.com/w/c)
+
 Note: this library is going beyond and departing from standard C programming idioms. The primary aim is not to teach how to use the C programming language in a typical way, but to teach programming in general, and in particular for making simple video games. The style of programming is intentionally kept very close to the principles and libraries of the [Rust](https://en.wikipedia.org/wiki/Rust_(programming_language)) programming language. The aim is to make it easier for a cj50 library user to move on to learning Rust should they so desire.
 
 In particular, cj50 is a header-only library and makes liberal use of struct copying (modern compilers optimize this well), metaprogramming (generating code from templates), and is reporting optional values via `Option` and errors via `Result`, whereas standard C programming practise is to separates header files from implementation files, to use boxing (`void*` pointers and casting) or intrusive data structures, and to use special values for representing optional cases (e.g. `-1`, `NULL`), and error codes combined with "return arguments" (pointer to storage where to put the result) to report errors. The emphasis in cj50 is more on abstraction and less on lowlevel details, although it is always possible to follow the lowlevel details by reading the cj50 source code (the `-E` compiler flag may be useful to let you read the generated code<!-- XX -E without system header includes -->).
@@ -168,6 +172,8 @@ To visually distinguish them from functions and types (so that you know somethin
 
 * [cj50/os.h](cj50/os.h.md)
 
+* [cj50/parseError.h](cj50/parseError.h.md)
+
 * [cj50/plot.h](cj50/plot.h.md)
 
 * [cj50/random.h](cj50/random.h.md)
@@ -196,6 +202,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [Mutex](cj50/gen/template/Mutex.h.md#zero_Mutex)
 * [mutslice](cj50/gen/template/Vec.h.md#zero_mutslice)
 * [OsError](cj50/os.h.md#zero_OsError)
+* [ParseError](cj50/parseError.h.md#zero_ParseError)
 * [Range](cj50/Range.h.md#zero_Range)
 * [Rect2](cj50/gen/template/Rect2.h.md#zero_RectQtwoE)
 * [slice](cj50/gen/template/Vec.h.md#zero_slice)
@@ -203,6 +210,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [String](cj50/String.h.md#zero_String)
 * [strslice](cj50/String.h.md#zero_strslice)
 * [SystemError](cj50/os.h.md#zero_SystemError)
+* [Texture](cj50/sdlutil.h.md#zero_Texture)
 * [ucodepoint](cj50/unicode.h.md#zero_ucodepoint)
 * [Unit](cj50/Unit.h.md#zero_Unit)
 * [utf8char](cj50/unicode.h.md#zero_utfQeightEchar)
@@ -216,7 +224,7 @@ To visually distinguish them from functions and types (so that you know somethin
 ## Type aliases
 
 * [cstr](cj50/CStr.h.md#zero.one_cstr)
-* [ParseError](cj50.h.md#zero.one_ParseError)
+* [ParseError__code_t](cj50/parseError.h.md#zero.one_ParseError__code_t)
 * [u32](cj50/u32.h.md#zero.one_uQthreetwoE)
 * [u64](cj50/u64.h.md#zero.one_uQsixfourE)
 * [u8](cj50/u8.h.md#zero.one_uQeightE)
@@ -230,6 +238,7 @@ To visually distinguish them from functions and types (so that you know somethin
 ## Normal functions
 
 * [append_move_String_String](cj50/String.h.md#one_append_move_String_String)
+* [append_move_Vec_\$T](cj50/gen/template/Vec.h.md#one_append_move_Vec_QDT)
 * [append_String_String](cj50/String.h.md#one_append_String_String)
 * [append_Vec_\$T](cj50/gen/template/Vec.h.md#one_append_Vec_QDT)
 * [at_\$VEC_\$T](cj50/gen/template/vectorlikes.h.md#one_at_QDVEC_QDT)
@@ -309,6 +318,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [new_String_from_CStr](cj50/unicode.h.md#one_new_String_from_CStr)
 * [new_String_from_cstr](cj50/unicode.h.md#one_new_String_from_cstr)
 * [new_String_from_move_\$T](cj50/gen/template/new_String_from.h.md#one_new_String_from_move_QDT)
+* [new_String_from_move_cstr](cj50/unicode.h.md#one_new_String_from_move_cstr)
 * [new_String_from_slice_char](cj50/unicode.h.md#one_new_String_from_slice_char)
 * [new_Texture_from_Surface](cj50/sdlutil.h.md#one_new_Texture_from_Surface)
 * [new_utf8char_from_bytes_seqlen_unsafe](cj50/unicode.h.md#one_new_utfQeightEchar_from_bytes_seqlen_unsafe)
@@ -361,7 +371,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [set_\$VEC_\$T](cj50/gen/template/mutvectorlikes.h.md#one_set_QDVEC_QDT)
 * [set_draw_color](cj50/sdlutil.h.md#one_set_draw_color)
 * [slice_of_\$VEC_\$T](cj50/gen/template/vectorlikes.h.md#one_slice_of_QDVEC_QDT)
-* [string_from_ParseError](cj50.h.md#one_string_from_ParseError)
+* [string_from_ParseError](cj50/parseError.h.md#one_string_from_ParseError)
 * [sync_CFile](cj50/os.h.md#one_sync_CFile)
 * [ucodepoint_count_slice_char](cj50/unicode.h.md#one_ucodepoint_count_slice_char)
 * [ucodepoint_from_cstr](cj50/unicode.h.md#one_ucodepoint_from_cstr)
@@ -455,6 +465,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [Some](cj50/gen/Option.h.md#three_Some)
 * [square](cj50/math.h.md#three_square)
 * [String](cj50/unicode.h.md#three_String)
+* [Texture](cj50/sdlutil.h.md#three_Texture)
 * [TRY](cj50/gen/Result.h.md#three_TRY)
 * [uchar](cj50/unicode.h.md#three_uchar)
 * [ucodepoint](cj50/unicode.h.md#three_ucodepoint)

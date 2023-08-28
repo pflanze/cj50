@@ -113,6 +113,14 @@ void append_Vec_$T(Vec(T) *self, Vec(T) *other)
 
 Moves all the elements of `other` into `self`, leaving `other` empty.
 
+## append_move_Vec_\$T {#one_append_move_Vec_QordninetwoEQDT}
+
+```C
+void append_move_Vec_$T(Vec(T) *self, Vec(T) other)
+```
+
+Moves all the elements of `other` into `self`, consuming `other`.
+
 ## clear_Vec_\$T {#one_clear_Vec_QordninetwoEQDT}
 
 ```C
