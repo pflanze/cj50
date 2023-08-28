@@ -281,19 +281,23 @@ bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_d
     size_t numpixels = window_dimensions.x * window_dimensions.y;
     for (size_t i = 0; i < numpixels; i++) {
         Vec3(float) p = pixels[i];
-        ARGB8888 p2 = new_ARGB8888(
-            255,
-            /* i % ctx->pixels.geometry.x, */
-            /* i % ctx->pixels.geometry.x, // width  = float, */
-            /* 120 */
-            u8_from_float(p.x, max_color_lum),
-            u8_from_float(p.y, max_color_lum),
-            u8_from_float(p.z, max_color_lum)
-            /* 0., */
-            /* 200., */
-            /* 255. */
-            );
-        pixels2[i] = p2;
+        if ((p.x == 0.f) && (p.y == 0.f) && (p.z == 0.f)) {
+            // noop
+        } else {
+            ARGB8888 p2 = new_ARGB8888(
+                255,
+                /* i % ctx->pixels.geometry.x, */
+                /* i % ctx->pixels.geometry.x, // width  = float, */
+                /* 120 */
+                u8_from_float(p.x, max_color_lum),
+                u8_from_float(p.y, max_color_lum),
+                u8_from_float(p.z, max_color_lum)
+                /* 0., */
+                /* 200., */
+                /* 255. */
+                );
+            pixels2[i] = p2;
+        }
     }
     if (showdebug) {
         for (size_t i = 0; i < numpixels; i++) {
