@@ -39,5 +39,5 @@ _gendoc:
 gendoc: _gendoc doc
 
 test:
-	OPT= bin/run-tests
+	bin/run-tests
 

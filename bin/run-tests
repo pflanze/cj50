@@ -4,8 +4,10 @@ set -euo pipefail
 set -m
 IFS=" "
 
+export OPT="${OPT-_opt}"
+
 binaries=$(perl -we '
-    my $opt = exists $ENV{"OPT"} ? "_opt" : "";
+    my $opt = $ENV{"OPT"} // "";
     print map { s/\.c$//; "$_$opt " } @ARGV
 ' examples/*.c)
 
@@ -19,7 +21,7 @@ export SILENT=
 
 for binary in $binaries; do
     echo "Testing $binary :"
-    name=$(basename $binary _opt)
+    name=$(basename $binary "$OPT")
     for test in tests/$name/*; do
         echo -n "  Test $test: "
         bin/expect-exit $test/exit $test/args $test/env $binary < $test/in > "$out" 2> "$err"
