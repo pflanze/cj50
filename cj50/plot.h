@@ -96,6 +96,17 @@ void drop_Pixels_float(Pixels_float self) {
     free(self.pixels);
 }
 
+static
+void possibly_resize_Pixels_float(Pixels_float *self, Vec2(int) geometry) {
+    if (equal_Vec2_int(&geometry, &self->geometry)) {
+        // noop
+    } else {
+        // hmm, evil ownership management?
+        drop_Pixels_float(*self);
+        *self = new_Pixels_float(geometry);
+    }
+}
+
 
 static
 Vec3(float)* at_Pixels_float(Pixels_float * RESTRICT pixels, Vec2(int) point) {
@@ -221,11 +232,13 @@ float squared_color_float_from_u8(u8 col) {
 const bool showdebug = false;
 
 static UNUSED
-bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx, Vec2(int) window_dimensions) {
+bool plot_render(SDL_Renderer* renderer, void* RESTRICT _ctx,
+                 Vec2(int) window_dimensions) {
     PlotrenderCtx* RESTRICT ctx = _ctx;
     Rect2(float)* RESTRICT viewport = &ctx->viewport;
     Vec2(float) start = viewport->start;
     Vec2(float) extent = viewport->extent;
+    possibly_resize_Pixels_float(&ctx->pixels, window_dimensions);
 
     asserting_sdl(SDL_SetRenderDrawColor(renderer, 0,0,0, 128));
     asserting_sdl(SDL_RenderClear(renderer));
