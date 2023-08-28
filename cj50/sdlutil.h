@@ -12,8 +12,85 @@
 #include <cj50/instantiations/Vec2_u32.h>
 #include <cj50/gen/Vec.h>
 #include <cj50/resret.h>
+#include <time.h>
 
+// ------------------------------------------------------------------
+// had this in scientific repo already  todo check
 
+#define GETTIME(ref) \
+    assert(clock_gettime(CLOCK_MONOTONIC, ref) == 0)
+
+#define DBG_TIMESPEC(var)                                       \
+    printf(#var " = %li.%09li\n", var.tv_sec, var.tv_nsec);
+        
+#define TIMESPEC_60th()                                           \
+    ((struct timespec) { .tv_sec = 0, .tv_nsec = 16666666 })
+
+#define NULL_TIMESPEC()                           \
+    ((struct timespec) {                        \
+        .tv_sec = 0,                            \
+        .tv_nsec = 0                            \
+    })
+
+static UNUSED
+void timespec_assert_sane(struct timespec *self) {
+    assert(self->tv_nsec >= 0);
+    assert(self->tv_nsec < 1000000000);
+}
+
+static UNUSED
+struct timespec timespec_add(struct timespec a, struct timespec b) {
+    timespec_assert_sane(&a);
+    timespec_assert_sane(&b);
+    uint64_t ansec = a.tv_nsec;
+    uint64_t bnsec = b.tv_nsec;
+    uint64_t nsec = ansec + bnsec;
+    time_t sec = a.tv_sec + b.tv_sec;
+    // XX what when b is negative?
+    if (nsec > 1000000000) {
+        sec++;
+        nsec -= 1000000000;
+    }
+    return (struct timespec) {
+        .tv_sec = sec,
+        .tv_nsec = nsec
+    };
+}
+
+// If `a >= b` it returns a - b, otherwise returns the time
+// 0. Which is what we want for sleep.
+static UNUSED
+struct timespec timespec_sub(struct timespec a, struct timespec b) {
+    timespec_assert_sane(&a);
+    timespec_assert_sane(&b);
+    if (a.tv_sec < b.tv_sec) {
+        return NULL_TIMESPEC();
+    } else if (a.tv_sec == b.tv_sec) {
+        if (a.tv_nsec <= b.tv_nsec) {
+            return NULL_TIMESPEC();
+        }
+    }
+    time_t sec = a.tv_sec - b.tv_sec;
+    int64_t ansec = a.tv_nsec;
+    int64_t bnsec = b.tv_nsec;
+    int64_t nsec = ansec - bnsec;
+    if (nsec < 0) {
+        sec--;
+        nsec += 1000000000;
+    }
+    return (struct timespec) {
+        .tv_sec = sec,
+        .tv_nsec = nsec
+    };
+}
+
+static
+bool timespec_is_zero(struct timespec *self) {
+    return (self->tv_sec == 0)
+        && (self->tv_nsec == 0);
+}
+
+// ------------------------------------------------------------------
 
 static UNUSED
 SDL_Point to_sdl_Vec2_int(Vec2(int) self) {
@@ -136,15 +213,32 @@ void graphics_render(cstr title,
     //Update the surface
     SDL_UpdateWindowSurface(window);
     */
+    bool need_sleep; // accelerated renderer doesn't, software does
     SDL_Renderer * renderer = SDL_CreateRenderer(
         window,
         -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!renderer) {
-        DIE_("Accelerated renderer could not be created! SDL_Error: %s",
-             SDL_GetError());
+    if (renderer) {
+        need_sleep = false;
+    } else {
+        char* err1 = xstrdup(SDL_GetError());
+        renderer = SDL_CreateRenderer(
+            window,
+            -1,
+            SDL_RENDERER_SOFTWARE);
+        if (!renderer) {
+            DIE_("Software renderer could not be created (SDL_Error): %s\n"
+                 "  after an accelerated renderer could not be created: %s\n",
+                 SDL_GetError(),
+                 err1);
+        }
+        free(err1);
+        need_sleep = true;
     }
 
+    struct timespec last_t;
+    GETTIME(&last_t);
+    /* DBG_TIMESPEC(last_t); */
     
     SDL_Event e;
     bool quit = false;
@@ -190,9 +284,25 @@ void graphics_render(cstr title,
             }
         }
 
-        
-        /* print("Outer loop.\n"); */
-        /* sleep(1); */
+        struct timespec next_t = timespec_add(last_t, TIMESPEC_60th());
+        if (need_sleep) {
+            struct timespec t;
+            GETTIME(&t);
+            /* DBG_TIMESPEC(t); */
+            struct timespec wait_t = timespec_sub(next_t, t);
+            /* DBG_TIMESPEC(wait_t); */
+            if (! timespec_is_zero(&wait_t)) {
+                struct timespec rem_t;
+                //redo:
+                assert(0 == nanosleep(&wait_t, &rem_t));
+                if (! timespec_is_zero(&rem_t)) {
+                    /* DBG_TIMESPEC(rem_t); */
+                    wait_t = rem_t;
+                    //goto redo;
+                }
+            }
+            last_t = next_t; // or t ?
+        }
     }
 
     SDL_DestroyRenderer(renderer); //XX drop
@@ -596,3 +706,5 @@ void render_Texture(SDL_Renderer *renderer,
 }
 
 
+
+#undef GETTIME
