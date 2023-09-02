@@ -45,5 +45,5 @@ _gendoc:
 gendoc: _gendoc doc
 
 test:
-	bin/run-tests
+	bin/run bin/run-tests
 
