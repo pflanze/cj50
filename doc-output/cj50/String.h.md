@@ -18,7 +18,7 @@ characters. It automatically resizes itself as needed to accept
 additional text that is added.
 
 It is implemented as a wrapper around `Vec(char)`. It adds the
-guarantee that the contents is in correct UTF-8 encoding.
+guarantee that the contents are in correct UTF-8 encoding.
 
 ## strslice {#zero_strslice}
 
@@ -33,7 +33,7 @@ holds a string of characters, more precisely, an array of bytes,
 that represents a text in UTF-8 encoding.
 
 It is implemented as a wrapper around `slice(char)`. It adds the
-guarantee that the contents is in correct UTF-8 encoding.
+guarantee that the contents are in correct UTF-8 encoding.
 
 # Normal functions
 
