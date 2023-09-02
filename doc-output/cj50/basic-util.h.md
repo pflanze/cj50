@@ -2,6 +2,38 @@
 
 # Macros
 
+## MIN {#three_MIN}
+
+```C
+MIN(a, b)
+```
+
+Return the smaller of the two arguments.
+
+## MAX {#three_MAX}
+
+```C
+MAX(a, b)
+```
+
+Return the larger of the two arguments.
+
+## MIN3 {#three_MINQthreeE}
+
+```C
+MIN3(a, b, c)
+```
+
+Return the smallest of the 3 arguments.
+
+## MAX3 {#three_MAXQthreeE}
+
+```C
+MAX3(a, b, c)
+```
+
+Return the largest of the 3 arguments.
+
 ## WARN {#three_WARN}
 
 ```C
