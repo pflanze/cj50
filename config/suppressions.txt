@@ -1,1 +1,4 @@
 leak:*/libdbus-*so
+leak:*/libSDL2-*so
+leak:*/libfontconfig*so
+leak:*/libpango*so
