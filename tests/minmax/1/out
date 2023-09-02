@@ -1,0 +1,6 @@
+DEBUG: MIN(10, 30) == 10
+DEBUG: MIN3(10, 30, 3) == 3
+DEBUG: MIN3(10, -30, 3) == -30
+DEBUG: MAX(10, 30) == 30
+DEBUG: MAX3(10, 30, 3) == 30
+DEBUG: MAX3(10, -30, 3) == 10
