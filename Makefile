@@ -20,6 +20,12 @@ CC=you_have_a_non_existing_dependency
 %_profile: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
 	$(COMPILER) -Ofast -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls -mtune=native -Rpass=loop-vectorize -Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize -gline-tables-only $(CFLAGS) $< $(SDLFLAGS) -o $@
 
+%_E: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+	$(COMPILER) -E $(CFLAGS) $<
+
+%_EF: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+	$(COMPILER) -E $(CFLAGS) $< | clang-format
+
 default:
 	@echo "Please specify the make target, or 'make auto' to watch."
 	@false
