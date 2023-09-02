@@ -58,13 +58,18 @@ void graphics_render(cstr title,
 
 Open a window with the given window size, and call `renderframe`
 about 60 times per second to draw a new image each
-time. `renderframe` is called with a `SDL_Renderer` that needs to
+time.
+
+`renderframe` is called with a `SDL_Renderer*` that needs to
 be passed to the drawing functions like `set_draw_color`, and the
-`context` that is given to `graphics_render`; if you need to store
+`context` value that was given to `graphics_render`; if you need to store
 variables between subsequent frames, this is where you can put
-them. If `renderframe` returns `true`, the image is drawn and
+them. The third argument to `renderframe` are the current window dimensions.
+
+If `renderframe` returns `true`, the image is drawn and
 `renderframe` is called again 1/60 seconds later. If it returns
-`false`, the drawing stops and `graphics_render` returns.
+`false`, the drawing stops, the window is closed, and
+`graphics_render` returns.
 
 ## set_draw_color {#one_set_draw_color}
 
