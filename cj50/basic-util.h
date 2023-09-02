@@ -16,11 +16,33 @@
 
 #define RESTRICT restrict
 
-#define MAX2(a, b)                              \
-    ((a) < (b) ? (b) : (a))
+#undef MIN
 
+/// Return the smaller of the two arguments.
+#define MIN(a, b)                               \
+    ({                                          \
+        __typeof__ (a) _a = (a);                \
+        __typeof__ (b) _b = (b);                \
+        _a < _b ? _a : _b;                      \
+    })
+
+#undef MAX
+
+/// Return the larger of the two arguments.
+#define MAX(a, b)                               \
+    ({                                          \
+        __typeof__ (a) _a = (a);                \
+        __typeof__ (b) _b = (b);                \
+        _a > _b ? _a : _b;                      \
+    })
+
+/// Return the smallest of the 3 arguments.
+#define MIN3(a, b, c)                           \
+    MIN(MIN(a, b), c)
+
+/// Return the largest of the 3 arguments.
 #define MAX3(a, b, c)                           \
-    ((a) < (b) ? MAX2(b, c) : MAX2(a, c))
+    MAX(MAX(a, b), c)
 
 
 /// Print a warning to standard error. Does not take values to embed
