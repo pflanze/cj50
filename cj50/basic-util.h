@@ -19,30 +19,30 @@
 #undef MIN
 
 /// Return the smaller of the two arguments.
-#define MIN(a, b)                               \
-    ({                                          \
-        __typeof__ (a) _a = (a);                \
-        __typeof__ (b) _b = (b);                \
-        _a < _b ? _a : _b;                      \
+#define MIN(a, b)                                                       \
+    ({                                                                  \
+        __typeof__ (a) HYGIENIC(_a) = (a);                              \
+        __typeof__ (b) HYGIENIC(_b) = (b);                              \
+        HYGIENIC(_a) < HYGIENIC(_b) ? HYGIENIC(_a) : HYGIENIC(_b);      \
     })
 
 #undef MAX
 
 /// Return the larger of the two arguments.
-#define MAX(a, b)                               \
-    ({                                          \
-        __typeof__ (a) _a = (a);                \
-        __typeof__ (b) _b = (b);                \
-        _a > _b ? _a : _b;                      \
+#define MAX(a, b)                                                       \
+    ({                                                                  \
+        __typeof__ (a) HYGIENIC(_a) = (a);                              \
+        __typeof__ (b) HYGIENIC(_b) = (b);                              \
+        HYGIENIC(_a) > HYGIENIC(_b) ? HYGIENIC(_a) : HYGIENIC(_b);      \
     })
 
 /// Return the smallest of the 3 arguments.
 #define MIN3(a, b, c)                           \
-    MIN(MIN(a, b), c)
+    MIN(MIN((a), (b)), (c))
 
 /// Return the largest of the 3 arguments.
 #define MAX3(a, b, c)                           \
-    MAX(MAX(a, b), c)
+    MAX(MAX((a), (b)), (c))
 
 
 /// Print a warning to standard error. Does not take values to embed
