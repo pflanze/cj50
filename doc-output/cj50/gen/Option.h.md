@@ -93,7 +93,7 @@ It cannot be used in a function call like `f(NONE)`, instead
 Some(T) some_$T
 ```
 
-The constructor for some value of `T`. Example.
+The constructor for some value of `T`. Example:
 
 ```C
     return Some(cstr)("foo")
@@ -108,6 +108,8 @@ NOTE: only works if T is known textually
 ```C
 None(T)
 ```
+
+The none value for `T`. Example:
 
 ```C
     return None(cstr);

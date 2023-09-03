@@ -159,7 +159,7 @@
 #define NONE { .is_some = false }
 
 
-/// The constructor for some value of `T`. Example.
+/// The constructor for some value of `T`. Example:
 
 ///```C
 ///     return Some(cstr)("foo")
@@ -171,7 +171,7 @@
 
 #define Some(T) XCAT(some_, T)
 
-// The none value for `T`.
+/// The none value for `T`. Example:
 
 ///```C
 ///     return None(cstr);
