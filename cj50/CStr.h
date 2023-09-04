@@ -64,18 +64,22 @@ int fprintln_move_cstr(FILE *out, cstr s) {
 }
 
 
-/// Print in C code syntax.
+/// Print in C code syntax. Supports the NULL value.
 static
 int print_debug_cstr(const cstr *s) {
     INIT_RESRET;
-    RESRET(print_move_cstr("\""));
+    if (*s) {
+        RESRET(print_move_cstr("\""));
 
-    cstr str = *s;
-    while (*str) {
-        RESRET(_print_debug_char(*str));
-        str++;
+        cstr str = *s;
+        while (*str) {
+            RESRET(_print_debug_char(*str));
+            str++;
+        }
+        RESRET(print_move_cstr("\""));
+    } else {
+        RESRET(print_move_cstr("NULL"));
     }
-    RESRET(print_move_cstr("\""));
 cleanup:
     return ret;
 }

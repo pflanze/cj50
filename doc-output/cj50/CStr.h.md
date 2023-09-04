@@ -102,7 +102,7 @@ Print for program user.
 int print_debug_cstr(const cstr *s)
 ```
 
-Print in C code syntax.
+Print in C code syntax. Supports the NULL value.
 
 ## print_debug_move_cstr {#one_print_debug_move_cstr}
 
