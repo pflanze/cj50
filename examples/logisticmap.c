@@ -47,7 +47,7 @@ bool render(SDL_Renderer* renderer, void* _ctx,
     return true;
 }
 
-Result(Unit, String) run(UNUSED slice(cstr) argv) {
+Result(Unit, String) run(slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
     if (len(&argv) != 3) {
