@@ -367,7 +367,7 @@ void draw_points_int(SDL_Renderer* renderer, slice(Vec2(int)) points) {
                                        points.len));
 }
 
-/// Draw the given points.
+/// Draw the given points (at subpixel precision).
 static UNUSED
 void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
     asserting_sdl(SDL_RenderDrawPointsF(renderer,
@@ -376,16 +376,14 @@ void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
                                         points.len));
 }
 
-/// Draw a line from `from`, to `to`.
-
+/// Draw a line from `from`, to `to` (at subpixel precision).
 static UNUSED
 void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to) {
     asserting_sdl(SDL_RenderDrawLineF(rdr, from.x, from.y, to.x, to.y));
 }
 
 /// Draw a series of connected lines on the current rendering target
-/// at subpixel precision.
-
+/// (at subpixel precision).
 static UNUSED
 void draw_lines(SDL_Renderer *renderer, slice(Vec2(float)) lines) {
     asserting_sdl(SDL_RenderDrawLinesF(renderer,
@@ -582,8 +580,8 @@ cleanup:
 
 /// Push one new vertex to the `VertexRenderer`, without registering
 /// the vertex for rendering. Returns the index to the newly pushed
-/// vertex; to register it for rendering, pass that index as a triple
-/// of indices to `push_triangle`.
+/// vertex; to register it for rendering, pass that index as part of a
+/// triple of indices to `push_triangle`.
 
 static UNUSED
 int push_vertex(VertexRenderer *rdr, Vertex v) {
