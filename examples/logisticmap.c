@@ -51,8 +51,11 @@ Result(Unit, String) run(UNUSED slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
     if (len(&argv) != 3) {
-        AUTO s = String("Usage: ");
-        append_move(&s, String(at(&argv, 0)));
+        AUTO s =
+            String("Usage: ");
+        append_move(
+            &s,
+            String(at(&argv, 0)));
         append_move(
             &s,
             String(
