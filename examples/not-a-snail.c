@@ -44,8 +44,10 @@ bool render_snail(SDL_Renderer *rdr, void *_ctx, Vec2(int) window_dimensions) {
             if_let_Some(y, snail_y(x)) {
                 // adding waves
                 float yi = y * (200 + sinf(-ctx->t + x * 40) * 5.);
-                draw_rect(rdr, rect2(vec2_float(100. + i, 240. + yi),
-                                     vec2_float(1, -yi * 2.)));
+                AUTO top = vec2_float(100. + i, 240. + yi);
+                draw_line(rdr,
+                          top,
+                          add(top, vec2_float(0., -yi * 2.)));
             } else_None;
             x += 2./400.;
         }
