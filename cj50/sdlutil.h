@@ -164,6 +164,35 @@ DEF_ASSERTING_SDL_POINTER(SDL_Texture);
         )(v)
 
 
+/// Sleep the given duration in seconds. Note: this will block the
+/// current thread for that duration, and if that thread is updating
+/// the display or reacting to keyboard input, it will not do so for
+/// the given duration.
+static UNUSED
+void sleep_float(float duration_seconds) {
+    if (duration_seconds <= 0) {
+        return;
+    }
+    float wholesec;
+    float partialsec = modff(duration_seconds, &wholesec);
+    struct timespec duration = {
+        wholesec,
+        partialsec * 1000000000.
+    };
+    struct timespec t;
+    GETTIME(&t);
+    struct timespec end_time = timespec_add(t, duration);
+    while (true) {
+        GETTIME(&t);
+        struct timespec wait_time = timespec_sub(end_time, t);
+        if (timespec_is_zero(&wait_time)) {
+            break;
+        }
+        nanosleep(&wait_time, NULL); // XX error check?
+    }
+}
+
+
 /// Open a window with the given window size, and call `renderframe`
 /// about 60 times per second to draw a new image each
 /// time.
