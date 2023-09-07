@@ -20,6 +20,7 @@ typedef struct Ctx {
     float t;
     u32 framenumber;
     int draw_every_nth_frame;
+    bool slowly;
 } Ctx;
 
 bool render_snail(SDL_Renderer *rdr, void *_ctx, Vec2(int) window_dimensions) {
@@ -35,6 +36,11 @@ bool render_snail(SDL_Renderer *rdr, void *_ctx, Vec2(int) window_dimensions) {
 
         float x = -1.01;
         for (int i = 0; i < 480; i++) {
+            if (ctx->slowly) {
+                SDL_RenderPresent(rdr);
+                sleep_float(0.01);
+            }
+
             if_let_Some(y, snail_y(x)) {
                 // adding waves
                 float yi = y * (200 + sinf(-ctx->t + x * 40) * 5.);
@@ -75,7 +81,8 @@ Result(Unit, String) run(UNUSED slice(cstr) argv) {
         Ctx ctx = {
             0.,
             0,
-            draw_every_nth_frame
+            draw_every_nth_frame,
+            getenv("SLOWLY") ? true : false,
         };
         graphics_render("Not a snail", vec2_int(640, 480), render_snail, &ctx);
     }
