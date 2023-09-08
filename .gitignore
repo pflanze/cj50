@@ -21,3 +21,4 @@ examples/logisticmap
 examples/minmax
 examples/null
 examples/dbg
+examples/draw_fill_rects
