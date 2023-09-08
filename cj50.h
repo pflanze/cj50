@@ -1126,12 +1126,31 @@ GENERATE_equal_array(double);
 
 
 /// "DeBuG": print the expression `expr` and the value it evaluated to, for
-/// debugging purposes (calls `print_debug` on the value). Returns the value.
+/// debugging purposes (calls `print_debug` on the value). Returns the value,
+/// although note that this is only valid if the value is of a Copy type
+/// (including references). See `DBGV` for a variant that handles non-Copy types
+/// that way.
 #define DBG(expr)                               \
     ({                                          \
         __typeof__ (expr) HYGIENIC(v) = (expr); \
         print("DEBUG: " #expr " == ");          \
         print_debug(HYGIENIC(v));               \
+        print("\n");                            \
+        HYGIENIC(v);                            \
+    })
+
+/// "DeBuG (non-reference) value": print the expression `expr` and the value it
+/// evaluated to, for debugging purposes (calls `print_debug` on the reference
+/// to the value). Returns the value; unlike `DBG`, this does not move the
+/// value, hence the return value of `DBGV` *must* be used if it is not a Copy
+/// type (DBGV never drops it). OTOH, `DBGV` can't be used on references,
+/// because that would lead to a double reference being passed to `print_debug`;
+/// use `DBG` for those.
+#define DBGV(expr)                              \
+    ({                                          \
+        __typeof__ (expr) HYGIENIC(v) = (expr); \
+        print("DEBUG: " #expr " == ");          \
+        print_debug(&HYGIENIC(v));              \
         print("\n");                            \
         HYGIENIC(v);                            \
     })

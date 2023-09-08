@@ -438,6 +438,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [CStr_from_cstr_unsafe](cj50/CStr.h.md#three_CStr_from_cstr_unsafe)
 * [DBG](cj50.h.md#three_DBG)
 * [DBGA](cj50.h.md#three_DBGA)
+* [DBGV](cj50.h.md#three_DBGV)
 * [DEF_SLICE](cj50/gen/Vec.h.md#three_DEF_SLICE)
 * [DIE](cj50/basic-util.h.md#three_DIE)
 * [DIE_](cj50/basic-util.h.md#three_DIE_)
