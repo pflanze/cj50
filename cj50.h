@@ -1259,7 +1259,7 @@ cleanup:
         )(coll1, coll2)
 
 /// Append the items from coll2 onto the end of coll1, consuming
-/// coll2.
+/// coll2. For Vec and String.
 #define append_move(coll1, coll2)                       \
     _Generic((coll1)                                    \
              , String*: append_move_String_String       \
