@@ -107,6 +107,38 @@
     XCAT(new_slice_, T)(var, sizeof(var) / sizeof(T))
 
 
+
+/// Iterate over all items in a sequence of a Vec, slice or mutslice type. The
+/// first argument is the variable name that is bound to a reference to the item
+/// in the sequence. The second argument is a reference to the sequence
+/// itself. The third argument is the loop body and should be a single
+/// block. The sequence length is taken at the beginning; the sequence must not
+/// become smaller while iterating.
+
+/// Example:
+/// 
+/// ```C
+/// AUTO v = new_Vec_int();
+/// ...
+/// int total = 0;
+/// FOR_EACH(x, &v, {
+///     total += *x;
+/// });
+/// ```
+
+#define FOR_EACH(var, sequence_ref, ...)                                \
+    {                                                                   \
+        AUTO HYGIENIC(seq) = (sequence_ref);                            \
+        size_t HYGIENIC(len) = HYGIENIC(seq)->len;                      \
+        for (size_t HYGIENIC(i) = 0;                                    \
+             HYGIENIC(i) < HYGIENIC(len);                               \
+             HYGIENIC(i)++) {                                           \
+            AUTO var = &HYGIENIC(seq)->ptr[HYGIENIC(i)];                \
+            __VA_ARGS__;                                                \
+        }                                                               \
+    }
+
+
 // XX Bummer, why necessary, circular dependencies?
 typedef const char* cstr;
 static UNUSED
