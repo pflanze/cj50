@@ -811,18 +811,13 @@ GENERATE_PRINTLN(ucodepoint);
         }                                               \
     }
 #define RESIZE_ARRAY_realloc_and_fill(ary, oldlen, newlen, T, null)     \
-    T* res = reallocarray(ary, newlen, sizeof(T));                      \
-    if (res) {                                                          \
-        if (newlen > oldlen) {                                          \
-            for (size_t i = oldlen; i < newlen; i++) {                  \
-                res[i] = null;                                          \
-            }                                                           \
+    T* res = xreallocarray(ary, newlen, sizeof(T));                     \
+    if (newlen > oldlen) {                                              \
+        for (size_t i = oldlen; i < newlen; i++) {                      \
+            res[i] = null;                                              \
         }                                                               \
-        return res;                                                     \
-    } else {                                                            \
-        DIE_("Out of memory to resize array from %ld to %ld %s members",\
-             oldlen, newlen, STR(T));                                   \
-    }
+    }                                                                   \
+    return res;
 
 
 static UNUSED
