@@ -1,0 +1,4 @@
+DEBUG: String(at(&argv, 0)) == "examples/dbg_opt"
+DEBUG: String(argv.len) == "1"
+DEBUG: &s == "examples/dbg_opt1"
+DEBUG: s == "examples/dbg_opt1"
