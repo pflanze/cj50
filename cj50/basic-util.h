@@ -77,5 +77,14 @@
     __typeof__ (to) __for_range_to = (to);              \
     for (T var = (from); var < __for_range_to; var++)
 
+static UNUSED
+NORETURN unimplemented() {
+    DIE("UNIMPLEMENTED");
+}
+
+/// DIE with the message UNIMPLEMENTED.
+#define UNIMPLEMENTED                           \
+    unimplemented();
+
 
 #define AUTO __auto_type
