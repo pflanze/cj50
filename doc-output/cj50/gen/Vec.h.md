@@ -142,6 +142,30 @@ ColorFunction_float fs[] = {
 foo(SLICE_FROM_ARRAY_OF_T(ColorFunction_float, fs));
 ```
 
+## FOR_EACH {#three_FOR_EACH}
+
+```C
+FOR_EACH(var, sequence_ref, ...)
+```
+
+Iterate over all items in a sequence of a Vec, slice or mutslice type. The
+first argument is the variable name that is bound to a reference to the item
+in the sequence. The second argument is a reference to the sequence
+itself. The third argument is the loop body and should be a single
+block. The sequence length is taken at the beginning; the sequence must not
+become smaller while iterating.
+
+Example:
+
+```C
+AUTO v = new_Vec_int();
+...
+int total = 0;
+FOR_EACH(x, &v, {
+    total += *x;
+});
+```
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

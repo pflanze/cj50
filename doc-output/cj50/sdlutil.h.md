@@ -3,6 +3,28 @@
 
 Utilities for working with the SDL2 library.
 
+This directly uses (only) some of the types that the SDL2 library defines;
+and it offers functions that follow the style and use the types from the
+cj50 library, to make programming graphics nicer. It might not have some
+functionality that you want, though, in which case it might be useful to
+check the [SDL2 documentation](https://wiki.libsdl.org/SDL2/FrontPage);
+functions on `SDL_Renderer` for example can easily be called from a
+`renderframe` function (as passed to `graphics_render`). Mostly that
+shouldn't be necessary, though; if missing, it should be added to cj50.
+
+But note that SDL2 doesn't offer many shapes, either; if you need
+complicated shapes, the way to do that with SDL2 (as with realtime graphics
+programming in general) is to compose the drawing from triangles--this
+offers complete freedom about the shape and its coloring and is still
+efficient. cj50 offers an abstraction, `VertexRenderer` (which is built on
+top of SDL2's `SDL_RenderGeometry`), to do this. The way how this works is
+to first call `new_VertexRenderer`, then add vertices (points with colors)
+to it and then add triangles build from those vertices; then when your shape
+is complete, you call `render_VertexRenderer` to send it to the screen. See
+[examples/vertexgraphics.c](../examples/vertexgraphics.c) for an example.
+
+(TODO) The functions around Texture aren't worked out well yet.
+
 # Types
 
 ## Texture {#zero_Texture}
@@ -108,7 +130,23 @@ Note that you can use the generic `clear` as a shortcut.
 void draw_rect(SDL_Renderer* renderer, Rect2(float) r)
 ```
 
-Draw the given rectangle with the current colors.
+Draw the given empty rectangle with the current colors.
+
+## draw_fill_rect {#one_draw_fill_rect}
+
+```C
+void draw_fill_rect(SDL_Renderer* renderer, Rect2(float) r)
+```
+
+Draw the given filled rectangle with the current colors.
+
+## draw_fill_rects {#one_draw_fill_rects}
+
+```C
+void draw_fill_rects(SDL_Renderer* renderer, slice(Rect2(float)) rects)
+```
+
+Draw the given filled rectangles with the current colors.
 
 ## draw_circle {#one_draw_circle}
 

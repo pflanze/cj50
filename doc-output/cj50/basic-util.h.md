@@ -70,6 +70,14 @@ DIE_(msg, ...)
 Print a message to standard error, then abort. `msg` is a format
 string, the values to embed are expected afterwards.
 
+## UNIMPLEMENTED {#three_UNIMPLEMENTED}
+
+```C
+UNIMPLEMENTED
+```
+
+DIE with the message UNIMPLEMENTED.
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
