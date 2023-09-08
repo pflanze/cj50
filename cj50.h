@@ -1125,14 +1125,16 @@ GENERATE_equal_array(double);
 // #define err(val, E) ...
 
 
-/// "DeBuG": print the expression `expr` and the value it evaluated
-/// to, for debugging purposes (calls `print_debug` on the value).
+/// "DeBuG": print the expression `expr` and the value it evaluated to, for
+/// debugging purposes (calls `print_debug` on the value). Returns the value.
 #define DBG(expr)                               \
-    do {                                        \
+    ({                                          \
+        __typeof__ (expr) HYGIENIC(v) = (expr); \
         print("DEBUG: " #expr " == ");          \
-        print_debug(expr);                      \
+        print_debug(HYGIENIC(v));               \
         print("\n");                            \
-    } while (0)
+        HYGIENIC(v);                            \
+    })
 
 
 static
