@@ -94,6 +94,10 @@ bool render(SDL_Renderer *rdr, void *_ctx, Vec2(int) window_dimensions) {
 Result(Unit, String) run(UNUSED slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
+    if (getenv("NOGRAPHICS")) {
+        RETURN_Ok(Unit(), cleanup);
+    }
+
     Ctx ctx = {
         .t = 1.,
         .last_actor_creation_t = 0.,
