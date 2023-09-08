@@ -1,29 +1,31 @@
 ASAN ?= -fsanitize=address
 
+CJ50BASEDIR ?= $(HOME)/cdevelopment/cj50
+
 # -Werror -pedantic -std=c11
-CFLAGS=-fdiagnostics-color=always -Wall -Wextra -g3 -fsanitize=undefined,float-divide-by-zero -fno-sanitize-recover -I$(HOME)/cdevelopment/cj50
+CFLAGS=-fdiagnostics-color=always -Wall -Wextra -g3 -fsanitize=undefined,float-divide-by-zero -fno-sanitize-recover -I$(CJ50BASEDIR)
 
 SDLFLAGS:=`sdl2-config --libs`
 
 COMPILER ?= clang
 CC=you_have_a_non_existing_dependency
 
-%: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+%: %.c $(CJ50BASEDIR)/cj50.h $(CJ50BASEDIR)/*.h
 	$(COMPILER) $(CFLAGS) $(ASAN) $< $(SDLFLAGS) -o $@
 
-%_opt: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+%_opt: %.c $(CJ50BASEDIR)/cj50.h $(CJ50BASEDIR)/*.h
 	$(COMPILER) -O2 $(CFLAGS) $(ASAN) $< $(SDLFLAGS) -o $@
 
-%_max: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+%_max: %.c $(CJ50BASEDIR)/cj50.h $(CJ50BASEDIR)/*.h
 	$(COMPILER) -Ofast -mtune=native $(CFLAGS) $< $(SDLFLAGS) -o $@
 
-%_profile: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+%_profile: %.c $(CJ50BASEDIR)/cj50.h $(CJ50BASEDIR)/*.h
 	$(COMPILER) -Ofast -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls -mtune=native -Rpass=loop-vectorize -Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize -gline-tables-only $(CFLAGS) $< $(SDLFLAGS) -o $@
 
-%_E: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+%_E: %.c $(CJ50BASEDIR)/cj50.h $(CJ50BASEDIR)/*.h
 	$(COMPILER) -E $(CFLAGS) $< | less
 
-%_EF: %.c $(HOME)/cdevelopment/cj50/cj50.h $(HOME)/cdevelopment/cj50/*.h
+%_EF: %.c $(CJ50BASEDIR)/cj50.h $(CJ50BASEDIR)/*.h
 	$(COMPILER) -E $(CFLAGS) $< | clang-format | less
 
 default:
@@ -31,7 +33,7 @@ default:
 	@false
 
 auto:
-	$(HOME)/cdevelopment/cj50/bin/auto-make
+	$(CJ50BASEDIR)/bin/auto-make
 
 doc:
 	bin/doc2html

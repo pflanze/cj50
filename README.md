@@ -28,7 +28,7 @@ This needs make, Clang and SDL2, as well as pandoc for generating the html files
 
     sudo apt-get install make clang libsdl2-dev pandoc
 
-For ease of use and updating, the [Makefile](Makefile) can be used to build both the included [examples](examples/) and third party files but assumes that this library is checked out at `~/cdevelopment/cj50`. Meaning, run the following to use this library:
+For ease of use and updating, the [Makefile](Makefile) can be used to build both the included [examples](examples/) and third party files but assumes that this library is checked out at `~/cdevelopment/cj50` (although alternatively you can set `CJ50BASEDIR` to the path of the checkout). Meaning, run the following to use this library:
 
     cd
     mkdir -p cdevelopment
