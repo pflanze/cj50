@@ -358,15 +358,6 @@ utf8char(str)
 Careful, currently unsafe, assumes that the str is a string
 constant and carefully entered!
 
-## String {#three_String}
-
-```C
-String(val)
-```
-
-Create a `String` easily; this is just an alias for
-`new_from(String, val)`.
-
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

@@ -470,7 +470,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [SLICE_FROM_ARRAY_OF_T](cj50/gen/Vec.h.md#three_SLICE_FROM_ARRAY_OF_T)
 * [Some](cj50/gen/Option.h.md#three_Some)
 * [square](cj50/math.h.md#three_square)
-* [String](cj50/unicode.h.md#three_String)
+* [String](cj50.h.md#three_String)
 * [Texture](cj50/sdlutil.h.md#three_Texture)
 * [TRY](cj50/gen/Result.h.md#three_TRY)
 * [uchar](cj50/unicode.h.md#three_uchar)
