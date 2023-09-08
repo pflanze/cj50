@@ -406,10 +406,12 @@ void draw_fill_rect(SDL_Renderer* renderer, Rect2(float) r) {
 /// Draw the given filled rectangles with the current colors.
 static UNUSED
 void draw_fill_rects(SDL_Renderer* renderer, slice(Rect2(float)) rects) {
-    asserting_sdl(SDL_RenderFillRectsF(renderer,
-                                       // pray
-                                       (const SDL_FRect *)rects.ptr,
-                                       rects.len));
+    if (rects.len) {
+        asserting_sdl(SDL_RenderFillRectsF(renderer,
+                                           // pray
+                                           (const SDL_FRect *)rects.ptr,
+                                           rects.len));
+    }
 }
 
 
@@ -430,19 +432,23 @@ void draw_fill_circle(SDL_Renderer* renderer, Vec2(int) pos, int radius) {
 /// Draw the given points.
 static UNUSED
 void draw_points_int(SDL_Renderer* renderer, slice(Vec2(int)) points) {
-    asserting_sdl(SDL_RenderDrawPoints(renderer,
-                                       // pray
-                                       (const SDL_Point *)points.ptr,
-                                       points.len));
+    if (points.len) {
+        asserting_sdl(SDL_RenderDrawPoints(renderer,
+                                           // pray
+                                           (const SDL_Point *)points.ptr,
+                                           points.len));
+    }
 }
 
 /// Draw the given points (at subpixel precision).
 static UNUSED
 void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points) {
-    asserting_sdl(SDL_RenderDrawPointsF(renderer,
-                                        // pray
-                                        (const SDL_FPoint *)points.ptr,
-                                        points.len));
+    if (points.len) {
+        asserting_sdl(SDL_RenderDrawPointsF(renderer,
+                                            // pray
+                                            (const SDL_FPoint *)points.ptr,
+                                            points.len));
+    }
 }
 
 /// Draw a line from `from`, to `to` (at subpixel precision).
@@ -455,10 +461,12 @@ void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to) {
 /// (at subpixel precision).
 static UNUSED
 void draw_lines(SDL_Renderer *renderer, slice(Vec2(float)) lines) {
-    asserting_sdl(SDL_RenderDrawLinesF(renderer,
-                                    // pray
-                                    (const SDL_FPoint *)lines.ptr,
-                                    lines.len));
+    if (lines.len) {
+        asserting_sdl(SDL_RenderDrawLinesF(renderer,
+                                           // pray
+                                           (const SDL_FPoint *)lines.ptr,
+                                           lines.len));
+    }
 }
 
 
@@ -672,11 +680,13 @@ void push_triangle(VertexRenderer *rdr, Vec3(int) indices) {
 /// `VertexRenderer` is not consumed or cleared.
 static UNUSED
 void render_VertexRenderer(SDL_Renderer *renderer, VertexRenderer *rdr) {
-    asserting_sdl(
-        SDL_RenderGeometry(renderer,
-                           NULL, // SDL_Texture *texture,
-                           (SDL_Vertex *)rdr->vertices.ptr, rdr->vertices.len,
-                           (int *)rdr->indices.ptr, rdr->indices.len * 3));
+    if (rdr->indices.len) {
+        asserting_sdl(
+            SDL_RenderGeometry(renderer,
+                               NULL, // SDL_Texture *texture,
+                               (SDL_Vertex *)rdr->vertices.ptr, rdr->vertices.len,
+                               (int *)rdr->indices.ptr, rdr->indices.len * 3));
+    }
 }
 
 /// Clear the `VertexRenderer`, so that it can be re-used.
