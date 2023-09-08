@@ -1418,10 +1418,17 @@ cleanup:
     _Generic((v)                                        \
              , char*: new_String_from_move_cstr              \
              , cstr: new_String_from_move_cstr               \
+             , cstr*: new_String_from_cstr               \
+             , const cstr*: new_String_from_cstr               \
              , CStr: new_String_from_CStr               \
              , slice(char): new_String_from_slice_char  \
              , int: new_String_from_move_int            \
              , size_t: new_String_from_move_size_t      \
+             , String: new_String_from_String                           \
+             , ParseError: new_String_from_ParseError                   \
+             , SystemError: new_String_from_SystemError                 \
+             , UnicodeError: new_String_from_UnicodeError               \
+             , DecodingError: new_String_from_DecodingError             \
         )(v)
 // XX Why call it new_, so tempting to call it String_from. Conflict
 // with type constructors or not? Also evil or not? Definitely evil,
