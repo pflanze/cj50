@@ -41,7 +41,7 @@
 #include "cj50/xmem.h"
 #include "cj50/parseError.h"
 #include "cj50/resret.h"
-#include "cj50/instantiations/Vec_CStr.h"
+#include "cj50/instantiations/Vec_uppercase_CStr.h"
 #include "cj50/instantiations/Vec_cstr.h"
 #include "cj50/instantiations/Vec_ucodepoint.h"
 #include "cj50/instantiations/Vec_utf8char.h"
