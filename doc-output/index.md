@@ -370,6 +370,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [reserve_Vec_\$T](cj50/gen/template/Vec.h.md#one_reserve_Vec_QDT)
 * [set_\$VEC_\$T](cj50/gen/template/mutvectorlikes.h.md#one_set_QDVEC_QDT)
 * [set_draw_color](cj50/sdlutil.h.md#one_set_draw_color)
+* [sleep_float](cj50/sdlutil.h.md#one_sleep_float)
 * [slice_of_\$VEC_\$T](cj50/gen/template/vectorlikes.h.md#one_slice_of_QDVEC_QDT)
 * [string_from_ParseError](cj50/parseError.h.md#one_string_from_ParseError)
 * [sync_CFile](cj50/os.h.md#one_sync_CFile)

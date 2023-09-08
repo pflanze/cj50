@@ -47,6 +47,17 @@ triangles information can then be shown via the
 
 # Normal functions
 
+## sleep_float {#one_sleep_float}
+
+```C
+void sleep_float(float duration_seconds)
+```
+
+Sleep the given duration in seconds. Note: this will block the
+current thread for that duration, and if that thread is updating
+the display or reacting to keyboard input, it will not do so for
+the given duration.
+
 ## graphics_render {#one_graphics_render}
 
 ```C
@@ -129,7 +140,7 @@ Draw the given points.
 void draw_points_float(SDL_Renderer* renderer, slice(Vec2(float)) points)
 ```
 
-Draw the given points.
+Draw the given points (at subpixel precision).
 
 ## draw_line {#one_draw_line}
 
@@ -137,7 +148,7 @@ Draw the given points.
 void draw_line(SDL_Renderer *rdr, Vec2(float) from, Vec2(float) to)
 ```
 
-Draw a line from `from`, to `to`.
+Draw a line from `from`, to `to` (at subpixel precision).
 
 ## draw_lines {#one_draw_lines}
 
@@ -146,7 +157,7 @@ void draw_lines(SDL_Renderer *renderer, slice(Vec2(float)) lines)
 ```
 
 Draw a series of connected lines on the current rendering target
-at subpixel precision.
+(at subpixel precision).
 
 ## get_Surface_from_Window {#one_get_Surface_from_Window}
 
@@ -206,8 +217,8 @@ int push_vertex(VertexRenderer *rdr, Vertex v)
 
 Push one new vertex to the `VertexRenderer`, without registering
 the vertex for rendering. Returns the index to the newly pushed
-vertex; to register it for rendering, pass that index as a triple
-of indices to `push_triangle`.
+vertex; to register it for rendering, pass that index as part of a
+triple of indices to `push_triangle`.
 
 ## push_triangle {#one_push_triangle}
 
