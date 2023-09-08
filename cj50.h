@@ -1143,9 +1143,12 @@ GENERATE_equal_array(double);
 /// evaluated to, for debugging purposes (calls `print_debug` on the reference
 /// to the value). Returns the value; unlike `DBG`, this does not move the
 /// value, hence the return value of `DBGV` *must* be used if it is not a Copy
-/// type (DBGV never drops it). OTOH, `DBGV` can't be used on references,
+/// type (`DBGV` never drops it). OTOH, `DBGV` can't be used on references,
 /// because that would lead to a double reference being passed to `print_debug`;
 /// use `DBG` for those.
+
+/// Is expr evaluating to a reference? -> use `DBG`. Otherwise, do you want to
+/// pick up the return value? -> use `DBGV`. Otherwise use `DBG`.
 #define DBGV(expr)                              \
     ({                                          \
         __typeof__ (expr) HYGIENIC(v) = (expr); \
