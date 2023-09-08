@@ -1429,6 +1429,14 @@ cleanup:
 // those anyway.
 
 
+/// Create a `String` easily; this is just an alias for
+/// `new_String_from`.
+
+#define String(val)                             \
+    new_String_from(val)
+
+
+
 /// Get a reference to the element at position `i`. Aborts if `i` is
 /// behind the end of the collection. (XX todo: If you are not sure if
 /// `i` is valid, use `get` instead.)
