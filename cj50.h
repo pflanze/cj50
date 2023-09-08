@@ -933,10 +933,10 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , slice(utf8char)*: equal_slice_utf8char                       \
              , slice(char)*: equal_slice_char                               \
              , slice(int)*: equal_slice_int                                 \
-             , slice(slice2(int))*: equal_slice_slice2_int                       \
-             , slice(slice2(float))*: equal_slice_slice2_float                       \
+             , slice(Vec2(int))*: equal_slice_Vec2_int                       \
+             , slice(Vec2(float))*: equal_slice_Vec2_float                       \
              , slice(Rect2(float))*: equal_slice_Rect2_float                       \
-             , slice(slice2(double))*: equal_slice_slice2_double                       \
+             , slice(Vec2(double))*: equal_slice_Vec2_double                       \
              , slice(float)*: equal_slice_float                             \
              , slice(double)*: equal_slice_double                           \
              , const Option(cstr)*: equal_Option_cstr                         \
