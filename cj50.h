@@ -1467,6 +1467,7 @@ cleanup:
              , mutslice(CStr)*: at_mutslice_CStr                \
              , Vec(Vec2(int))*: at_Vec_Vec2_int                    \
              , Vec(Vec2(float))*: at_Vec_Vec2_float                    \
+             , Vec(Rect2(float))*: at_Vec_Rect2_float                    \
              , Vec(Vec2(double))*: at_Vec_Vec2_double                    \
              , Vec(float)*: at_Vec_float                          \
              , Vec(double)*: at_Vec_double                        \
