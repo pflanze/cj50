@@ -26,10 +26,8 @@ which this library was originally inspired by.
 
 This needs make, Clang and SDL2, as well as pandoc for generating the
 html files. In the current form it will probably only work on Linux or
-perhaps other Unix-like systems (`make examples/draw_fill_rects_max`
-is known to work on MacOS with commit
-0594cb75a4aee0f54b05b1725e8d0a6bc442093e). On Debian-derived systems,
-install the dependencies with:
+perhaps other Unix-like systems (commit 0594cb75a4 is known to work on
+MacOS). On Debian-derived systems, install the dependencies with:
 
     sudo apt-get install make clang libsdl2-dev pandoc
 
