@@ -21,3 +21,8 @@
   character for users, and `ucodepoint` should not normally be used
   any more.
 
+## Random items
+
+* Random number generation design should not be counter performance;
+  re-initializing as per the `__APPLE__` code is probably not good.
+
