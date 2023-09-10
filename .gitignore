@@ -22,3 +22,4 @@ examples/minmax
 examples/null
 examples/dbg
 examples/draw_fill_rects
+examples/draw_circle
