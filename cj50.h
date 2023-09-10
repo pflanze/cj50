@@ -790,6 +790,7 @@ GENERATE_PRINTLN(ucodepoint);
              , Option(int): drop_Option_int                      \
              , Option(float): drop_Option_float                  \
              , Option(double): drop_Option_double                \
+             , VertexRenderer: drop_VertexRenderer               \
         )(v)
 
 
