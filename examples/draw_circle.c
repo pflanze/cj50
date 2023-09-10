@@ -19,7 +19,8 @@ void render1(bool do_rect, VertexRenderer *vertexrenderer,
             // XX A not working
             draw_fill_ellipsis(vertexrenderer,
                                r,
-                               ColorA(30, 20, 240, 255));
+                               ColorA(30, 20, 240, 255),
+                               30);
         }
         x = next_x;
     }

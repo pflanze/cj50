@@ -793,11 +793,18 @@ void render_Texture(SDL_Renderer *renderer,
 
 // ------------------------------------------------------------------
 
-/// Draw the given ellipsis with the given color onto the given VertexRenderer,
-/// which is *not* cleared. (Uses subpixel precision.)
+/// Draw the given ellipsis with the given color onto the given
+/// `VertexRenderer`, which is *not* cleared. `num_segments` gives the number of
+/// segments used for a full circle/ellipsis; a value of about 20 is recommended
+/// (more segments may make drawing slower).
+
+/// (Uses subpixel precision.)
+
+/// See [examples/draw_circle.c](../examples/draw_circle.c) for an example.
 
 static UNUSED
-void draw_fill_ellipsis(VertexRenderer* rdr, Rect2(float) bounds, SDL_Color color) {
+void draw_fill_ellipsis(VertexRenderer* rdr, Rect2(float) bounds, SDL_Color color,
+                        u8 num_segments) {
     if (MIN(bounds.extent.x, bounds.extent.y) < 0.1) {
         return;
     }
@@ -809,7 +816,7 @@ void draw_fill_ellipsis(VertexRenderer* rdr, Rect2(float) bounds, SDL_Color colo
                                                    vec2_float(0, -halfextent.y)),
                                                color));
     int lastv = topv;
-    const float d_angle = math_pi_float * 0.05; // 
+    const float d_angle = math_pi_float / num_segments;
     for (float angle = d_angle; angle < 2.f * math_pi_float; angle += d_angle) {
         Vec2(float) p = {
             center.x + sinf(angle) * halfextent.x,
