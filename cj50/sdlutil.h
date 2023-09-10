@@ -798,21 +798,22 @@ void render_Texture(SDL_Renderer *renderer,
 
 static UNUSED
 void draw_fill_ellipsis(VertexRenderer* rdr, Rect2(float) bounds, SDL_Color color) {
-    float radius = sqrtf(square(bounds.extent.x * 0.5) + square(bounds.extent.y * 0.5));
-    if (radius < 0.1) {
+    if (MIN(bounds.extent.x, bounds.extent.y) < 0.1) {
         return;
     }
-    Vec2(float) center = add(bounds.start, mul(bounds.extent, 0.5));
+    AUTO halfextent = mul(bounds.extent, 0.5);
+    AUTO center = add(bounds.start, halfextent);
     int centerv = push_vertex(rdr, vertex_2(center, color));
 
-    const int topv = push_vertex(rdr, vertex_2(add(center, vec2_float(0, -radius)),
+    const int topv = push_vertex(rdr, vertex_2(add(center,
+                                                   vec2_float(0, -halfextent.y)),
                                                color));
     int lastv = topv;
-    const float d_angle = math_pi_float * 4. / radius;
+    const float d_angle = math_pi_float * 0.05; // 
     for (float angle = d_angle; angle < 2.f * math_pi_float; angle += d_angle) {
         Vec2(float) p = {
-            center.x + sinf(angle) * radius,
-            center.y - cosf(angle) * radius
+            center.x + sinf(angle) * halfextent.x,
+            center.y - cosf(angle) * halfextent.y
         };
         int newv = push_vertex(rdr, vertex_2(p, color));
         push_triangle(rdr, vec3_int(centerv, lastv, newv));
