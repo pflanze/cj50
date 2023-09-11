@@ -817,15 +817,15 @@ Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
     return res;
 }
 
-/// Draw the given ellipsis with the given color onto the given
-/// `VertexRenderer`, which is *not* cleared. The ellipsis is positioned and
+/// Draw the given ellipsoid with the given color onto the given
+/// `VertexRenderer`, which is *not* cleared. The ellipsoid is positioned and
 /// shaped so as to fit perfectly into `bounds`, before turning the result for
 /// the given `turnangle` in radians (`0` .. `2 * math_pi`). `angle_from_to` are
 /// the angles from which and to the circle should be drawn, if you want just a
 /// slice (again in radians, in the shape before it is turned by
 /// `turnangle`). `hole` determines how large of a hole is left in the center,
-/// 0. meaning none, 1. meaning the hole is as large as the whole ellipsis.
-/// `num_segments` gives the number of segments used for a full circle/ellipsis;
+/// 0. meaning none, 1. meaning the hole is as large as the whole ellipsoid.
+/// `num_segments` gives the number of segments used for a full circle/ellipsoid;
 /// a value of about 20 is recommended (more segments may make drawing slower).
 
 /// (Uses subpixel precision.)
@@ -833,13 +833,13 @@ Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
 /// See [examples/draw_circle.c](../examples/draw_circle.c) for an example.
 
 static UNUSED
-void draw_fill_ellipsis(VertexRenderer* rdr,
-                        Rect2(float) bounds,
-                        Option(Vec2(float)) angle_from_to,
-                        float hole, /* 0..1 */
-                        float turnangle,
-                        SDL_Color color,
-                        u8 num_segments) {
+void draw_fill_ellipsoid(VertexRenderer* rdr,
+                         Rect2(float) bounds,
+                         Option(Vec2(float)) angle_from_to,
+                         float hole, /* 0..1 */
+                         float turnangle,
+                         SDL_Color color,
+                         u8 num_segments) {
     if (MIN(bounds.extent.x, bounds.extent.y) < 0.1) {
         return;
     }
