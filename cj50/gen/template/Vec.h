@@ -144,6 +144,19 @@ void XCAT(reserve_, Vec(T))(Vec(T) *self, size_t additional) {
 /// Appends an element to the back of the vector.
 static UNUSED
 void XCAT(push_, Vec(T))(Vec(T) *self, T value) {
+#if 1
+    // Coded again to be faster, sigh.
+    size_t len = self->len;
+    size_t cap = self->cap;
+    if (len < cap) {
+        self->ptr[len] = value;
+        self->len = len + 1;
+    } else {
+        XCAT(reserve_, Vec(T))(self, max_size_t(8, self->cap));
+        assert(XCAT(push_within_capacity_, Vec(T))(self, value).is_ok);
+    }
+
+#else
     AUTO res = XCAT(push_within_capacity_, Vec(T))(self, value);
     if (res.is_ok) {
         return;
@@ -151,7 +164,8 @@ void XCAT(push_, Vec(T))(Vec(T) *self, T value) {
     XCAT(reserve_, Vec(T))(self, max_size_t(8, self->cap));
     unwrap_Result_Unit__VecError(
         XCAT(push_within_capacity_, Vec(T))(self, value));
-    // ^ could just assert(res.is_ok) instead 
+    // ^ could just assert(res.is_ok) instead
+#endif
 }
 
 /// Removes the last element from a vector and returns it, or None if
