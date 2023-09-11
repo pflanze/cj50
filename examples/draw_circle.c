@@ -21,6 +21,7 @@ void render1(bool do_rect, VertexRenderer *vertexrenderer,
                                r,
                                none_Vec2_float(),
                                0.f,
+                               0.f,
                                ColorA(255, 255, 255, 255),
                                20);
         }
@@ -48,23 +49,28 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
     render1(false, &vertexrenderer, rdr, window_dimensions);
 
     // Spinning ellipsis
+    float hole = 0.5f + 0.5f * sinf(*t * 1.8f);
     draw_fill_ellipsis(&vertexrenderer,
                        rect2_float(vec2_float(300, 10),
                                    vec2_float(100, 400)),
                        none_Vec2_float(),
+                       hole,
                        *t,
                        ColorA(0, 0, 0, 255),
                        30);
+    /* DBG(&vertexrenderer); */
 
     // Pacman circle
     float opening_angle = sinf(*t * 2.4) + 1;
     float mouth_direction = math_pi / 2;
+    float hole2 = 0.2f + 0.5f * sinf(*t * 0.3f);
     draw_fill_ellipsis(&vertexrenderer,
                        rect2_float(vec2_float(650, 100),
                                    vec2_float(200, 200)),
                        some(vec2_float(mouth_direction + 0.5f * opening_angle,
                                        mouth_direction + 2*math_pi - opening_angle)),
-                       0,
+                       hole2,
+                       0.f,
                        ColorA(230, 0, 0, 255),
                        10);
 

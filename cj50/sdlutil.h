@@ -823,9 +823,10 @@ Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
 /// the given `turnangle` in radians (`0` .. `2 * math_pi`). `angle_from_to` are
 /// the angles from which and to the circle should be drawn, if you want just a
 /// slice (again in radians, in the shape before it is turned by
-/// `turnangle`). `num_segments` gives the number of segments used for a full
-/// circle/ellipsis; a value of about 20 is recommended (more segments may make
-/// drawing slower).
+/// `turnangle`). `hole` determines how large of a hole is left in the center,
+/// 0. meaning none, 1. meaning the hole is as large as the whole ellipsis.
+/// `num_segments` gives the number of segments used for a full circle/ellipsis;
+/// a value of about 20 is recommended (more segments may make drawing slower).
 
 /// (Uses subpixel precision.)
 
@@ -835,6 +836,7 @@ static UNUSED
 void draw_fill_ellipsis(VertexRenderer* rdr,
                         Rect2(float) bounds,
                         Option(Vec2(float)) angle_from_to,
+                        float hole, /* 0..1 */
                         float turnangle,
                         SDL_Color color,
                         u8 num_segments) {
@@ -849,36 +851,60 @@ void draw_fill_ellipsis(VertexRenderer* rdr,
         angle_from_to.is_some ? angle_from_to.value
         : vec2_float(0.f, 2.f * math_pi_float);
 
-#define POINT_AT_ANGLE(a)                                               \
-    add(center,                                                         \
-        turn_Vec2_float(                                                \
-            vec2_float(sinf(a) * halfextent.x,                          \
-                       - cosf(a) * halfextent.y),                       \
-            turnangle))
+#define DIRVEC_AT_ANGLE(a)                                              \
+    turn_Vec2_float(                                                    \
+        vec2_float(sinf(a) * halfextent.x,                              \
+                   - cosf(a) * halfextent.y),                           \
+        turnangle)
 
-    const int topv =
-        push_vertex(rdr,
-                    vertex_2(POINT_AT_ANGLE(angle_from_to_.x),
-                             color));
+    const AUTO topvec = DIRVEC_AT_ANGLE(angle_from_to_.x);
+    const int topv = push_vertex(rdr, vertex_2(add(center, topvec), color));
+
+    const bool has_hole = !(hole <= 0.f);
+
+    const int topholev = has_hole
+        ? push_vertex(rdr, vertex_2(add(center, mul(topvec, hole)), color))
+        : centerv;
+
     int lastv = topv;
+    int lastholev = topholev;
     const float d_angle = math_pi_float / num_segments;
     for (float i_angle = angle_from_to_.x + d_angle;
          i_angle < angle_from_to_.y;
          i_angle += d_angle)
     {
-        int newv = push_vertex(rdr, vertex_2(POINT_AT_ANGLE(i_angle),
-                                             color));
-        push_triangle(rdr, vec3_int(centerv, lastv, newv));
+        AUTO vec = DIRVEC_AT_ANGLE(i_angle);
+        int newv = push_vertex(rdr, vertex_2(add(center, vec), color));
+        if (has_hole) {
+            int newholev = push_vertex(rdr, vertex_2(add(center, mul(vec, hole)), color));
+            push_triangle(rdr, vec3_int(lastholev, lastv, newv));
+            push_triangle(rdr, vec3_int(lastholev, newholev, newv));
+            lastholev = newholev;
+        } else {
+            push_triangle(rdr, vec3_int(centerv, lastv, newv));
+        }
         lastv = newv;
     }
+
     if ((angle_from_to_.y - angle_from_to_.x) >= 2.f * math_pi_float) {
-        // last triangle to close the circle
-        push_triangle(rdr, vec3_int(centerv, lastv, topv));
+        // last triangle(s) to close the circle
+        if (has_hole) {
+            push_triangle(rdr, vec3_int(lastholev, lastv, topv));
+            push_triangle(rdr, vec3_int(lastholev, topholev, topv));
+        } else {
+            push_triangle(rdr, vec3_int(centerv, lastv, topv));
+        }
     } else {
-        // last triangle to end of slice
-        int newv = push_vertex(rdr, vertex_2(POINT_AT_ANGLE(angle_from_to_.y),
-                                             color));
-        push_triangle(rdr, vec3_int(centerv, lastv, newv));
+        // last triangle(s) to end of slice
+        AUTO vec = DIRVEC_AT_ANGLE(angle_from_to_.y);
+        int newv = push_vertex(rdr, vertex_2(add(center, vec), color));
+        if (has_hole) {
+            int newholev = push_vertex(rdr, vertex_2(add(center, mul(vec, hole)), color));
+            push_triangle(rdr, vec3_int(lastholev, lastv, newv));
+            push_triangle(rdr, vec3_int(lastholev, newholev, newv));
+        } else {
+            push_triangle(rdr, vec3_int(centerv, lastv, newv));
+        }
     }
 #undef POINT_AT_ANGLE
 }
