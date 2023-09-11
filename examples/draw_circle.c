@@ -19,6 +19,7 @@ void render1(bool do_rect, VertexRenderer *vertexrenderer,
             // XX A not working
             draw_fill_ellipsis(vertexrenderer,
                                r,
+                               none_Vec2_float(),
                                0.f,
                                ColorA(255, 255, 255, 255),
                                20);
@@ -50,9 +51,22 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
     draw_fill_ellipsis(&vertexrenderer,
                        rect2_float(vec2_float(300, 10),
                                    vec2_float(100, 400)),
+                       none_Vec2_float(),
                        *t,
                        ColorA(0, 0, 0, 255),
                        30);
+
+    // Pacman circle
+    float opening_angle = sinf(*t * 2.4) + 1;
+    float mouth_direction = math_pi / 2;
+    draw_fill_ellipsis(&vertexrenderer,
+                       rect2_float(vec2_float(650, 100),
+                                   vec2_float(200, 200)),
+                       some(vec2_float(mouth_direction + 0.5f * opening_angle,
+                                       mouth_direction + 2*math_pi - opening_angle)),
+                       0,
+                       ColorA(230, 0, 0, 255),
+                       10);
 
     render_VertexRenderer(rdr, &vertexrenderer);
     drop(vertexrenderer);

@@ -805,7 +805,7 @@ bool close_Vec2_float(const Vec2(float) *a, const Vec2(float) *b) {
 
 static UNUSED
 Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
-    // XX faster?
+    // XX faster? -- well, todo: calculate matrix anyway.
     float len = sqrtf(square(vec.x) + square(vec.y));
     float orig_angle = vec.y < 0.f ?
         asinf(vec.x / len) :
@@ -820,9 +820,12 @@ Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
 /// Draw the given ellipsis with the given color onto the given
 /// `VertexRenderer`, which is *not* cleared. The ellipsis is positioned and
 /// shaped so as to fit perfectly into `bounds`, before turning the result for
-/// the given `angle` in radians (`0` .. `2 * math_pi`). `num_segments` gives
-/// the number of segments used for a full circle/ellipsis; a value of about 20
-/// is recommended (more segments may make drawing slower).
+/// the given `turnangle` in radians (`0` .. `2 * math_pi`). `angle_from_to` are
+/// the angles from which and to the circle should be drawn, if you want just a
+/// slice (again in radians, in the shape before it is turned by
+/// `turnangle`). `num_segments` gives the number of segments used for a full
+/// circle/ellipsis; a value of about 20 is recommended (more segments may make
+/// drawing slower).
 
 /// (Uses subpixel precision.)
 
@@ -831,7 +834,8 @@ Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
 static UNUSED
 void draw_fill_ellipsis(VertexRenderer* rdr,
                         Rect2(float) bounds,
-                        float angle,
+                        Option(Vec2(float)) angle_from_to,
+                        float turnangle,
                         SDL_Color color,
                         u8 num_segments) {
     if (MIN(bounds.extent.x, bounds.extent.y) < 0.1) {
@@ -841,25 +845,43 @@ void draw_fill_ellipsis(VertexRenderer* rdr,
     AUTO center = add(bounds.start, halfextent);
     int centerv = push_vertex(rdr, vertex_2(center, color));
 
-    const int topv = push_vertex(
-        rdr, vertex_2(add(center,
-                          turn_Vec2_float(vec2_float(0, -halfextent.y), angle)),
-                      color));
+    Vec2(float) angle_from_to_ =
+        angle_from_to.is_some ? angle_from_to.value
+        : vec2_float(0.f, 2.f * math_pi_float);
+
+#define POINT_AT_ANGLE(a)                                               \
+    add(center,                                                         \
+        turn_Vec2_float(                                                \
+            vec2_float(sinf(a) * halfextent.x,                          \
+                       - cosf(a) * halfextent.y),                       \
+            turnangle))
+
+    const int topv =
+        push_vertex(rdr,
+                    vertex_2(POINT_AT_ANGLE(angle_from_to_.x),
+                             color));
     int lastv = topv;
     const float d_angle = math_pi_float / num_segments;
-    for (float i_angle = d_angle; i_angle < 2.f * math_pi_float; i_angle += d_angle) {
-        Vec2(float) p = add(center,
-                            turn_Vec2_float(
-                                vec2_float(sinf(i_angle) * halfextent.x,
-                                           - cosf(i_angle) * halfextent.y),
-                                angle));
-        int newv = push_vertex(rdr, vertex_2(p, color));
+    for (float i_angle = angle_from_to_.x + d_angle;
+         i_angle < angle_from_to_.y;
+         i_angle += d_angle)
+    {
+        int newv = push_vertex(rdr, vertex_2(POINT_AT_ANGLE(i_angle),
+                                             color));
         push_triangle(rdr, vec3_int(centerv, lastv, newv));
         lastv = newv;
     }
-    push_triangle(rdr, vec3_int(centerv, lastv, topv));
+    if ((angle_from_to_.y - angle_from_to_.x) >= 2.f * math_pi_float) {
+        // last triangle to close the circle
+        push_triangle(rdr, vec3_int(centerv, lastv, topv));
+    } else {
+        // last triangle to end of slice
+        int newv = push_vertex(rdr, vertex_2(POINT_AT_ANGLE(angle_from_to_.y),
+                                             color));
+        push_triangle(rdr, vec3_int(centerv, lastv, newv));
+    }
+#undef POINT_AT_ANGLE
 }
-
 
 
 
