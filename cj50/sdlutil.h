@@ -876,7 +876,8 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
         AUTO vec = DIRVEC_AT_ANGLE(i_angle);
         int newv = push_vertex(rdr, vertex_2(add(center, vec), color));
         if (has_hole) {
-            int newholev = push_vertex(rdr, vertex_2(add(center, mul(vec, hole)), color));
+            int newholev = push_vertex(rdr, vertex_2(add(center, mul(vec, hole)),
+                                                     color));
             push_triangle(rdr, vec3_int(lastholev, lastv, newv));
             push_triangle(rdr, vec3_int(lastholev, newholev, newv));
             lastholev = newholev;
@@ -899,7 +900,8 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
         AUTO vec = DIRVEC_AT_ANGLE(angle_from_to_.y);
         int newv = push_vertex(rdr, vertex_2(add(center, vec), color));
         if (has_hole) {
-            int newholev = push_vertex(rdr, vertex_2(add(center, mul(vec, hole)), color));
+            int newholev = push_vertex(rdr, vertex_2(add(center, mul(vec, hole)),
+                                                     color));
             push_triangle(rdr, vec3_int(lastholev, lastv, newv));
             push_triangle(rdr, vec3_int(lastholev, newholev, newv));
         } else {
