@@ -34,6 +34,8 @@ static bool equal_Actor(UNUSED const Actor *a, UNUSED const Actor *b) { UNIMPLEM
 static void drop_Actor(UNUSED Actor self) { }
 static int print_debug_Actor(UNUSED const Actor* self) { UNIMPLEMENTED }
 GENERATE_Option(Actor);
+GENERATE_ref(Actor);
+GENERATE_Option(ref(Actor));
 #define T Actor
 #include <cj50/gen/template/Vec.h>
 #undef T

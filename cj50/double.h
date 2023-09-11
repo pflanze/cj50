@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cj50/gen/Option.h>
+#include <cj50/gen/ref.h>
 
 static UNUSED
 void drop_double(double UNUSED x) { }
@@ -37,4 +38,5 @@ int print_debug_move_double(double x) {
 }
 
 GENERATE_Option(double);
-
+GENERATE_ref(double);
+GENERATE_Option(ref(double));

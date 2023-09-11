@@ -1,4 +1,5 @@
 #include <cj50/gen/Vec3.h>
+#include <cj50/gen/ref.h>
 #include <cj50/resret.h>
 
 
@@ -53,6 +54,8 @@ int XCAT(print_debug_move_, Vec3(T))(Vec3(T) a) {
 }
 
 GENERATE_Option(Vec3(T));
+GENERATE_ref(Vec3(T));
+GENERATE_Option(ref(Vec3(T)));
 
 static UNUSED
 Vec3(T) XCAT(add_, Vec3(T))(Vec3(T) a, Vec3(T) b) {

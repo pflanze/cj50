@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cj50/gen/Option.h>
+#include <cj50/gen/ref.h>
 #include <cj50/resret.h>
 #include <ctype.h> /* iscntrl */
 
@@ -60,4 +61,6 @@ cleanup:
 
 
 GENERATE_Option(char);
+GENERATE_ref(char);
+GENERATE_Option(ref(char));
 

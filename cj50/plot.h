@@ -38,6 +38,8 @@ cleanup:
 }
 
 GENERATE_Option(ColorFunction_float);
+GENERATE_ref(ColorFunction_float);
+GENERATE_Option(ref(ColorFunction_float));
 
 #define T ColorFunction_float
 #include <cj50/gen/template/Vec.h>

@@ -34,6 +34,7 @@
 #include <cj50/instantiations/Vec_Vec3_int.h>
 #include <cj50/instantiations/Vec2_u32.h>
 #include <cj50/gen/Vec.h>
+#include <cj50/gen/ref.h>
 #include <cj50/resret.h>
 #include <time.h>
 
@@ -539,6 +540,8 @@ cleanup:
 }
 
 GENERATE_Option(Texture);
+GENERATE_ref(Texture);
+GENERATE_Option(ref(Texture));
 
 // ------------------------------------------------------------------
 // Vertex renderer based drawing system.
@@ -615,6 +618,8 @@ cleanup:
 }
 
 GENERATE_Option(Vertex);
+GENERATE_ref(Vertex);
+GENERATE_Option(ref(Vertex));
 
 #define T Vertex
 #include <cj50/gen/template/Vec.h>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cj50/gen/Option.h>
+#include <cj50/gen/ref.h>
 
 static UNUSED
 void drop_float(float UNUSED x) { }
@@ -36,4 +37,5 @@ int print_debug_move_float(float x) {
 }
 
 GENERATE_Option(float);
-
+GENERATE_ref(float);
+GENERATE_Option(ref(float));

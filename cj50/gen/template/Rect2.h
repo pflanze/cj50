@@ -1,6 +1,8 @@
 // parameters: T
 
 #include <cj50/gen/Rect2.h>
+#include <cj50/gen/ref.h>
+#include <cj50/resret.h>
 
 /// A 2-dimensional rectangle, made from `start` and the opposite
 /// corner which is at `add(start, extent)`.
@@ -46,4 +48,5 @@ int XCAT(print_debug_move_, Rect2(T))(Rect2(T) s) {
 
 
 GENERATE_Option(Rect2(T));
-
+GENERATE_ref(Rect2(T));
+GENERATE_Option(ref(Rect2(T)));

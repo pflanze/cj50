@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cj50/gen/Option.h>
+#include <cj50/gen/ref.h>
 
 static UNUSED
 bool equal_int(const int *a, const int *b) {
@@ -38,4 +39,5 @@ int print_debug_move_int(int n) {
 
 
 GENERATE_Option(int);
-
+GENERATE_ref(int);
+GENERATE_Option(ref(int));

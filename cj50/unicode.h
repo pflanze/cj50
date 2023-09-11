@@ -7,6 +7,7 @@
 
 #include <cj50/gen/Result.h>
 #include <cj50/gen/Option.h>
+#include <cj50/gen/ref.h>
 #include <cj50/CStr.h>
 #include <cj50/String.h>
 #include <cj50/u32.h>
@@ -252,6 +253,8 @@ int print_debug_move_utf8char(utf8char c) {
 
 
 GENERATE_Option(utf8char);
+GENERATE_ref(utf8char);
+GENERATE_Option(ref(utf8char));
 
 /// Convert a ucodepoint to a utf8char.
 
@@ -290,6 +293,8 @@ int print_move_ucodepoint(ucodepoint a) {
 
 
 GENERATE_Option(ucodepoint);
+GENERATE_ref(ucodepoint);
+GENERATE_Option(ref(ucodepoint));
 
 GENERATE_Result(Option(ucodepoint), UnicodeError);
 

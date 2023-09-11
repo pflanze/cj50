@@ -6,6 +6,7 @@
 #include <cj50/char.h>
 #include <cj50/xmem.h>
 #include <cj50/gen/error.h>
+#include <cj50/gen/ref.h>
 #include <cj50/resret.h>
 
 
@@ -93,6 +94,8 @@ int print_debug_move_cstr(cstr s) {
 
 
 GENERATE_Option(cstr);
+GENERATE_ref(cstr);
+GENERATE_Option(ref(cstr));
 
 
 
@@ -143,6 +146,8 @@ int print_debug_move_CStr(CStr s) {
 
 
 GENERATE_Option(CStr);
+GENERATE_ref(CStr);
+GENERATE_Option(ref(CStr));
 
 // ------------------------------------------------------------------
 // Errors

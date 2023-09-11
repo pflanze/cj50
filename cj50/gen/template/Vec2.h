@@ -1,6 +1,8 @@
 // parameters: T
 
 #include <cj50/gen/Vec2.h>
+#include <cj50/gen/ref.h>
+#include <cj50/resret.h>
 
 /// A 2-dimensional vector.
 
@@ -50,6 +52,8 @@ int XCAT(print_debug_move_, Vec2(T))(Vec2(T) a) {
 }
 
 GENERATE_Option(Vec2(T));
+GENERATE_ref(Vec2(T));
+GENERATE_Option(ref(Vec2(T)));
 
 
 static UNUSED
