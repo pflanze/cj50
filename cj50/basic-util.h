@@ -17,10 +17,10 @@
 #define RESTRICT restrict
 
 #define LIKELY(expr)                            \
-    (__builtin_expect(expr, true))
+    (__builtin_expect_with_probability(expr, 0, 0.0001))
 
 #define UNLIKELY(expr)                          \
-    (__builtin_expect(expr, false))
+    (__builtin_expect_with_probability(expr, 0, 0.9999))
 
 #undef MIN
 
