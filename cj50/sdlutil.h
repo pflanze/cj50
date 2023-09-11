@@ -794,14 +794,27 @@ void render_Texture(SDL_Renderer *renderer,
 // ------------------------------------------------------------------
 
 static UNUSED
+bool close_float(float a, float b) {
+    return fabsf(a-b) < 0.1; // ~hack
+}
+
+static UNUSED
+bool close_Vec2_float(const Vec2(float) *a, const Vec2(float) *b) {
+    return close_float(a->x, b->x) && close_float(a->y, b->y);
+}
+
+static UNUSED
 Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
     // XX faster?
     float len = sqrtf(square(vec.x) + square(vec.y));
     float orig_angle = vec.y < 0.f ?
-        math_pi_float - asinf(vec.x / len) :
-        asinf(vec.x / len);
-    return vec2_float(sinf(orig_angle + angle) * len,
-                      - cosf(orig_angle + angle) * len);
+        asinf(vec.x / len) :
+        math_pi_float - asinf(vec.x / len);
+    float a = orig_angle + angle;
+    AUTO res= vec2_float(sinf(a) * len,
+                         - cosf(a) * len);
+    /* assert(! ((angle == 0.f) && ! close_Vec2_float(&res, &vec))); */
+    return res;
 }
 
 /// Draw the given ellipsis with the given color onto the given
