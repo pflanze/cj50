@@ -9,6 +9,7 @@
 
 #include <cj50/basic-util.h>
 #include <cj50/macro-util.h>
+#include <cj50/resret.h>
 
 
 /// This macro creates a type name for an `Option` specific for the
@@ -25,6 +26,27 @@
 /// This macro defines the type `ref(T)`. It has to be used once for a
 /// given type `T`. Afterwards `ref(T)` can be used any number of
 /// times.
-#define GENERATE_ref(T)                         \
-    typedef const T* ref(T)
+
+/// It also automatically defines the standard methods (drop, equal,
+/// print_debug).
+
+#define GENERATE_ref(T)                                             \
+    typedef const T* ref(T);                                        \
+                                                                    \
+    static UNUSED                                                   \
+    void XCAT(drop_, ref(T))(UNUSED ref(T) val) {}                  \
+                                                                    \
+    static UNUSED                                                   \
+    bool XCAT(equal_, ref(T))(const ref(T) *a, const ref(T) *b) {   \
+        return *a == *b;                                            \
+    }                                                               \
+                                                                    \
+    static UNUSED                                                   \
+    int XCAT(print_debug_, ref(T))(const ref(T) *self) {            \
+        INIT_RESRET;                                                \
+        RESRET(putchar('&'));                                       \
+        RESRET(XCAT(print_debug_, T)(*self));                       \
+    cleanup:                                                        \
+        return ret;                                                 \
+    }                                                               \
 
