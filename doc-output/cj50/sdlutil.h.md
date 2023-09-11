@@ -80,6 +80,22 @@ current thread for that duration, and if that thread is updating
 the display or reacting to keyboard input, it will not do so for
 the given duration.
 
+## rendersleep {#one_rendersleep}
+
+```C
+void rendersleep(SDL_Renderer *rdr)
+```
+
+Sleep for the number of seconds (as a float) stored in the global
+`rendersleep_seconds` variable (0.01 seconds by default), but first flush
+the past drawing commands to the display (via `SDL_RenderPresent`). This can
+be useful to track how a program is drawing for debugging purposes.
+
+Note: this (obviously?) won't show any `VertexRenderer` that the program
+might have created and been filling; the program is responsible to call
+`render_VertexRenderer` on those before calling `rendersleep`, if you want
+to see their contents.
+
 ## graphics_render {#one_graphics_render}
 
 ```C
@@ -357,6 +373,33 @@ void render_Texture(SDL_Renderer *renderer,
 ```
 
 Copy a portion of the texture to the current rendering target.
+
+## draw_fill_ellipsoid {#one_draw_fill_ellipsoid}
+
+```C
+void draw_fill_ellipsoid(VertexRenderer* rdr,
+                         Rect2(float) bounds,
+                         Option(Vec2(float)) angle_from_to,
+                         float hole, /* 0..1 */
+                         float turnangle,
+                         SDL_Color color,
+                         u8 num_segments)
+```
+
+Draw the given ellipsoid with the given color onto the given
+`VertexRenderer`, which is *not* cleared. The ellipsoid is positioned and
+shaped so as to fit perfectly into `bounds`, before turning the result for
+the given `turnangle` in radians (`0` .. `2 * math_pi`). `angle_from_to` are
+the angles from which and to the circle should be drawn, if you want just a
+slice (again in radians, in the shape before it is turned by
+`turnangle`). `hole` determines how large of a hole is left in the center,
+0. meaning none, 1. meaning the hole is as large as the whole ellipsoid.
+`num_segments` gives the number of segments used for a full circle/ellipsoid;
+a value of about 20 is recommended (more segments may make drawing slower).
+
+(Uses subpixel precision.)
+
+See [examples/draw_circle.c](../examples/draw_circle.c) for an example.
 
 # Generic functions
 
