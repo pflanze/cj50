@@ -793,17 +793,33 @@ void render_Texture(SDL_Renderer *renderer,
 
 // ------------------------------------------------------------------
 
+static UNUSED
+Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
+    // XX faster?
+    float len = sqrtf(square(vec.x) + square(vec.y));
+    float orig_angle = vec.y < 0.f ?
+        math_pi_float - asinf(vec.x / len) :
+        asinf(vec.x / len);
+    return vec2_float(sinf(orig_angle + angle) * len,
+                      - cosf(orig_angle + angle) * len);
+}
+
 /// Draw the given ellipsis with the given color onto the given
-/// `VertexRenderer`, which is *not* cleared. `num_segments` gives the number of
-/// segments used for a full circle/ellipsis; a value of about 20 is recommended
-/// (more segments may make drawing slower).
+/// `VertexRenderer`, which is *not* cleared. The ellipsis is positioned and
+/// shaped so as to fit perfectly into `bounds`, before turning the result for
+/// the given `angle` in radians (`0` .. `2 * math_pi`). `num_segments` gives
+/// the number of segments used for a full circle/ellipsis; a value of about 20
+/// is recommended (more segments may make drawing slower).
 
 /// (Uses subpixel precision.)
 
 /// See [examples/draw_circle.c](../examples/draw_circle.c) for an example.
 
 static UNUSED
-void draw_fill_ellipsis(VertexRenderer* rdr, Rect2(float) bounds, SDL_Color color,
+void draw_fill_ellipsis(VertexRenderer* rdr,
+                        Rect2(float) bounds,
+                        float angle,
+                        SDL_Color color,
                         u8 num_segments) {
     if (MIN(bounds.extent.x, bounds.extent.y) < 0.1) {
         return;
@@ -812,16 +828,18 @@ void draw_fill_ellipsis(VertexRenderer* rdr, Rect2(float) bounds, SDL_Color colo
     AUTO center = add(bounds.start, halfextent);
     int centerv = push_vertex(rdr, vertex_2(center, color));
 
-    const int topv = push_vertex(rdr, vertex_2(add(center,
-                                                   vec2_float(0, -halfextent.y)),
-                                               color));
+    const int topv = push_vertex(
+        rdr, vertex_2(add(center,
+                          turn_Vec2_float(vec2_float(0, -halfextent.y), angle)),
+                      color));
     int lastv = topv;
     const float d_angle = math_pi_float / num_segments;
-    for (float angle = d_angle; angle < 2.f * math_pi_float; angle += d_angle) {
-        Vec2(float) p = {
-            center.x + sinf(angle) * halfextent.x,
-            center.y - cosf(angle) * halfextent.y
-        };
+    for (float i_angle = d_angle; i_angle < 2.f * math_pi_float; i_angle += d_angle) {
+        Vec2(float) p = add(center,
+                            turn_Vec2_float(
+                                vec2_float(sinf(i_angle) * halfextent.x,
+                                           - cosf(i_angle) * halfextent.y),
+                                angle));
         int newv = push_vertex(rdr, vertex_2(p, color));
         push_triangle(rdr, vec3_int(centerv, lastv, newv));
         lastv = newv;
