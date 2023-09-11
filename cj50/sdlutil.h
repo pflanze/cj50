@@ -221,7 +221,7 @@ float rendersleep_seconds = 0.01;
 /// Sleep for the number of seconds (as a float) stored in the global
 /// `rendersleep_seconds` variable (0.01 seconds by default), but first flush
 /// the past drawing commands to the display (via `SDL_RenderPresent`). This can
-/// be useful to track how a program is drawing for debugging purposes.
+/// be useful for debugging purposes to track how a program is drawing.
 
 /// Note: this (obviously?) won't show any `VertexRenderer` that the program
 /// might have created and been filling; the program is responsible to call
