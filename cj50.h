@@ -1494,9 +1494,9 @@ cleanup:
 
 
 
-/// Get a reference to the element at position `i`. Aborts if `i` is
-/// behind the end of the collection. (XX todo: If you are not sure if
-/// `i` is valid, use `get` instead.)
+/// Get a read-only reference to the element at position `i`. Aborts if `i` is
+/// behind the end of the vectorlike. If you are not sure if
+/// `i` is valid, use `get` instead.
 
 #define at(v, idx)                                            \
     _Generic((v)                                              \
@@ -1542,6 +1542,56 @@ cleanup:
              , const Vec(float)*: at_Vec_float                  \
              , const Vec(double)*: at_Vec_double                  \
              , const Vec(ucodepoint)*: at_Vec_ucodepoint                        \
+        )((v), (idx))
+
+/// Get a read-only reference to the element at position `i`. Returns none if
+/// `i` is behind the end of the vectorlike. If you are sure that `i` is valid,
+/// you can use `at` instead.
+
+#define get(v, idx)                                            \
+    _Generic((v)                                              \
+             , Vec(char)*: get_Vec_char                        \
+             , slice(char)*: get_slice_char                    \
+             , mutslice(char)*: get_mutslice_char              \
+             , Vec(int)*: get_Vec_int                          \
+             , slice(int)*: get_slice_int                      \
+             , mutslice(int)*: get_mutslice_int                \
+             , Vec(cstr)*: get_Vec_cstr                          \
+             , slice(cstr)*: get_slice_cstr                      \
+             , mutslice(cstr)*: get_mutslice_cstr                \
+             , Vec(CStr)*: get_Vec_CStr                          \
+             , slice(CStr)*: get_slice_CStr                      \
+             , mutslice(CStr)*: get_mutslice_CStr                \
+             , Vec(Vec2(int))*: get_Vec_Vec2_int                    \
+             , Vec(Vec2(float))*: get_Vec_Vec2_float                    \
+             , Vec(Rect2(float))*: get_Vec_Rect2_float                    \
+             , Vec(Vec2(double))*: get_Vec_Vec2_double                    \
+             , Vec(float)*: get_Vec_float                          \
+             , Vec(double)*: get_Vec_double                        \
+             , Vec(ucodepoint)*: get_Vec_ucodepoint                        \
+             , slice(Vec2(int))*: get_slice_Vec2_int                    \
+             , slice(Vec2(float))*: get_slice_Vec2_float                    \
+             , slice(Rect2(float))*: get_slice_Rect2_float                    \
+             , slice(Vec2(double))*: get_slice_Vec2_double                    \
+             , slice(float)*: get_slice_float                          \
+             , slice(double)*: get_slice_double                        \
+             , slice(ucodepoint)*: get_slice_ucodepoint                        \
+             , mutslice(Vec2(int))*: get_mutslice_Vec2_int                    \
+             , mutslice(Vec2(float))*: get_mutslice_Vec2_float                    \
+             , mutslice(Rect2(float))*: get_mutslice_Rect2_float                    \
+             , mutslice(Vec2(double))*: get_mutslice_Vec2_double                    \
+             , mutslice(float)*: get_mutslice_float                          \
+             , mutslice(double)*: get_mutslice_double                        \
+             , mutslice(ucodepoint)*: get_mutslice_ucodepoint                        \
+             , const slice(char)*: get_slice_char              \
+             , const mutslice(char)*: get_mutslice_char        \
+             , const Vec(char)*: get_Vec_char                  \
+             , const slice(int)*: get_slice_int                \
+             , const mutslice(int)*: get_mutslice_int          \
+             , const Vec(int)*: get_Vec_int                    \
+             , const Vec(float)*: get_Vec_float                  \
+             , const Vec(double)*: get_Vec_double                  \
+             , const Vec(ucodepoint)*: get_Vec_ucodepoint                        \
         )((v), (idx))
 
 
