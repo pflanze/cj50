@@ -9,8 +9,8 @@
 #include <cj50/Unit.h>
 #include <cj50/CStr.h> /* int print_move_cstr(cstr s) */
 #include <cj50/gen/error.h>
-
-// For the template/Vec.h:
+// for some of the templates:
+#include <cj50/gen/ref.h>
 #include <cj50/resret.h>
 
 //! The `cj50/gen/Vec` library is implementing vectors (mutable
