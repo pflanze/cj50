@@ -16,6 +16,12 @@
 
 #define RESTRICT restrict
 
+#define LIKELY(expr)                            \
+    __builtin_expect(expr, true)
+
+#define UNLIKELY(expr)                          \
+    __builtin_expect(expr, false)
+
 #undef MIN
 
 /// Return the smaller of the two arguments.
