@@ -995,6 +995,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , u64: some_u64                            \
              , float: some_float                        \
              , double: some_double                      \
+             , Vec2(float): some_Vec2_float             \
         )(v)
 
 /// Returns the none variant of `Option(T)` for the given
