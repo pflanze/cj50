@@ -31,6 +31,7 @@
 #include "cj50/uint.h"
 #include "cj50/u8.h"
 #include "cj50/u64.h"
+#include "cj50/i64.h"
 #include "cj50/gen/equal_array.h"
 #include "cj50/gen/Result.h"
 #include "cj50/float.h"
@@ -448,6 +449,9 @@ int print_debug_floats(const float* ary, size_t len) {
              , u64*: print_u64                          \
              , const u64*: print_u64                    \
              , u64: print_move_u64                      \
+             , i64*: print_i64                          \
+             , const i64*: print_i64                    \
+             , i64: print_move_i64                      \
              , float*: print_float                      \
              , const float*: print_float                \
              , float: print_move_float                  \
@@ -498,6 +502,7 @@ GENERATE_PRINTLN(uint);
 GENERATE_PRINTLN(u8);
 GENERATE_PRINTLN(u32);
 GENERATE_PRINTLN(u64);
+GENERATE_PRINTLN(i64);
 GENERATE_PRINTLN(float);
 GENERATE_PRINTLN(double);
 GENERATE_PRINTLN(String);
@@ -523,6 +528,9 @@ GENERATE_PRINTLN(ucodepoint);
              , u64*: println_u64                          \
              , const u64*: println_u64                    \
              , u64: println_move_u64                      \
+             , i64*: println_i64                          \
+             , const i64*: println_i64                    \
+             , i64: println_move_i64                      \
              , float*: println_float                      \
              , const float*: println_float                \
              , float: println_move_float                  \
@@ -577,6 +585,8 @@ GENERATE_PRINTLN(ucodepoint);
              , u32: print_move_u32                                      \
              , u64*: print_u64                                          \
              , u64: print_move_u64                                      \
+             , i64*: print_i64                                          \
+             , i64: print_move_i64                                      \
              , float*: print_float                                      \
              , float: print_move_float                                  \
              , double*: print_double                                    \
@@ -686,6 +696,7 @@ GENERATE_PRINTLN(ucodepoint);
              , const u8*: print_u8                                            \
              , const u32*: print_u32                                          \
              , const u64*: print_u64                                          \
+             , const i64*: print_i64                                          \
              , const float*: print_float                                      \
              , const double*: print_double                                    \
              , const utf8char*: print_debug_utf8char                          \
@@ -993,6 +1004,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , int: some_int                            \
              , u8: some_u8                              \
              , u64: some_u64                            \
+             , i64: some_i64                            \
              , float: some_float                        \
              , double: some_double                      \
              , Vec2(float): some_Vec2_float             \
@@ -1009,6 +1021,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , int: none_int                            \
              , u8: none_u8                              \
              , u64: none_u64                            \
+             , i64: none_i64                            \
              , float: none_float                        \
              , double: none_double                      \
         )()
@@ -1040,6 +1053,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(int): unwrap_Option_int                           \
              , Option(u8): unwrap_Option_u8                             \
              , Option(u64): unwrap_Option_u64                           \
+             , Option(i64): unwrap_Option_i64                           \
              , Option(float): unwrap_Option_float                       \
              , Option(double): unwrap_Option_double                     \
              , Result(int, ParseError): unwrap_Result_int__ParseError   \
@@ -1082,6 +1096,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , unsigned int: "uint"                                     \
              , u8: "u8"                                                 \
              , u64: "u64"                                               \
+             , i64: "i64"                                               \
              , float: "float"                                           \
              , double: "double"                                         \
              , ucodepoint: "ucodepoint"                                 \
@@ -1090,6 +1105,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Option(int): "Option(int)"                               \
              , Option(u8): "Option(u8)"                                 \
              , Option(u64): "Option(u64)"                               \
+             , Option(i64): "Option(i64)"                               \
              , Option(float): "Option(float)"                           \
              , Option(double): "Option(double)"                         \
              , Vec(cstr): "Vec(cstr)"                                   \
@@ -1122,6 +1138,7 @@ GENERATE_equal_array(String);
 GENERATE_equal_array(int);
 GENERATE_equal_array(uint);
 GENERATE_equal_array(u64);
+GENERATE_equal_array(i64);
 GENERATE_equal_array(float);
 GENERATE_equal_array(double);
 
@@ -1135,6 +1152,7 @@ GENERATE_equal_array(double);
              , int: equal_array_int                     \
              , uint: equal_array_uint                   \
              , u64: equal_array_u64                     \
+             , i64: equal_array_i64                     \
              , float: equal_array_float                 \
              , double: equal_array_double               \
         )((array1), (len1), (array2), (len2))
