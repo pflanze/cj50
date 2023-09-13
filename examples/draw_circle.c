@@ -74,7 +74,7 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
         hole2,
         0.f,
         ColorA(230, 0, 0, 255),
-        10);
+        15 * (cosf(*t * 0.0473f) + 1.0f));
 
     render_VertexRenderer(rdr, &vertexrenderer);
     drop(vertexrenderer);

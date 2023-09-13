@@ -865,9 +865,10 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
                          float turnangle,
                          SDL_Color color,
                          u8 num_segments) {
-    if (MIN(bounds.extent.x, bounds.extent.y) < 0.1) {
+    if (MIN(bounds.extent.x, bounds.extent.y) < 0.1)
         return;
-    }
+    if (num_segments == 0)
+        return;
     AUTO halfextent = mul(bounds.extent, 0.5);
     AUTO center = add(bounds.start, halfextent);
     int centerv = push_vertex(rdr, vertex_2(center, color));
