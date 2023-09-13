@@ -1,7 +1,6 @@
 #include <cj50.h>
 
-
-Result(Unit, String) run(UNUSED slice(cstr) argv) {
+Result(Unit, String) run(slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
     LET_Some_ELSE(nitems_str, get(&argv, 1)) {
