@@ -170,10 +170,10 @@ while_let_Some(v, pop(&vec)) {
 }
 ```
 
-## LET_Some_ELSE {#three_LET_Some_ELSE}
+## let_Some_else {#three_let_Some_else}
 
 ```C
-LET_Some_ELSE(var, expr)
+let_Some_else(var, expr)
 ```
 
 Set `var` to the value if `expr` evaluated to Some, otherwise run
@@ -182,7 +182,7 @@ the (statement or) block that is following.
 The following example prints `x`.
 
 ```C
-LET_Some_ELSE(b1, some('x')) {
+let_Some_else(b1, some('x')) {
     RETURN_Ok(None(u32));
 }
 print(b1);

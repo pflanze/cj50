@@ -56,9 +56,19 @@ Print in C code syntax, consuming the argument.
 const T* at_$VEC_$T(const VEC(T) *self, size_t idx)
 ```
 
-Get a reference to the element at position `i`. Aborts if `i` is
-behind the end of the vectorlike. (XX todo: If you are not sure if
-`i` is valid, use `get` instead.)
+Get a read-only reference to the element at position `i`. Aborts if `i` is
+behind the end of the vectorlike. If you are not sure if
+`i` is valid, use `get` instead.
+
+## get_\$VEC_\$T {#one_get_QordninetwoEQDVEC_QordninetwoEQDT}
+
+```C
+Option(ref(T)) get_$VEC_$T(const VEC(T) *self, size_t idx)
+```
+
+Get a read-only reference to the element at position `i`. Returns none if
+`i` is behind the end of the vectorlike. If you are sure that `i` is valid,
+you can use `at` instead.
 
 ## slice_of_\$VEC_\$T {#one_slice_of_QordninetwoEQDVEC_QordninetwoEQDT}
 

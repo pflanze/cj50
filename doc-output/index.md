@@ -168,6 +168,8 @@ To visually distinguish them from functions and types (so that you know somethin
 
 * [cj50/gen/template/vectorlikes.h](cj50/gen/template/vectorlikes.h.md)
 
+* [cj50/i64.h](cj50/i64.h.md)
+
 * [cj50/math.h](cj50/math.h.md)
 
 * [cj50/os.h](cj50/os.h.md)
@@ -224,6 +226,7 @@ To visually distinguish them from functions and types (so that you know somethin
 ## Type aliases
 
 * [cstr](cj50/CStr.h.md#zero.one_cstr)
+* [i64](cj50/i64.h.md#zero.one_iQsixfourE)
 * [ParseError__code_t](cj50/parseError.h.md#zero.one_ParseError__code_t)
 * [u32](cj50/u32.h.md#zero.one_uQthreetwoE)
 * [u64](cj50/u64.h.md#zero.one_uQsixfourE)
@@ -286,6 +289,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [fprintln_cstr](cj50/CStr.h.md#one_fprintln_cstr)
 * [fprintln_CStrError](cj50/CStr.h.md#one_fprintln_CStrError)
 * [fprintln_VecError](cj50/gen/Vec.h.md#one_fprintln_VecError)
+* [get_\$VEC_\$T](cj50/gen/template/vectorlikes.h.md#one_get_QDVEC_QDT)
 * [get_CStr](cj50.h.md#one_get_CStr)
 * [get_float](cj50.h.md#one_get_float)
 * [get_int](cj50.h.md#one_get_int)
@@ -406,6 +410,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [equal](cj50.h.md#two_equal)
 * [equal_array](cj50.h.md#two_equal_array)
 * [fprintln](cj50.h.md#two_fprintln)
+* [get](cj50.h.md#two_get)
 * [get_slice_of](cj50.h.md#two_get_slice_of)
 * [get_ucodepoint](cj50.h.md#two_get_ucodepoint)
 * [get_ucodepoint_unlocked](cj50.h.md#two_get_ucodepoint_unlocked)
@@ -454,7 +459,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [GENERATE_ref](cj50/gen/ref.h.md#three_GENERATE_ref)
 * [if_let_Ok](cj50/gen/Result.h.md#three_if_let_Ok)
 * [if_let_Some](cj50/gen/Option.h.md#three_if_let_Some)
-* [LET_Some_ELSE](cj50/gen/Option.h.md#three_LET_Some_ELSE)
+* [let_Some_else](cj50/gen/Option.h.md#three_let_Some_else)
 * [MAIN](cj50.h.md#three_MAIN)
 * [MAX](cj50/basic-util.h.md#three_MAX)
 * [MAX3](cj50/basic-util.h.md#three_MAXQthreeE)

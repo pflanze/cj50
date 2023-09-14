@@ -34,6 +34,9 @@ This macro defines the type `ref(T)`. It has to be used once for a
 given type `T`. Afterwards `ref(T)` can be used any number of
 times.
 
+It also automatically defines the standard methods (drop, equal,
+print_debug).
+
 <hr>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
