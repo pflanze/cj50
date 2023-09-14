@@ -3,25 +3,21 @@
 Result(Unit, String) run(slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
-    let_Some_else(nitems_str, get(&argv, 1)) {
+    let_Some_else(nitems_str, get(&argv, 1))
         RETURN_Err("Missing program argument: nitems", cleanup0);
-    }
     int nitems = TRY(parse_nat(*nitems_str), cleanup0);
 
-    let_Some_else(niter_str, get(&argv, 2)) {
+    let_Some_else(niter_str, get(&argv, 2))
         RETURN_Err("Missing program argument: niter", cleanup0);
-    }
     int niter = TRY(parse_nat(*niter_str), cleanup0);
 
-    let_Some_else(nsliceitems_str, get(&argv, 3)) {
+    let_Some_else(nsliceitems_str, get(&argv, 3))
         RETURN_Err("Missing program argument: nsliceitems", cleanup0);
-    }
     int nsliceitems = TRY(parse_nat(*nsliceitems_str), cleanup0);
 
     i64 range_base = nitems - nsliceitems;
-    if (range_base < 0) {
+    if (range_base < 0)
         RETURN_Err("Asked for a larger slice than the vector", cleanup0);
-    }
 
 
     AUTO v = with_capacity_Vec_int(nitems);
