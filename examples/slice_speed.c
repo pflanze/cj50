@@ -3,17 +3,17 @@
 Result(Unit, String) run(slice(cstr) argv) {
     BEGIN_Result(Unit, String);
 
-    LET_Some_ELSE(nitems_str, get(&argv, 1)) {
+    let_Some_else(nitems_str, get(&argv, 1)) {
         RETURN_Err("Missing program argument: nitems", cleanup0);
     }
     int nitems = TRY(parse_nat(*nitems_str), cleanup0);
 
-    LET_Some_ELSE(niter_str, get(&argv, 2)) {
+    let_Some_else(niter_str, get(&argv, 2)) {
         RETURN_Err("Missing program argument: niter", cleanup0);
     }
     int niter = TRY(parse_nat(*niter_str), cleanup0);
 
-    LET_Some_ELSE(nsliceitems_str, get(&argv, 3)) {
+    let_Some_else(nsliceitems_str, get(&argv, 3)) {
         RETURN_Err("Missing program argument: nsliceitems", cleanup0);
     }
     int nsliceitems = TRY(parse_nat(*nsliceitems_str), cleanup0);

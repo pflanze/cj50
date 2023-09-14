@@ -248,13 +248,13 @@
 /// The following example prints `x`.
 
 /// ```C
-/// LET_Some_ELSE(b1, some('x')) {
+/// let_Some_else(b1, some('x')) {
 ///     RETURN_Ok(None(u32));
 /// }
 /// print(b1);
 /// ```
 
-#define LET_Some_ELSE(var, expr)                \
+#define let_Some_else(var, expr)                \
     typeof((expr).value) var;                   \
     AUTO HYGIENIC(res) = (expr);                \
     if (HYGIENIC(res).is_some) {                \

@@ -14,7 +14,7 @@
     
     // https://en.wikipedia.org/wiki/Utf-8#Encoding
     u32 codepoint;
-    LET_Some_ELSE(_b1, POSSIBLYTRY(getc_unlocked(in), cleanup)) {
+    let_Some_else(_b1, POSSIBLYTRY(getc_unlocked(in), cleanup)) {
         RETURN_Ok(none_ucodepoint(), cleanup);
     }
     char b1 = POSSIBLYDEREF(_b1);
@@ -38,7 +38,7 @@
                        cleanup);
         }
         for (int i = 1; i < numbytes; i++) {
-            LET_Some_ELSE(_b, POSSIBLYTRY(getc_unlocked(in), cleanup)) {
+            let_Some_else(_b, POSSIBLYTRY(getc_unlocked(in), cleanup)) {
                 RETURN_Err(DecodingError_PrematureEof(i+1),
                            cleanup);
             }
