@@ -38,6 +38,9 @@
 #include <cj50/resret.h>
 #include <time.h>
 
+
+bool sdlutil_debug = false;
+
 // ------------------------------------------------------------------
 // had this in scientific repo already  todo check
 
@@ -895,6 +898,9 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
     int lastv = topv;
     int lastholev = topholev;
     const float d_angle = math_pi_float / num_segments;
+    if (sdlutil_debug) {
+        printf("num_segments=%i, d_angle=%f\n", num_segments, d_angle);
+    }
     for (float i_angle = angle_from_to_.x + d_angle;
          i_angle < angle_from_to_.y;
          i_angle += d_angle)

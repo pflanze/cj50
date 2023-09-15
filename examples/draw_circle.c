@@ -65,6 +65,7 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
     float opening_angle = sinf(*t * 2.4) + 1;
     float mouth_direction = math_pi / 2;
     float hole2 = 0.2f + 0.5f * sinf(*t * 0.3f);
+    sdlutil_debug = true;
     draw_fill_ellipsoid(
         &vertexrenderer,
         rect2_float(vec2_float(100, 100),
@@ -75,6 +76,7 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
         0.f,
         ColorA(230, 0, 0, 255),
         15 * (cosf(*t * 0.0473f) + 1.0f));
+    sdlutil_debug = false;
 
     render_VertexRenderer(rdr, &vertexrenderer);
     drop(vertexrenderer);
