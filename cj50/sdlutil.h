@@ -897,7 +897,7 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
 
     int lastv = topv;
     int lastholev = topholev;
-    const float d_angle = math_pi_float / num_segments;
+    const float d_angle = (2.f * math_pi_float) / num_segments;
     if (sdlutil_debug) {
         printf("num_segments=%i, d_angle=%f\n", num_segments, d_angle);
     }
