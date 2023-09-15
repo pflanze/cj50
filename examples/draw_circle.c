@@ -58,7 +58,7 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
         hole,
         *t,
         ColorA(0, 0, 0, 255),
-        30);
+        60);
     /* DBG(&vertexrenderer); */
 
     // Pacman circle
@@ -75,7 +75,7 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
         hole2,
         0.f,
         ColorA(230, 0, 0, 255),
-        15 * (cosf(*t * 0.0473f) + 1.0f));
+        30 * (cosf(*t * 0.0473f) + 1.0f));
     sdlutil_debug = false;
 
     render_VertexRenderer(rdr, &vertexrenderer);
