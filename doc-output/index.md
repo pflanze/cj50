@@ -439,6 +439,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [to_sdl](cj50/sdlutil.h.md#two_to_sdl)
 * [type_name](cj50.h.md#two_type_name)
 * [unwrap](cj50.h.md#two_unwrap)
+* [unwrap_or](cj50.h.md#two_unwrap_or)
 
 ## Macros
 

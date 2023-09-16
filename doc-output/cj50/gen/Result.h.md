@@ -23,17 +23,23 @@ typedef struct Result(T, E) {
 
 Member functions for the following generic functions are defined:
 
-`equal(res1, res2)`
-: Returns `true` if both arguments are structurally equivalent.
+`bool equal(const Result(T, E) *a, const Result(T, E) *b)`
+: Returns `true` if both arguments are structurally equivalent. Borrows the arguments.
 
-`unwrap(opt)`
+`bool equal_move(Result(T, E) a, Result(T, E) b)`
+: Returns `true` if both arguments are structurally equivalent. Consumes the arguments.
+
+`T unwrap(Result(T, E) self)`
 : Returns the contents of the `ok` field if `is_ok` is `true`, otherwise aborts the program.
 
-`print_debug(&opt)`
-: Print a programmer's view of the Option value, given by reference.
+`T unwrap_or(Result(T, E) self, T defaultval)`
+: Returns the contents of the `ok` field if `is_ok` is `true`, otherwise returns `defaultval`. `self` is consumed, `defaultval` is consumed or moved.
 
-`print_debug_move(opt)`
-: Print a programmer's view of the Option value, given by copy.
+`int print_debug(const Result(T, E) *self)`
+: Print a programmer's view of the Result value, which is borrowed.
+
+`int print_debug_move(Result(T, E) self)`
+: Print a programmer's view of the Result value, which is consumed.
 
 ## Error propagation
 

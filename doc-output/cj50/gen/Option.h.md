@@ -22,26 +22,32 @@ typedef struct Option(T) {
 
 Member functions for the following generic functions are also defined:
 
-`some(val)`
+`Option(T) some(T val)`
 : Returns an Option where the `is_some` field is set to `true` and the `value` field is set to `val`.
 
-`none(T)`
+`Option(T) none(T)`
 : Returns an Option where the `is_some` field is set to `false`. The `value` field is not valid. Also see `NONE` macro.
 
-`drop(opt)`
+`void drop(Option(T) opt)`
 : Calls `drop` on the value in the `value` field if `is_some` is `true`. CAUTION: only call drop when value has not been moved!
 
-`equal(opt1, opt2)`
-: Returns `true` if both arguments are structurally equivalent.
+`bool equal(const Option(T) *a, const Option(T) *b)`
+: Returns `true` if both arguments are structurally equivalent, borrowing them.
 
-`unwrap(opt)`
-: Returns the contents of the `value` field if `is_some` is `true`, otherwise aborts the program.
+`bool equal_move(Option(T) a, Option(T) b)`
+: Returns `true` if both arguments are structurally equivalent, consuming them.
 
-`print_debug(&opt)`
-: Print a programmer's view of the Option value, given by reference.
+`T unwrap(Option(T) self)`
+: Returns the contents of the `value` field if `is_some` is `true`, otherwise aborts the program. Consumes the argument.
 
-`print_debug_move(opt)`
-: Print a programmer's view of the Option value, given by copy.
+`T unwrap_or(Option(T) self, T defaultval)`
+: Returns the contents of the `value` field if `is_some` is `true`, `defaultval` otherwise. Consumes both arguments.
+
+`int print_debug(const Option(T) *self)`
+: Print a programmer's view of the Option value, borrowing it.
+
+`int print_debug_move(Option(T) self)`
+: Print a programmer's view of the Option value, consuming it.
 
 
 # Macros

@@ -383,7 +383,7 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
                          float hole, /* 0..1 */
                          float turnangle,
                          SDL_Color color,
-                         u8 num_segments)
+                         Option(u8) num_segments)
 ```
 
 Draw the given ellipsoid with the given color onto the given
@@ -394,8 +394,12 @@ the angles from which and to the circle should be drawn, if you want just a
 slice (again in radians, in the shape before it is turned by
 `turnangle`). `hole` determines how large of a hole is left in the center,
 0. meaning none, 1. meaning the hole is as large as the whole ellipsoid.
-`num_segments` gives the number of segments used for a full circle/ellipsoid;
-a value of about 20 is recommended (more segments may make drawing slower).
+`num_segments` gives the number of segments used for a full
+circle/ellipsoid; a value of 60 is recommended for smooth rendering of
+larger circles, smaller values can be used for smaller circles or lower
+quality (or to draw a polygon on purpose for effect) and could speed up the
+drawing. If `none_u8()` is passed, a value will be auto-calculated for the
+given size.
 
 (Uses subpixel precision.)
 
