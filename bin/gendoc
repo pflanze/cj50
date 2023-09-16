@@ -56,7 +56,7 @@ usage if @ARGV;
 
 sub source_prototypes($source, $symbol) {
     $source=~ /
-        (?: ^ | ; | \} ) # last item
+        (?: ^ | [;}] ) # last item
         \s*
         # \n  can't require that, it's not in generated code in -E output
         (\w+ [^;{}]* [^\(] \b \Q$symbol\E \s*\( [^;{}]* ) \{
