@@ -8,7 +8,7 @@ This library exists to support teaching programming using the C programming lang
 
 If you want to read a book about the C programming language, here are some:
 
-* [The C Programming Language](https://en.wikipedia.org/wiki/The_C_Programming_Language) by Brian Kernighan and Dennis Ritchie is from the original inventors of C. You can get an old version of the book for free [on archive.org](https://archive.org/details/TheCProgrammingLanguageFirstEdition/mode/2up), but be mindful that this version is not describing the version of C we use today. But the newer editions (not free) are said to be very good to learn C from.
+* [The C Programming Language](https://en.wikipedia.org/wiki/The_C_Programming_Language) by Brian Kernighan and Dennis Ritchie is from the original inventors of C. You can get an old version of the book for free [on archive.org](https://archive.org/details/TheCProgrammingLanguageFirstEdition/mode/2up), but be mindful that this version is not describing the version of C we use today. But the newer editions (which are not free) are said to be very good to learn C from.
 
 * [Modern C](https://inria.hal.science/hal-02383654/file/ModernC.pdf) is a free book that seems good but is more detailed than we need for this course.
 
