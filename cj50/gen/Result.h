@@ -13,11 +13,11 @@
 
 //! ```C
 //! typedef struct Result(T, E) {
-//!     bool is_ok;
 //!     union {
 //!         T ok;
 //!         E err;
 //!     };
+//!     bool is_ok;
 //! } Result(T, E);
 //! ```
 
@@ -126,11 +126,11 @@
 
 #define GENERATE_Result(T, E)                                   \
     typedef struct Result(T, E) {                               \
-        bool is_ok;                                             \
         union {                                                 \
             T ok;                                               \
             E err;                                              \
         };                                                      \
+        bool is_ok;                                             \
     } Result(T, E);                                             \
                                                                 \
     static UNUSED                                               \
