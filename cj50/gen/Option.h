@@ -60,6 +60,12 @@
 #include <cj50/macro-util.h>
 
 
+static UNUSED
+NORETURN die_unwrap_none() {
+    DIE("unwrap option: got none");
+}
+
+
 /// This macro creates a type name for an `Option` specific for the
 /// given type name `T`.
 
@@ -115,16 +121,16 @@
         return res;                                             \
     }                                                           \
                                                                 \
-    static UNUSED                                               \
+    static inline UNUSED                                        \
     T XCAT(unwrap_, Option(T))(Option(T) s) {                   \
         if (s.is_some) {                                        \
             return s.value;                                     \
         } else {                                                \
-            DIE("unwrap option: got none");                     \
+            die_unwrap_none();                                  \
         }                                                       \
     }                                                           \
                                                                 \
-    static UNUSED                                               \
+    static inline UNUSED                                        \
     T XCAT(unwrap_or_, Option(T))(Option(T) s, T defaultval) {  \
         if (s.is_some) {                                        \
             XCAT(drop_, T)(defaultval);                         \
