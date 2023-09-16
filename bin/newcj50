@@ -8,41 +8,44 @@ usage() {
     echo "usage: $0 file.c"
     echo "  Creates the given file and fills it with a template"
     echo "  that includes cj50.h."
+    echo
+    echo "  Options:"
+    echo
+    echo "   --old   By default $0 creates a template with Result style"
+    echo "           error handling scaffolding; this option instead "
+    echo "           makes it create a C style 'main' function."
     exit 0
 }
 
-die() {
-    echo "$@"
-    exit 1
+warn() {
+    echo "$@" >&2
 }
 
 
-if [ $# -ne 1 ]; then
+if [ $# -lt 1 ]; then
     usage
 fi
 if [ "$1" = -h -o "$1" = --help ]; then
     usage
 fi
 
-file="$1"
-
-# todo: check suffix? oh bash.
-
-if [ -e "$file" ]; then
-    die "File '$file' already exists."
+opt_old=0
+if [ "$1" = --old ]; then
+    opt_old=1
+    shift
 fi
 
-cat >> "$file" <<END
-#include <cj50.h>
 
-
-
+old() {
+cat <<EOF
 int main(int argc, char** argv) {
     
 }
+EOF
+}
 
-// -or- (replace String, or see examples/string_error.c):
-
+new() {
+cat <<EOF
 Result(Unit, String) run(UNUSED slice(cstr) argv) {
     BEGIN_Result(Unit, String);
     
@@ -52,7 +55,36 @@ cleanup:
 }
 
 MAIN(run);
+EOF
+}
+
+create_template() {
+    file="$1"
+
+    # todo: check suffix? oh bash.
+
+    if [ -e "$file" ]; then
+        warn "File '$file' already exists."
+        return
+    fi
+
+    {
+        cat <<END
+#include <cj50.h>
+
+
 END
+        if [ $opt_old = 1 ]; then
+            old
+        else
+            new
+        fi
+    } >> "$file"
+}
+
+for file in "$@"; do
+    create_template "$file"
+done
 
 IFS=' '
-$EDITOR "$file"
+$EDITOR "$@"
