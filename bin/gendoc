@@ -683,9 +683,25 @@ sub main() {
         # general symbol->prototype resolution, we need the -E output,
         # though (@s is not necessarily enough: `GENERATE_*`ed code
         # would not be found via my regexes in it).
-        my $E = `clang -E -I. cj50.h`; $? == 0 or die "error";
-        $E =~ s/^#.*$//mg;
-        #use FP::Repl; repl;
+        my $_E = `clang -E -I. cj50.h`; $? == 0 or die "error";
+
+        # Remove parts included from system headers to speed up the
+        # slow regex in `source_prototypes`:
+        my @E;
+        my $current_file;
+        for (split /\n/, $_E) {
+            if (/^# \d+ "([^"]+)"/) {
+                $current_file = $1;
+            } elsif (/^#/) {
+                # ignore
+            } else {
+                push @E, $_
+                    unless $current_file =~ m{^/usr/};
+            }
+        }
+        my $E = join("\n", @E);
+
+        # use FP::Repl; repl;
         my $symbol_lookup = sub ($symbol) {
             if (defined (my $obj= $flatitems{$symbol})) {
                 $obj->prototype
