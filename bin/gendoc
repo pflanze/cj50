@@ -702,28 +702,33 @@ sub main() {
         my $E = join("\n", @E);
 
         # use FP::Repl; repl;
-        my $symbol_lookup = sub ($symbol) {
-            if (defined (my $obj= $flatitems{$symbol})) {
-                $obj->prototype
-            } else {
-                $std_prototypes->{$symbol} // do {
-                    # need to go find it in the source code
-                    my @prototypes;
-                    for my $s (@s) {
-                        push @prototypes, source_prototypes($s, $symbol);
-                    }
-                    if (@prototypes == 1) {
-                        prototype_from_E_cleanup($prototypes[0])
-                    } elsif (@prototypes) {
-                        die "more than 1 match for symbol '$symbol'";
+        my $symbol_lookup = do {
+            my %symbol_cache;
+            sub ($symbol) {
+                $symbol_cache{$symbol} //= do {
+                    if (defined (my $obj= $flatitems{$symbol})) {
+                        $obj->prototype
                     } else {
-                        @prototypes = source_prototypes($E, $symbol);
-                        if (@prototypes == 1) {
-                            prototype_from_E_cleanup($prototypes[0])
-                        } elsif (@prototypes) {
-                            die "more than 1 match for symbol '$symbol'";
-                        } else {
-                            die "could not find symbol '$symbol'";
+                        $std_prototypes->{$symbol} // do {
+                            # need to go find it in the source code
+                            my @prototypes;
+                            for my $s (@s) {
+                                push @prototypes, source_prototypes($s, $symbol);
+                            }
+                            if (@prototypes == 1) {
+                                prototype_from_E_cleanup($prototypes[0])
+                            } elsif (@prototypes) {
+                                die "more than 1 match for symbol '$symbol'";
+                            } else {
+                                @prototypes = source_prototypes($E, $symbol);
+                                if (@prototypes == 1) {
+                                    prototype_from_E_cleanup($prototypes[0])
+                                } elsif (@prototypes) {
+                                    die "more than 1 match for symbol '$symbol'";
+                                } else {
+                                    die "could not find symbol '$symbol'";
+                                }
+                            }
                         }
                     }
                 }
