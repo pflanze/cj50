@@ -644,6 +644,11 @@ sub filedocs ($path) {
     (\%items, $genfile, $s)
 }
 
+sub XDEBUG($val) {
+    die "bug" if $val=~ /a value of 60 is recommended/;
+    $val
+}
+        
 
 sub main() {
     my @headerfiles = do {
@@ -705,7 +710,7 @@ sub main() {
         my $symbol_lookup = do {
             my %symbol_cache;
             sub ($symbol) {
-                $symbol_cache{$symbol} //= do {
+                $symbol_cache{$symbol} //= XDEBUG do {
                     if (defined (my $obj= $flatitems{$symbol})) {
                         $obj->prototype
                     } else {
