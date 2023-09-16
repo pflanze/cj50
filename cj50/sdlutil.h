@@ -853,8 +853,12 @@ Vec2(float) turn_Vec2_float(Vec2(float) vec, float angle) {
 /// slice (again in radians, in the shape before it is turned by
 /// `turnangle`). `hole` determines how large of a hole is left in the center,
 /// 0. meaning none, 1. meaning the hole is as large as the whole ellipsoid.
-/// `num_segments` gives the number of segments used for a full circle/ellipsoid;
-/// a value of about 20 is recommended (more segments may make drawing slower).
+/// `num_segments` gives the number of segments used for a full
+/// circle/ellipsoid; a value of 60 is recommended for smooth rendering of
+/// larger circles, smaller values can be used for smaller circles or lower
+/// quality (or to draw a polygon on purpose for effect) and could speed up the
+/// drawing. If `none_u8()` is passed, a value will be auto-calculated for the
+/// given size.
 
 /// (Uses subpixel precision.)
 
@@ -867,11 +871,16 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
                          float hole, /* 0..1 */
                          float turnangle,
                          SDL_Color color,
-                         u8 num_segments) {
+                         Option(u8) num_segments) {
     if (MIN(bounds.extent.x, bounds.extent.y) < 0.1)
         return;
-    if (num_segments == 0)
+
+    u8 num_segments_ = unwrap_or_Option_u8(
+        num_segments,
+        MAX(8, MIN(60, MAX(bounds.extent.x, bounds.extent.y) / 2)));
+    if (num_segments_ == 0)
         return;
+
     AUTO halfextent = mul(bounds.extent, 0.5);
     AUTO center = add(bounds.start, halfextent);
     int centerv = push_vertex(rdr, vertex_2(center, color));
@@ -897,9 +906,9 @@ void draw_fill_ellipsoid(VertexRenderer* rdr,
 
     int lastv = topv;
     int lastholev = topholev;
-    const float d_angle = (2.f * math_pi_float) / num_segments;
+    const float d_angle = (2.f * math_pi_float) / num_segments_;
     if (sdlutil_debug) {
-        printf("num_segments=%i, d_angle=%f\n", num_segments, d_angle);
+        printf("num_segments=%i, d_angle=%f\n", num_segments_, d_angle);
     }
     for (float i_angle = angle_from_to_.x + d_angle;
          i_angle < angle_from_to_.y;

@@ -23,7 +23,7 @@ void render1(bool do_rect, VertexRenderer *vertexrenderer,
                                 0.f,
                                 0.f,
                                 ColorA(255, 255, 255, 255),
-                                20);
+                                none_u8());
         }
         x = next_x;
     }
@@ -33,6 +33,7 @@ void render1(bool do_rect, VertexRenderer *vertexrenderer,
 bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
     float *t = _ctx;
     *t += 1./60.;
+    DBG(*t);
 
     set_draw_color(rdr, color(250, 240, 40));
     clear(rdr);
@@ -46,7 +47,9 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
     // Rectangles at the bottom
     render1(true, &vertexrenderer, rdr, window_dimensions);
     // Ellipsoids on top of the rectangles at the bottom
+    sdlutil_debug = true;
     render1(false, &vertexrenderer, rdr, window_dimensions);
+    sdlutil_debug = false;
 
     // Spinning ellipsoid
     float hole = 0.5f + 0.5f * sinf(*t * 1.8f);
@@ -58,14 +61,13 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
         hole,
         *t,
         ColorA(0, 0, 0, 255),
-        60);
+        some_u8(60));
     /* DBG(&vertexrenderer); */
 
     // Pacman circle
     float opening_angle = sinf(*t * 2.4) + 1;
     float mouth_direction = math_pi / 2;
     float hole2 = 0.2f + 0.5f * sinf(*t * 0.3f);
-    sdlutil_debug = true;
     draw_fill_ellipsoid(
         &vertexrenderer,
         rect2_float(vec2_float(100, 100),
@@ -75,8 +77,7 @@ bool render(SDL_Renderer *rdr, UNUSED void *_ctx, Vec2(int) window_dimensions) {
         hole2,
         0.f,
         ColorA(230, 0, 0, 255),
-        30 * (cosf(*t * 0.0473f) + 1.0f));
-    sdlutil_debug = false;
+        some_u8(30 * (cosf(*t * 0.0473f) + 1.0f)));
 
     render_VertexRenderer(rdr, &vertexrenderer);
     drop(vertexrenderer);
