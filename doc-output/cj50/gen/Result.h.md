@@ -11,11 +11,11 @@ valid, otherwise the field `err` is valid.
 
 ```C
 typedef struct Result(T, E) {
-    bool is_ok;
     union {
         T ok;
         E err;
     };
+    bool is_ok;
 } Result(T, E);
 ```
 

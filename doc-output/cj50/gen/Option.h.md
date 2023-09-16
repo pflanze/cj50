@@ -15,8 +15,8 @@ undefined behaviour, don't do that!). It is the following struct, with
 
 ```C
 typedef struct Option(T) {
-    bool is_some;
     T value;
+    bool is_some;
 } Option(T);
 ```
 
