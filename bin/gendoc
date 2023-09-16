@@ -59,7 +59,7 @@ sub source_prototypes($source, $symbol) {
         (?: ^ | [;}] ) # last item
         \s*
         # \n  can't require that, it's not in generated code in -E output
-        (\w+ [^;{}=]* [^\(=] \b \Q$symbol\E \s*\( [^;{}=]* ) \{
+        (\w+ [^;{}=\/]* [^\(=\/] \b \Q$symbol\E \s*\( [^;{}=\/]* ) \{
     /sgx
 }
 
