@@ -11,7 +11,7 @@ This library exists to support teaching programming using the C programming lang
 
 If you want to read a book about the C programming language, here are some:
 
-* [The C Programming Language](https://en.wikipedia.org/wiki/The_C_Programming_Language) by Brian Kernighan and Dennis Ritchie is from the original inventors of C. You can get an old version of the book for free [on archive.org](https://archive.org/details/TheCProgrammingLanguageFirstEdition/mode/2up), but be mindful that this version is not describing the version of C we use today. But the newer editions (not free) are said to be very good to learn C from.
+* [The C Programming Language](https://en.wikipedia.org/wiki/The_C_Programming_Language) by Brian Kernighan and Dennis Ritchie is from the original inventors of C. You can get an old version of the book for free [on archive.org](https://archive.org/details/TheCProgrammingLanguageFirstEdition/mode/2up), but be mindful that this version is not describing the version of C we use today. But the newer editions (which are not free) are said to be very good to learn C from.
 
 * [Modern C](https://inria.hal.science/hal-02383654/file/ModernC.pdf) is a free book that seems good but is more detailed than we need for this course.
 
@@ -27,9 +27,9 @@ Here's an overview of the programming principles used when programming with cj50
 
 ## Cleaning up
 
-Programming with C requires you in general to explicitly encode in your program when you are done with a particular piece of data. Using cj50, you do this by calling the function `drop`. (You may have heard that the C programming language has the function `free`. cj50 uses `free` under the hoods, but offers `drop` instead as `drop` does more than `free` (it also frees up other resources than memory, and frees up any contained data structures, too), and, unlike `free`, `drop` is generally available for all kinds of data even if it does nothing, so it's easier to use.)
+Programming with C requires you in general to explicitly encode in your program when it is done with a particular piece of data. Using cj50, you do this by calling the function `drop`. (You may have heard that the C programming language has the function `free`. cj50 uses `free` under the hood, but offers `drop` instead as `drop` does more than `free` (it also frees up other resources than memory, and frees up any contained data structures, too), and, unlike `free`, `drop` is generally available for all kinds of data (but not for references!) even if it does nothing, so it's easier to use.)
 
-Some kinds of values, for example number types like `int` or `float`, as well as reference types (see next section), do not require cleaning up. They are so-called "Copy" types, they are small and can be copied everywhere and then will just be let go without needing to care about anything. Those are excempt from needing to be passed to `drop` (and in fact `drop` may not accept some of those, although that would be out of laziness on behalf of the cj50 author rather than out of principle).
+Some kinds of values, for example number types like `int` or `float`, as well as reference types (see next section), do not require cleaning up. They are so-called "Copy" types, they are small and can be copied everywhere and then will just be let go without needing to care about anything. Those are exempt from needing to be passed to `drop` (and in fact `drop` may not accept some of those, although that would be out of laziness on behalf of the cj50 author rather than out of principle).
 
 ## References
 
@@ -66,7 +66,7 @@ only a reference, a way to access it indirectly, is passed to `push` and `printl
 
 In the context of cj50, whenever a value of a type whose name starts with an uppercase letter is "copied" to another place, it is actually *moved*, not copied. By convention, such a copy means that the original place is considered emptied now and can't be accessed any more. Such values can be moved any number of times, but never copied so that they could continue to be used as clones in multiple places (we are talking about copying the main value itself; references are another matter). An exception are types for which the `clone()` function is defined. They can be cloned explicitly via that function and each clone can then be moved independently.
 
-When such a value is not needed any longer, it must be moved into `drop()`. If you forget to arrange for that, the memory sanitizer that we're using will likely report a memory leak when you run the program. The absence of such reports is no guarantee that your program is doing things correctly, though.
+When such a value is not needed any longer, it must be moved into `drop()`. If you forget to arrange for that, the memory sanitizer that we're using will likely report a memory leak when you run the program. The absence of such reports is no guarantee that your program is doing things correctly, though (the sanitizer may miss some issues, and it can't report on issues that are not touched upon in a particular program run).
 
 > Rule 1: Values of types that start with an uppercase initial must only ever exist in a single place at the same time, although they can be moved around. In the end, they must be moved into the `drop()` function.
 
