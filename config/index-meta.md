@@ -63,7 +63,7 @@ only a reference, a way to access it indirectly, is passed to `push` and `printl
 
 In the context of cj50, whenever a value of a type whose name starts with an uppercase letter is "copied" to another place, it is actually *moved*, not copied. By convention, such a copy means that the original place is considered emptied now and can't be accessed any more. Such values can be moved any number of times, but never copied so that they could continue to be used as clones in multiple places (we are talking about copying the main value itself; references are another matter). An exception are types for which the `clone()` function is defined. They can be cloned explicitly via that function and each clone can then be moved independently.
 
-When such a value is not needed any longer, it must be moved into `drop()`. If you forget to arrange for that, the memory sanitizer that we're using will likely report a memory leak when you run the program. The absence of such reports is no guarantee that your program is doing things correctly, though.
+When such a value is not needed any longer, it must be moved into `drop()`. If you forget to arrange for that, the memory sanitizer that we're using will likely report a memory leak when you run the program. The absence of such reports is no guarantee that your program is doing things correctly, though (the sanitizer may miss some issues, and it can't report on issues that are not touched upon in a particular program run).
 
 > Rule 1: Values of types that start with an uppercase initial must only ever exist in a single place at the same time, although they can be moved around. In the end, they must be moved into the `drop()` function.
 
