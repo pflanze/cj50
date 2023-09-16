@@ -1132,6 +1132,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
 #define type_name(e)                                                    \
     _Generic((e)                                                        \
              , cstr: "cstr"                                             \
+             , char*: "char*"                                           \
              , String: "String"                                         \
              , int: "int"                                               \
              , unsigned int: "uint"                                     \
