@@ -1297,12 +1297,13 @@ cleanup:
              , Vec(utf8char)*: push_Vec_utf8char        \
              , Vec(char)*: push_Vec_char                \
              , Vec(int)*: push_Vec_int                  \
-             , Vec(Vec2(int))*: push_Vec_Vec2_int          \
-             , Vec(Vec2(float))*: push_Vec_Vec2_float          \
-             , Vec(Rect2(float))*: push_Vec_Rect2_float          \
-             , Vec(Vec2(double))*: push_Vec_Vec2_double          \
-             , Vec(float)*: push_Vec_float                \
-             , Vec(double)*: push_Vec_double                \
+             , Vec(Vec2(int))*: push_Vec_Vec2_int       \
+             , Vec(Vec2(float))*: push_Vec_Vec2_float   \
+             , Vec(Rect2(float))*: push_Vec_Rect2_float \
+             , Vec(Vec2(double))*: push_Vec_Vec2_double \
+             , Vec(float)*: push_Vec_float              \
+             , Vec(double)*: push_Vec_double            \
+             , String*: push_String                	\
         )(coll, val)
 
 
