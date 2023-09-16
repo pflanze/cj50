@@ -26,7 +26,7 @@ Here's an overview of the programming principles used when programming with cj50
 
 Programming with C requires you in general to explicitly encode in your program when it is done with a particular piece of data. Using cj50, you do this by calling the function `drop`. (You may have heard that the C programming language has the function `free`. cj50 uses `free` under the hood, but offers `drop` instead as `drop` does more than `free` (it also frees up other resources than memory, and frees up any contained data structures, too), and, unlike `free`, `drop` is generally available for all kinds of data even if it does nothing, so it's easier to use.)
 
-Some kinds of values, for example number types like `int` or `float`, as well as reference types (see next section), do not require cleaning up. They are so-called "Copy" types, they are small and can be copied everywhere and then will just be let go without needing to care about anything. Those are excempt from needing to be passed to `drop` (and in fact `drop` may not accept some of those, although that would be out of laziness on behalf of the cj50 author rather than out of principle).
+Some kinds of values, for example number types like `int` or `float`, as well as reference types (see next section), do not require cleaning up. They are so-called "Copy" types, they are small and can be copied everywhere and then will just be let go without needing to care about anything. Those are exempt from needing to be passed to `drop` (and in fact `drop` may not accept some of those, although that would be out of laziness on behalf of the cj50 author rather than out of principle).
 
 ## References
 
