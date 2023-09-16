@@ -17,8 +17,8 @@
 //! 
 //! ```C
 //! typedef struct Option(T) {
-//!     bool is_some;
 //!     T value;
+//!     bool is_some;
 //! } Option(T);
 //! ```
 //! 
@@ -81,8 +81,8 @@ NORETURN die_unwrap_none() {
 /// `T`. Afterwards `Option(T)` can be used any number of times.
 #define GENERATE_Option(T)                                      \
     typedef struct Option(T) {                                  \
-        bool is_some;                                           \
         T value;                                                \
+        bool is_some;                                           \
     } Option(T);                                                \
                                                                 \
     static UNUSED                                               \
