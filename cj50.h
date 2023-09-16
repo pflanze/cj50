@@ -1067,6 +1067,47 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Result(String, UnicodeError): unwrap_Result_String__UnicodeError \
         )(v)
 
+
+/// Takes a wrapper for some type `T` (like `Option(T)`, or `Result(T,
+/// E)`) and returns the contained value of type `T` if possible, or
+/// aborts if not possible. This moves the value, i.e. the wrapper
+/// is consumed.
+
+/// Example:
+///
+/// ```C
+/// Option(CStr) maybe_name = get_CStr();
+/// // maybe_name can be a `none(CStr)` or e.g. `some("Alex")`.
+/// CStr name = unwrap_or(maybe_name, CStr_from_cstr_unsafe("no name"));
+/// // Now we're guaranteed to have a CStr in `name`, "Alex" if we
+/// // had the second case above, "no name" in the first.
+/// ```
+
+#define unwrap_or(v)                                                    \
+    _Generic((v)                                                        \
+             , Option(cstr): unwrap_or_Option_cstr                         \
+             , Option(CStr): unwrap_or_Option_CStr                         \
+             , Option(String): unwrap_or_Option_String                     \
+             , Option(char): unwrap_or_Option_char                         \
+             , Option(utf8char): unwrap_or_Option_utf8char                 \
+             , Option(ucodepoint): unwrap_or_Option_ucodepoint             \
+             , Option(int): unwrap_or_Option_int                           \
+             , Option(u8): unwrap_or_Option_u8                             \
+             , Option(u64): unwrap_or_Option_u64                           \
+             , Option(i64): unwrap_or_Option_i64                           \
+             , Option(float): unwrap_or_Option_float                       \
+             , Option(double): unwrap_or_Option_double                     \
+             , Result(int, ParseError): unwrap_or_Result_int__ParseError   \
+             , Result(float, ParseError): unwrap_or_Result_float__ParseError   \
+             , Result(String, SystemError): unwrap_or_Result_String__SystemError \
+             , Result(Unit, UnicodeError): unwrap_or_Result_Unit__UnicodeError \
+             , Result(ucodepoint, UnicodeError): unwrap_or_Result_ucodepoint__UnicodeError \
+             , Result(size_t, UnicodeError): unwrap_or_Result_size_t__UnicodeError \
+             , Result(Vec(utf8char), UnicodeError): unwrap_or_Result_Vec_utf8char__UnicodeError \
+             , Result(Vec(ucodepoint), UnicodeError): unwrap_or_Result_Vec_ucodepoint__UnicodeError \
+             , Result(String, UnicodeError): unwrap_or_Result_String__UnicodeError \
+        )(v)
+
 /// Dereferencing a wrapper type ('smart pointer') to the simpler
 /// contained type; the result is of a reference type (not owned).
 
