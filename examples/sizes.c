@@ -28,6 +28,7 @@ int main() {
     S(ParseError);
 
     S(Option(char));
+    S(Option(u8));
     S(Option(int));
     S(Option(float));
     S(Option(double));
@@ -40,5 +41,6 @@ int main() {
     S(Result(cstr, ParseError));
     S(Result(String, ParseError));
 
+    S(Result(Option(u8), SystemError));
     S(Result(String, SystemError));
 }

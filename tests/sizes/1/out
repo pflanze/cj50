@@ -6,6 +6,7 @@ SyscallInfo	16
 SystemError	8
 ParseError	2
 Option(char)	2
+Option(u8)	2
 Option(int)	8
 Option(float)	8
 Option(double)	16
@@ -16,4 +17,5 @@ Result(float, ParseError)	8
 Result(double, ParseError)	16
 Result(cstr, ParseError)	16
 Result(String, ParseError)	32
+Result(Option(u8), SystemError)	12
 Result(String, SystemError)	32
