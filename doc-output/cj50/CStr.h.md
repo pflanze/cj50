@@ -113,6 +113,16 @@ int print_debug_move_cstr(cstr s)
 Same as `print_debug_move_cstr`, again move/copy but it's a
 borrowed type anyway.
 
+## cStr_from_cstr_unsafe {#one_cStr_from_cstr_unsafe}
+
+```C
+CStr cStr_from_cstr_unsafe(char *v)
+```
+
+Generate a `CStr` from a `cstr`. `cstr` must end with a '\0' and
+not contain any '\0' in other places; this is not checked, hence
+unsafe.
+
 ## drop_CStr {#one_drop_CStr}
 
 ```C

@@ -254,6 +254,7 @@ To visually distinguish them from functions and types (so that you know somethin
 * [create_Texture](cj50/sdlutil.h.md#one_create_Texture)
 * [cstr_CStr](cj50/CStr.h.md#one_cstr_CStr)
 * [cStr_from_cstr](cj50/CStr.h.md#one_cStr_from_cstr)
+* [cStr_from_cstr_unsafe](cj50/CStr.h.md#one_cStr_from_cstr_unsafe)
 * [cstr_String](cj50/String.h.md#one_cstr_String)
 * [cstr_utf8char](cj50/unicode.h.md#one_cstr_utfQeightEchar)
 * [deref_\$VEC_\$T](cj50/gen/template/vectorlikes.h.md#one_deref_QDVEC_QDT)
