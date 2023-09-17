@@ -117,6 +117,13 @@ typedef struct CStr {
 #define CStr_from_cstr_unsafe(s)                \
     ((CStr) { .cstr = s })
 
+/// Generate a `CStr` from a `cstr`. `cstr` must end with a '\0' and
+/// not contain any '\0' in other places; this is not checked, hence
+/// unsafe.
+static UNUSED
+CStr cStr_from_cstr_unsafe(char *v) {
+    return (CStr) { .cstr = (char*)v };
+}
 
 /// Remove from existence.
 static UNUSED
