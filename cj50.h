@@ -625,6 +625,8 @@ GENERATE_PRINTLN(ucodepoint);
              , Vec(int)*: print_debug_Vec_int                           \
              , Vec(Vec2(int)): print_debug_move_Vec_Vec2_int            \
              , Vec(Vec2(int))*: print_debug_Vec_Vec2_int                \
+             , Vec(Vec3(int)): print_debug_move_Vec_Vec3_int            \
+             , Vec(Vec3(int))*: print_debug_Vec_Vec3_int                \
              , Vec(Vec2(float)): print_debug_move_Vec_Vec2_float            \
              , Vec(Vec2(float))*: print_debug_Vec_Vec2_float                \
              , Vec(Rect2(float)): print_debug_move_Vec_Rect2_float            \
@@ -661,6 +663,8 @@ GENERATE_PRINTLN(ucodepoint);
              , slice(int)*: print_debug_slice_int                       \
              , slice(Vec2(int)): print_debug_move_slice_Vec2_int            \
              , slice(Vec2(int))*: print_debug_slice_Vec2_int                    \
+             , slice(Vec3(int)): print_debug_move_slice_Vec3_int            \
+             , slice(Vec3(int))*: print_debug_slice_Vec3_int                    \
              , slice(Vec2(float)): print_debug_move_slice_Vec2_float            \
              , slice(Vec2(float))*: print_debug_slice_Vec2_float                \
              , slice(Rect2(float)): print_debug_move_slice_Rect2_float            \
@@ -782,6 +786,7 @@ GENERATE_PRINTLN(ucodepoint);
              , Vec(char): drop_Vec_char                          \
              , Vec(int): drop_Vec_int                            \
              , Vec(Vec2(int)): drop_Vec_Vec2_int                         \
+             , Vec(Vec3(int)): drop_Vec_Vec3_int                         \
              , Vec(Vec2(float)): drop_Vec_Vec2_float                         \
              , Vec(Rect2(float)): drop_Vec_Rect2_float                         \
              , Vec(Vec2(double)): drop_Vec_Vec2_double                         \
@@ -934,6 +939,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , Vec(char)*: equal_Vec_char                               \
              , Vec(int)*: equal_Vec_int                                 \
              , Vec(Vec2(int))*: equal_Vec_Vec2_int                       \
+             , Vec(Vec3(int))*: equal_Vec_Vec3_int                       \
              , Vec(Vec2(float))*: equal_Vec_Vec2_float                       \
              , Vec(Rect2(float))*: equal_Vec_Rect2_float                       \
              , Vec(Vec2(double))*: equal_Vec_Vec2_double                       \
@@ -946,6 +952,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
              , slice(char)*: equal_slice_char                               \
              , slice(int)*: equal_slice_int                                 \
              , slice(Vec2(int))*: equal_slice_Vec2_int                       \
+             , slice(Vec3(int))*: equal_slice_Vec3_int                       \
              , slice(Vec2(float))*: equal_slice_Vec2_float                       \
              , slice(Rect2(float))*: equal_slice_Rect2_float                       \
              , slice(Vec2(double))*: equal_slice_Vec2_double                       \
@@ -1122,6 +1129,7 @@ float* resize_floats(float* ary, size_t oldlen, size_t newlen) {
     _Generic((v)                                                        \
              , CStr*: deref_CStr                                        \
              , Vec(Vec2(int))*: deref_Vec_Vec2_int                  \
+             , Vec(Vec3(int))*: deref_Vec_Vec3_int                  \
              , Vec(Vec2(float))*: deref_Vec_Vec2_float                  \
              , Vec(Rect2(float))*: deref_Vec_Rect2_float                  \
              , Vec(Vec2(double))*: deref_Vec_Vec2_double                  \
@@ -1299,6 +1307,7 @@ cleanup:
              , Vec(char)*: push_Vec_char                \
              , Vec(int)*: push_Vec_int                  \
              , Vec(Vec2(int))*: push_Vec_Vec2_int       \
+             , Vec(Vec3(int))*: push_Vec_Vec3_int       \
              , Vec(Vec2(float))*: push_Vec_Vec2_float   \
              , Vec(Rect2(float))*: push_Vec_Rect2_float \
              , Vec(Vec2(double))*: push_Vec_Vec2_double \
@@ -1318,6 +1327,7 @@ cleanup:
              , Vec(char)*: pop_Vec_char                 \
              , Vec(int)*: pop_Vec_int                   \
              , Vec(Vec2(int))*: pop_Vec_Vec2_int           \
+             , Vec(Vec3(int))*: pop_Vec_Vec3_int           \
              , Vec(Vec2(float))*: pop_Vec_Vec2_float           \
              , Vec(Rect2(float))*: pop_Vec_Rect2_float           \
              , Vec(Vec2(double))*: pop_Vec_Vec2_double           \
@@ -1337,6 +1347,7 @@ cleanup:
              , Vec(char)*: append_Vec_char              \
              , Vec(int)*: append_Vec_int                \
              , Vec(Vec2(int))*: append_Vec_Vec2_int        \
+             , Vec(Vec3(int))*: append_Vec_Vec3_int        \
              , Vec(Vec2(float))*: append_Vec_Vec2_float        \
              , Vec(Rect2(float))*: append_Vec_Rect2_float                     \
              , Vec(Vec2(double))*: append_Vec_Vec2_double        \
@@ -1354,6 +1365,7 @@ cleanup:
              , Vec(CStr)*: append_move_Vec_CStr         \
              , Vec(int)*: append_move_Vec_int         \
              , Vec(Vec2(int))*: append_move_Vec_Vec2_int        \
+             , Vec(Vec3(int))*: append_move_Vec_Vec3_int        \
              , Vec(Vec2(float))*: append_move_Vec_Vec2_float        \
              , Vec(Rect2(float))*: append_move_Vec_Rect2_float                     \
              , Vec(Vec2(double))*: append_move_Vec_Vec2_double        \
@@ -1386,6 +1398,7 @@ cleanup:
              , slice(char)*: len_slice_char                       \
              , Vec(int)*: len_Vec_int                             \
              , Vec(Vec2(int))*: len_Vec_Vec2_int                     \
+             , Vec(Vec3(int))*: len_Vec_Vec3_int                     \
              , Vec(Vec2(float))*: len_Vec_Vec2_float                     \
              , Vec(Rect2(float))*: len_Vec_Rect2_float                     \
              , Vec(Vec2(double))*: len_Vec_Vec2_double                     \
@@ -1472,6 +1485,7 @@ cleanup:
              , Vec(char)*: clear_Vec_char                   \
              , Vec(int)*: clear_Vec_int                    \
              , Vec(Vec2(int))*: clear_Vec_Vec2_int            \
+             , Vec(Vec3(int))*: clear_Vec_Vec3_int            \
              , Vec(Vec2(float))*: clear_Vec_Vec2_float            \
              , Vec(Vec2(double))*: clear_Vec_Vec2_double            \
              , Vec(Rect2(float))*: clear_Vec_Rect2_float            \
@@ -1556,6 +1570,7 @@ cleanup:
              , slice(CStr)*: at_slice_CStr                      \
              , mutslice(CStr)*: at_mutslice_CStr                \
              , Vec(Vec2(int))*: at_Vec_Vec2_int                    \
+             , Vec(Vec3(int))*: at_Vec_Vec3_int                    \
              , Vec(Vec2(float))*: at_Vec_Vec2_float                    \
              , Vec(Rect2(float))*: at_Vec_Rect2_float                    \
              , Vec(Vec2(double))*: at_Vec_Vec2_double                    \
@@ -1606,6 +1621,7 @@ cleanup:
              , slice(CStr)*: get_slice_CStr                      \
              , mutslice(CStr)*: get_mutslice_CStr                \
              , Vec(Vec2(int))*: get_Vec_Vec2_int                    \
+             , Vec(Vec3(int))*: get_Vec_Vec3_int                    \
              , Vec(Vec2(float))*: get_Vec_Vec2_float                    \
              , Vec(Rect2(float))*: get_Vec_Rect2_float                    \
              , Vec(Vec2(double))*: get_Vec_Vec2_double                    \
@@ -1649,6 +1665,7 @@ cleanup:
              , mutslice(int)*: set_mutslice_int               \
              , Vec(int)*: set_Vec_int                         \
              , Vec(Vec2(int))*: set_Vec_Vec2_int                 \
+             , Vec(Vec3(int))*: set_Vec_Vec3_int                 \
              , Vec(Vec2(float))*: set_Vec_Vec2_float                 \
              , Vec(Vec2(double))*: set_Vec_Vec2_double                 \
              , Vec(float)*: set_Vec_float                       \
@@ -1675,6 +1692,7 @@ cleanup:
              , mutslice(int)*: slice_of_mutslice_int          \
              , Vec(int)*: slice_of_Vec_int                    \
              , Vec(Vec2(int))*: slice_of_Vec_Vec2_int            \
+             , Vec(Vec3(int))*: slice_of_Vec_Vec3_int            \
              , Vec(Vec2(float))*: slice_of_Vec_Vec2_float            \
              , Vec(Vec2(double))*: slice_of_Vec_Vec2_double            \
              , Vec(float)*: slice_of_Vec_float                  \
@@ -1700,6 +1718,7 @@ cleanup:
              , mutslice(int)*: mutslice_of_mutslice_int          \
              , Vec(int)*: mutslice_of_Vec_int                    \
              , Vec(Vec2(int))*: mutslice_of_Vec_Vec2_int            \
+             , Vec(Vec3(int))*: mutslice_of_Vec_Vec3_int            \
              , Vec(Vec2(float))*: mutslice_of_Vec_Vec2_float            \
              , Vec(Vec2(double))*: mutslice_of_Vec_Vec2_double            \
              , Vec(float)*: mutslice_of_Vec_float                  \
