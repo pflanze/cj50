@@ -70,7 +70,7 @@ When such a value is not needed any longer, it must be moved into `drop()`. If y
 
 > Rule 1: Values of types that start with an uppercase initial must only ever exist in a single place at the same time, although they can be moved around. In the end, they must be moved into the `drop()` function.
 
-Exempt from this rule are values of types with a lowercase initial, like `int`, `cstr`, `ucodepoint` and more. They can be copied directly without needing to do this explicitly via the `clone()` function. (Some types with uppercase initials, like `Vec2` or `Vec3`, can be copied, too, if their element type can.)
+Exempt from this rule are values of types with a lowercase initial, like `int`, `cstr`, `ucodepoint`, `slice` and more. They can be copied directly without needing to do this explicitly via the `clone()` function, and don't need to be passed to `drop`. `mutslice` also does not need to be passed to `drop`, but it should not be copied because only one part of the code should ever have the ability to mutate the shared data at a time. Some types with uppercase initials, like `Vec2` or `Vec3`, can be copied, too, if their element type can.
 
 *NOTE*: currently `clone` is not defined yet, it will be added in the future.
 
@@ -106,11 +106,17 @@ Macros without parentheses (like `AUTO`) are simply replaced with their definiti
 
 Macros with arguments (parentheses) are like functions, but they take *code* as their arguments and return code as their result, while the program is being compiled (more accurately: as the first step of the compilation). In other words, they transform the code you pass to them. The code that actually executes can be very different. So, macros can lead to program behaviour in ways you don't immediately see by looking at the macro call, and are thus powerful, but can also be confusing. For this reason, there are fewer macro definitions than function definitions.
 
-To visually distinguish them from functions and types (so that you know something special is going on), C macros are spelt in all-capitals, like `AUTO`. There are two exceptions to this: 
+To visually distinguish them from functions and types (so that you know something special is going on), C macros are spelt in all-capitals, like `AUTO`. There are a few exceptions to this:
 
 * "generic functions" are actually also macros, but their naming is the shared prefix of the functions they are selecting. That's OK since the only code transformation they do is select the right function, nothing more magic than that happens.)
 
 * Types with parameters are also actually implemented as macros, but they are named according to the type naming rules described in the previous section.
+
+* macros that seem to be intuitive extensions to the C syntax and have
+  names that contain the C keyword they are "extending" and are
+  relatively long and hence won't ever clash with function
+  names. Examples: `if_let_Some`/`else_None`, `let_Some_else`,
+  `while_let_Some`, `if_let_Ok`/`else_Err`/`end_let_Ok`.
 
 
 
