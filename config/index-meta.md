@@ -103,9 +103,15 @@ Macros without parentheses (like `AUTO`) are simply replaced with their definiti
 
 Macros with arguments (parentheses) are like functions, but they take *code* as their arguments and return code as their result, while the program is being compiled (more accurately: as the first step of the compilation). In other words, they transform the code you pass to them. The code that actually executes can be very different. So, macros can lead to program behaviour in ways you don't immediately see by looking at the macro call, and are thus powerful, but can also be confusing. For this reason, there are fewer macro definitions than function definitions.
 
-To visually distinguish them from functions and types (so that you know something special is going on), C macros are spelt in all-capitals, like `AUTO`. There are two exceptions to this: 
+To visually distinguish them from functions and types (so that you know something special is going on), C macros are spelt in all-capitals, like `AUTO`. There are a few exceptions to this:
 
 * "generic functions" are actually also macros, but their naming is the shared prefix of the functions they are selecting. That's OK since the only code transformation they do is select the right function, nothing more magic than that happens.)
 
 * Types with parameters are also actually implemented as macros, but they are named according to the type naming rules described in the previous section.
+
+* macros that seem to be intuitive extensions to the C syntax and have
+  names that contain the C keyword they are "extending" and are
+  relatively long and hence won't ever clash with function
+  names. Examples: `if_let_Some`/`else_None`, `let_Some_else`,
+  `while_let_Some`, `if_let_Ok`/`else_Err`/`end_let_Ok`.
 
