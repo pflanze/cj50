@@ -49,8 +49,8 @@ cat <<EOF
 Result(Unit, String) run(UNUSED slice(cstr) argv) {
     BEGIN_Result(Unit, String);
     
-    RETURN_Ok(Unit(), cleanup);
-cleanup:
+    RETURN_Ok(Unit(), cleanup0);
+cleanup0:
     END_Result();
 }
 
