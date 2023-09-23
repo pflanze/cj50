@@ -104,9 +104,11 @@ GENERATE_Option(ref(cstr));
 /// character after it to signal the end of the text. There is no
 /// length information, the length has to be determined by walking the
 /// array until encountering the '\0' character (`strlen` will do
-/// that). In addition to `cstr` it guarantees that there are no '\0'
-/// characters contained in the text (functions generating `CStr` must
-/// verify for that to be true).
+/// that). Additionally `CStr` guarantees that there are no '\0'
+/// characters contained in the text, i.e. the string is not accidentally cut
+/// short; functions generating `CStr` from strings that allow embedded '\0'
+/// (like `String`) must check that this is true.
+
 typedef struct CStr {
     char* cstr;
 } CStr;
